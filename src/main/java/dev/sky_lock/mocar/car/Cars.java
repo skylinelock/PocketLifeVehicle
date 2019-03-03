@@ -1,7 +1,10 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.config.CarsConfiguration;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,7 +16,7 @@ import java.util.stream.Collectors;
 public class Cars {
 
     private List<CarModel> carModels;
-    private Set<CarEntity> carEntities;
+    private Set<CarEntity> carEntities = new HashSet<>();
     private final CarsConfiguration config;
 
     public Cars() {
@@ -50,5 +53,15 @@ public class Cars {
 
     public void loadModules() {
         carModels = config.load();
+    }
+
+    public void spawnAt(Player player, Location location) {
+        CarEntity carEntity = new CarEntity();
+        carEntity.spawn(player.getUniqueId(), location);
+        carEntities.add(carEntity);
+    }
+
+    public CarEntity getCar(Player owner) {
+        return carEntities.stream().filter(car -> car.getOwner().equals(owner.getUniqueId())).findFirst().orElse(null);
     }
 }

@@ -45,8 +45,9 @@ public class Commands implements CommandExecutor {
         }
         switch (args[0].toLowerCase()) {
             case "give":
-
-                break;
+                module.spawnAt(player, player.getLocation());
+                player.sendMessage(ChatColor.GREEN + "Success : Spawned a vehicle");
+                return true;
             case "addmodel":
                 if (args.length < 6) {
                     player.sendMessage(ChatColor.RED + "Failed : Not Enough Arguments");
@@ -86,9 +87,11 @@ public class Commands implements CommandExecutor {
                 module.reloadConfig();
                 player.sendMessage(ChatColor.GREEN + "Success : Reloaded all modules");
                 return true;
-            case "debug":
-                module.loadModules();
-                player.sendMessage(ChatColor.GREEN + "Success : Debug");
+            case "ride":
+                module.getCar(player).ride(player);
+                return true;
+            case "dismount":
+                module.getCar(player).dismount(player);
                 return true;
         }
         player.sendMessage(ChatColor.RED + "Command failed");
