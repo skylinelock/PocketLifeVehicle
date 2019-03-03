@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar;
 
 import dev.sky_lock.mocar.car.Cars;
+import dev.sky_lock.mocar.listener.PlayerListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -16,6 +17,7 @@ public class MoCar extends JavaPlugin {
     public void onEnable() {
         instance = this;
         getCommand("mocar").setExecutor(new Commands());
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
         cars = new Cars();
     }
 
