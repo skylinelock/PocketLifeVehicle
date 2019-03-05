@@ -2,7 +2,6 @@ package dev.sky_lock.mocar.config;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.CarModel;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
@@ -37,12 +36,10 @@ public class CarsConfiguration {
 
     public void write(List<CarModel> models) {
         if (carConfig == null) {
-            MoCar.getInstance().getLogger().log(Level.WARNING, "Could not write to car.yml");
+            MoCar.getInstance().getLogger().log(Level.WARNING, "Could not write to car configution");
             return;
         }
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(carConfig.get("cars") + ""));
         carConfig.set("cars", models);
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(carConfig.get("cars") + ""));
     }
 
     public void save() {

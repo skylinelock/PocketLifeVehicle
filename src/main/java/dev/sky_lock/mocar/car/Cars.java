@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 public class Cars {
 
     private List<CarModel> carModels;
-    private Set<CarEntity> carEntities = new HashSet<>();
+    private Set<Car> carEntities = new HashSet<>();
     private final CarsConfiguration config;
 
     public Cars() {
@@ -56,12 +56,15 @@ public class Cars {
     }
 
     public void spawnAt(Player player, Location location) {
-        CarEntity carEntity = new CarEntity();
-        carEntity.spawn(player.getUniqueId(), location);
-        carEntities.add(carEntity);
+        Car car = new Car();
+        car.spawn(player.getUniqueId(), location);
+        carEntities.stream().filter(carEntity -> car.getOwner().equals(carEntity.getOwner())).findFirst().ifPresent(carEntity -> {
+            carEntities.remove(carEntity);
+        });
+        carEntities.add(car);
     }
 
-    public CarEntity getCar(Player owner) {
+    public Car getCar(Player owner) {
         return carEntities.stream().filter(car -> car.getOwner().equals(owner.getUniqueId())).findFirst().orElse(null);
     }
 }

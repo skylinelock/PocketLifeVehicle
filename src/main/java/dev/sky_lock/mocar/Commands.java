@@ -93,6 +93,8 @@ public class Commands implements CommandExecutor {
             case "dismount":
                 module.getCar(player).dismount(player);
                 return true;
+            case "debug":
+                break;
         }
         player.sendMessage(ChatColor.RED + "Command failed");
         return true;
