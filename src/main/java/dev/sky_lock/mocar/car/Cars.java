@@ -38,8 +38,9 @@ public class Cars {
         config.write(carModels);
     }
 
-    public void removeModel(String name) {
-        carModels = carModels.stream().filter(model -> model != null && !model.getName().equalsIgnoreCase(name)).collect(Collectors.toList());
+    public void removeModel(String id) {
+        carModels = carModels.stream().filter(model -> model != null && !model.getId().equalsIgnoreCase(id)).collect(Collectors.toList());
+        config.write(carModels);
     }
 
     public List<CarModel> getCarModels() {
@@ -47,7 +48,6 @@ public class Cars {
     }
 
     public void reloadConfig() {
-        config.save();
         loadModules();
     }
 

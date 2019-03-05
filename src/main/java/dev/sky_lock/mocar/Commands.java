@@ -1,5 +1,6 @@
 package dev.sky_lock.mocar;
 
+import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarModel;
 import dev.sky_lock.mocar.car.Cars;
 import org.bukkit.ChatColor;
@@ -25,17 +26,24 @@ public class Commands implements CommandExecutor {
         Player player = (Player) sender;
         Cars module = MoCar.getInstance().getCarModule();
         if (args.length < 1) {
-            module.getCarModels().forEach(model -> {
-                player.sendMessage("NAME : " + model.getName());
-                model.getLores().forEach(lore -> player.sendMessage("LORE : " + lore));
-                player.sendMessage("DISTANCE : " + model.getDistancePerLiter() + "");
-                player.sendMessage("MAX_FUEL : " + model.getMaxFuel());
-            });
+            player.sendMessage("Success : Show help");
             return true;
         }
         switch (args[0].toLowerCase()) {
             case "search":
-                break;
+                if (module.getCar(player) == null) {
+                    player.sendMessage(ChatColor.RED + "Failed : You don't have any cars");
+                    return true;
+                }
+                Car car = module.getCar(player);
+                org.bukkit.Location loc = car.getLocation();
+                player.sendMessage(ChatColor.GREEN + "-------------------------------------------");
+                player.sendMessage(ChatColor.GREEN + "World : " + loc.getWorld().getName());
+                player.sendMessage(ChatColor.GREEN + "X : " + loc.getBlockX());
+                player.sendMessage(ChatColor.GREEN + "Y : " + loc.getBlockY());
+                player.sendMessage(ChatColor.GREEN + "Z : " + loc.getBlockZ());
+                player.sendMessage(ChatColor.GREEN + "-------------------------------------------");
+                return true;
             case "toaway":
 
         }
@@ -53,12 +61,13 @@ public class Commands implements CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Failed : Not Enough Arguments");
                     return true;
                 }
-                String name = args[1];
-                String lore = args[2];
-                int maxfuel = Integer.valueOf(args[3]);
-                int distance = Integer.valueOf(args[4]);
-                int speed = Integer.valueOf(args[5]);
-                CarModel newModel = new CarModel(name, Arrays.asList(lore), maxfuel, distance, speed);
+                String id = args[1];
+                String name = args[2];
+                String lore = args[3];
+                int maxfuel = Integer.valueOf(args[4]);
+                int distance = Integer.valueOf(args[5]);
+                int speed = Integer.valueOf(args[6]);
+                CarModel newModel = new CarModel(id, name, Arrays.asList(lore), maxfuel, distance, speed);
                 module.addModel(newModel);
                 player.sendMessage(ChatColor.GREEN + "Success : Add a new car model");
                 return true;
@@ -76,11 +85,14 @@ public class Commands implements CommandExecutor {
                     return true;
                 }
                 module.getCarModels().forEach(model -> {
+                    player.sendMessage(ChatColor.GREEN + "-------------------------------------------");
+                    player.sendMessage(ChatColor.GREEN + "ID         : " + model.getId());
                     player.sendMessage(ChatColor.GREEN + "NAME       : " + model.getName());
                     player.sendMessage(ChatColor.GREEN + "LORE       : " + model.getLores());
                     player.sendMessage(ChatColor.GREEN + "SPEED      : " + model.getSpeed());
                     player.sendMessage(ChatColor.GREEN + "MAXFUEL    : " + model.getMaxFuel());
                     player.sendMessage(ChatColor.GREEN + "DISTANCE/L : " + model.getDistancePerLiter());
+                    player.sendMessage(ChatColor.GREEN + "-------------------------------------------");
                 });
                 return true;
             case "reload":

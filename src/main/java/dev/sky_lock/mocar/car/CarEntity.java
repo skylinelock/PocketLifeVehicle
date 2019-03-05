@@ -12,9 +12,12 @@ import org.bukkit.inventory.ItemStack;
  */
 
 public class CarEntity extends EntityArmorStand {
+    private final Car car;
 
-    public CarEntity(World world) {
+    public CarEntity(World world, Car car) {
         super(world);
+        this.car = car;
+
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("NoBasePlate", true);
         nbt.setBoolean("invulnerable", true);
@@ -34,6 +37,8 @@ public class CarEntity extends EntityArmorStand {
 
     @Override
     public void a(float sideMot, float f1, float forMot) {
+        car.setLocation(getBukkitEntity().getLocation());
+
         this.P = 1.0F;
         if (passengers != null && !passengers.isEmpty()) {
             EntityLiving passenger = (EntityLiving) passengers.get(0);
@@ -76,7 +81,7 @@ public class CarEntity extends EntityArmorStand {
             this.aG += (f4 - this.aG) * 0.4f;
             this.aH += this.aG;
         }
-        this.k(0.35f);
+        this.k(0.20f);
         super.a(sideMot, f1, forMot);
     }
 

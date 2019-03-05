@@ -19,8 +19,7 @@ public enum EntityTypes {
     }
 
     public static void spawnEntity(Entity entity, Location loc) {
-        entity.setLocation(loc.getX(), loc.getY(), loc.getZ(), loc.getYaw(), loc.getPitch());
-        ((CraftWorld) loc.getWorld()).getHandle().addEntity(entity);
+
     }
 
     private static void addToMaps(Class clazz, String name, String entity_id, int id) {
