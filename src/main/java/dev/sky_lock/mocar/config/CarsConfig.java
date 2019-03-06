@@ -14,16 +14,16 @@ import java.util.logging.Level;
  * @author sky_lock
  */
 
-public class CarsConfiguration {
+public class CarsConfig {
 
     private YamlConfiguration carConfig;
 
-    public CarsConfiguration() {
+    public CarsConfig() {
         ConfigurationSerialization.registerClass(CarModel.class, "CarModel");
     }
 
     public List<CarModel> load() {
-        carConfig = ConfigurationFiles.load("cars.yml");
+        carConfig = ConfigFiles.load("cars.yml");
         if (carConfig == null) {
             return Collections.emptyList();
         }
@@ -43,7 +43,7 @@ public class CarsConfiguration {
     }
 
     public void save() {
-        ConfigurationFiles.save(MoCar.getInstance().getDataFolder().toPath().resolve("cars.yml"), carConfig);
+        ConfigFiles.save(MoCar.getInstance().getDataFolder().toPath().resolve("cars.yml"), carConfig);
     }
 
 }

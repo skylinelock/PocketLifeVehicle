@@ -2,8 +2,10 @@ package dev.sky_lock.mocar;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
-import dev.sky_lock.mocar.car.Cars;
+import dev.sky_lock.mocar.car.CarHandler;
+import dev.sky_lock.mocar.commands.CommandHandler;
 import dev.sky_lock.mocar.listener.PlayerListener;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 /**
@@ -14,27 +16,28 @@ public class MoCar extends JavaPlugin {
 
     private static MoCar instance;
     private ProtocolManager protocolManager;
-    private Cars cars;
+    private CarHandler handler;
+    public static String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "MoCar" + ChatColor.DARK_GRAY +"] " + ChatColor.RESET;
 
     @Override
     public void onEnable() {
         instance = this;
         protocolManager = ProtocolLibrary.getProtocolManager();
-        getCommand("mocar").setExecutor(new Commands());
+        getCommand("mocar").setExecutor(new CommandHandler());
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-        cars = new Cars();
+        handler = new CarHandler();
     }
 
     @Override
     public void onDisable() {
-        cars.saveConfig();
+        handler.saveConfig();
     }
 
     public static MoCar getInstance() {
         return instance;
     }
 
-    Cars getCarModule() {
-        return cars;
+    public CarHandler getCarHandler() {
+        return handler;
     }
 }

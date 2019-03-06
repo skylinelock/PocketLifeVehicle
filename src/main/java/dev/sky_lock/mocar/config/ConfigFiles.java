@@ -15,7 +15,7 @@ import java.util.logging.Level;
  * @author sky_lock
  */
 
-class ConfigurationFiles {
+class ConfigFiles {
 
     static YamlConfiguration load(String name) {
         YamlConfiguration config = null;

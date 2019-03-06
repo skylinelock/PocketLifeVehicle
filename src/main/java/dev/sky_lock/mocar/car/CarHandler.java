@@ -1,6 +1,6 @@
 package dev.sky_lock.mocar.car;
 
-import dev.sky_lock.mocar.config.CarsConfiguration;
+import dev.sky_lock.mocar.config.CarsConfig;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -13,14 +13,14 @@ import java.util.stream.Collectors;
  * @author sky_lock
  */
 
-public class Cars {
+public class CarHandler {
 
     private List<CarModel> carModels;
     private Set<Car> carEntities = new HashSet<>();
-    private final CarsConfiguration config;
+    private final CarsConfig config;
 
-    public Cars() {
-        config = new CarsConfiguration();
+    public CarHandler() {
+        config = new CarsConfig();
         loadModules();
     }
 
