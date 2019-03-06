@@ -1,11 +1,13 @@
 package dev.sky_lock.mocar.car;
 
+import dev.sky_lock.mocar.MoCar;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 
 /**
  * @author sky_lock
@@ -27,6 +29,7 @@ public class CarEntity extends EntityArmorStand {
         nbt.setBoolean("Invisible", true);
         this.a(nbt);
         this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(org.bukkit.Material.POWERED_RAIL)));
+        this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
 
     /*//Update
