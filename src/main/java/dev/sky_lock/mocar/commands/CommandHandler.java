@@ -18,35 +18,34 @@ public class CommandHandler implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         ICommand cmd = new HelpCommand();
+
         CarHandler handler = MoCar.getInstance().getCarHandler();
 
         if (args.length > 0) {
-
             switch (args[0].toLowerCase()) {
                 case "help":
                     break;
                 case "give":
-                    cmd = new GiveCommand(handler);
+                    cmd = new GiveCommand();
                     break;
                 case "addmodel":
-                    cmd = new AddModelCommand(handler);
+                    cmd = new AddModelCommand();
                     break;
                 case "removemodel":
-                    cmd = new RemoveModelCommand(handler);
+                    cmd = new RemoveModelCommand();
                     break;
                 case "debug":
                     cmd = new DebugCommand();
                     break;
                 case "listmodel":
-                    cmd = new ListModelCommand(handler);
+                    cmd = new ListModelCommand();
                     break;
                 case "search":
-                    cmd = new SearchCommand(handler);
+                    cmd = new SearchCommand();
                     break;
                 case "reload":
-                    handler.reloadConfig();
-                    sender.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Success : Reloaded all modules");
-                    return true;
+                    cmd = new ReloadCommand();
+                    break;
                 case "ride":
                     Player player = (Player) sender;
                     handler.getCar(player).ride(player);
@@ -55,7 +54,20 @@ public class CommandHandler implements CommandExecutor {
                     player = (Player) sender;
                     handler.getCar(player).dismount(player);
                     return true;
+            }
 
+            if (cmd instanceof IAdminCommand) {
+                if (!(sender.hasPermission("mocar.admin.command"))) {
+                    sender.sendMessage(MoCar.PREFIX + ChatColor.RED + "このコマンドを実行するための権限がありません");
+                    return true;
+                }
+            }
+
+            if (!(cmd instanceof IConsoleCommand)) {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(MoCar.PREFIX + ChatColor.RED + "このコマンドはプレイヤーのみ実行できます");
+                    return true;
+                }
             }
         }
         cmd.execute(sender, command, args);

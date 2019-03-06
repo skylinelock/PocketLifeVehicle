@@ -9,10 +9,11 @@ import org.bukkit.command.CommandSender;
  * @author sky_lock
  */
 
-public class DebugCommand implements ICommand, IAdminCommand {
+public class ReloadCommand implements ICommand, IAdminCommand, IConsoleCommand {
 
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
-        sender.sendMessage(MoCar.PREFIX + ChatColor.DARK_GRAY + "Debug");
+        MoCar.getInstance().getCarHandler().reloadConfig();
+        sender.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Success : Reloaded all modules");
     }
 }

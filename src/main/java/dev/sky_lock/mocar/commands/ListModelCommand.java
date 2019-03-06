@@ -12,19 +12,11 @@ import org.bukkit.entity.Player;
  */
 
 public class ListModelCommand implements ICommand {
-    private final CarHandler handler;
-
-    public ListModelCommand(CarHandler handler) {
-        this.handler = handler;
-    }
 
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(MoCar.PREFIX + ChatColor.RED + "このコマンドはプレイヤーのみ実行できます");
-            return;
-        }
         Player player = (Player) sender;
+        CarHandler handler = MoCar.getInstance().getCarHandler();
         if (handler.getCarModels().isEmpty()) {
             player.sendMessage(MoCar.PREFIX + ChatColor.RED + "Failed : Could not find any models");
             return;
@@ -39,6 +31,5 @@ public class ListModelCommand implements ICommand {
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "DISTANCE/L : " + model.getDistancePerLiter());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "-------------------------------------------");
         });
-        return;
     }
 }

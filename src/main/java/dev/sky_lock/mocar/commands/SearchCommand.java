@@ -14,19 +14,10 @@ import org.bukkit.entity.Player;
 
 public class SearchCommand implements ICommand {
 
-    private final CarHandler handler;
-
-    public SearchCommand(CarHandler handler) {
-        this.handler = handler;
-    }
-
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage(MoCar.PREFIX + ChatColor.RED + "このコマンドはプレイヤーのみ実行できます");
-            return;
-        }
         Player player = (Player) sender;
+        CarHandler handler = MoCar.getInstance().getCarHandler();
         if (handler.getCar(player) == null) {
             player.sendMessage(MoCar.PREFIX + ChatColor.RED + "Failed : You don't have any cars");
             return;

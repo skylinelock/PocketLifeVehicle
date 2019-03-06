@@ -22,7 +22,7 @@ public class CarEntity extends EntityArmorStand {
 
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("NoBasePlate", true);
-        nbt.setBoolean("invulnerable", true);
+        nbt.setBoolean("Invulnerable", true);
         nbt.setBoolean("PersistenceRequired", true);
         nbt.setBoolean("ShowArms", true);
         nbt.setBoolean("NoGravity", false);
@@ -50,15 +50,8 @@ public class CarEntity extends EntityArmorStand {
             sideMot = passenger.be * 0.5F;
             forMot = passenger.bg;
 
-            if (sideMot > 0.0F) {
-                this.yaw = passenger.yaw + 1F;
-            } else if (sideMot < 0.0F) {
-                this.yaw = passenger.yaw - 1F;
-            } else {
-                this.yaw = passenger.yaw;
-            }
-
             sideMot = 0.0F;
+            this.yaw = passenger.yaw;
             this.lastYaw = this.yaw;
             this.pitch = passenger.pitch * 0.5F;
             setYawPitch(this.yaw, this.pitch);
@@ -84,7 +77,7 @@ public class CarEntity extends EntityArmorStand {
             this.aG += (f4 - this.aG) * 0.4f;
             this.aH += this.aG;
         }
-        this.k(0.20f);
+        this.k(0.50f);
         super.a(sideMot, f1, forMot);
     }
 

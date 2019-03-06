@@ -2,8 +2,10 @@ package dev.sky_lock.mocar.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author sky_lock
@@ -11,12 +13,23 @@ import org.bukkit.inventory.Inventory;
 
 public class GuiWindow {
     private final Inventory inventory;
+    private final Player player;
+    private final List<GuiItem> items = new ArrayList<>();
 
-    public GuiWindow(String title) {
-        inventory = Bukkit.createInventory(null, InventoryType.CHEST, title);
+    public GuiWindow(String title, Player player) {
+        this.player = player;
+        inventory = Bukkit.createInventory(player, 54, title);
     }
 
-    public void show(Player player) {
+    public void open() {
         player.openInventory(inventory);
     }
+
+    public void addGuiItem(GuiItem item) {
+        inventory.setItem(item.getSlot(), item.getItemStack());
+        items.add(item);
+    }
+
+
+
 }
