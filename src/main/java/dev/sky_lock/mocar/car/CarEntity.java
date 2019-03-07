@@ -16,7 +16,8 @@ import org.bukkit.metadata.FixedMetadataValue;
 public class CarEntity extends EntityArmorStand {
     private final Car car;
     private float steer_yaw;
-    private boolean isRiding;
+    private float currentSpeed;
+    private float acceleration;
 
     public CarEntity(World world, Car car) {
         super(world);
@@ -36,11 +37,6 @@ public class CarEntity extends EntityArmorStand {
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
 
-
-    public void setRiding(boolean riding) {
-        this.isRiding = riding;
-    }
-
     //ツタとかはしごとか
     @Override
     public boolean m_() {
@@ -58,66 +54,66 @@ public class CarEntity extends EntityArmorStand {
     public void B_() {
         super.B_();
         //当たり判定
-        setSize(4.0F, 5.0F);
+        setSize(3.7F, 3.8F);
     }
+
 
     @Override
     public void a(float sideMot, float f1, float forMot) {
         car.setLocation(getBukkitEntity().getLocation());
-
         if (this.isInWater() || this.au()) {
             this.killEntity();
             return;
         }
 
+        if (passengers == null || passengers.isEmpty()) {
+            super.a(sideMot, f1, forMot);
+            car.setSpeed(0.0f);
+            return;
+        }
+
+        EntityLiving passenger = (EntityLiving) passengers.get(0);
+        float sideInput = passenger.be;
+        float forInput = passenger.bg;
+
+        sideMot = 0.0F;
+        forMot = 3.0F;
+
+        this.fallDistance = 0.0F;
+
+        if (sideInput < 0.0F) {
+            steer_yaw += 5.5F;
+        } else if (sideInput > 0.0F) {
+            steer_yaw -= 5.5F;
+        }
+
+        this.yaw = steer_yaw;
+        this.lastYaw = this.yaw;
+        this.pitch = passenger.pitch * 0.5F;
+        setYawPitch(this.yaw, this.pitch);
+        this.aN = this.yaw;
+        this.aP = this.aQ;
+
         //乗れるブロックの高さ
         this.P = 1.0F;
-        if (passengers != null && !passengers.isEmpty()) {
-            EntityLiving passenger = (EntityLiving) passengers.get(0);
-            if (!isRiding) {
-                passenger.yaw = this.yaw;
-                isRiding = true;
-            }
-            this.fallDistance = 0.0F;
 
-            forMot = passenger.bg;
-            this.yaw = steer_yaw;
+        this.aR = this.cy() * 0.1f;
 
-            if (passenger.be < 0.0F) {
-                steer_yaw += 5.5F;
-            } else if (passenger.be > 0.0F) {
-                steer_yaw -= 5.5F;
-            }
+        this.aF = this.aG;
+        double d0 = this.locX - this.lastX;
+        double d1 = this.locZ - this.lastZ;
+        double f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0f;
 
-            sideMot = 0.0F;
-
-            this.lastYaw = this.yaw;
-            this.pitch = passenger.pitch * 0.5F;
-            setYawPitch(this.yaw, this.pitch);
-            this.aN = this.yaw;
-            this.aP = this.aQ;
-
-            if (forMot <= 0.0F) {
-                forMot *= 0.25F;// Make backwards slower
-            }
-
-            this.aR = this.cy() * 0.1f;
-
-            this.aF = this.aG;
-            double d0 = this.locX - this.lastX;
-            double d1 = this.locZ - this.lastZ;
-            double f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0f;
-
-            if (f4 > 1.0f) {
-                f4 = 1.0f;
-            }
-
-            this.aG += (f4 - this.aG) * 0.4f;
-            this.aH += this.aG;
+        if (f4 > 1.0f) {
+            f4 = 1.0f;
         }
-        this.k(0.50f);
+
+        this.aG += (f4 - this.aG) * 0.4f;
+        this.aH += this.aG;
+        k(car.calculateSpeed(forInput));
         super.a(sideMot, f1, forMot);
     }
+
 
     @Override
     public CraftEntity getBukkitEntity() {

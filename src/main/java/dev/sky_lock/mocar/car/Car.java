@@ -1,5 +1,6 @@
 package dev.sky_lock.mocar.car;
 
+import dev.sky_lock.mocar.MoCar;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -17,8 +18,10 @@ public class Car {
     private UUID owner;
     private CarModel model;
     private Location location;
-    private int currentSpeed;
     private CarEntity carEntity;
+    private boolean isRiding;
+    private float speed;
+    private float acceleration = 0.0085F;
 
     public void spawn(UUID owner, Location location) {
         this.owner = owner;
@@ -47,18 +50,50 @@ public class Car {
 
     public void ride(Player player) {
         if (!player.getUniqueId().equals(owner)) {
-            player.sendMessage(ChatColor.RED + "Failed : You are not owner of that vehicle");
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "Failed : You are not owner of that vehicle");
             return;
         }
-        //carEntity.passengers.add(((CraftPlayer) player).getHandle());
+        if (!carEntity.passengers.isEmpty()) {
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "他のプレイヤーが乗車中です");
+            return;
+        }
         carEntity.getBukkitEntity().setPassenger(player);
+        player.getLocation().setYaw(carEntity.getBukkitYaw());
+        isRiding = true;
     }
 
     public void dismount(Player player) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
         if (carEntity.passengers.contains(handle)) {
             carEntity.passengers.remove((handle));
+            isRiding = false;
+            speed = 0.0f;
         }
-        carEntity.setRiding(false);
+    }
+
+    void setSpeed(float speed) {
+        this.speed = speed;
+    }
+
+    boolean isRiding() {
+        return isRiding;
+    }
+
+    float calculateSpeed(float passengerInput) {
+        if (passengerInput == 0.0f) {
+            speed -= acceleration;
+        } else if (passengerInput < 0.0f) {
+            speed -= (acceleration + 0.010f);
+        }
+        if (speed > 0.50f) {
+            return speed;
+        }
+        if (passengerInput > 0.0f) {
+            speed += acceleration;
+        }
+        if (speed <= 0.0f) {
+            speed *= 0.25f;// Make backwards slower
+        }
+        return speed;
     }
 }

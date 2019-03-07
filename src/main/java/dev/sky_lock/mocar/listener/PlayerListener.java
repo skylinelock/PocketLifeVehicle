@@ -1,5 +1,6 @@
 package dev.sky_lock.mocar.listener;
 
+import dev.sky_lock.mocar.car.CraftCar;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
@@ -21,7 +22,7 @@ public class PlayerListener implements Listener {
             return;
         }
         ArmorStand as = (ArmorStand) event.getRightClicked();
-        if (!as.hasMetadata("mocar-as")) {
+        if (!(as instanceof CraftCar)) {
             return;
         }
         event.setCancelled(true);
