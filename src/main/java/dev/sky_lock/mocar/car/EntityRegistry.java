@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  */
 
 public enum EntityRegistry {
-    VEHICLE_CAR("armor_stand", 30, CarEntity.class, "Car");
+    VEHICLE_CAR("vehicle_car", 30, CarEntity.class, "Car");
 
     private EntityRegistry(String entity_id, int id, Class<? extends Entity> clazz, String name) {
         addToMaps(clazz, name, entity_id, id);

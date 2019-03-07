@@ -14,15 +14,13 @@ import org.bukkit.metadata.FixedMetadataValue;
  */
 
 public class CarEntity extends EntityArmorStand {
-    private final Car car;
+    private Car car;
     private float steer_yaw;
     private float currentSpeed;
     private float acceleration;
 
-    public CarEntity(World world, Car car) {
+    public CarEntity(World world) {
         super(world);
-        this.car = car;
-        //当たり判定
 
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("NoBasePlate", true);
@@ -37,7 +35,11 @@ public class CarEntity extends EntityArmorStand {
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
 
-    //ツタとかはしごとか
+    public void setCar(Car car) {
+        this.car = car;
+    }
+
+    //ツタとかはしごとかを登れなくする
     @Override
     public boolean m_() {
         return false;
@@ -61,10 +63,10 @@ public class CarEntity extends EntityArmorStand {
     @Override
     public void a(float sideMot, float f1, float forMot) {
         car.setLocation(getBukkitEntity().getLocation());
-        if (this.isInWater() || this.au()) {
+/*        if (this.isInWater() || this.au()) {
             this.killEntity();
             return;
-        }
+        }*/
 
         if (passengers == null || passengers.isEmpty()) {
             super.a(sideMot, f1, forMot);
@@ -121,5 +123,10 @@ public class CarEntity extends EntityArmorStand {
             this.bukkitEntity = new CraftCar((CraftServer) Bukkit.getServer(), this);
         }
         return super.getBukkitEntity();
+    }
+
+    @Override
+    public int getId() {
+        return super.getId();
     }
 }

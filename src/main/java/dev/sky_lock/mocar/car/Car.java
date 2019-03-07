@@ -26,7 +26,8 @@ public class Car {
     public void spawn(UUID owner, Location location) {
         this.owner = owner;
         this.location = location;
-        carEntity = new CarEntity(((CraftWorld) location.getWorld()).getHandle(), this);
+        carEntity = new CarEntity(((CraftWorld) location.getWorld()).getHandle());
+        carEntity.setCar(this);
 
         carEntity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         ((CraftWorld) location.getWorld()).getHandle().addEntity(carEntity);
