@@ -63,11 +63,10 @@ public class CarEntity extends EntityArmorStand {
     @Override
     public void a(float sideMot, float f1, float forMot) {
         car.setLocation(getBukkitEntity().getLocation());
-/*        if (this.isInWater() || this.au()) {
+        if (this.isInWater() || this.au()) {
             this.killEntity();
             return;
-        }*/
-
+        }
         if (passengers == null || passengers.isEmpty()) {
             super.a(sideMot, f1, forMot);
             car.setSpeed(0.0f);
