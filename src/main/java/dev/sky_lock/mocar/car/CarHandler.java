@@ -64,6 +64,13 @@ public class CarHandler {
         carEntities.add(car);
     }
 
+    public void despawn(Player player) {
+        carEntities.stream().filter(car -> car.getOwner().equals(player.getUniqueId())).findFirst().ifPresent(car -> {
+            car.despawn();
+            carEntities.remove(car);
+        });
+    }
+
     public Car getCar(Player owner) {
         return carEntities.stream().filter(car -> car.getOwner().equals(owner.getUniqueId())).findFirst().orElse(null);
     }

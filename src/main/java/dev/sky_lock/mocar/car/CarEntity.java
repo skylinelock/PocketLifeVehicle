@@ -15,10 +15,13 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public class CarEntity extends EntityArmorStand {
     private final Car car;
+    private float steer_yaw;
+    private boolean isRiding;
 
     public CarEntity(World world, Car car) {
         super(world);
         this.car = car;
+        //当たり判定
 
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("NoBasePlate", true);
@@ -27,31 +30,67 @@ public class CarEntity extends EntityArmorStand {
         nbt.setBoolean("ShowArms", true);
         nbt.setBoolean("NoGravity", false);
         nbt.setBoolean("Invisible", true);
+        nbt.setBoolean("Marker", false);
         this.a(nbt);
         this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(org.bukkit.Material.POWERED_RAIL)));
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
 
-    /*//Update
-    @Override
-    public void a(float side, float updown, float forward) {
 
-    }*/
+    public void setRiding(boolean riding) {
+        this.isRiding = riding;
+    }
+
+    //ツタとかはしごとか
+    @Override
+    public boolean m_() {
+        return false;
+    }
+
+    //足音がなるかどうか
+    @Override
+    public boolean isSilent() {
+        return true;
+    }
+
+    //tick毎に呼ばれる
+    @Override
+    public void B_() {
+        super.B_();
+        //当たり判定
+        setSize(4.0F, 5.0F);
+    }
 
     @Override
     public void a(float sideMot, float f1, float forMot) {
         car.setLocation(getBukkitEntity().getLocation());
 
+        if (this.isInWater() || this.au()) {
+            this.killEntity();
+            return;
+        }
+
+        //乗れるブロックの高さ
         this.P = 1.0F;
         if (passengers != null && !passengers.isEmpty()) {
             EntityLiving passenger = (EntityLiving) passengers.get(0);
+            if (!isRiding) {
+                passenger.yaw = this.yaw;
+                isRiding = true;
+            }
             this.fallDistance = 0.0F;
 
-            sideMot = passenger.be * 0.5F;
             forMot = passenger.bg;
+            this.yaw = steer_yaw;
+
+            if (passenger.be < 0.0F) {
+                steer_yaw += 5.5F;
+            } else if (passenger.be > 0.0F) {
+                steer_yaw -= 5.5F;
+            }
 
             sideMot = 0.0F;
-            this.yaw = passenger.yaw;
+
             this.lastYaw = this.yaw;
             this.pitch = passenger.pitch * 0.5F;
             setYawPitch(this.yaw, this.pitch);
@@ -62,7 +101,6 @@ public class CarEntity extends EntityArmorStand {
                 forMot *= 0.25F;// Make backwards slower
             }
 
-            //this.Q = ai.climbingHeight.toFloat();
             this.aR = this.cy() * 0.1f;
 
             this.aF = this.aG;

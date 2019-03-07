@@ -29,6 +29,10 @@ public class Car {
         ((CraftWorld) location.getWorld()).getHandle().addEntity(carEntity);
     }
 
+    public void despawn() {
+        this.carEntity.killEntity();
+    }
+
     public Location getLocation() {
         return location;
     }
@@ -55,5 +59,6 @@ public class Car {
         if (carEntity.passengers.contains(handle)) {
             carEntity.passengers.remove((handle));
         }
+        carEntity.setRiding(false);
     }
 }
