@@ -56,7 +56,7 @@ public class CarEntity extends EntityArmorStand {
     public void B_() {
         super.B_();
         //当たり判定
-        setSize(3.7F, 3.8F);
+        setSize(2.5F, 2.5F);
     }
 
 
