@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.packet.Actionbar;
+import dev.sky_lock.mocar.packet.ActionBar;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -89,7 +89,7 @@ public class CarEntity extends EntityArmorStand {
         for (int i = 0; i < 20 - filledRate; i++) {
             builder.append("█");
         }
-        Actionbar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
+        ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
         car.useFuel(0.05F);
 
         float sideInput = passenger.be;

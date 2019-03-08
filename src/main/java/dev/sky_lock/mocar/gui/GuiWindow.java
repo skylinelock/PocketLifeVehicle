@@ -2,6 +2,7 @@ package dev.sky_lock.mocar.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -26,6 +27,10 @@ public class GuiWindow {
         player.openInventory(inventory);
     }
 
+    public void close() {
+        player.closeInventory();
+    }
+
     protected void addComponent(IGuiComponent component) {
         components.add(component);
         component.getSlotRange().forEach((integer -> {
@@ -34,7 +39,15 @@ public class GuiWindow {
     }
 
     public void click(InventoryClickEvent event) {
+        if (!event.isCancelled()) {
+            event.setResult(Event.Result.DENY);
+            event.setCancelled(true);
+        }
         components.stream().filter(component -> component.getSlotRange().contains(event.getSlot())).findFirst().ifPresent(component -> component.onClick(event));
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
 }

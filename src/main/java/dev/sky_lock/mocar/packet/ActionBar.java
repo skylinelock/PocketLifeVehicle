@@ -13,7 +13,7 @@ import java.lang.reflect.InvocationTargetException;
  * @author sky_lock
  */
 
-public class Actionbar {
+public class ActionBar {
 
     public static void sendPacket(Player player, String text) {
         try {

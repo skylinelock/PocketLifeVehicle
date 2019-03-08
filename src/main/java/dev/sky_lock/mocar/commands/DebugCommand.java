@@ -13,6 +13,6 @@ public class DebugCommand implements ICommand, IAdminCommand {
 
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
-        MoCar.getInstance().getCarHandler().despawn((Player) sender);
+        MoCar.getInstance().getCarHandler().getCarEntity((Player) sender).tow();
     }
 }

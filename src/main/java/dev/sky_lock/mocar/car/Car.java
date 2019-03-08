@@ -1,9 +1,11 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.util.ItemStackBuilder;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
@@ -37,6 +39,11 @@ public class Car {
 
     public void despawn() {
         this.carEntity.killEntity();
+    }
+
+    public void tow() {
+        despawn();
+        carEntity.getBukkitEntity().getWorld().dropItem(carEntity.getBukkitEntity().getLocation(), new ItemStackBuilder(Material.WOOD_HOE, 1).damage(1).build());
     }
 
     public Location getLocation() {
