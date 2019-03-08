@@ -22,6 +22,7 @@ public class Car {
     private boolean isRiding;
     private float speed;
     private float acceleration = 0.0085F;
+    private float fuel;
 
     public void spawn(UUID owner, Location location) {
         this.owner = owner;
@@ -31,6 +32,7 @@ public class Car {
 
         carEntity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         ((CraftWorld) location.getWorld()).getHandle().addEntity(carEntity);
+        this.fuel = 100;
     }
 
     public void despawn() {
@@ -72,6 +74,17 @@ public class Car {
         }
     }
 
+    public float getFuel() {
+        return fuel;
+    }
+
+    public void useFuel(float fuelParcentage) {
+        if (fuel < 0.0f) {
+            return;
+        }
+        this.fuel -= fuelParcentage;
+    }
+
     void setSpeed(float speed) {
         this.speed = speed;
     }
@@ -81,6 +94,9 @@ public class Car {
     }
 
     float calculateSpeed(float passengerInput) {
+        if (this.fuel <= 0.0F) {
+            return 0.0F;
+        }
         if (passengerInput == 0.0f) {
             speed -= acceleration;
         } else if (passengerInput < 0.0f) {

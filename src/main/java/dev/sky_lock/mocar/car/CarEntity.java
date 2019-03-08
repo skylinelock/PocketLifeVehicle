@@ -1,8 +1,10 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.packet.Actionbar;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
@@ -74,6 +76,24 @@ public class CarEntity extends EntityArmorStand {
         }
 
         EntityLiving passenger = (EntityLiving) passengers.get(0);
+        if (!(passenger instanceof EntityPlayer)) {
+            super.a(sideMot, f1, forMot);
+            return;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        builder.append(ChatColor.GREEN);
+        int  filledRate = Math.round(car.getFuel() / 5.0F);
+        for (int i = 0; i < filledRate; i++) {
+            builder.append("█");
+        }
+        builder.append(ChatColor.RED);
+        for (int i = 0; i < 20 - filledRate; i++) {
+            builder.append("█");
+        }
+        Actionbar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
+        car.useFuel(0.05F);
+
         float sideInput = passenger.be;
         float forInput = passenger.bg;
 

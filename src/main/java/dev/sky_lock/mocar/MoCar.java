@@ -42,4 +42,8 @@ public class MoCar extends JavaPlugin {
     public CarHandler getCarHandler() {
         return handler;
     }
+
+    public ProtocolManager getProtocolManager() {
+        return protocolManager;
+    }
 }
