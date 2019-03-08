@@ -16,13 +16,14 @@ import org.bukkit.metadata.FixedMetadataValue;
  */
 
 public class CarEntity extends EntityArmorStand {
-    private Car car;
+    private final Car car;
     private float steer_yaw;
     private float currentSpeed;
     private float acceleration;
 
-    public CarEntity(World world) {
+    public CarEntity(World world, Car car) {
         super(world);
+        this.car = car;
 
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("NoBasePlate", true);
@@ -35,10 +36,6 @@ public class CarEntity extends EntityArmorStand {
         this.a(nbt);
         this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(org.bukkit.Material.POWERED_RAIL)));
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
-    }
-
-    public void setCar(Car car) {
-        this.car = car;
     }
 
     //ツタとかはしごとかを登れなくする
@@ -83,7 +80,8 @@ public class CarEntity extends EntityArmorStand {
 
         StringBuilder builder = new StringBuilder();
         builder.append(ChatColor.GREEN);
-        int  filledRate = Math.round(car.getFuel() / 5.0F);
+        float fuelRate = car.getFuel() / car.getModel().getMaxFuel();
+        int filledRate = Math.round(20 * fuelRate);
         for (int i = 0; i < filledRate; i++) {
             builder.append("█");
         }

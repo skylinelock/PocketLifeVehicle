@@ -25,12 +25,13 @@ public class CarsConfig {
     public List<CarModel> load() {
         carConfig = ConfigFiles.load("cars.yml");
         if (carConfig == null) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
         List<CarModel> models = (ArrayList<CarModel>) carConfig.get("cars");
         if (models == null) {
             return new ArrayList<CarModel>();
         }
+        models.removeAll(Collections.singleton(null));
         return models;
     }
 

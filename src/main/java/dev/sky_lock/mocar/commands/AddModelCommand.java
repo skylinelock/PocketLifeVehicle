@@ -25,10 +25,10 @@ public class AddModelCommand implements ICommand, IAdminCommand {
         String id = args[1];
         String name = args[2];
         String lore = args[3];
-        int maxfuel = Integer.valueOf(args[4]);
-        int distance = Integer.valueOf(args[5]);
+        int distance = Integer.valueOf(args[4]);
+        float maxfuel = Float.valueOf(args[5]);
         int speed = Integer.valueOf(args[6]);
-        CarModel newModel = new CarModel(id, name, Arrays.asList(lore), maxfuel, distance, speed);
+        CarModel newModel = new CarModel(id, name, Arrays.asList(lore), distance, maxfuel, speed);
         MoCar.getInstance().getCarHandler().addModel(newModel);
         player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Success : Add a new car model");
     }

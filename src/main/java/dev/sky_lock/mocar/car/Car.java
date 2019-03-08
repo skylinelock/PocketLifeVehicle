@@ -24,15 +24,15 @@ public class Car {
     private float acceleration = 0.0085F;
     private float fuel;
 
-    public void spawn(UUID owner, Location location) {
+    public void spawn(CarModel model, UUID owner, Location location) {
+        this.model = model;
         this.owner = owner;
         this.location = location;
-        carEntity = new CarEntity(((CraftWorld) location.getWorld()).getHandle());
-        carEntity.setCar(this);
+        carEntity = new CarEntity(((CraftWorld) location.getWorld()).getHandle(), this);
 
         carEntity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
         ((CraftWorld) location.getWorld()).getHandle().addEntity(carEntity);
-        this.fuel = 100;
+        this.fuel = model.getMaxFuel();
     }
 
     public void despawn() {
@@ -53,7 +53,7 @@ public class Car {
 
     public void ride(Player player) {
         if (!player.getUniqueId().equals(owner)) {
-            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "Failed : You are not owner of that vehicle");
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "あなたはその車を所有していません");
             return;
         }
         if (!carEntity.passengers.isEmpty()) {
@@ -74,15 +74,19 @@ public class Car {
         }
     }
 
+    public CarModel getModel() {
+        return model;
+    }
+
     public float getFuel() {
         return fuel;
     }
 
-    public void useFuel(float fuelParcentage) {
+    public void useFuel(float fuelPercentage) {
         if (fuel < 0.0f) {
             return;
         }
-        this.fuel -= fuelParcentage;
+        this.fuel -= fuelPercentage;
     }
 
     void setSpeed(float speed) {
@@ -102,7 +106,13 @@ public class Car {
         } else if (passengerInput < 0.0f) {
             speed -= (acceleration + 0.010f);
         }
-        if (speed > 0.50f) {
+        Speed maxSpeed;
+        if (model.getMaxSpeed() > Speed.values().length) {
+            maxSpeed = Speed.NORMAL;
+        } else {
+            maxSpeed = Speed.values()[model.getMaxSpeed() - 1];
+        }
+        if (speed > maxSpeed.getMax()) {
             return speed;
         }
         if (passengerInput > 0.0f) {

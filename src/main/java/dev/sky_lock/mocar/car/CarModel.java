@@ -17,16 +17,16 @@ public class CarModel implements ConfigurationSerializable {
     private final String name;
     private final List<String> lores;
     private final int distancePerLiter;
-    private final int maxFuel;
-    private final int speed;
+    private final float maxFuel;
+    private final int maxSpeed;
 
-    public CarModel(String id, String name, List<String> lore, int distancePerLiter, int maxFuel, int speed) {
+    public CarModel(String id, String name, List<String> lore, int distancePerLiter, float maxFuel, int maxSpeed) {
         this.id = id;
         this.name = name;
         this.lores = lore;
         this.distancePerLiter = distancePerLiter;
         this.maxFuel = maxFuel;
-        this.speed = speed;
+        this.maxSpeed = maxSpeed;
     }
 
     public String getName() {
@@ -41,12 +41,12 @@ public class CarModel implements ConfigurationSerializable {
         return distancePerLiter;
     }
 
-    public int getMaxFuel() {
+    public float getMaxFuel() {
         return maxFuel;
     }
 
-    public int getSpeed() {
-        return speed;
+    public int getMaxSpeed() {
+        return maxSpeed;
     }
 
     public String getId() {
@@ -61,7 +61,7 @@ public class CarModel implements ConfigurationSerializable {
         map.put("lores", lores);
         map.put("distance", distancePerLiter);
         map.put("maxfuel", maxFuel);
-        map.put("speed", speed);
+        map.put("maxspeed", maxSpeed);
         return map;
     }
 
@@ -70,8 +70,8 @@ public class CarModel implements ConfigurationSerializable {
         String name = (String) map.get("name");
         List<String> lores = (List<String>) map.get("lores");
         int distancePerLiter = (int) map.get("distance");
-        int maxFuel = (int) map.get("maxfuel");
-        int speed = (int) map.get("speed");
+        float maxFuel = (float) ((double) map.get("maxfuel"));
+        int speed = (int) map.get("maxspeed");
         return new CarModel(id, name, lores, distancePerLiter, maxFuel, speed);
     }
 

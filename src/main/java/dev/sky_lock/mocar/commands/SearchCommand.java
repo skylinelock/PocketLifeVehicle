@@ -18,11 +18,11 @@ public class SearchCommand implements ICommand {
     public void execute(CommandSender sender, Command cmd, String[] args) {
         Player player = (Player) sender;
         CarHandler handler = MoCar.getInstance().getCarHandler();
-        if (handler.getCar(player) == null) {
+        if (handler.getCarEntity(player) == null) {
             player.sendMessage(MoCar.PREFIX + ChatColor.RED + "Failed : You don't have any cars");
             return;
         }
-        Car car = handler.getCar(player);
+        Car car = handler.getCarEntity(player);
         org.bukkit.Location loc = car.getLocation();
         player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "-------------------------------------------");
         player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "World : " + loc.getWorld().getName());

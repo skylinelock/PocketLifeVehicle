@@ -23,11 +23,11 @@ public class ListModelCommand implements ICommand {
         }
         handler.getCarModels().forEach(model -> {
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "-------------------------------------------");
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "ID         : " + model.getId());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "NAME       : " + model.getName());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "LORE       : " + model.getLores());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "SPEED      : " + model.getSpeed());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "MAXFUEL    : " + model.getMaxFuel());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "ID             : " + model.getId());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "NAME          : " + model.getName());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "LORE          : " + model.getLores());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "SPEED        : " + model.getMaxSpeed());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "MAXFUEL     : " + model.getMaxFuel());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "DISTANCE/L : " + model.getDistancePerLiter());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "-------------------------------------------");
         });

@@ -48,11 +48,11 @@ public class CommandHandler implements CommandExecutor {
                     break;
                 case "ride":
                     Player player = (Player) sender;
-                    handler.getCar(player).ride(player);
+                    handler.getCarEntity(player).ride(player);
                     return true;
                 case "dismount":
                     player = (Player) sender;
-                    handler.getCar(player).dismount(player);
+                    handler.getCarEntity(player).dismount(player);
                     return true;
             }
 

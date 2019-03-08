@@ -28,6 +28,15 @@ public class CarHandler {
         config.save();
     }
 
+    public CarModel getModel(String id) {
+        for (CarModel model : carModels) {
+            if (model.getId().equalsIgnoreCase(id)) {
+                return model;
+            }
+        }
+        return null;
+    }
+
     public void addModel(CarModel model) {
         carModels.add(model);
         config.write(carModels);
@@ -55,13 +64,17 @@ public class CarHandler {
         carModels = config.load();
     }
 
-    public void spawnAt(Player player, Location location) {
+    public boolean spawnAt(CarModel model, Player player, Location location) {
+        if (model == null) {
+            return false;
+        }
         Car car = new Car();
-        car.spawn(player.getUniqueId(), location);
+        car.spawn(model, player.getUniqueId(), location);
         carEntities.stream().filter(carEntity -> car.getOwner().equals(carEntity.getOwner())).findFirst().ifPresent(carEntity -> {
             carEntities.remove(carEntity);
         });
         carEntities.add(car);
+        return true;
     }
 
     public void despawn(Player player) {
@@ -71,7 +84,7 @@ public class CarHandler {
         });
     }
 
-    public Car getCar(Player owner) {
+    public Car getCarEntity(Player owner) {
         return carEntities.stream().filter(car -> car.getOwner().equals(owner.getUniqueId())).findFirst().orElse(null);
     }
 }

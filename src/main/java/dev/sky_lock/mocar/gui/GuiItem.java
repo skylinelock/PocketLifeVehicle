@@ -1,5 +1,6 @@
 package dev.sky_lock.mocar.gui;
 
+import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -15,7 +16,7 @@ public class GuiItem implements IGuiComponent {
     private final int slot;
     private final Consumer<InventoryClickEvent> consumer;
 
-    public GuiItem(ItemStack itemStack, int slot, Consumer<InventoryClickEvent> consumer) {
+    public GuiItem(int slot, ItemStack itemStack, Consumer<InventoryClickEvent> consumer) {
         this.itemStack = itemStack;
         this.slot = slot;
         this.consumer = consumer;
@@ -32,6 +33,7 @@ public class GuiItem implements IGuiComponent {
 
     @Override
     public void onClick(InventoryClickEvent event) {
+        event.setResult(Event.Result.DENY);
         consumer.accept(event);
     }
 

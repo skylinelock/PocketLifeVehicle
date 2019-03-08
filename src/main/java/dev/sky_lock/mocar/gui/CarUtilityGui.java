@@ -20,6 +20,9 @@ public class CarUtilityGui extends GuiWindow {
         super.addComponent(new GuiPanel(Arrays.asList(15, 16, 24, 25, 33, 34), new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.BLUE).build(), (event) -> {
             event.getWhoClicked().sendMessage("hogehoge");
         }));
+        super.addComponent(new GuiItem(4, new ItemStackBuilder(Material.MINECART, 1).build(), (event) -> {
+
+        }));
         super.open();
     }
 }
