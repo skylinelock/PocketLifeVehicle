@@ -1,24 +1,28 @@
-package dev.sky_lock.mocar.gui;
+package dev.sky_lock.mocar.gui.api;
 
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.List;
 import java.util.function.Consumer;
 
 /**
  * @author sky_lock
  */
 
-public class GuiPanel implements IGuiComponent {
+public class Button implements IGuiComponent {
+
     private final ItemStack itemStack;
-    private final SlotRange range;
+    private final int slot;
     private final Consumer<InventoryClickEvent> consumer;
 
-    public GuiPanel(List<Integer> slots, ItemStack itemStack, Consumer<InventoryClickEvent> consumer) {
-        range = new SlotRange(slots);
-        this.consumer = consumer;
+    public Button(int slot, ItemStack itemStack, Consumer<InventoryClickEvent> consumer) {
         this.itemStack = itemStack;
+        this.slot = slot;
+        this.consumer = consumer;
+    }
+
+    public int getSlot() {
+        return slot;
     }
 
     @Override
@@ -33,6 +37,6 @@ public class GuiPanel implements IGuiComponent {
 
     @Override
     public SlotRange getSlotRange() {
-        return range;
+        return new SlotRange(slot);
     }
 }

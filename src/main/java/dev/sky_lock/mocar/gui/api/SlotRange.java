@@ -1,4 +1,4 @@
-package dev.sky_lock.mocar.gui;
+package dev.sky_lock.mocar.gui.api;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -2,7 +2,8 @@ package dev.sky_lock.mocar.listener;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.CraftCar;
-import dev.sky_lock.mocar.gui.CarUtilityGui;
+import dev.sky_lock.mocar.gui.CarEntityUtility;
+import dev.sky_lock.mocar.gui.api.GuiWindow;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -30,14 +31,15 @@ public class GuiListener implements Listener {
         Player player = event.getPlayer();
         CraftCar craftCar = (CraftCar) as;
         if (player.isSneaking()) {
-            CarUtilityGui.windows.add(new CarUtilityGui(player, MoCar.getInstance().getCarHandler().getCarEntity(player)));
+            CarEntityUtility gui = new CarEntityUtility(player, MoCar.getInstance().getCarHandler().getCarEntity(player));
+            gui.open(player);
         } else {
-            as.addPassenger(event.getPlayer());
+            as.addPassenger(player);
         }
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        CarUtilityGui.windows.forEach(guiWindow -> guiWindow.click(event));
+        GuiWindow.click(event);
     }
 }
