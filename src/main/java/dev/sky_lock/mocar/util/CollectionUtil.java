@@ -18,7 +18,7 @@ public class CollectionUtil {
                 .orElseThrow(ClassCastException::new);
     }
 
-    public static <E> List<E> checkedList(List<?> uncheckedList, Class<E> type) {
+    private static <E> List<E> checkedList(List<?> uncheckedList, Class<E> type) {
         return uncheckedList.stream()
                 .filter(type::isInstance)
                 .map(type::cast)

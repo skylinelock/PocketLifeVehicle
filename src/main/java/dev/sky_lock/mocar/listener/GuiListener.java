@@ -3,7 +3,6 @@ package dev.sky_lock.mocar.listener;
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.CraftCar;
 import dev.sky_lock.mocar.gui.CarUtilityGui;
-import dev.sky_lock.mocar.util.DebugUtil;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
