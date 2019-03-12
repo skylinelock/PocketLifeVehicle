@@ -13,7 +13,7 @@ public enum Speed {
 
     private final float maxSpeed;
 
-    private Speed(float maxSpeed) {
+    Speed(float maxSpeed) {
         this.maxSpeed = maxSpeed;
     }
 

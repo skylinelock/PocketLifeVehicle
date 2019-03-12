@@ -7,7 +7,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * @author sky_lock
@@ -28,7 +28,7 @@ public class AddModelCommand implements ICommand, IAdminCommand {
         int distance = Integer.valueOf(args[4]);
         float maxfuel = Float.valueOf(args[5]);
         int speed = Integer.valueOf(args[6]);
-        CarModel newModel = new CarModel(id, name, Arrays.asList(lore), distance, maxfuel, speed);
+        CarModel newModel = new CarModel(id, name, Collections.singletonList(lore), distance, maxfuel, speed);
         MoCar.getInstance().getCarHandler().addModel(newModel);
         player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Success : Add a new car model");
     }

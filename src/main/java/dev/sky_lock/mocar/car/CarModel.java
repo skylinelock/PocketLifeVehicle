@@ -1,8 +1,10 @@
 package dev.sky_lock.mocar.car;
 
+import dev.sky_lock.mocar.util.CollectionUtil;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,12 +70,16 @@ public class CarModel implements ConfigurationSerializable {
     public static CarModel deserialize(Map<String, Object> map) {
         String id = (String) map.get("id");
         String name = (String) map.get("name");
-        List<String> lores = (List<String>) map.get("lores");
+        List<String> lores;
+        try {
+             lores = CollectionUtil.checkedListObject(map.get("lores"), String.class);
+        } catch (ClassCastException ex) {
+            lores = Collections.emptyList();
+        }
         int distancePerLiter = (int) map.get("distance");
         float maxFuel = (float) ((double) map.get("maxfuel"));
         int speed = (int) map.get("maxspeed");
         return new CarModel(id, name, lores, distancePerLiter, maxFuel, speed);
     }
-
 
 }
