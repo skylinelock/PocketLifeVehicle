@@ -1,151 +1,145 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.packet.ActionBar;
-import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.Bukkit;
+import dev.sky_lock.mocar.util.ItemStackBuilder;
+import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 /**
  * @author sky_lock
  */
 
-public class CarEntity extends EntityArmorStand {
-    private final Car car;
-    private float steer_yaw;
-    private float currentSpeed;
-    private float acceleration;
+public class CarEntity {
+    private UUID owner;
+    private CarModel model;
+    private Location location;
+    private CarArmorStand entity;
+    private boolean isRiding;
+    private boolean isRunning;
+    private BigDecimal speed;
+    private float fuel;
 
-    public CarEntity(World world, Car car) {
-        super(world);
-        this.car = car;
+    public void spawn(CarModel model, UUID owner, Location location) {
+        this.model = model;
+        this.owner = owner;
+        this.location = location;
+        entity = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle(), this);
 
-        NBTTagCompound nbt = new NBTTagCompound();
-        nbt.setBoolean("NoBasePlate", true);
-        nbt.setBoolean("Invulnerable", true);
-        nbt.setBoolean("PersistenceRequired", true);
-        nbt.setBoolean("ShowArms", true);
-        nbt.setBoolean("NoGravity", false);
-        nbt.setBoolean("Invisible", true);
-        nbt.setBoolean("Marker", false);
-        this.a(nbt);
-        this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(new ItemStack(org.bukkit.Material.POWERED_RAIL)));
-        this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
+        entity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        ((CraftWorld) location.getWorld()).getHandle().addEntity(entity);
+        this.fuel = model.getMaxFuel();
     }
 
-    //ツタとかはしごとかを登れなくする
-    @Override
-    public boolean m_() {
-        return false;
+    public void despawn() {
+        this.entity.killEntity();
     }
 
-    //足音がなるかどうか
-    @Override
-    public boolean isSilent() {
-        return true;
+    public void tow() {
+        despawn();
+        entity.getBukkitEntity().getWorld().dropItem(entity.getBukkitEntity().getLocation(), new ItemStackBuilder(Material.WOOD_HOE, 1).damage(1).build());
     }
 
-    //tick毎に呼ばれる
-    @Override
-    public void B_() {
-        super.B_();
-        //当たり判定
-        setSize(2.5F, 2.5F);
+    public Location getLocation() {
+        return location;
     }
 
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
-    @Override
-    public void a(float sideMot, float f1, float forMot) {
-        car.setLocation(getBukkitEntity().getLocation());
-        if (this.isInWater() || this.au()) {
-            this.killEntity();
+    public UUID getOwner() {
+        return owner;
+    }
+
+    public void ride(Player player) {
+        if (!player.getUniqueId().equals(owner)) {
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "あなたはその車を所有していません");
             return;
         }
-        if (passengers == null || passengers.isEmpty()) {
-            super.a(sideMot, f1, forMot);
-            car.setSpeed(BigDecimal.ZERO);
+        if (!entity.passengers.isEmpty()) {
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "他のプレイヤーが乗車中です");
             return;
         }
+        entity.getBukkitEntity().setPassenger(player);
+        player.getLocation().setYaw(entity.getBukkitYaw());
+        isRiding = true;
+    }
 
-        EntityLiving passenger = (EntityLiving) passengers.get(0);
-        if (!(passenger instanceof EntityPlayer)) {
-            super.a(sideMot, f1, forMot);
+    public void dismount(Player player) {
+        EntityPlayer handle = ((CraftPlayer) player).getHandle();
+        if (entity.passengers.contains(handle)) {
+            entity.passengers.remove((handle));
+            isRiding = false;
+            speed = BigDecimal.ZERO;
+        }
+    }
+
+    public CarModel getModel() {
+        return model;
+    }
+
+    public float getFuel() {
+        return fuel;
+    }
+
+    public void useFuel(float used) {
+        if (speed.compareTo(BigDecimal.ZERO) == 0) {
             return;
         }
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(ChatColor.GREEN);
-        float fuelRate = car.getFuel() / car.getModel().getMaxFuel();
-        int filledRate = Math.round(20 * fuelRate);
-        for (int i = 0; i < filledRate; i++) {
-            builder.append("█");
+        if (fuel < 0.0f) {
+            return;
         }
-        builder.append(ChatColor.RED);
-        for (int i = 0; i < 20 - filledRate; i++) {
-            builder.append("█");
-        }
-        ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
-        car.useFuel(0.05f);
-
-        float sideInput = passenger.be;
-        float forInput = passenger.bg;
-
-        sideMot = 0.0f;
-        forMot = 3.0f;
-
-        this.fallDistance = 0.0F;
-
-        if (sideInput < 0.0F) {
-            steer_yaw += 5.5F;
-        } else if (sideInput > 0.0F) {
-            steer_yaw -= 5.5F;
-        }
-
-        this.yaw = steer_yaw;
-        this.lastYaw = this.yaw;
-        this.pitch = passenger.pitch * 0.5F;
-        setYawPitch(this.yaw, this.pitch);
-        this.aN = this.yaw;
-        this.aP = this.aQ;
-
-        //乗れるブロックの高さ
-        this.P = 1.0F;
-
-        this.aR = this.cy() * 0.1f;
-
-        this.aF = this.aG;
-        double d0 = this.locX - this.lastX;
-        double d1 = this.locZ - this.lastZ;
-        double f4 = MathHelper.sqrt(d0 * d0 + d1 * d1) * 4.0f;
-
-        if (f4 > 1.0f) {
-            f4 = 1.0f;
-        }
-
-        this.aG += (f4 - this.aG) * 0.4f;
-        this.aH += this.aG;
-        k(car.calculateSpeed(forInput));
-        super.a(sideMot, f1, forMot);
+        this.fuel -= used;
     }
 
-
-    @Override
-    public CraftEntity getBukkitEntity() {
-        if (this.bukkitEntity == null || !(this.bukkitEntity instanceof CraftCar)) {
-            this.bukkitEntity = new CraftCar((CraftServer) Bukkit.getServer(), this);
-        }
-        return super.getBukkitEntity();
+    void setSpeed(BigDecimal speed) {
+        this.speed = speed;
     }
 
-    @Override
-    public int getId() {
-        return super.getId();
+    boolean isRiding() {
+        return isRiding;
+    }
+
+    float calculateSpeed(float passengerInput) {
+        if (this.fuel <= 0.0f) {
+            isRunning = false;
+            return BigDecimal.ZERO.floatValue();
+        }
+
+        BigDecimal acceleration = new BigDecimal("0.0085");
+        if (passengerInput == 0.0f) {
+            if (speed.compareTo(BigDecimal.ZERO) > 0) {
+                speed = speed.subtract(acceleration);
+            }
+        } else if (passengerInput < 0.0f) {
+            speed = speed.subtract(acceleration.add(new BigDecimal("0.010")));
+        }
+
+        Speed maxSpeed;
+        if (model.getMaxSpeed() > Speed.values().length) {
+            maxSpeed = Speed.NORMAL;
+        } else {
+            maxSpeed = Speed.values()[model.getMaxSpeed() - 1];
+        }
+        if (speed.floatValue() > maxSpeed.getMax()) {
+            return speed.floatValue();
+        }
+
+        if (passengerInput > 0.0f) {
+            speed = speed.add(acceleration);
+            isRunning = true;
+        }
+        if (speed.compareTo(BigDecimal.ZERO) < 0) {
+            speed = speed.multiply(new BigDecimal("0.85"));
+        }
+        return speed.floatValue();
     }
 }

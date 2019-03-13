@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
  * @author sky_lock
  */
 
-public class CarHandler {
+public class CarSet {
 
     private List<CarModel> carModels;
-    private Set<Car> carEntities = new HashSet<>();
+    private Set<CarEntity> entityCars = new HashSet<>();
     private final CarsConfig config;
 
-    public CarHandler() {
+    public CarSet() {
         config = new CarsConfig();
         loadModules();
     }
@@ -29,17 +29,14 @@ public class CarHandler {
     }
 
     public CarModel getModel(String id) {
-        for (CarModel model : carModels) {
-            if (model.getId().equalsIgnoreCase(id)) {
-                return model;
-            }
-        }
-        return null;
+        return carModels.stream().filter(model -> model.getId().equalsIgnoreCase(id)).findFirst().orElse(null);
     }
 
     public void addModel(CarModel model) {
-        carModels.add(model);
-        config.write(carModels);
+        if (carModels.stream().noneMatch(carModel -> carModel.getId().equalsIgnoreCase(model.getId()))) {
+            carModels.add(model);
+            config.write(carModels);
+        }
     }
 
     public void removeModel(CarModel model) {
@@ -68,23 +65,23 @@ public class CarHandler {
         if (model == null) {
             return false;
         }
-        Car car = new Car();
+        CarEntity car = new CarEntity();
         car.spawn(model, player.getUniqueId(), location);
-        carEntities.stream().filter(carEntity -> car.getOwner().equals(carEntity.getOwner())).findFirst().ifPresent(carEntity -> {
-            carEntities.remove(carEntity);
+        entityCars.stream().filter(carEntity -> car.getOwner().equals(carEntity.getOwner())).findFirst().ifPresent(carEntity -> {
+            entityCars.remove(carEntity);
         });
-        carEntities.add(car);
+        entityCars.add(car);
         return true;
     }
 
     public void despawn(Player player) {
-        carEntities.stream().filter(car -> car.getOwner().equals(player.getUniqueId())).findFirst().ifPresent(car -> {
-            car.despawn();
-            carEntities.remove(car);
+        entityCars.stream().filter(carEntity -> carEntity.getOwner().equals(player.getUniqueId())).findFirst().ifPresent(carEntity -> {
+            carEntity.despawn();
+            entityCars.remove(carEntity);
         });
     }
 
-    public Car getCarEntity(Player owner) {
-        return carEntities.stream().filter(car -> car.getOwner().equals(owner.getUniqueId())).findFirst().orElse(null);
+    public CarEntity getCarEntity(Player owner) {
+        return entityCars.stream().filter(carEntity -> carEntity.getOwner().equals(owner.getUniqueId())).findFirst().orElse(null);
     }
 }

@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.commands;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.car.CarHandler;
+import dev.sky_lock.mocar.car.CarSet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,7 +19,7 @@ public class CommandHandler implements CommandExecutor {
 
         ICommand cmd = new HelpCommand();
 
-        CarHandler handler = MoCar.getInstance().getCarHandler();
+        CarSet handler = MoCar.getInstance().getCarHandler();
 
         if (args.length > 0) {
             switch (args[0].toLowerCase()) {
