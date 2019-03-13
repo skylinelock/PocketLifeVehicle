@@ -5,4 +5,5 @@ package dev.sky_lock.mocar.car;
  */
 
 public class CarItem {
+
 }
