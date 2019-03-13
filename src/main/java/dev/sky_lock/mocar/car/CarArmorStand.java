@@ -40,6 +40,10 @@ public class CarArmorStand extends EntityArmorStand {
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
 
+    public CarEntity getCarEntity() {
+        return carEntity;
+    }
+
     //ツタとかはしごとかを登れなくする
     @Override
     public boolean m_() {
