@@ -1,6 +1,6 @@
 package dev.sky_lock.mocar.car;
 
-import dev.sky_lock.mocar.util.CollectionUtil;
+import dev.sky_lock.mocar.util.ListUtil;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
@@ -72,7 +72,7 @@ public class CarModel implements ConfigurationSerializable {
         String name = (String) map.get("name");
         List<String> lores;
         try {
-             lores = CollectionUtil.checkedListObject(map.get("lores"), String.class);
+             lores = ListUtil.checkedListObject(map.get("lores"), String.class);
         } catch (ClassCastException ex) {
             lores = Collections.emptyList();
         }

@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
  * @author sky_lock
  */
 
-public class CollectionUtil {
+public class ListUtil {
 
     public static <E> List<E> checkedListObject(Object listObj, Class<E> type) {
         return Optional.of(listObj)

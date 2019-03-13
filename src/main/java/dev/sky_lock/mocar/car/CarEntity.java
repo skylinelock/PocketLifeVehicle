@@ -11,6 +11,8 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -18,33 +20,65 @@ import java.util.UUID;
  */
 
 public class CarEntity {
-    private UUID owner;
-    private CarModel model;
+    private static final List<CarEntity> entityCars = new ArrayList<>();
+
+    private final UUID owner;
+    private final CarModel model;
     private Location location;
-    private CarArmorStand entity;
+    private CarArmorStand armorStand;
     private boolean isRiding;
     private boolean isRunning;
     private BigDecimal speed;
     private float fuel;
 
-    public void spawn(CarModel model, UUID owner, Location location) {
-        this.model = model;
+    public CarEntity(UUID owner, CarModel model) {
         this.owner = owner;
-        this.location = location;
-        entity = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle(), this);
-
-        entity.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-        ((CraftWorld) location.getWorld()).getHandle().addEntity(entity);
-        this.fuel = model.getMaxFuel();
+        this.model = model;
     }
 
-    public void despawn() {
-        this.entity.killEntity();
+    public static boolean spawn(UUID owner, CarModel model, Location location) {
+        if (owner == null || model == null || location == null) {
+            return false;
+        }
+        CarEntity carEntity = new CarEntity(owner, model);
+
+        CarArmorStand armorStand = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle(), carEntity);
+        armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+
+        carEntity.setEntity(armorStand);
+
+        ((CraftWorld) location.getWorld()).getHandle().addEntity(armorStand);
+        carEntity.setFuel(model.getMaxFuel());
+
+        entityCars.stream().filter(car -> car.getOwner().equals(owner)).findFirst().ifPresent(entityCars::remove);
+        entityCars.add(carEntity);
+        return true;
+    }
+
+    public static void kill(UUID owner) {
+        entityCars.stream().filter(car -> car.getOwner().equals(owner)).findFirst().ifPresent(CarEntity::kill);
+    }
+
+    public static CarEntity get(UUID owner) {
+        return entityCars.stream().filter(car -> car.getOwner().equals(owner)).findFirst().orElse(null);
+    }
+
+    public void kill() {
+        this.armorStand.killEntity();
+        entityCars.remove(this);
     }
 
     public void tow() {
-        despawn();
-        entity.getBukkitEntity().getWorld().dropItem(entity.getBukkitEntity().getLocation(), new ItemStackBuilder(Material.WOOD_HOE, 1).damage(1).build());
+        kill();
+        armorStand.getBukkitEntity().getWorld().dropItem(armorStand.getBukkitEntity().getLocation(), new ItemStackBuilder(Material.WOOD_HOE, 1).damage(1).build());
+    }
+
+    public void setEntity(CarArmorStand armorStand) {
+        this.armorStand = armorStand;
+    }
+
+    public void setFuel(float fuel) {
+        this.fuel = fuel;
     }
 
     public Location getLocation() {
@@ -64,19 +98,19 @@ public class CarEntity {
             player.sendMessage(MoCar.PREFIX + ChatColor.RED + "あなたはその車を所有していません");
             return;
         }
-        if (!entity.passengers.isEmpty()) {
+        if (!armorStand.passengers.isEmpty()) {
             player.sendMessage(MoCar.PREFIX + ChatColor.RED + "他のプレイヤーが乗車中です");
             return;
         }
-        entity.getBukkitEntity().setPassenger(player);
-        player.getLocation().setYaw(entity.getBukkitYaw());
+        armorStand.getBukkitEntity().setPassenger(player);
+        player.getLocation().setYaw(armorStand.getBukkitYaw());
         isRiding = true;
     }
 
     public void dismount(Player player) {
         EntityPlayer handle = ((CraftPlayer) player).getHandle();
-        if (entity.passengers.contains(handle)) {
-            entity.passengers.remove((handle));
+        if (armorStand.passengers.contains(handle)) {
+            armorStand.passengers.remove((handle));
             isRiding = false;
             speed = BigDecimal.ZERO;
         }
@@ -100,7 +134,7 @@ public class CarEntity {
         this.fuel -= used;
     }
 
-    void setSpeed(BigDecimal speed) {
+    public void setSpeed(BigDecimal speed) {
         this.speed = speed;
     }
 
@@ -108,7 +142,7 @@ public class CarEntity {
         return isRiding;
     }
 
-    float calculateSpeed(float passengerInput) {
+    public float calculateSpeed(float passengerInput) {
         if (this.fuel <= 0.0f) {
             isRunning = false;
             return BigDecimal.ZERO.floatValue();

@@ -1,6 +1,6 @@
 package dev.sky_lock.mocar.listener;
 
-import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.car.CarEntity;
 import dev.sky_lock.mocar.car.CraftCar;
 import dev.sky_lock.mocar.gui.CarEntityUtility;
 import dev.sky_lock.mocar.gui.api.GuiWindow;
@@ -31,7 +31,7 @@ public class GuiListener implements Listener {
         Player player = event.getPlayer();
         CraftCar craftCar = (CraftCar) as;
         if (player.isSneaking()) {
-            CarEntityUtility gui = new CarEntityUtility(player, MoCar.getInstance().getCarHandler().getCarEntity(player));
+            CarEntityUtility gui = new CarEntityUtility(player, CarEntity.get(player.getUniqueId()));
             gui.open(player);
         } else {
             as.addPassenger(player);

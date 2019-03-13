@@ -8,43 +8,53 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author sky_lock
  */
 
 class ConfigFiles {
+    private static final Logger logger = MoCar.getInstance().getLogger();
 
-    static YamlConfiguration load(String name) {
+    static YamlConfiguration load(Path path) {
+        if (path == null) {
+            throw new IllegalArgumentException("Parameter 'path' cannot be null");
+        }
         YamlConfiguration config = null;
-        saveDefault(Paths.get(name));
-        Path path = MoCar.getInstance().getDataFolder().toPath().resolve(name);
+        createPath(path);
 
-        try (BufferedReader in = Files.newBufferedReader(path, StandardCharsets.UTF_8);) {
+        try (BufferedReader in = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             config = YamlConfiguration.loadConfiguration(in);
             config.options().copyDefaults(true);
         } catch (IOException ex) {
-            MoCar.getInstance().getLogger().log(Level.WARNING, "Could not load " + path.toString());
-            return null;
+            logger.log(Level.WARNING, "Could not load configurations from " + path.toString());
         }
         return config;
     }
 
     static void save(Path path, YamlConfiguration config) {
-        saveDefault(path);
         try {
+            createPath(path);
             config.save(path.toFile());
         } catch (IOException ex) {
-            ex.printStackTrace();
-            MoCar.getInstance().getLogger().log(Level.WARNING, "Could not save " + path.toString());
+            logger.log(Level.WARNING, "Could not saveToFile configurations to " + path.toString());
         }
     }
 
-    private static void saveDefault(Path path) {
-        if (!Files.isReadable(path)) {
-            MoCar.getInstance().saveResource(path.getFileName().toString(), false);
+    private static void createPath(Path path) {
+        Path dir = path.getParent();
+        try {
+            if (Files.isDirectory(dir) && Files.notExists(dir)) {
+                Files.createDirectories(dir);
+            }
+            if (Files.notExists(path) && !Files.isReadable(path)) {
+                Files.createFile(path);
+            }
+        } catch (IOException ex) {
+            logger.log(Level.WARNING, "Could not create directories or a file");
         }
     }
+
 }

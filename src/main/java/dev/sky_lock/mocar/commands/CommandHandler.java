@@ -1,7 +1,6 @@
 package dev.sky_lock.mocar.commands;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.car.CarSet;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -18,8 +17,6 @@ public class CommandHandler implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         ICommand cmd = new HelpCommand();
-
-        CarSet handler = MoCar.getInstance().getCarHandler();
 
         if (args.length > 0) {
             switch (args[0].toLowerCase()) {
@@ -45,15 +42,6 @@ public class CommandHandler implements CommandExecutor {
                     break;
                 case "reload":
                     cmd = new ReloadCommand();
-                    break;
-                case "ride":
-                    Player player = (Player) sender;
-                    handler.getCarEntity(player).ride(player);
-                    return true;
-                case "dismount":
-                    player = (Player) sender;
-                    handler.getCarEntity(player).dismount(player);
-                    return true;
             }
 
             if (cmd instanceof IAdminCommand) {

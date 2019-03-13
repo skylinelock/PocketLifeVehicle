@@ -1,19 +1,24 @@
 package dev.sky_lock.mocar.gui;
 
 import dev.sky_lock.mocar.gui.api.Button;
+import dev.sky_lock.mocar.gui.api.GuiType;
 import dev.sky_lock.mocar.gui.api.GuiWindow;
 import dev.sky_lock.mocar.util.ItemStackBuilder;
 import org.bukkit.Material;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 
 /**
  * @author sky_lock
  */
 
-public class ModelAddEditor extends GuiWindow {
+public class ModelEditor extends GuiWindow {
 
-    public ModelAddEditor(Player player) {
-        super("AddModel", player);
+    public ModelEditor(Player player) {
+        super("AddModel", player, GuiType.WIDE);
+        super.addComponent(new Button(4, new ItemStackBuilder(Material.ENDER_PEARL, 1).name("戻る").build(), (event) -> {
+            new CarModelEditor(player).open((Player) event.getWhoClicked());
+        }));
         super.addComponent(new Button(20, new ItemStackBuilder(Material.EMERALD_BLOCK, 1).name("ID").build(), (event) -> {
             //TODO:
         }));
@@ -32,5 +37,10 @@ public class ModelAddEditor extends GuiWindow {
         super.addComponent(new Button(33, new ItemStackBuilder(Material.SLIME_BALL, 1).name("LORE").build(), (event) -> {
             //TODO;
         }));
+    }
+
+    private void openStringEditor(HumanEntity humanEntity) {
+        Player player = (Player) humanEntity;
+
     }
 }
