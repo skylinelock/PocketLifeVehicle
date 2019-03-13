@@ -11,6 +11,8 @@ import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
+import java.math.BigDecimal;
+
 /**
  * @author sky_lock
  */
@@ -68,7 +70,7 @@ public class CarEntity extends EntityArmorStand {
         }
         if (passengers == null || passengers.isEmpty()) {
             super.a(sideMot, f1, forMot);
-            car.setSpeed(0.0f);
+            car.setSpeed(BigDecimal.ZERO);
             return;
         }
 
@@ -90,13 +92,13 @@ public class CarEntity extends EntityArmorStand {
             builder.append("█");
         }
         ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
-        car.useFuel(0.05F);
+        car.useFuel(0.05f);
 
         float sideInput = passenger.be;
         float forInput = passenger.bg;
 
-        sideMot = 0.0F;
-        forMot = 3.0F;
+        sideMot = 0.0f;
+        forMot = 3.0f;
 
         this.fallDistance = 0.0F;
 

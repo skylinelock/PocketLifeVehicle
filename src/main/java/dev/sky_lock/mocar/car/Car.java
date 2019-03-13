@@ -10,6 +10,7 @@ import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 /**
@@ -22,8 +23,8 @@ public class Car {
     private Location location;
     private CarEntity carEntity;
     private boolean isRiding;
-    private float speed;
-    private float acceleration = 0.0085F;
+    private boolean isRunning;
+    private BigDecimal speed;
     private float fuel;
 
     public void spawn(CarModel model, UUID owner, Location location) {
@@ -77,7 +78,7 @@ public class Car {
         if (carEntity.passengers.contains(handle)) {
             carEntity.passengers.remove((handle));
             isRiding = false;
-            speed = 0.0f;
+            speed = BigDecimal.ZERO;
         }
     }
 
@@ -89,14 +90,17 @@ public class Car {
         return fuel;
     }
 
-    public void useFuel(float fuelPercentage) {
+    public void useFuel(float used) {
+        if (speed.compareTo(BigDecimal.ZERO) == 0) {
+            return;
+        }
         if (fuel < 0.0f) {
             return;
         }
-        this.fuel -= fuelPercentage;
+        this.fuel -= used;
     }
 
-    void setSpeed(float speed) {
+    void setSpeed(BigDecimal speed) {
         this.speed = speed;
     }
 
@@ -105,29 +109,37 @@ public class Car {
     }
 
     float calculateSpeed(float passengerInput) {
-        if (this.fuel <= 0.0F) {
-            return 0.0F;
+        if (this.fuel <= 0.0f) {
+            isRunning = false;
+            return BigDecimal.ZERO.floatValue();
         }
+
+        BigDecimal acceleration = new BigDecimal("0.0085");
         if (passengerInput == 0.0f) {
-            speed -= acceleration;
+            if (speed.compareTo(BigDecimal.ZERO) > 0) {
+                speed = speed.subtract(acceleration);
+            }
         } else if (passengerInput < 0.0f) {
-            speed -= (acceleration + 0.010f);
+            speed = speed.subtract(acceleration.add(new BigDecimal("0.010")));
         }
+
         Speed maxSpeed;
         if (model.getMaxSpeed() > Speed.values().length) {
             maxSpeed = Speed.NORMAL;
         } else {
             maxSpeed = Speed.values()[model.getMaxSpeed() - 1];
         }
-        if (speed > maxSpeed.getMax()) {
-            return speed;
+        if (speed.floatValue() > maxSpeed.getMax()) {
+            return speed.floatValue();
         }
+
         if (passengerInput > 0.0f) {
-            speed += acceleration;
+            speed = speed.add(acceleration);
+            isRunning = true;
         }
-        if (speed <= 0.0f) {
-            speed *= 0.25f;// Make backwards slower
+        if (speed.compareTo(BigDecimal.ZERO) < 0) {
+            speed = speed.multiply(new BigDecimal("0.85"));
         }
-        return speed;
+        return speed.floatValue();
     }
 }
