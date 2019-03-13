@@ -1,8 +1,8 @@
 package dev.sky_lock.mocar.gui;
 
 import dev.sky_lock.mocar.car.CarEntity;
-import dev.sky_lock.mocar.gui.api.Gage;
 import dev.sky_lock.mocar.gui.api.Button;
+import dev.sky_lock.mocar.gui.api.Gage;
 import dev.sky_lock.mocar.gui.api.GuiType;
 import dev.sky_lock.mocar.gui.api.GuiWindow;
 import dev.sky_lock.mocar.util.ItemStackBuilder;

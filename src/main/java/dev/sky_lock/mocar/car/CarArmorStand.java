@@ -95,6 +95,8 @@ public class CarArmorStand extends EntityArmorStand {
             return;
         }
 
+        carEntity.useFuel(0.05f);
+
         StringBuilder builder = new StringBuilder();
         builder.append(ChatColor.GREEN);
         float fuelRate = carEntity.getFuel() / carEntity.getModel().getMaxFuel();
@@ -106,8 +108,17 @@ public class CarArmorStand extends EntityArmorStand {
         for (int i = 0; i < 20 - filledRate; i++) {
             builder.append("█");
         }
+        builder.append(" ");
+        if (Math.round(carEntity.getFuel()) == 0) {
+            builder.append(ChatColor.RED);
+            builder.append("Empty");
+        } else {
+            builder.append(ChatColor.DARK_GREEN);
+            builder.append(Math.round(carEntity.getFuel()));
+        }
+        builder.append(" / ");
+        builder.append(Math.round(carEntity.getModel().getMaxFuel()));
         ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
-        carEntity.useFuel(0.05f);
 
         float sideInput = passenger.be;
         float forInput = passenger.bg;
