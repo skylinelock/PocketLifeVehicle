@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -42,6 +43,16 @@ public class CarArmorStand extends EntityArmorStand {
 
     public CarEntity getCarEntity() {
         return carEntity;
+    }
+
+    @Override
+    protected void p(Entity entity) {
+        super.p(entity);
+        if (!(entity.getBukkitEntity() instanceof Player)) {
+            return;
+        }
+        Player player = (Player) entity.getBukkitEntity();
+        ActionBar.sendPacket(player, "");
     }
 
     //ツタとかはしごとかを登れなくする
