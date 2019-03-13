@@ -37,17 +37,20 @@ public class GuiListener implements Listener {
         Player player = event.getPlayer();
         CraftCar craftCar = (CraftCar) as;
         if (player.isSneaking()) {
-            CarEntityUtility gui = new CarEntityUtility(player, CarEntity.get(player.getUniqueId()));
+            CarEntity entity = ((CarArmorStand) craftCar.getHandle()).getCarEntity();
+            CarEntityUtility gui = new CarEntityUtility(player, entity);
             gui.open(player);
-        } else {
-            CarArmorStand car = (CarArmorStand) craftCar.getHandle();
-            UUID carOwner = car.getCarEntity().getOwner();
-            if (car.getCarEntity().getOwner().equals(player.getUniqueId())) {
-                craftCar.setPassenger(player);
-            } else {
-                ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getPlayer(carOwner).getName() + " が所有しています");
-            }
+            return;
         }
+
+        CarArmorStand car = (CarArmorStand) craftCar.getHandle();
+        UUID carOwner = car.getCarEntity().getOwner();
+        if (car.getCarEntity().getOwner().equals(player.getUniqueId())) {
+            craftCar.setPassenger(player);
+        } else {
+            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getPlayer(carOwner).getName() + " が所有しています");
+        }
+
     }
 
     @EventHandler

@@ -18,17 +18,21 @@ public class CarModel implements ConfigurationSerializable {
     private final String id;
     private final String name;
     private final List<String> lores;
-    private final int distancePerLiter;
     private final float maxFuel;
     private final int maxSpeed;
+    private final CarItem item;
 
-    public CarModel(String id, String name, List<String> lore, int distancePerLiter, float maxFuel, int maxSpeed) {
+    public CarModel(String id, CarItem carItem, String name, List<String> lore, float maxFuel, int maxSpeed) {
         this.id = id;
+        this.item = carItem;
         this.name = name;
         this.lores = lore;
-        this.distancePerLiter = distancePerLiter;
         this.maxFuel = maxFuel;
         this.maxSpeed = maxSpeed;
+    }
+
+    public CarItem getItem() {
+        return item;
     }
 
     public String getName() {
@@ -37,10 +41,6 @@ public class CarModel implements ConfigurationSerializable {
 
     public List<String> getLores() {
         return lores;
-    }
-
-    public int getDistancePerLiter() {
-        return distancePerLiter;
     }
 
     public float getMaxFuel() {
@@ -59,9 +59,9 @@ public class CarModel implements ConfigurationSerializable {
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
+        map.put("item", item);
         map.put("name", name);
         map.put("lores", lores);
-        map.put("distance", distancePerLiter);
         map.put("maxfuel", maxFuel);
         map.put("maxspeed", maxSpeed);
         return map;
@@ -69,6 +69,7 @@ public class CarModel implements ConfigurationSerializable {
 
     public static CarModel deserialize(Map<String, Object> map) {
         String id = (String) map.get("id");
+        CarItem item = (CarItem) map.get("item");
         String name = (String) map.get("name");
         List<String> lores;
         try {
@@ -76,10 +77,9 @@ public class CarModel implements ConfigurationSerializable {
         } catch (ClassCastException ex) {
             lores = Collections.emptyList();
         }
-        int distancePerLiter = (int) map.get("distance");
         float maxFuel = (float) ((double) map.get("maxfuel"));
         int speed = (int) map.get("maxspeed");
-        return new CarModel(id, name, lores, distancePerLiter, maxFuel, speed);
+        return new CarModel(id, item, name, lores, maxFuel, speed);
     }
 
 }

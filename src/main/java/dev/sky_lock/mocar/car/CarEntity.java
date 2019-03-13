@@ -1,8 +1,6 @@
 package dev.sky_lock.mocar.car;
 
-import dev.sky_lock.mocar.util.ItemStackBuilder;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 
 import java.math.BigDecimal;
@@ -52,8 +50,8 @@ public class CarEntity {
         entityCars.stream().filter(car -> car.getOwner().equals(owner)).findFirst().ifPresent(CarEntity::kill);
     }
 
-    public static CarEntity get(UUID owner) {
-        return entityCars.stream().filter(car -> car.getOwner().equals(owner)).findFirst().orElse(null);
+    public static CarEntity get(UUID player) {
+        return entityCars.stream().filter(car -> car.getOwner().equals(player)).findFirst().orElse(null);
     }
 
     public void kill() {
@@ -63,7 +61,7 @@ public class CarEntity {
 
     public void tow() {
         kill();
-        armorStand.getBukkitEntity().getWorld().dropItem(armorStand.getBukkitEntity().getLocation(), new ItemStackBuilder(Material.WOOD_HOE, 1).damage(1).build());
+        armorStand.getBukkitEntity().getWorld().dropItem(armorStand.getBukkitEntity().getLocation(), model.getItem().getStack());
     }
 
     public void setEntity(CarArmorStand armorStand) {

@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.config;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.car.CarItem;
 import dev.sky_lock.mocar.car.CarModel;
 import dev.sky_lock.mocar.util.ListUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -23,6 +24,7 @@ public class CarsConfig {
 
     public CarsConfig() {
         ConfigurationSerialization.registerClass(CarModel.class, "CarModel");
+        ConfigurationSerialization.registerClass(CarItem.class, "CarItem");
         this.path = MoCar.getInstance().getDataFolder().toPath().resolve("cars.yml");
     }
 
@@ -31,7 +33,11 @@ public class CarsConfig {
         if (config == null) {
             return new ArrayList<>();
         }
-        List<CarModel> models = ListUtil.checkedListObject(config.get("cars"), CarModel.class);
+        Object object = config.get("cars");
+        if (object == null) {
+            return new ArrayList<>();
+        }
+        List<CarModel> models = ListUtil.checkedListObject(object, CarModel.class);
         if (models == null) {
             return new ArrayList<>();
         }
@@ -41,7 +47,7 @@ public class CarsConfig {
 
     public void writeModels(List<CarModel> models) {
         if (config == null) {
-            MoCar.getInstance().getLogger().log(Level.WARNING, "Could not writeModels car models to configurations");
+            MoCar.getInstance().getLogger().log(Level.WARNING, "Could not write car models to configurations");
             return;
         }
         config.set("cars", models);
