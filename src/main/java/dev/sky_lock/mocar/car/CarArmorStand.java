@@ -5,6 +5,7 @@ import dev.sky_lock.mocar.packet.ActionBar;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
@@ -13,20 +14,26 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author sky_lock
  */
 
 public class CarArmorStand extends EntityArmorStand {
-    private final CarEntity carEntity;
+    private final static Map<UUID, CarArmorStand> carMap = new HashMap<>();
+    private final CarModel model;
+    private final CarStatus status;
     private float steer_yaw;
     private float currentSpeed;
     private float acceleration;
 
-    public CarArmorStand(World world, CarEntity carEntity) {
+    CarArmorStand(World world, CarModel model, CarStatus status) {
         super(world);
-        this.carEntity = carEntity;
+        this.model = model;
+        this.status = status;
 
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("NoBasePlate", true);
@@ -41,8 +48,12 @@ public class CarArmorStand extends EntityArmorStand {
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
 
-    public CarEntity getCarEntity() {
-        return carEntity;
+    public Location getLocation() {
+        return getBukkitEntity().getLocation();
+    }
+
+    CarStatus getStatus() {
+        return status;
     }
 
     @Override
@@ -78,14 +89,13 @@ public class CarArmorStand extends EntityArmorStand {
 
     @Override
     public void a(float sideMot, float f1, float forMot) {
-        carEntity.setLocation(getBukkitEntity().getLocation());
         if (this.isInWater() || this.au()) {
             this.killEntity();
             return;
         }
         if (passengers == null || passengers.isEmpty()) {
             super.a(sideMot, f1, forMot);
-            carEntity.setSpeed(BigDecimal.ZERO);
+            status.setSpeed(BigDecimal.ZERO);
             return;
         }
 
@@ -95,11 +105,11 @@ public class CarArmorStand extends EntityArmorStand {
             return;
         }
 
-        carEntity.useFuel(0.05f);
+        status.useFuel(0.05f);
 
         StringBuilder builder = new StringBuilder();
         builder.append(ChatColor.GREEN);
-        float fuelRate = carEntity.getFuel() / carEntity.getModel().getMaxFuel();
+        float fuelRate = status.getFuel() / model.getMaxFuel();
         int filledRate = Math.round(20 * fuelRate);
         for (int i = 0; i < filledRate; i++) {
             builder.append("█");
@@ -109,15 +119,15 @@ public class CarArmorStand extends EntityArmorStand {
             builder.append("█");
         }
         builder.append(" ");
-        if (Math.round(carEntity.getFuel()) == 0) {
+        if (Math.round(status.getFuel()) == 0) {
             builder.append(ChatColor.RED);
             builder.append("Empty");
         } else {
             builder.append(ChatColor.DARK_GREEN);
-            builder.append(Math.round(carEntity.getFuel()));
+            builder.append(Math.round(status.getFuel()));
         }
         builder.append(" / ");
-        builder.append(Math.round(carEntity.getModel().getMaxFuel()));
+        builder.append(Math.round(model.getMaxFuel()));
         ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
 
         float sideInput = passenger.be;
@@ -157,8 +167,45 @@ public class CarArmorStand extends EntityArmorStand {
 
         this.aG += (f4 - this.aG) * 0.4f;
         this.aH += this.aG;
-        k(carEntity.calculateSpeed(forInput));
+        k(calculateSpeed(forInput));
         super.a(sideMot, f1, forMot);
+    }
+
+    private float calculateSpeed(float passengerInput) {
+        if (status.getFuel() <= 0.0f) {
+            return BigDecimal.ZERO.floatValue();
+        }
+
+        BigDecimal acceleration = new BigDecimal("0.0085");
+        if (passengerInput == 0.0f) {
+            if (status.getSpeed().compareTo(BigDecimal.ZERO) > 0) {
+                status.setSpeed(status.getSpeed().subtract(acceleration));
+            }
+        } else if (passengerInput < 0.0f) {
+            status.setSpeed(status.getSpeed().subtract(acceleration.add(new BigDecimal("0.010"))));
+        }
+
+        Speed maxSpeed;
+        if (model.getMaxSpeed() > Speed.values().length) {
+            maxSpeed = Speed.NORMAL;
+        } else {
+            maxSpeed = Speed.values()[model.getMaxSpeed() - 1];
+        }
+        if (status.getSpeed().floatValue() > maxSpeed.getMax()) {
+            return status.getSpeed().floatValue();
+        }
+
+        if (passengerInput > 0.0f) {
+            status.setSpeed(status.getSpeed().add(acceleration));
+        }
+        if (status.getSpeed().compareTo(BigDecimal.ZERO) < 0) {
+            status.setSpeed(status.getSpeed().multiply(new BigDecimal("0.85")));
+        }
+        return status.getSpeed().floatValue();
+    }
+
+    public CarModel getModel() {
+        return model;
     }
 
 

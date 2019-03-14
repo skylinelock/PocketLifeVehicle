@@ -1,6 +1,6 @@
 package dev.sky_lock.mocar.gui;
 
-import dev.sky_lock.mocar.car.CarEntity;
+import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.gui.api.Button;
 import dev.sky_lock.mocar.gui.api.Gage;
 import dev.sky_lock.mocar.gui.api.GuiType;
@@ -19,7 +19,7 @@ import java.util.Collections;
 
 public class CarEntityUtility extends GuiWindow {
 
-    public CarEntityUtility(Player player, CarEntity carEntity) {
+    public CarEntityUtility(Player player) {
         super("CarUtility", player, GuiType.WIDE);
         super.addComponent(new Gage(45, 53, new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.RED).build(),
                 new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.GREEN).build()));
@@ -27,7 +27,7 @@ public class CarEntityUtility extends GuiWindow {
             event.getWhoClicked().sendMessage("hogehoge");
         }));*/
         super.addComponent(new Button(4, new ItemStackBuilder(Material.MINECART, 1).name(ChatColor.GREEN + "レッカー移動").lore(Collections.singletonList("アイテム化して持ち運べるようにします")).build(), (event) -> {
-            carEntity.tow();
+            CarEntities.tow(player.getUniqueId());
             close(player);
         }));
     }

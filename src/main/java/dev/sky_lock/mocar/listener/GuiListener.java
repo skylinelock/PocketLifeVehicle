@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.listener;
 
 import dev.sky_lock.mocar.car.CarArmorStand;
-import dev.sky_lock.mocar.car.CarEntity;
+import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.CraftCar;
 import dev.sky_lock.mocar.gui.CarEntityUtility;
 import dev.sky_lock.mocar.gui.api.GuiWindow;
@@ -37,15 +37,14 @@ public class GuiListener implements Listener {
         Player player = event.getPlayer();
         CraftCar craftCar = (CraftCar) as;
         if (player.isSneaking()) {
-            CarEntity entity = ((CarArmorStand) craftCar.getHandle()).getCarEntity();
-            CarEntityUtility gui = new CarEntityUtility(player, entity);
+            CarEntityUtility gui = new CarEntityUtility(player);
             gui.open(player);
             return;
         }
 
         CarArmorStand car = (CarArmorStand) craftCar.getHandle();
-        UUID carOwner = car.getCarEntity().getOwner();
-        if (car.getCarEntity().getOwner().equals(player.getUniqueId())) {
+        UUID carOwner = CarEntities.getOwner(car);
+        if (carOwner.equals(player.getUniqueId())) {
             craftCar.setPassenger(player);
         } else {
             ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getPlayer(carOwner).getName() + " が所有しています");
