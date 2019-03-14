@@ -110,24 +110,36 @@ public class CarArmorStand extends EntityArmorStand {
         StringBuilder builder = new StringBuilder();
         builder.append(ChatColor.GREEN);
         float fuelRate = status.getFuel() / model.getMaxFuel();
-        int filledRate = Math.round(20 * fuelRate);
+        int filledRate = Math.round(100 * fuelRate);
         for (int i = 0; i < filledRate; i++) {
-            builder.append("█");
+            builder.append("ǀ");
         }
         builder.append(ChatColor.RED);
-        for (int i = 0; i < 20 - filledRate; i++) {
-            builder.append("█");
+        for (int i = 0; i < 100 - filledRate; i++) {
+            builder.append("ǀ");
         }
         builder.append(" ");
         if (Math.round(status.getFuel()) == 0) {
             builder.append(ChatColor.RED);
+            builder.append(ChatColor.BOLD);
             builder.append("Empty");
         } else {
-            builder.append(ChatColor.DARK_GREEN);
+            if (fuelRate > 0.7f) {
+                builder.append(ChatColor.DARK_GREEN);
+            } else if (fuelRate <= 0.7f && fuelRate >= 0.2f) {
+                builder.append(ChatColor.GOLD);
+            } else {
+                builder.append(ChatColor.RED);
+            }
+            builder.append(ChatColor.BOLD);
             builder.append(Math.round(status.getFuel()));
+            builder.append(ChatColor.GRAY);
+            builder.append(ChatColor.BOLD);
+            builder.append(" / ");
+            builder.append(ChatColor.DARK_GREEN);
+            builder.append(ChatColor.BOLD);
+            builder.append(Math.round(model.getMaxFuel()));
         }
-        builder.append(" / ");
-        builder.append(Math.round(model.getMaxFuel()));
         ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
 
         float sideInput = passenger.be;
@@ -207,7 +219,6 @@ public class CarArmorStand extends EntityArmorStand {
     public CarModel getModel() {
         return model;
     }
-
 
     @Override
     public CraftEntity getBukkitEntity() {
