@@ -1,10 +1,10 @@
 package dev.sky_lock.mocar.gui;
 
+import dev.sky_lock.glassy.gui.Button;
+import dev.sky_lock.glassy.gui.Gage;
+import dev.sky_lock.glassy.gui.GuiType;
+import dev.sky_lock.glassy.gui.GuiWindow;
 import dev.sky_lock.mocar.car.CarEntities;
-import dev.sky_lock.mocar.gui.api.Button;
-import dev.sky_lock.mocar.gui.api.Gage;
-import dev.sky_lock.mocar.gui.api.GuiType;
-import dev.sky_lock.mocar.gui.api.GuiWindow;
 import dev.sky_lock.mocar.util.ItemStackBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
