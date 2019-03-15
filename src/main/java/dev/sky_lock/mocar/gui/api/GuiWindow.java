@@ -95,4 +95,10 @@ public class GuiWindow {
             //TODO: 要修正
         });
     }
+
+    public static void close(InventoryCloseEvent event) {
+        windows.stream().filter(window -> window.getInventory().getName().equals(event.getInventory().getName())).forEach(window -> {
+            window.close((Player) event.getPlayer());
+        });
+    }
 }

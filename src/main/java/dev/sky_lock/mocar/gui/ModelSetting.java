@@ -30,8 +30,8 @@ public class ModelSetting extends GuiWindow {
         this.data = EditSessions.get(player.getUniqueId());
 
         super.addComponent(new Button(4, new ItemStackBuilder(Material.ENDER_PEARL, 1).name("戻る").build(), (event) -> {
-            close(player);
             new CarModelEditor(player).open((Player) event.getWhoClicked());
+            EditSessions.destroy(player.getUniqueId());
         }));
 
         setIdComponent();
@@ -49,25 +49,18 @@ public class ModelSetting extends GuiWindow {
         }));
         super.addComponent(new Button(49, new ItemStackBuilder(Material.END_CRYSTAL, 1).name("CREATE").build(), (event) -> {
             new ConfirmScreen(player, (event1) -> {
-               if (data.getId() != null && data.getSpeed() != null) {
-                   ModelList.add(new CarModel(data.getId(), data.getCarItem(), data.getName(), data.getLores(), data.getFuel(), data.getSpeed().ordinal()));
-                   close(player);
-                   player.sendMessage(MoCar.PREFIX + "新しい車種を追加しました");
-                   return;
-               }
-               ItemStack yesItem = getInventory().getItem(49);
-               ItemMeta itemMeta = yesItem.getItemMeta();
-               itemMeta.setLore(Collections.singletonList(ChatColor.RED + "設定が完了していません"));
-               yesItem.setItemMeta(itemMeta);
-               player.updateInventory();
+                if (data.getId() == null || data.getSpeed() == null) {
+                    ItemStack yesItem = getInventory().getItem(20);
+                    ItemMeta itemMeta = yesItem.getItemMeta();
+                    itemMeta.setLore(Collections.singletonList(ChatColor.RED + "設定が完了していません"));
+                    yesItem.setItemMeta(itemMeta);
+                    return;
+                }
+                ModelList.add(new CarModel(data.getId(), data.getCarItem(), data.getName(), data.getLores(), data.getFuel(), data.getSpeed().ordinal()));
+                player.sendMessage(MoCar.PREFIX + "新しい車種を追加しました");
+                EditSessions.destroy(player.getUniqueId());
             }).open(player);
         }));
-    }
-
-    @Override
-    public void close(Player player) {
-        super.close(player);
-        EditSessions.destroy(player.getUniqueId());
     }
 
     private void setSpeedComponent() {
