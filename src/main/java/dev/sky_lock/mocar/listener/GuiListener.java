@@ -1,20 +1,28 @@
 package dev.sky_lock.mocar.listener;
 
+import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.CraftCar;
-import dev.sky_lock.mocar.gui.CarEntityUtility;
+import dev.sky_lock.mocar.gui.*;
 import dev.sky_lock.mocar.gui.api.GuiWindow;
 import dev.sky_lock.mocar.packet.ActionBar;
+import net.minecraft.server.v1_12_R1.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.UUID;
 
@@ -55,5 +63,50 @@ public class GuiListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         GuiWindow.click(event);
+        ItemStack itemStack = CraftItemStack.asNMSCopy(event.getCurrentItem());
+        if (!itemStack.hasTag()) {
+            return;
+        }
+        if (!itemStack.getTag().hasKey("editor-result")) {
+            return;
+        }
+        event.setResult(Event.Result.DENY);
+        event.setCancelled(true);
+        org.bukkit.inventory.ItemStack result = event.getCurrentItem();
+
+        StringEditor editor = StringEditor.get((Player) event.getWhoClicked());
+        EditModelData editData = EditSessions.get(event.getWhoClicked().getUniqueId());
+
+        if (editor.getEditorType() == StringEditor.Type.ID) {
+            editData.setId(result.getItemMeta().getDisplayName());
+        } else if (editor.getEditorType() == StringEditor.Type.NAME) {
+            editData.setName(result.getItemMeta().getDisplayName());
+        }
+        Player player = (Player) event.getWhoClicked();
+        StringEditor.close(player);
+        new ModelSetting(player).open(player);
     }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+        StringEditor.close(player);
+        Bukkit.getScheduler().runTaskLater(MoCar.getInstance(), () -> {
+            if (player.getOpenInventory().getTopInventory().getType() == InventoryType.CRAFTING) {
+                EditSessions.destroy(player.getUniqueId());
+            }
+        }, 1L);
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        StringEditor.close(event.getPlayer());
+        EditSessions.destroy(event.getPlayer().getUniqueId());
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+        GuiWindow.drag(event);
+    }
+
 }
