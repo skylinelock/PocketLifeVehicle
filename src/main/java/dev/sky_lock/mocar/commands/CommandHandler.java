@@ -27,12 +27,14 @@ public class CommandHandler implements CommandExecutor {
                     cmd = new EditCommand();
                     break;
                 case "removemodel":
+                case "rm":
                     cmd = new RemoveModelCommand();
                     break;
                 case "debug":
                     cmd = new DebugCommand();
                     break;
                 case "listmodel":
+                case "lm":
                     cmd = new ListModelCommand();
                     break;
                 case "search":

@@ -1,12 +1,15 @@
-package dev.sky_lock.mocar.util;
+package dev.sky_lock.mocar.item;
 
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Damageable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author sky_lock
@@ -19,6 +22,7 @@ public class ItemStackBuilder {
     private double damage;
     private byte magicValue;
     private List<String> lores;
+    private Map<Enchantment, Integer> enchantMap = new HashMap<>();
 
     public ItemStackBuilder(Material material, int amount) {
         this.material = material;
@@ -45,6 +49,11 @@ public class ItemStackBuilder {
         return this;
     }
 
+    public ItemStackBuilder enchant(Enchantment enchantment, int level) {
+        this.enchantMap.put(enchantment, level);
+        return this;
+    }
+
     public ItemStack build() {
         ItemStack itemStack = new ItemStack(material, amount, magicValue);
         ItemMeta meta = itemStack.getItemMeta();
@@ -58,6 +67,7 @@ public class ItemStackBuilder {
         if (name != null) {
             meta.setDisplayName(name);
         }
+        enchantMap.forEach((key, value) -> meta.addEnchant(key, value, true));
         itemStack.setItemMeta(meta);
         return itemStack;
     }

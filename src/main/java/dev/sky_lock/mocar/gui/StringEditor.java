@@ -1,6 +1,6 @@
 package dev.sky_lock.mocar.gui;
 
-import dev.sky_lock.mocar.util.ItemStackBuilder;
+import dev.sky_lock.mocar.item.ItemStackBuilder;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;

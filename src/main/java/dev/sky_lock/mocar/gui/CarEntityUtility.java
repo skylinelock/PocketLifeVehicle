@@ -5,7 +5,7 @@ import dev.sky_lock.mocar.gui.api.Button;
 import dev.sky_lock.mocar.gui.api.Gage;
 import dev.sky_lock.mocar.gui.api.GuiType;
 import dev.sky_lock.mocar.gui.api.GuiWindow;
-import dev.sky_lock.mocar.util.ItemStackBuilder;
+import dev.sky_lock.mocar.item.ItemStackBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;

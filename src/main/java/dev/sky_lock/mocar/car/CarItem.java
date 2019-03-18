@@ -1,6 +1,6 @@
 package dev.sky_lock.mocar.car;
 
-import dev.sky_lock.mocar.util.ItemStackBuilder;
+import dev.sky_lock.mocar.item.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;

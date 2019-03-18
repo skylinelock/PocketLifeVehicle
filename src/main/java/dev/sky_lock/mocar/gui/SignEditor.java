@@ -10,10 +10,7 @@ import dev.sky_lock.mocar.packet.OpenSignEditorServerPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author sky_lock
@@ -39,6 +36,7 @@ public class SignEditor {
                     return;
                 }
                 List<String> lores = Arrays.asList(event.getPacket().getStringArrays().read(0));
+                lores.removeAll(Collections.singleton(null));
                 EditSessions.get(event.getPlayer().getUniqueId()).setLores(lores);
                 Bukkit.getScheduler().runTaskLater(MoCar.getInstance(), () -> {
                     new ModelSetting(event.getPlayer()).open(event.getPlayer());

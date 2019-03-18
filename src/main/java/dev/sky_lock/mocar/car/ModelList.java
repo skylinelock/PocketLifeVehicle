@@ -45,4 +45,8 @@ public class ModelList {
     public static List<CarModel> unmodified() {
         return Collections.unmodifiableList(carModels);
     }
+
+    public static boolean exists(String id) {
+        return carModels.stream().anyMatch(carModel -> carModel.getId().equalsIgnoreCase(id));
+    }
 }
