@@ -20,13 +20,11 @@ public class CommandHandler implements CommandExecutor {
 
         if (args.length > 0) {
             switch (args[0].toLowerCase()) {
-                case "help":
-                    break;
                 case "give":
                     cmd = new GiveCommand();
                     break;
-                case "addmodel":
-                    cmd = new AddModelCommand();
+                case "edit":
+                    cmd = new EditCommand();
                     break;
                 case "removemodel":
                     cmd = new RemoveModelCommand();

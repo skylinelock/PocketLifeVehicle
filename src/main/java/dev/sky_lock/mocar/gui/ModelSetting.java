@@ -7,6 +7,7 @@ import dev.sky_lock.mocar.car.Speed;
 import dev.sky_lock.mocar.gui.api.Button;
 import dev.sky_lock.mocar.gui.api.GuiType;
 import dev.sky_lock.mocar.gui.api.GuiWindow;
+import dev.sky_lock.mocar.util.DebugUtil;
 import dev.sky_lock.mocar.util.ItemStackBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,30 +38,16 @@ public class ModelSetting extends GuiWindow {
         setIdComponent();
         setNameComponent();
         setSpeedComponent();
+        setLoreComponent();
 
-        super.addComponent(new Button(29, new ItemStackBuilder(Material.RAILS, 1).name("LORE").build(), (event) -> {
-            //TODO:
-        }));
-        super.addComponent(new Button(31, new ItemStackBuilder(Material.SLIME_BALL, 1).name("ITEM").build(), (event) -> {
+        super.addComponent(new Button(31, new ItemStackBuilder(Material.SLIME_BALL, 1).name("Item").build(), (event) -> {
             //TODO;
         }));
-        super.addComponent(new Button(33, new ItemStackBuilder(Material.COAL_BLOCK, 1).name("FUEL").build(), (event) -> {
+        super.addComponent(new Button(33, new ItemStackBuilder(Material.COAL_BLOCK, 1).name("Fuel").build(), (event) -> {
             //TODO:
         }));
-        super.addComponent(new Button(49, new ItemStackBuilder(Material.END_CRYSTAL, 1).name("CREATE").build(), (event) -> {
-            new ConfirmScreen(player, (event1) -> {
-                if (data.getId() == null || data.getSpeed() == null) {
-                    ItemStack yesItem = getInventory().getItem(20);
-                    ItemMeta itemMeta = yesItem.getItemMeta();
-                    itemMeta.setLore(Collections.singletonList(ChatColor.RED + "設定が完了していません"));
-                    yesItem.setItemMeta(itemMeta);
-                    return;
-                }
-                ModelList.add(new CarModel(data.getId(), data.getCarItem(), data.getName(), data.getLores(), data.getFuel(), data.getSpeed().ordinal()));
-                player.sendMessage(MoCar.PREFIX + "新しい車種を追加しました");
-                EditSessions.destroy(player.getUniqueId());
-            }).open(player);
-        }));
+
+        setCreateComponent();
     }
 
     private void setSpeedComponent() {
@@ -96,7 +83,7 @@ public class ModelSetting extends GuiWindow {
 
     private void setIdComponent() {
         ItemStack item;
-        if (data.getId() == null || data.getId().equalsIgnoreCase("ID")) {
+        if (data.getId() == null) {
             item = new ItemStackBuilder(Material.EMERALD_BLOCK, 1).name("Id").build();
         } else {
             item = new ItemStackBuilder(Material.EMERALD_BLOCK, 1).name(data.getId()).build();
@@ -106,15 +93,48 @@ public class ModelSetting extends GuiWindow {
         }));
     }
 
+    private void setLoreComponent() {
+        ItemStack item;
+        if (data.getLores() == null) {
+            item = new ItemStackBuilder(Material.SIGN, 1).name("Lore").build();
+        } else {
+            item = new ItemStackBuilder(Material.SIGN, 1).name("Lore").lore(data.getLores()).build();
+        }
+        super.addComponent(new Button(29, item, (event) -> {
+            new SignEditor().open(player);
+        }));
+    }
+
     private void setNameComponent() {
         ItemStack item;
-        if (data.getName() == null || data.getName().equalsIgnoreCase("NAME")) {
+        if (data.getName() == null) {
             item = new ItemStackBuilder(Material.NAME_TAG, 1).name("Name").build();
         } else {
             item = new ItemStackBuilder(Material.NAME_TAG, 1).name(data.getName()).build();
         }
         super.addComponent(new Button(22, item, (event) -> {
             StringEditor.open(player, StringEditor.Type.NAME);
+        }));
+    }
+
+    private void setCreateComponent() {
+        super.addComponent(new Button(49, new ItemStackBuilder(Material.END_CRYSTAL, 1).name("追加する").build(), (event) -> {
+            new ConfirmScreen(player, (event1) -> {
+                if (data.getId() == null || data.getName() == null || data.getSpeed() == null) {
+                    DebugUtil.sendDebugMessage(data.getId() + data.getSpeed());
+                    ItemStack yesItem = event1.getCurrentItem();
+                    ItemMeta itemMeta = yesItem.getItemMeta();
+                    itemMeta.setLore(Collections.singletonList(ChatColor.RED + "設定が完了していません"));
+                    yesItem.setItemMeta(itemMeta);
+                    event1.setCurrentItem(yesItem);
+                    return;
+                }
+                DebugUtil.sendDebugMessage(data.getId() + " : " + data.getSpeed());
+                ModelList.add(new CarModel(data.getId(), data.getCarItem(), data.getName(), data.getLores(), data.getFuel(), data.getSpeed().ordinal()));
+                player.sendMessage(MoCar.PREFIX + "新しい車種を追加しました");
+                EditSessions.destroy(player.getUniqueId());
+                player.closeInventory();
+            }).open(player);
         }));
     }
 }

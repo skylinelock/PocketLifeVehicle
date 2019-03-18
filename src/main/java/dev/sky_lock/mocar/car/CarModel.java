@@ -72,10 +72,15 @@ public class CarModel implements ConfigurationSerializable {
         CarItem item = (CarItem) map.get("item");
         String name = (String) map.get("name");
         List<String> lores;
-        try {
-             lores = ListUtil.checkedListObject(map.get("lores"), String.class);
-        } catch (ClassCastException ex) {
+        Object mapObj = map.get("lores");
+        if (mapObj == null) {
             lores = Collections.emptyList();
+        } else {
+            try {
+                lores = ListUtil.checkedListObject(mapObj, String.class);
+            } catch (ClassCastException ex) {
+                lores = Collections.emptyList();
+            }
         }
         float maxFuel = (float) ((double) map.get("maxfuel"));
         int speed = (int) map.get("maxspeed");

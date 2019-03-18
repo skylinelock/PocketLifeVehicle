@@ -4,6 +4,7 @@ import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
 import dev.sky_lock.mocar.car.ModelList;
 import dev.sky_lock.mocar.commands.CommandHandler;
+import dev.sky_lock.mocar.gui.SignEditor;
 import dev.sky_lock.mocar.listener.GuiListener;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,6 +25,8 @@ public class MoCar extends JavaPlugin {
         protocolManager = ProtocolLibrary.getProtocolManager();
         getCommand("mocar").setExecutor(new CommandHandler());
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
+
+        SignEditor.registerListener();
     }
 
     @Override

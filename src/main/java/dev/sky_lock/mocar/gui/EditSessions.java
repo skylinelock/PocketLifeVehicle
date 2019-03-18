@@ -12,9 +12,8 @@ public class EditSessions {
     private static final Map<UUID, EditModelData> edits = new HashMap<>();
 
     public static void newSession(UUID uuid) {
-        if (!edits.containsKey(uuid)) {
-            edits.put(uuid, new EditModelData());
-        }
+        destroy(uuid);
+        edits.put(uuid, new EditModelData());
     }
 
     public static void destroy(UUID uuid) {

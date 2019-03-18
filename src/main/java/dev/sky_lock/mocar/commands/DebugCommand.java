@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.commands;
 
-import dev.sky_lock.mocar.gui.CarModelEditor;
+import dev.sky_lock.mocar.gui.EditModelData;
+import dev.sky_lock.mocar.gui.EditSessions;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -13,7 +14,11 @@ public class DebugCommand implements ICommand, IAdminCommand {
 
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
-        CarModelEditor editor = new CarModelEditor((Player) sender);
-        editor.open((Player) sender);
+        EditModelData data = EditSessions.get(((Player) sender).getUniqueId());
+        if (data == null) {
+            sender.sendMessage("hogehoge");
+            return;
+        }
+        sender.sendMessage(data.getId() + " : " + data.getName());
     }
 }

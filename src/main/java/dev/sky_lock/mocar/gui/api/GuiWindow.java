@@ -50,7 +50,6 @@ public class GuiWindow {
         if (!player.getUniqueId().equals(holder.getUniqueId())) {
             opening.remove(holder.getUniqueId());
         }
-        player.closeInventory();
     }
 
     protected void addComponent(IGuiComponent component) {
@@ -69,7 +68,13 @@ public class GuiWindow {
     }
 
     public static void click(InventoryClickEvent event) {
-        windows.stream().filter(window -> window.getInventory().getName().equals(event.getClickedInventory().getName())).findFirst().ifPresent(window -> {
+        windows.stream().filter(window -> window.getInventory().equals(event.getInventory())).forEach(window -> {
+            if (event.getClick() == ClickType.SHIFT_LEFT || event.getClick() == ClickType.SHIFT_RIGHT) {
+                event.setResult(Event.Result.DENY);
+                event.setCancelled(true);
+            }
+        });
+        windows.stream().filter(window -> window.getInventory().equals(event.getClickedInventory())).findFirst().ifPresent(window -> {
             IGuiComponent component = window.getComponentAtSlot(event.getSlot());
             if (component == null) {
                 if (window.getInventory().getType() == event.getClickedInventory().getType()) {
@@ -97,8 +102,12 @@ public class GuiWindow {
     }
 
     public static void close(InventoryCloseEvent event) {
-        windows.stream().filter(window -> window.getInventory().getName().equals(event.getInventory().getName())).forEach(window -> {
-            window.close((Player) event.getPlayer());
+        windows.removeIf(window -> {
+            if (window.getInventory().equals(event.getInventory())) {
+                window.close((Player) event.getPlayer());
+                return true;
+            }
+            return false;
         });
     }
 }
