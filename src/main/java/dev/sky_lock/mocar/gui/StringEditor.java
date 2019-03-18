@@ -70,6 +70,12 @@ public class StringEditor extends ContainerAnvil {
         return editorType;
     }
 
+    @Override
+    public void e() {
+        super.e();
+        this.levelCost = 0;
+    }
+
     public enum Type {
         ID("Id"),
         NAME("Name");

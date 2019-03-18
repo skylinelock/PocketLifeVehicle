@@ -21,7 +21,7 @@ public class HelpCommand implements ICommand {
             sender.sendMessage(MoCar.PREFIX + "/mocar edit - カーモデルエディタを開きます");
             sender.sendMessage(MoCar.PREFIX + "/mocar removemodel [id] - 指定したidの車種を削除します");
             sender.sendMessage(MoCar.PREFIX + "/mocar listmodel - 全ての車種を表示します");
-            sender.sendMessage(MoCar.PREFIX + "/mocar reload - cars.ymlから車種情報を読み込みます");
+            sender.sendMessage(MoCar.PREFIX + "/mocar reload - CarModelコンフィグから車種情報を読み込みます");
             sender.sendMessage(MoCar.PREFIX + "/mocar debug - デバッグ用コマンド");
             sender.sendMessage(MoCar.PREFIX + "----------------------------");
             return;
