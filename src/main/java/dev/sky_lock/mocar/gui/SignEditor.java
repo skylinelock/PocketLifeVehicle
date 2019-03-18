@@ -35,8 +35,11 @@ public class SignEditor {
                 if (!opening.contains(event.getPlayer().getUniqueId())) {
                     return;
                 }
-                List<String> lores = Arrays.asList(event.getPacket().getStringArrays().read(0));
-                lores.removeAll(Collections.singleton(null));
+                List<String> lores = new ArrayList<>();
+                for (int i = 0; i < 4; i++) {
+                    lores.add(event.getPacket().getStringArrays().read(0)[i]);
+                }
+                lores.removeAll(Arrays.asList("", null));
                 EditSessions.get(event.getPlayer().getUniqueId()).setLores(lores);
                 Bukkit.getScheduler().runTaskLater(MoCar.getInstance(), () -> {
                     new ModelSetting(event.getPlayer()).open(event.getPlayer());
