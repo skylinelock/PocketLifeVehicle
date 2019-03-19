@@ -1,12 +1,13 @@
 package dev.sky_lock.mocar.listener;
 
-import dev.sky_lock.mocar.car.CarEntities;
-import dev.sky_lock.mocar.car.CarModel;
-import dev.sky_lock.mocar.car.ModelList;
+import dev.sky_lock.mocar.car.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 /**
@@ -26,5 +27,19 @@ public class PlayerListener implements Listener {
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
         CarEntities.spawn(event.getPlayer().getUniqueId(), model, event.getPlayer().getLocation());
+    }
+
+    @EventHandler
+    public void onPlayerQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        Entity vehicle = player.getVehicle();
+        if (vehicle == null) {
+            return;
+        }
+        if (!(vehicle instanceof CraftCar)) {
+            return;
+        }
+        CraftCar craftCar = (CraftCar) vehicle;
+        craftCar.removePassenger(player);
     }
 }
