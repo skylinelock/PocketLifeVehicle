@@ -26,6 +26,7 @@ public class PlayerListener implements Listener {
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
+        event.getPlayer().getInventory().remove(itemStack);
         CarEntities.spawn(event.getPlayer().getUniqueId(), model, event.getPlayer().getLocation());
     }
 
