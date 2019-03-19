@@ -7,6 +7,7 @@ import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.packet.OpenSignEditorPacket;
+import dev.sky_lock.mocar.util.MessageUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -40,7 +41,7 @@ public class SignEditor {
                 }
                 List<String> lores = new ArrayList<>();
                 for (int i = 0; i < 4; i++) {
-                    lores.add(event.getPacket().getStringArrays().read(0)[i]);
+                    lores.add(MessageUtil.attachColor(event.getPacket().getStringArrays().read(0)[i]));
                 }
                 lores.removeAll(Arrays.asList("", null));
                 EditSessions.get(event.getPlayer().getUniqueId()).setLores(lores);

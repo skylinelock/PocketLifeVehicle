@@ -4,7 +4,7 @@ import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.CarModel;
 import dev.sky_lock.mocar.car.CraftCar;
 import dev.sky_lock.mocar.car.ModelList;
-import dev.sky_lock.mocar.util.DebugUtil;
+import dev.sky_lock.mocar.util.MessageUtil;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -43,7 +43,7 @@ public class PlayerListener implements Listener {
             return;
         }
         if (!itemStack.hasItemMeta()) {
-            DebugUtil.sendDebugMessage("hogehoge");
+            MessageUtil.sendDebugMessage("hogehoge");
             return;
         }
         ItemMeta meta = itemStack.getItemMeta();

@@ -7,6 +7,7 @@ import dev.sky_lock.mocar.car.CraftCar;
 import dev.sky_lock.mocar.gui.*;
 import dev.sky_lock.mocar.gui.api.GuiWindow;
 import dev.sky_lock.mocar.packet.ActionBar;
+import dev.sky_lock.mocar.util.MessageUtil;
 import net.minecraft.server.v1_12_R1.ItemStack;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -85,7 +86,8 @@ public class GuiListener implements Listener {
         if (editor.getEditorType() == StringEditor.Type.ID) {
             editData.setId(result.getItemMeta().getDisplayName());
         } else if (editor.getEditorType() == StringEditor.Type.NAME) {
-            editData.setName(result.getItemMeta().getDisplayName());
+            String name = MessageUtil.attachColor(result.getItemMeta().getDisplayName());
+            editData.setName(name);
         }
         Player player = (Player) event.getWhoClicked();
         StringEditor.close(player);
