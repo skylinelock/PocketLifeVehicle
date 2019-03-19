@@ -18,6 +18,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -166,9 +167,27 @@ public class ModelSetting extends GuiWindow {
         super.addComponent(new Button(49, new ItemStackBuilder(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "追加する").build(), (event) -> {
             new ConfirmScreen(player, (event1) -> {
                 ItemStack clicked = event1.getCurrentItem();
-                if (data.getId() == null || data.getName() == null || data.getSpeed() == null) {
+                if (data.getId() == null || data.getName() == null || data.getSpeed() == null || data.getFuel() == 0.0F || data.getCarItem() == null) {
+                    List<String> lores = new ArrayList<>();
+                    lores.add(ChatColor.RED + "設定が完了していません");
+                    lores.add(ChatColor.RED + "未設定項目");
+                    if (data.getId() == null) {
+                        lores.add(ChatColor.RED + "- ID");
+                    }
+                    if (data.getName() == null) {
+                        lores.add(ChatColor.RED + "- Name");
+                    }
+                    if (data.getSpeed() == null) {
+                        lores.add(ChatColor.RED + "- Speed");
+                    }
+                    if (data.getCarItem() == null) {
+                        lores.add(ChatColor.RED + "- Item");
+                    }
+                    if (data.getFuel() == 0.0F) {
+                        lores.add(ChatColor.RED + "- Fuel");
+                    }
                     ItemMeta itemMeta = clicked.getItemMeta();
-                    itemMeta.setLore(Collections.singletonList(ChatColor.RED + "設定が完了していません"));
+                    itemMeta.setLore(lores);
                     clicked.setItemMeta(itemMeta);
                     event1.setCurrentItem(clicked);
                     return;
