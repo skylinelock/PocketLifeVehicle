@@ -83,6 +83,7 @@ public class GuiWindow {
                     return;
                 }
                 event.setCancelled(true);
+                return;
             }
             if (!event.isCancelled()) {
                 event.setResult(Event.Result.DENY);
