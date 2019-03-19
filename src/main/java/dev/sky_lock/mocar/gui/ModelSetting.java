@@ -47,10 +47,8 @@ public class ModelSetting extends GuiWindow {
         super.addComponent(new Button(31, new ItemStackBuilder(Material.SLIME_BALL, 1).name("Item").build(), (event) -> {
             //TODO;
         }));
-        super.addComponent(new Button(33, new ItemStackBuilder(Material.COAL_BLOCK, 1).name("Fuel").build(), (event) -> {
-            //TODO:
-        }));
 
+        setFuelComponent();
         setCreateComponent();
     }
 
@@ -79,29 +77,25 @@ public class ModelSetting extends GuiWindow {
     }
 
     private void setSpeedComponent() {
-        ItemStack item;
+        ItemStack item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed").build();
         Speed speed = data.getSpeed();
-        if (speed == null) {
-            item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed:NONE").build();
-        } else {
+        if (speed != null) {
             switch (speed) {
                 case SLOWEST:
-                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed:SLOWEST").enchant(new Glowing(), 1).build();
+                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed").lore(Collections.singletonList("SLOWEST")).enchant(new Glowing(), 1).build();
                     break;
                 case SLOW:
-                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed:SLOW").enchant(new Glowing(), 1).build();
+                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed").lore(Collections.singletonList("SLOW")).enchant(new Glowing(), 1).build();
                     break;
                 case NORMAL:
-                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed:NORMAL").enchant(new Glowing(), 1).build();
+                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed").lore(Collections.singletonList("NORMAL")).enchant(new Glowing(), 1).build();
                     break;
                 case FAST:
-                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed:FAST").enchant(new Glowing(), 1).build();
+                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed").lore(Collections.singletonList("FAST")).enchant(new Glowing(), 1).build();
                     break;
                 case FASTEST:
-                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed:FASTEST").enchant(new Glowing(), 1).build();
+                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed").lore(Collections.singletonList("FASTEST")).enchant(new Glowing(), 1).build();
                     break;
-                default:
-                    item = new ItemStackBuilder(Material.DIAMOND, 1).name("Speed:NONE").enchant(new Glowing(), 1).build();
             }
         }
         super.addComponent(new Button(24, item, (event) -> {
@@ -114,13 +108,12 @@ public class ModelSetting extends GuiWindow {
         if (data.getId() == null) {
             item = new ItemStackBuilder(Material.EMERALD_BLOCK, 1).name("Id").build();
         } else {
-            item = new ItemStackBuilder(Material.EMERALD_BLOCK, 1).name(data.getId()).enchant(new Glowing(), 1).build();
+            item = new ItemStackBuilder(Material.EMERALD_BLOCK, 1).name("Id").lore(Collections.singletonList(data.getId())).enchant(new Glowing(), 1).build();
         }
         super.addComponent(new Button(20, item, (event) -> {
             StringEditor.open(player, StringEditor.Type.ID);
         }));
     }
-
     private void setLoreComponent() {
         ItemStack item;
         if (data.getLores() == null) {
@@ -138,10 +131,21 @@ public class ModelSetting extends GuiWindow {
         if (data.getName() == null) {
             item = new ItemStackBuilder(Material.NAME_TAG, 1).name("Name").build();
         } else {
-            item = new ItemStackBuilder(Material.NAME_TAG, 1).name(data.getName()).enchant(new Glowing(), 1).build();
+            item = new ItemStackBuilder(Material.NAME_TAG, 1).name("Name").lore(Collections.singletonList(data.getName())).enchant(new Glowing(), 1).build();
         }
         super.addComponent(new Button(22, item, (event) -> {
             StringEditor.open(player, StringEditor.Type.NAME);
+        }));
+    }
+
+    private void setFuelComponent() {
+        ItemStack item;
+        item = new ItemStackBuilder(Material.COAL_BLOCK, 1).name("Fuel").build();
+        if (data.getFuel() != 0.0F) {
+            item = new ItemStackBuilder(Material.COAL_BLOCK, 1).name("Fuel").lore(Collections.singletonList(String.valueOf(data.getFuel()))).enchant(new Glowing(), 1).build();
+        }
+        super.addComponent(new Button(33, item, (event) -> {
+            new FuelSelector(player).open(player);
         }));
     }
 

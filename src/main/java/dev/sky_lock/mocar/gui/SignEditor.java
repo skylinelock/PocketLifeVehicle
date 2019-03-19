@@ -6,7 +6,7 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.packet.OpenSignEditorServerPacket;
+import dev.sky_lock.mocar.packet.OpenSignEditorPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -20,7 +20,7 @@ public class SignEditor {
     private final static List<UUID> opening = new ArrayList<>();
 
     public void open(Player player) {
-        OpenSignEditorServerPacket packet = new OpenSignEditorServerPacket();
+        OpenSignEditorPacket packet = new OpenSignEditorPacket();
         packet.setBlockPosition(BlockPosition.ORIGIN);
         packet.send(player);
 

@@ -7,9 +7,9 @@ import com.comphenix.protocol.wrappers.BlockPosition;
  * @author sky_lock
  */
 
-public class OpenSignEditorServerPacket extends AbstractServerPacket {
+public class OpenSignEditorPacket extends AbstractServerPacket {
 
-    public OpenSignEditorServerPacket() {
+    public OpenSignEditorPacket() {
         super(PacketType.Play.Server.OPEN_SIGN_EDITOR);
     }
 
