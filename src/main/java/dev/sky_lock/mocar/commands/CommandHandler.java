@@ -23,6 +23,9 @@ public class CommandHandler implements CommandExecutor {
                 case "give":
                     cmd = new GiveCommand();
                     break;
+                case "toaway":
+                    cmd = new TowawayCommand();
+                    break;
                 case "edit":
                     cmd = new EditCommand();
                     break;
@@ -42,6 +45,7 @@ public class CommandHandler implements CommandExecutor {
                     break;
                 case "reload":
                     cmd = new ReloadCommand();
+                    break;
             }
 
             if (cmd instanceof IAdminCommand) {
