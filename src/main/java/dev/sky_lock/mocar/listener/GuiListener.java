@@ -60,7 +60,7 @@ public class GuiListener implements Listener {
         if (carOwner.equals(player.getUniqueId())) {
             craftCar.setPassenger(player);
         } else {
-            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getPlayer(carOwner).getName() + " が所有しています");
+            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getOfflinePlayer(carOwner).getName() + " が所有しています");
         }
 
     }
