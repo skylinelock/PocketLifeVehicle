@@ -1,17 +1,27 @@
 package dev.sky_lock.mocar.commands;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.car.CarModel;
+import dev.sky_lock.mocar.car.ModelList;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author sky_lock
  */
 
-public class CommandHandler implements CommandExecutor {
+public class CommandHandler implements CommandExecutor, TabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -64,5 +74,38 @@ public class CommandHandler implements CommandExecutor {
         }
         cmd.execute(sender, command, args);
         return true;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        List<String> tabCompletes = new ArrayList<>();
+        if (args.length < 2) {
+            if (sender.hasPermission("mocar.admin.command")) {
+                tabCompletes.addAll(Arrays.asList("give", "edit", "removemodel", "debug", "reload"));
+            }
+            tabCompletes.addAll(Arrays.asList("towaway", "listmodel", "search"));
+        } else if (args.length  == 2) {
+            switch (args[0].toLowerCase()) {
+                case "give":
+                    tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+                    break;
+                case "removemodel":
+                case "rm":
+                    tabCompletes.addAll(ModelList.unmodified().stream().map(CarModel::getId).collect(Collectors.toList()));
+                    break;
+                case "reload":
+                    tabCompletes.addAll(Arrays.asList("from", "to"));
+                    break;
+                case "towaway":
+                    if (sender.hasPermission("mocar.admin.command")) {
+                        tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+                    }
+            }
+        } else if (args.length == 3) {
+            if (args[0].equalsIgnoreCase("give")) {
+                tabCompletes.addAll(ModelList.unmodified().stream().map(CarModel::getId).collect(Collectors.toList()));
+            }
+        }
+        return tabCompletes;
     }
 }

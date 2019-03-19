@@ -25,7 +25,10 @@ public class MoCar extends JavaPlugin {
     public void onEnable() {
         instance = this;
         protocolManager = ProtocolLibrary.getProtocolManager();
-        getCommand("mocar").setExecutor(new CommandHandler());
+
+        CommandHandler commandHandler = new CommandHandler();
+        getCommand("mocar").setExecutor(commandHandler);
+
         getServer().getPluginManager().registerEvents(new GuiListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
