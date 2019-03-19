@@ -81,9 +81,6 @@ public class GuiWindow {
             if (component == null) {
                 if (window.getInventory().getType() == event.getClickedInventory().getType()) {
                     InventoryAction action = event.getAction();
-                    if (action != InventoryAction.PLACE_ALL && action != InventoryAction.PLACE_ONE && action != InventoryAction.PLACE_SOME) {
-                        return;
-                    }
                     event.setCancelled(true);
                 }
                 return;
