@@ -29,6 +29,7 @@ public class CarEntityUtility extends GuiWindow {
         super.addComponent(new Button(4, new ItemStackBuilder(Material.MINECART, 1).name(ChatColor.GREEN + "レッカー移動").lore(Collections.singletonList("アイテム化して持ち運べるようにします")).build(), (event) -> {
             CarEntities.tow(player.getUniqueId());
             close(player);
+            player.closeInventory();
         }));
     }
 }
