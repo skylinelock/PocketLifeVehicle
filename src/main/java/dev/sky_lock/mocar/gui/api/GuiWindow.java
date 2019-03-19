@@ -79,15 +79,17 @@ public class GuiWindow {
         windows.stream().filter(window -> window.getInventory().equals(event.getClickedInventory())).findFirst().ifPresent(window -> {
             IGuiComponent component = window.getComponentAtSlot(event.getSlot());
             if (component == null) {
-                if (window.getInventory().getType() == event.getClickedInventory().getType()) {
-                    InventoryAction action = event.getAction();
-                    event.setCancelled(true);
+                if (window.getInventory().getType() != event.getClickedInventory().getType()) {
+                    return;
                 }
-                return;
+                event.setCancelled(true);
             }
             if (!event.isCancelled()) {
                 event.setResult(Event.Result.DENY);
                 event.setCancelled(true);
+            }
+            if (event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD) {
+                return;
             }
             component.onClick(event);
         });
