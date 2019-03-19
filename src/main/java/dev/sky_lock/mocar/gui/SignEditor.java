@@ -10,7 +10,10 @@ import dev.sky_lock.mocar.packet.OpenSignEditorPacket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author sky_lock

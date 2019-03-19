@@ -21,7 +21,6 @@ public class CarEntities {
         if (player == null || model == null || location == null) {
             return false;
         }
-
         CarArmorStand armorStand = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle(), model, new CarStatus());
         armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
