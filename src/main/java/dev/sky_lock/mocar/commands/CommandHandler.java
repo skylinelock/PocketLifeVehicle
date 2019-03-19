@@ -59,7 +59,7 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
             }
 
             if (cmd instanceof IAdminCommand) {
-                if (!(sender.hasPermission("mocar.admin.command"))) {
+                if (!(sender.hasPermission("mocar.commands.admin.use"))) {
                     sender.sendMessage(MoCar.PREFIX + ChatColor.RED + "このコマンドを実行するための権限がありません");
                     return true;
                 }
@@ -80,7 +80,7 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> tabCompletes = new ArrayList<>();
         if (args.length < 2) {
-            if (sender.hasPermission("mocar.admin.command")) {
+            if (sender.hasPermission("mocar.commands.admin.use")) {
                 tabCompletes.addAll(Arrays.asList("give", "edit", "removemodel", "debug", "reload"));
             }
             tabCompletes.addAll(Arrays.asList("towaway", "listmodel", "search"));
@@ -97,7 +97,7 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
                     tabCompletes.addAll(Arrays.asList("from", "to"));
                     break;
                 case "towaway":
-                    if (sender.hasPermission("mocar.admin.command")) {
+                    if (sender.hasPermission("mocar.commands.admin.use")) {
                         tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
                     }
             }
