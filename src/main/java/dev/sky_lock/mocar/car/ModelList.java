@@ -6,7 +6,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author sky_lock
@@ -39,9 +38,14 @@ public class ModelList {
         return false;
     }
 
-    public static void remove(String id) {
-        carModels.retainAll(carModels.stream().filter(model -> model != null && !model.getId().equalsIgnoreCase(id)).collect(Collectors.toList()));
+    public static boolean remove(String id) {
+        CarModel model = get(id);
+        if (model == null) {
+            return false;
+        }
+        carModels.remove(model);
         config.writeModels(carModels);
+        return true;
     }
 
     public static List<CarModel> unmodified() {
@@ -52,7 +56,7 @@ public class ModelList {
         return carModels.stream().anyMatch(carModel -> carModel.getId().equalsIgnoreCase(id));
     }
 
-    public static CarModel getModel(ItemStack itemStack) {
+    public static CarModel get(ItemStack itemStack) {
         return carModels.stream().filter(model -> {
             ItemStack modelItem = model.getItem().getStack(model.getName());
             ItemMeta meta = modelItem.getItemMeta();

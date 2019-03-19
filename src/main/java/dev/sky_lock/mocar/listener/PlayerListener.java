@@ -38,7 +38,7 @@ public class PlayerListener implements Listener {
         if (itemStack == null) {
             return;
         }
-        CarModel model = ModelList.getModel(itemStack);
+        CarModel model = ModelList.get(itemStack);
         if (model == null) {
             return;
         }

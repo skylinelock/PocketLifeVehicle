@@ -17,10 +17,14 @@ public class RemoveModelCommand implements ICommand, IAdminCommand {
     public void execute(CommandSender sender, Command cmd, String[] args) {
         Player player = (Player) sender;
         if (args.length < 2) {
-            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "Failed : Not Enough Arguments");
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "引数が足りません");
             return;
         }
-        ModelList.remove(args[1]);
-        player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Success : Removed a car model");
+        boolean success = ModelList.remove(args[1]);
+        if (success) {
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "指定した車種を削除しました");
+        } else {
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "車種が存在しません");
+        }
     }
 }
