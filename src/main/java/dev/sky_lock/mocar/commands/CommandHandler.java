@@ -23,7 +23,7 @@ public class CommandHandler implements CommandExecutor {
                 case "give":
                     cmd = new GiveCommand();
                     break;
-                case "toaway":
+                case "towaway":
                     cmd = new TowawayCommand();
                     break;
                 case "edit":

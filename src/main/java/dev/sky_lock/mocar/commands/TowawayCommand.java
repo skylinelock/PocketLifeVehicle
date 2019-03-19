@@ -25,9 +25,11 @@ public class TowawayCommand implements ICommand, IAdminCommand {
         String name = args[1];
         CarArmorStand carEntity = CarEntities.get(MojangUtil.getUUID(name));
         if (carEntity == null) {
-            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "Player: " + name + "は車を所持していません");
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "Player: " + name + " は車を所持していません");
             return;
         }
         CarEntities.tow(player.getUniqueId());
+        player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Player: " + name + " の車をアイテム化しました");
+
     }
 }
