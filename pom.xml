@@ -21,6 +21,8 @@
     <properties>
         <bukkit.plugin.main>dev.sky_lock.mocar.MoCar</bukkit.plugin.main>
         <bukkit.plugin.author>sky_lock</bukkit.plugin.author>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <build>
@@ -38,6 +40,7 @@
                     <source>1.8</source>
                     <target>1.8</target>
                 </configuration>
+                <version>3.8.0</version>
             </plugin>
         </plugins>
     </build>
