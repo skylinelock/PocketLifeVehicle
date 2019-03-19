@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.gui;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.car.CarItem;
 import dev.sky_lock.mocar.car.CarModel;
 import dev.sky_lock.mocar.car.ModelList;
 import dev.sky_lock.mocar.car.Speed;
@@ -17,7 +18,9 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * @author sky_lock
@@ -28,7 +31,7 @@ public class ModelSetting extends GuiWindow {
     private final EditModelData data;
 
     public ModelSetting(Player player) {
-        super("AddModel", player, GuiType.WIDE);
+        super("AddModel", player, GuiType.BIG);
         this.player = player;
         this.data = EditSessions.get(player.getUniqueId());
 
@@ -43,11 +46,7 @@ public class ModelSetting extends GuiWindow {
         setNameComponent();
         setSpeedComponent();
         setLoreComponent();
-
-        super.addComponent(new Button(31, new ItemStackBuilder(Material.SLIME_BALL, 1).name("Item").build(), (event) -> {
-            //TODO;
-        }));
-
+        setCarItemComponent();
         setFuelComponent();
         setCreateComponent();
     }
@@ -123,6 +122,20 @@ public class ModelSetting extends GuiWindow {
         }
         super.addComponent(new Button(29, item, (event) -> {
             new SignEditor().open(player);
+        }));
+    }
+
+    private void setCarItemComponent() {
+        ItemStack item;
+        if (data.getCarItem() == null) {
+            item = new ItemStackBuilder(Material.SLIME_BALL, 1).name("Item").build();
+        } else {
+            CarItem carItem = data.getCarItem();
+            List<String> details = Arrays.asList(carItem.getStack().getType().toString(), String.valueOf(carItem.getStack().getDurability()));
+            item = new ItemStackBuilder(Material.SLIME_BALL, 1).name("Item").lore(details).enchant(new Glowing(), 1).build();
+        }
+        super.addComponent(new Button(31, item, (event) -> {
+            new CarItemSelector(player).open(player);
         }));
     }
 

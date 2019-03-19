@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 public class SpeedSelector extends GuiWindow {
 
     public SpeedSelector(Player holder) {
-        super("SpeedSelector", holder, GuiType.WIDE);
+        super("SpeedSelector", holder, GuiType.BIG);
         super.addComponent(new Button(11, new ItemStackBuilder(Material.SEA_LANTERN, 1).name("SLOWEST").build(), (event) -> {
             EditSessions.get(holder.getUniqueId()).setSpeed(Speed.SLOWEST);
             new ModelSetting(holder).open(holder);

@@ -18,7 +18,7 @@ import org.bukkit.util.Consumer;
 public class ConfirmScreen extends GuiWindow {
 
     public ConfirmScreen(Player holder, Consumer<InventoryClickEvent> todo) {
-        super("Are you sure?", holder, GuiType.WIDE);
+        super("Are you sure?", holder, GuiType.BIG);
         super.addComponent(new Button(20, new ItemStackBuilder(Material.WOOL, 1).dyeColor(DyeColor.GREEN).name(ChatColor.GREEN + "YES").build(), todo::accept));
         super.addComponent(new Button(24, new ItemStackBuilder(Material.WOOL, 1).dyeColor(DyeColor.RED).name(ChatColor.RED + "NO").build(), (event) -> {
             new ModelSetting(holder).open(holder);

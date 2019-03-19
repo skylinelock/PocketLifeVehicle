@@ -3,7 +3,6 @@ package dev.sky_lock.mocar.item;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.Damageable;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -19,8 +18,8 @@ public class ItemStackBuilder {
     private Material material;
     private String name;
     private int amount;
-    private double damage;
-    private byte magicValue;
+    private short damage;
+    private DyeColor color;
     private List<String> lores;
     private Map<Enchantment, Integer> enchantMap = new HashMap<>();
 
@@ -29,13 +28,13 @@ public class ItemStackBuilder {
         this.amount = amount;
     }
 
-    public ItemStackBuilder damage(double damage) {
+    public ItemStackBuilder damage(short damage) {
         this.damage = damage;
         return this;
     }
 
     public ItemStackBuilder dyeColor(DyeColor color) {
-        this.magicValue = color.getWoolData();
+        this.color = color;
         return this;
     }
 
@@ -55,12 +54,13 @@ public class ItemStackBuilder {
     }
 
     public ItemStack build() {
-        ItemStack itemStack = new ItemStack(material, amount, magicValue);
-        ItemMeta meta = itemStack.getItemMeta();
-        if (meta instanceof Damageable) {
-            Damageable damageable = (Damageable) meta;
-            damageable.damage(damage);
+        ItemStack itemStack = new ItemStack(material, amount);
+        if (color == null) {
+            itemStack.setDurability(damage);
+        } else {
+            itemStack.setDurability(color.getWoolData());
         }
+        ItemMeta meta = itemStack.getItemMeta();
         if (lores != null) {
             meta.setLore(lores);
         }

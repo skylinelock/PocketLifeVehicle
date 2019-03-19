@@ -17,9 +17,9 @@ import java.util.Map;
 public class CarItem implements ConfigurationSerializable {
 
     private final Material type;
-    private final double damage;
+    private final short damage;
 
-    public CarItem(Material type, double damage) {
+    public CarItem(Material type, short damage) {
         this.type = type;
         this.damage = damage;
     }
@@ -38,7 +38,7 @@ public class CarItem implements ConfigurationSerializable {
 
     public static CarItem deserialize(Map<String, Object> map) {
         Material type = Material.valueOf((String) map.get("type"));
-        double damage = (double) map.get("damage");
+        short damage = (short)((double) map.get("damage"));
         return new CarItem(type, damage);
     }
 }

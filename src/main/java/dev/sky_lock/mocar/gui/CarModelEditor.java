@@ -19,7 +19,7 @@ public class CarModelEditor extends GuiWindow {
     public static final List<GuiWindow> windows = new ArrayList<>();
 
     public CarModelEditor(Player player) {
-        super("ModelEditor", player, GuiType.WIDE);
+        super("ModelEditor", player, GuiType.BIG);
         super.addComponent(new Button(4, new ItemStackBuilder(Material.STORAGE_MINECART, 1).name(ChatColor.GREEN + "車種を追加する").build(), (event) -> {
             EditSessions.newSession(player.getUniqueId());
             new ModelSetting(player).open((Player) event.getWhoClicked());

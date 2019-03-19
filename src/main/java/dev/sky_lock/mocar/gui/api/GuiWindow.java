@@ -33,7 +33,9 @@ public class GuiWindow {
         switch (type) {
             case ANVIL:
                 return Bukkit.createInventory(holder, InventoryType.ANVIL, title);
-            case WIDE:
+            case SMALL:
+                return Bukkit.createInventory(holder, 27, title);
+            case BIG:
                 return Bukkit.createInventory(holder, 54, title);
         }
         return Bukkit.createInventory(holder, 54, title);

@@ -20,7 +20,7 @@ import java.util.Collections;
 public class CarEntityUtility extends GuiWindow {
 
     public CarEntityUtility(Player player) {
-        super("CarUtility", player, GuiType.WIDE);
+        super("CarUtility", player, GuiType.BIG);
         super.addComponent(new Gage(45, 53, new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.RED).build(),
                 new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.GREEN).build()));
 /*        super.addComponent(new Panel(Arrays.asList(15, 16, 24, 25, 33, 34), new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.BLUE).build(), (event) -> {

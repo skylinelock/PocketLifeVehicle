@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 public class FuelSelector extends GuiWindow {
 
     public FuelSelector(Player holder) {
-        super("FuelSelector", holder, GuiType.WIDE);
+        super("FuelSelector", holder, GuiType.BIG);
 
         int index = 1;
         for (int i = 0; i < 6; i++) {

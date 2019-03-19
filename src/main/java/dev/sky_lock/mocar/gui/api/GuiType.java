@@ -5,6 +5,7 @@ package dev.sky_lock.mocar.gui.api;
  */
 
 public enum GuiType {
-    WIDE,
+    SMALL,
+    BIG,
     ANVIL
 }
