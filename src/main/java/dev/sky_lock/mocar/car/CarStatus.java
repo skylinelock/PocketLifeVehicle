@@ -27,7 +27,8 @@ public class CarStatus {
     }
 
     public void useFuel(float used) {
-        if (speed.compareTo(BigDecimal.ZERO) == 0) {
+        BigDecimal roundedSpeed = speed.setScale(4, BigDecimal.ROUND_HALF_UP);
+        if (roundedSpeed.compareTo(BigDecimal.ZERO) == 0) {
             return;
         }
         if (fuel < 0.0f) {
