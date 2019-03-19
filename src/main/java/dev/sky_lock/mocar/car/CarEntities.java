@@ -40,7 +40,10 @@ public class CarEntities {
     }
 
     public static void tow(UUID uuid) {
-        Optional.ofNullable(entities.get(uuid)).ifPresent(car -> car.getBukkitEntity().getWorld().dropItem(car.getLocation(), car.getModel().getItem().getStack()));
+        Optional.ofNullable(entities.get(uuid)).ifPresent(car -> {
+            CarModel model = car.getModel();
+            car.getBukkitEntity().getWorld().dropItem(car.getLocation(), model.getItem().getStack(model.getName()));
+        });
         kill(uuid);
     }
 

@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.config.CarsConfig;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
 import java.util.List;
@@ -48,5 +49,9 @@ public class ModelList {
 
     public static boolean exists(String id) {
         return carModels.stream().anyMatch(carModel -> carModel.getId().equalsIgnoreCase(id));
+    }
+
+    public static CarModel getModel(ItemStack itemStack) {
+        return carModels.stream().filter(model -> model.getItem().getStack(model.getName()).isSimilar(itemStack)).findFirst().orElse(null);
     }
 }

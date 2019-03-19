@@ -131,7 +131,7 @@ public class ModelSetting extends GuiWindow {
             item = new ItemStackBuilder(Material.SLIME_BALL, 1).name("Item").build();
         } else {
             CarItem carItem = data.getCarItem();
-            List<String> details = Arrays.asList(carItem.getStack().getType().toString(), String.valueOf(carItem.getStack().getDurability()));
+            List<String> details = Arrays.asList(carItem.getStack("").getType().toString(), String.valueOf(carItem.getStack("").getDurability()));
             item = new ItemStackBuilder(Material.SLIME_BALL, 1).name("Item").lore(details).enchant(new Glowing(), 1).build();
         }
         super.addComponent(new Button(31, item, (event) -> {

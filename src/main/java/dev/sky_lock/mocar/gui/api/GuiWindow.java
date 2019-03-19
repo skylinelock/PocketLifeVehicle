@@ -97,9 +97,8 @@ public class GuiWindow {
     }
 
     public static void drag(InventoryDragEvent event) {
-        windows.stream().filter(window -> window.getInventory().getName().equals(event.getInventory().getName())).findFirst().ifPresent(window -> {
+        windows.stream().filter(window -> window.getInventory().equals(event.getInventory())).findFirst().ifPresent(window -> {
             event.setCancelled(true);
-            //TODO: 要修正
         });
     }
 

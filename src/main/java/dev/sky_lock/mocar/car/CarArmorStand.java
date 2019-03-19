@@ -43,7 +43,7 @@ public class CarArmorStand extends EntityArmorStand {
         nbt.setBoolean("Invisible", true);
         nbt.setBoolean("Marker", false);
         this.a(nbt);
-        this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(model.getItem().getStack()));
+        this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(model.getItem().getStack(model.getName())));
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
 

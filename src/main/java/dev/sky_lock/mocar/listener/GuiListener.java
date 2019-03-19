@@ -45,6 +45,11 @@ public class GuiListener implements Listener {
         Player player = event.getPlayer();
         CraftCar craftCar = (CraftCar) as;
         if (player.isSneaking()) {
+            CarArmorStand carArmorStand = (CarArmorStand) craftCar.getHandle();
+            UUID owner = CarEntities.getOwner(carArmorStand);
+            if (!event.getPlayer().getUniqueId().equals(owner)) {
+                return;
+            }
             CarEntityUtility gui = new CarEntityUtility(player);
             gui.open(player);
             return;

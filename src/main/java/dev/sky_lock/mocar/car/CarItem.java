@@ -24,8 +24,8 @@ public class CarItem implements ConfigurationSerializable {
         this.damage = damage;
     }
 
-    public ItemStack getStack() {
-        return new ItemStackBuilder(type, 1).damage(damage).build();
+    public ItemStack getStack(String name) {
+        return new ItemStackBuilder(type, 1).name(name).damage(damage).build();
     }
 
     @Override
