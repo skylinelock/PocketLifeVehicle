@@ -4,6 +4,7 @@ import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.CarModel;
 import dev.sky_lock.mocar.car.CraftCar;
 import dev.sky_lock.mocar.car.ModelList;
+import dev.sky_lock.mocar.util.DebugUtil;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -15,6 +16,9 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 /**
  * @author sky_lock
@@ -24,24 +28,42 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        ItemStack itemStack = event.getItem();
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
             return;
         }
         if (event.getBlockFace() != BlockFace.UP){
             return;
         }
+        ItemStack itemStack = event.getItem();
+        if (itemStack == null) {
+            return;
+        }
         CarModel model = ModelList.getModel(itemStack);
         if (model == null) {
             return;
         }
+        if (!itemStack.hasItemMeta()) {
+            DebugUtil.sendDebugMessage("hogehoge");
+            return;
+        }
+        ItemMeta meta = itemStack.getItemMeta();
+        if (!meta.hasLore()) {
+            return;
+        }
+        List<String> lores = meta.getLore();
+        String raw = lores.get(0);
+        String fuel = raw.trim().split(":")[1];
+
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
-        event.getPlayer().getInventory().remove(itemStack);
+
+        Player player = event.getPlayer();
+        player.getInventory().remove(itemStack);
         Location whereToSpawn = event.getClickedBlock().getLocation();
         whereToSpawn.add(0, 1.0, 0);
-        CarEntities.spawn(event.getPlayer().getUniqueId(), model, whereToSpawn);
+        CarEntities.tow(player.getUniqueId());
+        CarEntities.spawn(player.getUniqueId(), model, whereToSpawn, Float.valueOf(fuel));
     }
 
     @EventHandler

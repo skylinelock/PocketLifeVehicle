@@ -1,12 +1,14 @@
 package dev.sky_lock.mocar.car;
 
+import dev.sky_lock.mocar.MoCar;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author sky_lock
@@ -15,7 +17,7 @@ import java.util.UUID;
 public class CarEntities {
     private static final Map<UUID, CarArmorStand> entities = new HashMap<>();
 
-    public static boolean spawn(UUID player, CarModel model, Location location) {
+    public static boolean spawn(UUID player, CarModel model, Location location, float fuel) {
         if (player == null || model == null || location == null) {
             return false;
         }
@@ -24,7 +26,7 @@ public class CarEntities {
         armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
         ((CraftWorld) location.getWorld()).getHandle().addEntity(armorStand);
-        armorStand.getStatus().setFuel(model.getMaxFuel());
+        armorStand.getStatus().setFuel(fuel);
 
         kill(player);
 
@@ -42,7 +44,13 @@ public class CarEntities {
     public static void tow(UUID uuid) {
         Optional.ofNullable(entities.get(uuid)).ifPresent(car -> {
             CarModel model = car.getModel();
-            car.getBukkitEntity().getWorld().dropItem(car.getLocation(), model.getItem().getStack(model.getName()));
+            CarItem carItem = model.getItem();
+            ItemStack itemStack = carItem.getStack(model.getName());
+            ItemMeta meta = itemStack.getItemMeta();
+            meta.setLore(Collections.singletonList("Fuel : " + car.getStatus().getFuel()));
+            itemStack.setItemMeta(meta);
+            Item item = car.getBukkitEntity().getWorld().dropItem(car.getLocation(), itemStack);
+            item.setMetadata("mocar-fuel", new FixedMetadataValue(MoCar.getInstance(), car.getStatus().getFuel()));
         });
         kill(uuid);
     }

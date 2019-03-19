@@ -199,7 +199,7 @@ public class ModelSetting extends GuiWindow {
                     event1.setCurrentItem(clicked);
                     return;
                 }
-                ModelList.add(new CarModel(data.getId(), data.getCarItem(), data.getName(), data.getLores(), data.getFuel(), data.getSpeed().ordinal()));
+                ModelList.add(new CarModel(data.getId(), data.getCarItem(), data.getName(), data.getLores(), data.getFuel(), data.getSpeed().ordinal() + 1));
                 player.sendMessage(MoCar.PREFIX + "新しい車種を追加しました");
                 EditSessions.destroy(player.getUniqueId());
                 player.closeInventory();

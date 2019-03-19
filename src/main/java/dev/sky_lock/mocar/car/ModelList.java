@@ -2,6 +2,7 @@ package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.config.CarsConfig;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +53,15 @@ public class ModelList {
     }
 
     public static CarModel getModel(ItemStack itemStack) {
-        return carModels.stream().filter(model -> model.getItem().getStack(model.getName()).isSimilar(itemStack)).findFirst().orElse(null);
+        return carModels.stream().filter(model -> {
+            ItemStack modelItem = model.getItem().getStack(model.getName());
+            ItemMeta meta = modelItem.getItemMeta();
+            if (!itemStack.hasItemMeta() || meta == null) {
+                return false;
+            }
+            String displayName = itemStack.getItemMeta().getDisplayName();
+            String carName = meta.getDisplayName();
+            return itemStack.getType() == modelItem.getType() && displayName.equals(carName);
+        }).findFirst().orElse(null);
     }
 }
