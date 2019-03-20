@@ -32,6 +32,9 @@ public class ItemStackBuilder {
             case STAINED_GLASS_PANE:
                 this.inventoryItem = new StainedGlassPane(amount);
                 return;
+            case WOOL:
+                this.inventoryItem = new Wool(amount);
+                return;
         }
         this.inventoryItem = new InventoryItem(new ItemStack(material, amount));
     }
