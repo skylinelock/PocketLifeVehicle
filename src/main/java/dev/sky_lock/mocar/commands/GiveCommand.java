@@ -39,8 +39,8 @@ public class GiveCommand implements ICommand, IAdminCommand {
         boolean success = CarEntities.spawn(target.getUniqueId(), model, target.getLocation(), model.getMaxFuel());
 
         if (success) {
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Player:'" + name + "'の位置に車(ID:'" + id + "')を設置しました");
-            target.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "車(ID:'" + id + "')を受け取りました");
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Player: " + name + " の位置に車(ID: " + id + ")を設置しました");
+            target.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "車を受け取りました");
         } else {
             player.sendMessage(MoCar.PREFIX + ChatColor.RED + "車を設置できませんでした");
         }
