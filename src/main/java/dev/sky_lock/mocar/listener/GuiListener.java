@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.listener;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.Permission;
 import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.CraftCar;
@@ -45,19 +46,21 @@ public class GuiListener implements Listener {
         event.setCancelled(true);
         Player player = event.getPlayer();
         CraftCar craftCar = (CraftCar) as;
+        CarArmorStand car = (CarArmorStand) craftCar.getHandle();
+        UUID carOwner = CarEntities.getOwner(car);
+
         if (player.isSneaking()) {
             CarArmorStand carArmorStand = (CarArmorStand) craftCar.getHandle();
             UUID owner = CarEntities.getOwner(carArmorStand);
-            if (!event.getPlayer().getUniqueId().equals(owner)) {
+            if (player.getUniqueId().equals(owner) || Permission.CAR_CLICK.obtained(player)) {
+                CarEntityUtility gui = new CarEntityUtility(player, carArmorStand);
+                gui.open(player);
                 return;
             }
-            CarEntityUtility gui = new CarEntityUtility(player, carArmorStand);
-            gui.open(player);
+            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getOfflinePlayer(carOwner).getName() + "が所有しています");
             return;
         }
 
-        CarArmorStand car = (CarArmorStand) craftCar.getHandle();
-        UUID carOwner = CarEntities.getOwner(car);
         if (carOwner.equals(player.getUniqueId())) {
             if (car.getStatus().isLocked()) {
                 ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "車に乗るためには解錠してください");

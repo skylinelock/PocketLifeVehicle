@@ -40,18 +40,22 @@ public class CarEntities {
         }
     }
 
-    public static void tow(UUID uuid) {
-        Optional.ofNullable(entities.get(uuid)).ifPresent(car -> {
-            CarModel model = car.getModel();
-            CarItem carItem = model.getItem();
-            ItemStack itemStack = carItem.getStack(model.getName());
-            ItemMeta meta = itemStack.getItemMeta();
-            meta.setLore(Collections.singletonList("Fuel : " + car.getStatus().getFuel()));
-            itemStack.setItemMeta(meta);
-            Item item = car.getBukkitEntity().getWorld().dropItem(car.getLocation(), itemStack);
-            item.setMetadata("mocar-fuel", new FixedMetadataValue(MoCar.getInstance(), car.getStatus().getFuel()));
+    public static void tow(UUID owner) {
+        Optional.ofNullable(entities.get(owner)).ifPresent(car -> {
+            tow(owner, car);
         });
-        kill(uuid);
+    }
+
+    public static void tow(UUID owner, CarArmorStand car) {
+        CarModel model = car.getModel();
+        CarItem carItem = model.getItem();
+        ItemStack itemStack = carItem.getStack(model.getName());
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setLore(Collections.singletonList("Fuel : " + car.getStatus().getFuel()));
+        itemStack.setItemMeta(meta);
+        Item item = car.getBukkitEntity().getWorld().dropItem(car.getLocation(), itemStack);
+        item.setMetadata("mocar-fuel", new FixedMetadataValue(MoCar.getInstance(), car.getStatus().getFuel()));
+        kill(owner);
     }
 
     public static CarArmorStand get(UUID player) {
