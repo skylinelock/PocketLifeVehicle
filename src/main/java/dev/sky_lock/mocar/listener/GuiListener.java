@@ -59,11 +59,18 @@ public class GuiListener implements Listener {
         CarArmorStand car = (CarArmorStand) craftCar.getHandle();
         UUID carOwner = CarEntities.getOwner(car);
         if (carOwner.equals(player.getUniqueId())) {
+            if (car.getStatus().isLocked()) {
+                ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "車に乗るためには解錠してください");
+                return;
+            }
             craftCar.setPassenger(player);
-        } else {
-            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getOfflinePlayer(carOwner).getName() + " が所有しています");
+            return;
         }
-
+        if (car.getStatus().isLocked()) {
+            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getOfflinePlayer(carOwner).getName() + " によってロックされています");
+            return;
+        }
+        craftCar.setPassenger(player);
     }
 
     @EventHandler

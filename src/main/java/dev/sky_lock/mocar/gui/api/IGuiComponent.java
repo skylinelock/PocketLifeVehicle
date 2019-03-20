@@ -14,4 +14,5 @@ public interface IGuiComponent {
     SlotRange getSlotRange();
 
     ItemStack getItemStack();
+
 }

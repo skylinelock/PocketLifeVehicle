@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 public class CarStatus {
     private float fuel;
     private BigDecimal speed;
-    private boolean isLocked;
+    private boolean locked;
 
     public void setFuel(float fuel) {
         this.fuel = fuel;
@@ -28,7 +28,11 @@ public class CarStatus {
     }
 
     public void setLocked(boolean locked) {
-        this.isLocked = locked;
+        this.locked = locked;
+    }
+
+    public boolean isLocked() {
+        return this.locked;
     }
 
     public void useFuel(float used) {

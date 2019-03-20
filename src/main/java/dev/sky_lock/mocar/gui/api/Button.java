@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 
 public class Button implements IGuiComponent {
 
-    private final ItemStack itemStack;
+    private ItemStack itemStack;
     private final int slot;
     private final Consumer<InventoryClickEvent> consumer;
 

@@ -61,7 +61,7 @@ public class GuiWindow {
         }));
     }
 
-    private IGuiComponent getComponentAtSlot(int slot) {
+    protected IGuiComponent getComponentAtSlot(int slot) {
         return components.stream().filter(component -> component.getSlotRange().contains(slot)).findFirst().orElse(null);
     }
 

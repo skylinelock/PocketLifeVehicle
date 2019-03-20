@@ -34,6 +34,8 @@ public class CarEntityUtility extends GuiWindow {
         UUID owner = CarEntities.getOwner(car);
         super.addComponent(new Icon(20, getOwnerInfoItem(owner)));
 
+        setLockComponent(player, car);
+
         super.addComponent(new Gage(36, 53, new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.RED).build(),
                 new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.GREEN).build()));
     }
@@ -41,4 +43,12 @@ public class CarEntityUtility extends GuiWindow {
     private ItemStack getOwnerInfoItem(UUID owner) {
         return new ItemStackBuilder(Material.SKULL_ITEM, 1).skullOwner(owner).name(ChatColor.AQUA + "所有者").lore(ListUtil.singleton(ChatColor.GOLD + Bukkit.getOfflinePlayer(owner).getName())).build();
     }
+
+    private void setLockComponent(Player player, CarArmorStand car) {
+        ItemStack close = new ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED + "鍵を閉める").build();
+        ItemStack open = new ItemStackBuilder(Material.STRUCTURE_VOID, 1).name(ChatColor.AQUA + "鍵を開ける").build();
+        boolean locked = car.getStatus().isLocked();
+        super.addComponent(new ToggleButton(15, locked, open, close, (event) -> car.getStatus().setLocked(false), (event) -> car.getStatus().setLocked(true)));
+    }
+
 }

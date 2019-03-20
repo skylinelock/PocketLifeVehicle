@@ -51,7 +51,7 @@ public class CarArmorStand extends EntityArmorStand {
         return getBukkitEntity().getLocation();
     }
 
-    CarStatus getStatus() {
+    public CarStatus getStatus() {
         return status;
     }
 
