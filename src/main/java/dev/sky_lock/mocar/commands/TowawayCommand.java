@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.commands;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.Permission;
 import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.util.MojangUtil;
@@ -20,7 +21,7 @@ public class TowawayCommand implements ICommand {
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
         Player player = (Player) sender;
-        if (!player.hasPermission("mocar.commands.admin.use") || args.length < 2) {
+        if (!Permission.ADMIN_COMMAND.obtained(sender) || args.length < 2) {
             if (towaway(player.getUniqueId())) {
                 player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "所有する車をアイテム化しました");
             } else {

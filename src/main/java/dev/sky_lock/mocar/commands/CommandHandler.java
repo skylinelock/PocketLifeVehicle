@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.commands;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.Permission;
 import dev.sky_lock.mocar.car.CarModel;
 import dev.sky_lock.mocar.car.ModelList;
 import org.bukkit.Bukkit;
@@ -59,7 +60,7 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
             }
 
             if (cmd instanceof IAdminCommand) {
-                if (!(sender.hasPermission("mocar.commands.admin.use"))) {
+                if (!(Permission.ADMIN_COMMAND.obtained(sender))) {
                     sender.sendMessage(MoCar.PREFIX + ChatColor.RED + "このコマンドを実行するための権限がありません");
                     return true;
                 }
@@ -81,7 +82,7 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
         List<String> tabCompletes = new ArrayList<>();
         if (args.length < 2) {
             String input = args[0];
-            if (sender.hasPermission("mocar.commands.admin.use")) {
+            if (Permission.ADMIN_COMMAND.obtained(sender)) {
                 tabCompletes.addAll(Stream.of("give", "edit", "removemodel", "debug", "reload").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
             }
             tabCompletes.addAll(Stream.of("towaway", "listmodel", "search").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
@@ -99,12 +100,12 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
                     tabCompletes.addAll(Stream.of("from", "to").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
                     break;
                 case "search":
-                    if (sender.hasPermission("mocar.commands.admin.use")) {
+                    if (Permission.ADMIN_COMMAND.obtained(sender)) {
                         tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
                     }
                     break;
                 case "towaway":
-                    if (sender.hasPermission("mocar.commands.admin.use")) {
+                    if (Permission.ADMIN_COMMAND.obtained(sender)) {
                         tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
                     }
             }

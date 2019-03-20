@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.commands;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.Permission;
 import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.util.MojangUtil;
@@ -21,7 +22,7 @@ public class SearchCommand implements ICommand {
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
         Player player = (Player) sender;
-        if (!player.hasPermission("mocar.commands.admin.use") || args.length < 2) {
+        if (!Permission.ADMIN_COMMAND.obtained(player) || args.length < 2) {
             Location location = getCarLocation(player.getUniqueId());
             if (location == null) {
                 player.sendMessage(MoCar.PREFIX + ChatColor.RED + "車を所有していません");
