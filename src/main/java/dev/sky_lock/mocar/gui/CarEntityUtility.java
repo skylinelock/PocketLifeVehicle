@@ -12,6 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,6 +36,16 @@ public class CarEntityUtility extends GuiWindow {
         super.addComponent(new Icon(20, getOwnerInfoItem(owner)));
 
         setLockComponent(player, car);
+        List<String> carInfo = new ArrayList<>();
+        carInfo.add(ChatColor.GREEN + "識別子   : " + car.getModel().getId());
+        carInfo.add(ChatColor.GREEN + "名前     : " + car.getModel().getName());
+        carInfo.add(ChatColor.GREEN + "最大燃料 : " + car.getModel().getMaxFuel());
+        carInfo.add(ChatColor.GREEN + "最高速度 : " + car.getModel().getMaxSpeed());
+        carInfo.add(ChatColor.GREEN + "説明 :");
+        car.getModel().getLores().forEach(lore -> {
+            carInfo.add("- " + ChatColor.RESET + lore);
+        });
+        super.addComponent(new Icon(24, new ItemStackBuilder(Material.BOOK, 1).name(ChatColor.AQUA + "車両情報").lore(carInfo).build()));
 
         super.addComponent(new Gage(36, 53, new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.RED).build(),
                 new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.GREEN).build()));

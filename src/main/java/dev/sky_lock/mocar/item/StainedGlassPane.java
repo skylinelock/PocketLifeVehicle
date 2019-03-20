@@ -32,6 +32,9 @@ public class StainedGlassPane extends InventoryItem implements Colorable {
         if (itemMeta == null) {
             return super.toItemStack();
         }
+        if (color == null) {
+            return super.toItemStack();
+        }
         itemStack.setDurability(color.getWoolData());
         return super.toItemStack();
     }
