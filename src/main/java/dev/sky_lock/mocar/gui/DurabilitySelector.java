@@ -21,7 +21,7 @@ public class DurabilitySelector extends GuiWindow {
         short damage = 0;
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 9; j++) {
-                ItemStack item = new ItemStackBuilder(hoeType, 1).damage(damage).build();
+                ItemStack item = new ItemStackBuilder(hoeType, 1).durability(damage).build();
                 final short dmg = damage;
                 super.addComponent(new Button(i * 9 + j, item, (event) -> {
                     CarItem carItem = new CarItem(hoeType, dmg);

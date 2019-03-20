@@ -51,7 +51,7 @@ public class GuiListener implements Listener {
             if (!event.getPlayer().getUniqueId().equals(owner)) {
                 return;
             }
-            CarEntityUtility gui = new CarEntityUtility(player);
+            CarEntityUtility gui = new CarEntityUtility(player, carArmorStand);
             gui.open(player);
             return;
         }
@@ -70,28 +70,33 @@ public class GuiListener implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         GuiWindow.click(event);
         ItemStack itemStack = CraftItemStack.asNMSCopy(event.getCurrentItem());
-        if (!itemStack.hasTag()) {
+        if (itemStack.hasTag() && itemStack.getTag().hasKey("editor-result")) {
+            event.setResult(Event.Result.DENY);
+            event.setCancelled(true);
+            org.bukkit.inventory.ItemStack result = event.getCurrentItem();
+
+            StringEditor editor = StringEditor.get((Player) event.getWhoClicked());
+            EditModelData editData = EditSessions.get(event.getWhoClicked().getUniqueId());
+
+            if (editor.getEditorType() == StringEditor.Type.ID) {
+                editData.setId(result.getItemMeta().getDisplayName());
+            } else if (editor.getEditorType() == StringEditor.Type.NAME) {
+                String name = MessageUtil.attachColor(result.getItemMeta().getDisplayName());
+                editData.setName(name);
+            }
+            Player player = (Player) event.getWhoClicked();
+            StringEditor.close(player);
+            new ModelSetting(player).open(player);
             return;
         }
-        if (!itemStack.getTag().hasKey("editor-result")) {
+        if (!StringEditor.isOpening((Player) event.getWhoClicked())) {
+            return;
+        }
+        if (!event.getClickedInventory().equals(event.getInventory())) {
             return;
         }
         event.setResult(Event.Result.DENY);
         event.setCancelled(true);
-        org.bukkit.inventory.ItemStack result = event.getCurrentItem();
-
-        StringEditor editor = StringEditor.get((Player) event.getWhoClicked());
-        EditModelData editData = EditSessions.get(event.getWhoClicked().getUniqueId());
-
-        if (editor.getEditorType() == StringEditor.Type.ID) {
-            editData.setId(result.getItemMeta().getDisplayName());
-        } else if (editor.getEditorType() == StringEditor.Type.NAME) {
-            String name = MessageUtil.attachColor(result.getItemMeta().getDisplayName());
-            editData.setName(name);
-        }
-        Player player = (Player) event.getWhoClicked();
-        StringEditor.close(player);
-        new ModelSetting(player).open(player);
     }
 
     @EventHandler

@@ -66,6 +66,10 @@ public class StringEditor extends ContainerAnvil {
         openingMaps.remove(player.getUniqueId());
     }
 
+    public static boolean isOpening(Player player) {
+        return openingMaps.keySet().contains(player.getUniqueId());
+    }
+
     public Type getEditorType() {
         return editorType;
     }

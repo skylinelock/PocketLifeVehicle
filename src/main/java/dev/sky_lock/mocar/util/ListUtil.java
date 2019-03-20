@@ -1,5 +1,6 @@
 package dev.sky_lock.mocar.util;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,5 +24,9 @@ public class ListUtil {
                 .filter(type::isInstance)
                 .map(type::cast)
                 .collect(Collectors.toList());
+    }
+
+    public static List<String> singleton(String str) {
+        return Collections.singletonList(str);
     }
 }

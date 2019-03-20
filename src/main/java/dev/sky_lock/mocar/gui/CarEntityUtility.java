@@ -1,17 +1,19 @@
 package dev.sky_lock.mocar.gui;
 
+import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
-import dev.sky_lock.mocar.gui.api.Button;
-import dev.sky_lock.mocar.gui.api.Gage;
-import dev.sky_lock.mocar.gui.api.GuiType;
-import dev.sky_lock.mocar.gui.api.GuiWindow;
+import dev.sky_lock.mocar.gui.api.*;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
+import dev.sky_lock.mocar.util.ListUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
+import java.util.UUID;
 
 /**
  * @author sky_lock
@@ -19,17 +21,24 @@ import java.util.Collections;
 
 public class CarEntityUtility extends GuiWindow {
 
-    public CarEntityUtility(Player player) {
+    public CarEntityUtility(Player player, CarArmorStand car) {
         super("CarUtility", player, GuiType.BIG);
-        super.addComponent(new Gage(45, 53, new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.RED).build(),
-                new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.GREEN).build()));
-/*        super.addComponent(new Panel(Arrays.asList(15, 16, 24, 25, 33, 34), new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.BLUE).build(), (event) -> {
-            event.getWhoClicked().sendMessage("hogehoge");
-        }));*/
-        super.addComponent(new Button(4, new ItemStackBuilder(Material.MINECART, 1).name(ChatColor.GREEN + "レッカー移動").lore(Collections.singletonList("アイテム化して持ち運べるようにします")).build(), (event) -> {
+        super.addComponent(new Button(4, new ItemStackBuilder(Material.ENDER_PEARL, 1).name(ChatColor.RED + "閉じる").build(), (event) -> {
+            player.closeInventory();
+        }));
+        super.addComponent(new Button(11, new ItemStackBuilder(Material.MINECART, 1).name(ChatColor.AQUA + "レッカー移動").lore(Collections.singletonList(ChatColor.GRAY + "アイテム化して持ち運べるようにします")).build(), (event) -> {
             CarEntities.tow(player.getUniqueId());
             close(player);
             player.closeInventory();
         }));
+        UUID owner = CarEntities.getOwner(car);
+        super.addComponent(new Icon(20, getOwnerInfoItem(owner)));
+
+        super.addComponent(new Gage(36, 53, new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.RED).build(),
+                new ItemStackBuilder(Material.STAINED_GLASS_PANE, 1).dyeColor(DyeColor.GREEN).build()));
+    }
+
+    private ItemStack getOwnerInfoItem(UUID owner) {
+        return new ItemStackBuilder(Material.SKULL_ITEM, 1).skullOwner(owner).name(ChatColor.AQUA + "所有者").lore(ListUtil.singleton(ChatColor.GOLD + Bukkit.getOfflinePlayer(owner).getName())).build();
     }
 }
