@@ -2,7 +2,7 @@ package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.packet.ActionBar;
-import dev.sky_lock.mocar.util.SubmergedMessage;
+import dev.sky_lock.mocar.task.SubmergedMessageTask;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -92,37 +92,7 @@ public class CarArmorStand extends EntityArmorStand {
     @Override
     protected void ar() {
         super.ar();
-        if (passengers == null || passengers.isEmpty()) {
-            killEntity();
-            return;
-        }
-        EntityLiving passenger = (EntityLiving) passengers.get(0);
-        if (!(passenger instanceof EntityPlayer)) {
-            killEntity();
-            return;
-        }
-        SubmergedMessage warning = new SubmergedMessage();
-        Player player = ((Player) passenger.getBukkitEntity());
-        new BukkitRunnable() {
-            int count = 5;
-            @Override
-            public void run() {
-                if (!isInWater()) {
-                    warning.stop(player);
-                    cancel();
-                    return;
-                }
-                if (count == 0) {
-                    killEntity();
-                    warning.stop(player);
-                    cancel();
-                    return;
-                }
-                warning.setCount(count);
-                warning.send(player);
-                count--;
-            }
-        }.runTaskTimer(MoCar.getInstance(), 5L, 20L);
+        new SubmergedMessageTask().run(this);
     }
 
     @Override

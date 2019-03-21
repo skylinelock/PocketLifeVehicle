@@ -40,6 +40,13 @@ public class CarEntities {
         }
     }
 
+    public static void kill(CarArmorStand armorStand) {
+        if (entities.containsValue(armorStand)) {
+            entities.values().remove(armorStand);
+            armorStand.killEntity();
+        }
+    }
+
     public static void tow(UUID owner) {
         Optional.ofNullable(entities.get(owner)).ifPresent(car -> {
             tow(owner, car);
