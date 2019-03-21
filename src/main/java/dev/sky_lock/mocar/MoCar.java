@@ -19,7 +19,7 @@ public class MoCar extends JavaPlugin {
 
     private static MoCar instance;
     private ProtocolManager protocolManager;
-    public static String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "MoCar" + ChatColor.DARK_GRAY +"] " + ChatColor.RESET;
+    public static String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "Car" + ChatColor.DARK_GRAY +"] " + ChatColor.RESET;
 
     @Override
     public void onEnable() {
