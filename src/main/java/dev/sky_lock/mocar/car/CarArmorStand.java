@@ -2,6 +2,7 @@ package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.packet.ActionBar;
+import dev.sky_lock.mocar.task.BurnExplosionTask;
 import dev.sky_lock.mocar.task.SubmergedMessageTask;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
@@ -12,7 +13,6 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -30,6 +30,7 @@ public class CarArmorStand extends EntityArmorStand {
     private float steer_yaw;
     private float currentSpeed;
     private float acceleration;
+    private boolean beginExplode = false;
 
     CarArmorStand(World world, CarModel model, CarStatus status) {
         super(world);
@@ -40,7 +41,6 @@ public class CarArmorStand extends EntityArmorStand {
         nbt.setBoolean("NoBasePlate", true);
         nbt.setBoolean("Invulnerable", true);
         nbt.setBoolean("PersistenceRequired", true);
-        nbt.setBoolean("ShowArms", true);
         nbt.setBoolean("NoGravity", false);
         nbt.setBoolean("Invisible", true);
         nbt.setBoolean("Marker", false);
@@ -93,6 +93,19 @@ public class CarArmorStand extends EntityArmorStand {
     protected void ar() {
         super.ar();
         new SubmergedMessageTask().run(this);
+    }
+
+    @Override
+    protected void burn(float i) {
+        super.burn(i);
+        if (!beginExplode) {
+            new BurnExplosionTask().run(this);
+            this.beginExplode = true;
+        }
+    }
+
+    private void kill() {
+        CarEntities.kill(this);
     }
 
     @Override

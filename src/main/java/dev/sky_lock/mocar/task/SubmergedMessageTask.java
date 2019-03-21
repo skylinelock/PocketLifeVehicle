@@ -3,7 +3,6 @@ package dev.sky_lock.mocar.task;
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
-import dev.sky_lock.mocar.util.SubmergedMessage;
 import net.minecraft.server.v1_12_R1.EntityLiving;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import org.bukkit.entity.Player;
@@ -26,7 +25,7 @@ public class SubmergedMessageTask {
             return;
         }
         Player player = ((Player) passenger.getBukkitEntity());
-        SubmergedMessage warning = new SubmergedMessage();
+        SubmergedWarning warning = new SubmergedWarning();
         new BukkitRunnable() {
             int count = 5;
             @Override

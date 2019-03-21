@@ -1,4 +1,4 @@
-package dev.sky_lock.mocar.util;
+package dev.sky_lock.mocar.task;
 
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
@@ -10,15 +10,19 @@ import org.bukkit.entity.Player;
  * @author sky_lock
  */
 
-public class SubmergedMessage {
+public class AbstractWarning {
     private final TitlePacket mainTitle;
     private int count;
 
-    public SubmergedMessage() {
+    public AbstractWarning() {
         mainTitle = new TitlePacket();
         mainTitle.setTitle(WrappedChatComponent.fromText(ChatColor.RED + "⚠⚠WARNING⚠⚠"));
         mainTitle.setStay(20);
         mainTitle.setAction(EnumWrappers.TitleAction.TITLE);
+    }
+
+    protected int getCount() {
+        return count;
     }
 
     public void setCount(int count) {
