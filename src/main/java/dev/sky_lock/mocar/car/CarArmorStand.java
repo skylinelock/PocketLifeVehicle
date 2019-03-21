@@ -139,6 +139,7 @@ public class CarArmorStand extends EntityArmorStand {
         status.useFuel(0.05f);
 
         StringBuilder builder = new StringBuilder();
+        builder.append("           ");
         builder.append(ChatColor.GOLD);
         builder.append(ChatColor.BOLD);
         builder.append("燃料計  ");

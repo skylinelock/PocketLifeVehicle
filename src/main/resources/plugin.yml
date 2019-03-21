@@ -9,3 +9,4 @@ depend: [ProtocolLib]
 commands:
   mocar:
     description: mocar command.
+    aliases: [car, mcar]
