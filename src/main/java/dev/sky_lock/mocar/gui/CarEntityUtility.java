@@ -38,7 +38,7 @@ public class CarEntityUtility extends GuiWindow {
 
         UUID owner = CarEntities.getOwner(car);
         super.addComponent(new Icon(20, getOwnerInfoItem(owner)));
-        ItemStack hopper = new ItemStackBuilder(Material.HOPPER, 1).name(ChatColor.GOLD + "" + ChatColor.BOLD + "給油口").lore(Arrays.asList(ChatColor.GRAY + "残燃料 : " + car.getStatus().getFuel(), ChatColor.GRAY + "石炭ブロックを持って右クリックすると燃料を補充できます")).build();
+        ItemStack hopper = new ItemStackBuilder(Material.HOPPER, 1).name(ChatColor.GOLD + "" + ChatColor.BOLD + "給油口").lore(Arrays.asList(ChatColor.GRAY + "残燃料 : " + car.getStatus().getFuel(), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます")).build();
 
         super.addComponent(new Button(22, hopper, (event) -> {
             ItemStack itemStack = event.getCursor();
@@ -50,7 +50,7 @@ public class CarEntityUtility extends GuiWindow {
             }
             boolean success = car.refuel(30F);
             if (success) {
-                List<String> lore = Arrays.asList(ChatColor.GRAY + "残燃料 : " + car.getStatus().getFuel(), ChatColor.GRAY + "石炭ブロックを持って右クリックすると燃料を補充できます");
+                List<String> lore = Arrays.asList(ChatColor.GRAY + "残燃料 : " + car.getStatus().getFuel(), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
                 getInventory().setItem(22, new ItemStackBuilder(hopper).lore(lore).build());
                 itemStack.setAmount(itemStack.getAmount() - 1);
             }
