@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.packet;
 
 import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketContainer;
 import dev.sky_lock.mocar.MoCar;
 import org.bukkit.entity.Player;
@@ -26,6 +27,10 @@ public class AbstractServerPacket {
         } catch (InvocationTargetException ex) {
             plugin.getLogger().log(Level.WARNING, "Could not send a packet");
         }
+    }
+
+    public void broadCast() {
+        ProtocolLibrary.getProtocolManager().broadcastServerPacket(packet);
     }
 
     PacketContainer getPacket() {

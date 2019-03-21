@@ -5,8 +5,12 @@ import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
 import net.minecraft.server.v1_12_R1.EntityLiving;
 import net.minecraft.server.v1_12_R1.EntityPlayer;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.UUID;
 
 /**
  * @author sky_lock
@@ -28,6 +32,7 @@ public class SubmergedMessageTask {
         SubmergedWarning warning = new SubmergedWarning();
         new BukkitRunnable() {
             int count = 5;
+
             @Override
             public void run() {
                 if (!carArmorStand.isInWater()) {
@@ -35,16 +40,24 @@ public class SubmergedMessageTask {
                     cancel();
                     return;
                 }
-                if (count == 0) {
-                    CarEntities.kill(player.getUniqueId());
-                    warning.stop(player);
-                    cancel();
+                if (count != 0) {
+                    warning.setCount(count);
+                    warning.send(player);
+                    count--;
                     return;
                 }
-                warning.setCount(count);
-                warning.send(player);
-                count--;
+                UUID owner = CarEntities.getOwner(carArmorStand);
+                if (!player.getUniqueId().equals(owner)) {
+                    Player ownPlayer = Bukkit.getPlayer(owner);
+                    if (ownPlayer != null) {
+                        ownPlayer.sendMessage(MoCar.PREFIX + ChatColor.RED + "所有する車が" + player.getName() + "の運転によって破壊されました");
+                    }
+                }
+                CarEntities.kill(carArmorStand);
+                warning.stop(player);
+                cancel();
             }
+
         }.runTaskTimer(MoCar.getInstance(), 5L, 20L);
     }
 }
