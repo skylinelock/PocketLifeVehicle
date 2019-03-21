@@ -6,9 +6,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Colorable;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -18,14 +16,15 @@ import java.util.UUID;
 public class ItemStackBuilder {
 
     private InventoryItem inventoryItem;
-    private Material material;
-    private int amount;
-    private short damage;
-    private DyeColor color;
-    private Map<Enchantment, Integer> enchantMap = new HashMap<>();
 
     public ItemStackBuilder(Material material, int amount) {
-        switch (material) {
+        this(new ItemStack(material, amount));
+    }
+
+    public ItemStackBuilder(ItemStack itemStack) {
+        Material type = itemStack.getType();
+        int amount = itemStack.getAmount();
+        switch (type) {
             case SKULL_ITEM:
                 this.inventoryItem = new PlayerSkull(amount);
                 return;
@@ -36,7 +35,7 @@ public class ItemStackBuilder {
                 this.inventoryItem = new Wool(amount);
                 return;
         }
-        this.inventoryItem = new InventoryItem(new ItemStack(material, amount));
+        this.inventoryItem = new InventoryItem(itemStack);
     }
 
     public ItemStackBuilder skullOwner(UUID uuid) {

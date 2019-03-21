@@ -57,6 +57,20 @@ public class CarArmorStand extends EntityArmorStand {
         return status;
     }
 
+    public boolean refuel(float fuel) {
+        float current = status.getFuel();
+        float max = model.getMaxFuel();
+        if (current >= max) {
+            return false;
+        }
+        if (current + fuel > max) {
+            status.setFuel(max);
+            return true;
+        }
+        status.setFuel(current + fuel);
+        return true;
+    }
+
     //降りた時
     @Override
     protected void p(Entity entity) {
@@ -125,14 +139,19 @@ public class CarArmorStand extends EntityArmorStand {
         status.useFuel(0.05f);
 
         StringBuilder builder = new StringBuilder();
+        builder.append(ChatColor.GOLD);
+        builder.append(ChatColor.BOLD);
+        builder.append("燃料計  ");
         builder.append(ChatColor.GREEN);
+
         float fuelRate = status.getFuel() / model.getMaxFuel();
-        int filledRate = Math.round(100 * fuelRate);
+        int filledRate = Math.round(70 * fuelRate);
+
         for (int i = 0; i < filledRate; i++) {
             builder.append("ǀ");
         }
         builder.append(ChatColor.RED);
-        for (int i = 0; i < 100 - filledRate; i++) {
+        for (int i = 0; i < 70 - filledRate; i++) {
             builder.append("ǀ");
         }
         builder.append(" ");
