@@ -1,4 +1,4 @@
-package dev.sky_lock.mocar.commands;
+package dev.sky_lock.mocar.command;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.ModelList;

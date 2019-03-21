@@ -1,4 +1,4 @@
-package dev.sky_lock.mocar.commands;
+package dev.sky_lock.mocar.command;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

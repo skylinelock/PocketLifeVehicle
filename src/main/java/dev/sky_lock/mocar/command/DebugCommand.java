@@ -1,4 +1,4 @@
-package dev.sky_lock.mocar.commands;
+package dev.sky_lock.mocar.command;
 
 import dev.sky_lock.mocar.gui.EditModelData;
 import dev.sky_lock.mocar.gui.EditSessions;
