@@ -2,6 +2,7 @@ package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.packet.ActionBar;
+import dev.sky_lock.mocar.util.SubmergedMessage;
 import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,6 +12,7 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -55,6 +57,7 @@ public class CarArmorStand extends EntityArmorStand {
         return status;
     }
 
+    //降りた時
     @Override
     protected void p(Entity entity) {
         super.p(entity);
@@ -85,13 +88,45 @@ public class CarArmorStand extends EntityArmorStand {
         setSize(2.5F, 2.5F);
     }
 
+    //水に入った時
+    @Override
+    protected void ar() {
+        super.ar();
+        if (passengers == null || passengers.isEmpty()) {
+            killEntity();
+            return;
+        }
+        EntityLiving passenger = (EntityLiving) passengers.get(0);
+        if (!(passenger instanceof EntityPlayer)) {
+            killEntity();
+            return;
+        }
+        SubmergedMessage warning = new SubmergedMessage();
+        Player player = ((Player) passenger.getBukkitEntity());
+        new BukkitRunnable() {
+            int count = 5;
+            @Override
+            public void run() {
+                if (!isInWater()) {
+                    warning.stop(player);
+                    cancel();
+                    return;
+                }
+                if (count == 0) {
+                    killEntity();
+                    warning.stop(player);
+                    cancel();
+                    return;
+                }
+                warning.setCount(count);
+                warning.send(player);
+                count--;
+            }
+        }.runTaskTimer(MoCar.getInstance(), 5L, 20L);
+    }
 
     @Override
     public void a(float sideMot, float f1, float forMot) {
-        if (this.isInWater() || this.au()) {
-            this.killEntity();
-            return;
-        }
         if (passengers == null || passengers.isEmpty()) {
             super.a(sideMot, f1, forMot);
             status.setSpeed(BigDecimal.ZERO);

@@ -58,8 +58,7 @@ public class PlayerListener implements Listener {
 
         Player player = event.getPlayer();
         player.getInventory().remove(itemStack);
-        Location whereToSpawn = event.getClickedBlock().getLocation();
-        whereToSpawn.add(0, 1.0, 0);
+        Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
         CarEntities.tow(player.getUniqueId());
         CarEntities.spawn(player.getUniqueId(), model, whereToSpawn, Float.valueOf(fuel));
     }
