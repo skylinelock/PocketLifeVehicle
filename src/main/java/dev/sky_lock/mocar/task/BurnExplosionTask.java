@@ -44,6 +44,7 @@ public class BurnExplosionTask {
                     car.getLocation().getWorld().playSound(car.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1.0F, 1.0F);
                     CarEntities.kill(car);
                     warning.stop(player);
+                    passenger.killEntity();
                     cancel();
                     return;
                 }
