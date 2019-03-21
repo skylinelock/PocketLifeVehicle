@@ -17,9 +17,9 @@ public class ToggleButton implements IGuiComponent {
     private Consumer<InventoryClickEvent> beforeClick;
     private Consumer<InventoryClickEvent> afterClick;
 
-    public ToggleButton(int slot, boolean order, ItemStack before, ItemStack after, Consumer<InventoryClickEvent> beforeClick, Consumer<InventoryClickEvent> afterClick) {
+    public ToggleButton(int slot, boolean isBeforeStart, ItemStack before, ItemStack after, Consumer<InventoryClickEvent> beforeClick, Consumer<InventoryClickEvent> afterClick) {
         this.slot = slot;
-        if (order) {
+        if (isBeforeStart) {
             current = before;
         } else {
             current = after;
