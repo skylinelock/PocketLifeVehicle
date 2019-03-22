@@ -1,7 +1,11 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.packet.ActionBar;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -19,6 +23,10 @@ public class CarEntities {
 
     public static boolean spawn(UUID player, CarModel model, Location location, float fuel) {
         if (player == null || model == null || location == null) {
+            return false;
+        }
+        if (location.getBlock() == null || location.getBlock().getType() != Material.AIR) {
+            ActionBar.sendPacket(Bukkit.getPlayer(player), ChatColor.RED + "ブロックがあるので車を設置できません");
             return false;
         }
         CarArmorStand armorStand = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle(), model, new CarStatus());

@@ -8,7 +8,6 @@ import dev.sky_lock.mocar.car.ModelList;
 import dev.sky_lock.mocar.packet.ActionBar;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -31,9 +30,6 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) {
-            return;
-        }
-        if (event.getBlockFace() != BlockFace.UP){
             return;
         }
         ItemStack itemStack = event.getItem();
@@ -63,10 +59,11 @@ public class PlayerListener implements Listener {
         String fuel = raw.trim().split(":")[1];
 
         Player player = event.getPlayer();
-        player.getInventory().remove(itemStack);
         Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
         CarEntities.tow(player.getUniqueId());
-        CarEntities.spawn(player.getUniqueId(), model, whereToSpawn, Float.valueOf(fuel));
+        if (CarEntities.spawn(player.getUniqueId(), model, whereToSpawn, Float.valueOf(fuel))) {
+            player.getInventory().remove(itemStack);
+        };
     }
 
     @EventHandler
