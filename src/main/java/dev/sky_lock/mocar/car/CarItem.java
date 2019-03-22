@@ -28,6 +28,14 @@ public class CarItem implements ConfigurationSerializable {
         return new ItemStackBuilder(type, 1).name(name).durability(damage).build();
     }
 
+    public Material getType() {
+        return type;
+    }
+
+    public short getDurability() {
+        return damage;
+    }
+
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();

@@ -65,6 +65,12 @@ public class CarEntities {
         kill(owner);
     }
 
+    public static Set<CarEntity> getCarEntities() {
+        Set<CarEntity> carEntities = new HashSet<>();
+        entities.forEach((key, value) -> carEntities.add(new CarEntity(key.toString(), value.getModel(), value.getLocation(), value.getStatus().getFuel())));
+        return carEntities;
+    }
+
     public static CarArmorStand get(UUID player) {
         return entities.get(player);
     }
