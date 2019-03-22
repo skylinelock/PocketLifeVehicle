@@ -35,6 +35,10 @@ public class GiveCommand implements ICommand, IAdminCommand {
             player.sendMessage(MoCar.PREFIX + ChatColor.RED + "車種が見つかりませんでした");
             return;
         }
+        if (!MoCar.getInstance().getPluginConfig().getAllowWorlds().contains(target.getWorld())) {
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "対象のプレイヤーがいるワールドは車の使用が許可されていません");
+            return;
+        }
         CarEntities.kill(player.getUniqueId());
         boolean success = CarEntities.spawn(target.getUniqueId(), model, target.getLocation(), model.getMaxFuel());
 

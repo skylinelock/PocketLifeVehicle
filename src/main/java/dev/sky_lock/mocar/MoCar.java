@@ -5,6 +5,7 @@ import com.comphenix.protocol.ProtocolManager;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.ModelList;
 import dev.sky_lock.mocar.command.CommandHandler;
+import dev.sky_lock.mocar.config.PluginConfig;
 import dev.sky_lock.mocar.gui.SignEditor;
 import dev.sky_lock.mocar.item.Glowing;
 import dev.sky_lock.mocar.json.CarEntityStoreFile;
@@ -22,6 +23,7 @@ import java.io.IOException;
 public class MoCar extends JavaPlugin {
 
     private static MoCar instance;
+    private PluginConfig pluginConfig;
     private final CarEntityStoreFile carEntityStoreFile = new CarEntityStoreFile(getDataFolder().toPath());
     private ProtocolManager protocolManager;
     public static String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "Car" + ChatColor.DARK_GRAY +"] " + ChatColor.RESET;
@@ -29,6 +31,7 @@ public class MoCar extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        pluginConfig = new PluginConfig();
         protocolManager = ProtocolLibrary.getProtocolManager();
 
         CommandHandler commandHandler = new CommandHandler();
@@ -47,6 +50,7 @@ public class MoCar extends JavaPlugin {
     public void onDisable() {
         ModelList.saveConfig();
         saveCarEntities();
+        pluginConfig.saveToFile();
     }
 
     public static MoCar getInstance() {
@@ -55,6 +59,10 @@ public class MoCar extends JavaPlugin {
 
     public ProtocolManager getProtocolManager() {
         return protocolManager;
+    }
+
+    public PluginConfig getPluginConfig() {
+        return pluginConfig;
     }
 
     private void spawnCarEntities() {

@@ -1,9 +1,12 @@
 package dev.sky_lock.mocar.listener;
 
+import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.CarModel;
 import dev.sky_lock.mocar.car.CraftCar;
 import dev.sky_lock.mocar.car.ModelList;
+import dev.sky_lock.mocar.packet.ActionBar;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
@@ -48,13 +51,16 @@ public class PlayerListener implements Listener {
         if (!meta.hasLore()) {
             return;
         }
-        List<String> lores = meta.getLore();
-        String raw = lores.get(0);
-        String fuel = raw.trim().split(":")[1];
-
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
+        if (!MoCar.getInstance().getPluginConfig().getAllowWorlds().contains(event.getPlayer().getWorld())) {
+            ActionBar.sendPacket(event.getPlayer(), ChatColor.RED + "このワールドでは車は使用できません");
+            return;
+        }
+        List<String> lores = meta.getLore();
+        String raw = lores.get(0);
+        String fuel = raw.trim().split(":")[1];
 
         Player player = event.getPlayer();
         player.getInventory().remove(itemStack);

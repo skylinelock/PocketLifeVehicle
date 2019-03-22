@@ -20,7 +20,7 @@ public class BurnExplosionTask {
 
     public void run(CarArmorStand car) {
         new BukkitRunnable() {
-            int count = 5;
+            int count = MoCar.getInstance().getPluginConfig().getWarningCount();
             BurnExplosionWarning warning = new BurnExplosionWarning();
 
             @Override

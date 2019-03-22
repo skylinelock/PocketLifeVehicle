@@ -22,8 +22,10 @@ public class ReloadCommand implements ICommand, IAdminCommand, IConsoleCommand {
 
         if (flag.equalsIgnoreCase("from")) {
             ModelList.reloadConfig();
+            MoCar.getInstance().getPluginConfig().reloadFromDisk();
             sender.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Success : Loaded car models from disk");
         } else if (flag.equalsIgnoreCase("to")) {
+            MoCar.getInstance().getPluginConfig().saveToFile();
             ModelList.saveConfig();
             sender.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Success : Saved car modules to disk ");
         } else {

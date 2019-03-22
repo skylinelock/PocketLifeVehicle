@@ -54,6 +54,10 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
                 case "search":
                     cmd = new SearchCommand();
                     break;
+                case "allowworld":
+                case "aw":
+                    cmd = new AllowWorldCommand();
+                    break;
                 case "reload":
                     cmd = new ReloadCommand();
                     break;
@@ -83,7 +87,7 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
         if (args.length < 2) {
             String input = args[0];
             if (Permission.ADMIN_COMMAND.obtained(sender)) {
-                tabCompletes.addAll(Stream.of("give", "edit", "removemodel", "debug", "reload").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
+                tabCompletes.addAll(Stream.of("give", "edit", "removemodel", "debug", "reload", "allowworld").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
             }
             tabCompletes.addAll(Stream.of("towaway", "listmodel", "search").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
         } else if (args.length  == 2) {

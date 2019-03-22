@@ -31,7 +31,7 @@ public class SubmergedMessageTask {
         Player player = ((Player) passenger.getBukkitEntity());
         SubmergedWarning warning = new SubmergedWarning();
         new BukkitRunnable() {
-            int count = 5;
+            int count = MoCar.getInstance().getPluginConfig().getWarningCount();
 
             @Override
             public void run() {

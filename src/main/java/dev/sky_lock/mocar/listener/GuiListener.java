@@ -57,7 +57,7 @@ public class GuiListener implements Listener {
                 gui.open(player);
                 return;
             }
-            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getOfflinePlayer(carOwner).getName() + "が所有しています");
+            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getOfflinePlayer(carOwner).getName() + " が所有しています");
             return;
         }
 
