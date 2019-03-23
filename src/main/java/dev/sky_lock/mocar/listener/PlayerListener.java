@@ -55,10 +55,17 @@ public class PlayerListener implements Listener {
             return;
         }
         List<String> lores = meta.getLore();
-        String raw = lores.get(0);
-        String fuel = raw.trim().split(":")[1];
+        String rawOwner = lores.get(0);
+        String ownerName = rawOwner.replaceAll("\\s", "").split(":")[1];
+        String rawFuel = lores.get(1);
+        String fuel = rawFuel.replaceAll("\\s", "").split(":")[1];
 
         Player player = event.getPlayer();
+
+        if (!player.getName().equals(ownerName)) {
+            ActionBar.sendPacket(player, ChatColor.RED + "この車を所有していないので設置できません");
+            return;
+        }
         Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
         CarEntities.tow(player.getUniqueId());
         if (CarEntities.spawn(player.getUniqueId(), model, whereToSpawn, Float.valueOf(fuel))) {
