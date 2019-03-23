@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 /**
  * @author sky_lock
@@ -139,28 +140,20 @@ public class CarArmorStand extends EntityArmorStand {
 
         status.useFuel(0.05f);
 
-        StringBuilder builder = new StringBuilder();
-        builder.append("           ");
-        builder.append(ChatColor.GOLD);
-        builder.append(ChatColor.BOLD);
-        builder.append("燃料計  ");
-        builder.append(ChatColor.GREEN);
+        StringBuilder builder = new StringBuilder("           ");
+        builder.append(ChatColor.GOLD).append(ChatColor.BOLD).append("燃料計  ").append(ChatColor.GREEN);
 
         float fuelRate = status.getFuel() / model.getMaxFuel();
-        int filledRate = Math.round(70 * fuelRate);
+        int filled = Math.round(70 * fuelRate);
 
-        for (int i = 0; i < filledRate; i++) {
-            builder.append("ǀ");
-        }
+        IntStream.range(0, filled).forEach(count -> builder.append("ǀ"));
         builder.append(ChatColor.RED);
-        for (int i = 0; i < 70 - filledRate; i++) {
-            builder.append("ǀ");
-        }
+        IntStream.range(0, 70 - filled).forEach(count -> builder.append("|"));
+
         builder.append(" ");
+
         if (Math.round(status.getFuel()) == 0) {
-            builder.append(ChatColor.RED);
-            builder.append(ChatColor.BOLD);
-            builder.append("Empty");
+            builder.append(ChatColor.RED).append(ChatColor.BOLD).append("Empty");
         } else {
             if (fuelRate > 0.7f) {
                 builder.append(ChatColor.DARK_GREEN);
@@ -171,11 +164,7 @@ public class CarArmorStand extends EntityArmorStand {
             }
             builder.append(ChatColor.BOLD);
             builder.append(Math.round(status.getFuel()));
-            builder.append(ChatColor.GRAY);
-            builder.append(ChatColor.BOLD);
-            builder.append(" / ");
-            builder.append(ChatColor.DARK_GREEN);
-            builder.append(ChatColor.BOLD);
+            builder.append(ChatColor.GRAY).append(ChatColor.BOLD).append(" / ").append(ChatColor.DARK_GREEN).append(ChatColor.BOLD);
             builder.append(Math.round(model.getMaxFuel()));
         }
         ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
@@ -189,9 +178,9 @@ public class CarArmorStand extends EntityArmorStand {
         this.fallDistance = 0.0F;
 
         if (sideInput < 0.0F) {
-            steer_yaw += 5.5F;
+            steer_yaw += 4.0F;
         } else if (sideInput > 0.0F) {
-            steer_yaw -= 5.5F;
+            steer_yaw -= 4.0F;
         }
 
         this.yaw = steer_yaw;
