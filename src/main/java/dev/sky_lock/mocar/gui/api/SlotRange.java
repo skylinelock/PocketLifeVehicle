@@ -3,6 +3,7 @@ package dev.sky_lock.mocar.gui.api;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.IntStream;
 
 /**
  * @author sky_lock
@@ -12,9 +13,7 @@ public class SlotRange {
     private final List<Integer> slots = new ArrayList<>();
 
     public SlotRange(int start, int end) {
-        for (int i = 0; i < end - start + 1; i++) {
-            slots.add(start + i);
-        }
+        IntStream.rangeClosed(0, end - start).forEachOrdered(count -> slots.add(start + count));
     }
 
     public SlotRange(int slot) {
@@ -35,5 +34,9 @@ public class SlotRange {
 
     public void forEach(Consumer<Integer> consumer) {
         slots.forEach(consumer);
+    }
+
+    public int size() {
+        return slots.size();
     }
 }

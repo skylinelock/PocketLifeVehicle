@@ -148,7 +148,7 @@ public class CarArmorStand extends EntityArmorStand {
 
         IntStream.range(0, filled).forEach(count -> builder.append("ǀ"));
         builder.append(ChatColor.RED);
-        IntStream.range(0, 70 - filled).forEach(count -> builder.append("|"));
+        IntStream.range(0, 70 - filled).forEach(count -> builder.append("ǀ"));
 
         builder.append(" ");
 
