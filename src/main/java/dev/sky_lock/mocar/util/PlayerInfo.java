@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.util;
 
 import org.apache.commons.io.IOUtils;
+import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
@@ -14,7 +15,7 @@ import java.util.UUID;
  * @author sky_lock
  */
 
-public class MojangUtil {
+public class PlayerInfo {
 
     public static UUID getUUID(String name) {
         String apiUri = "https://api.mojang.com/users/profiles/minecraft/" + name;
@@ -34,5 +35,9 @@ public class MojangUtil {
     private static UUID toUUID(String plain) {
         plain = plain.substring(0, 8) + "-" + plain.substring(8, 12) + "-" + plain.substring(12, 16) + "-" + plain.substring(16, 20) + "-" + plain.substring(20, 32);
         return UUID.fromString(plain);
+    }
+
+    public static String getName(UUID player) {
+        return Bukkit.getOfflinePlayer(player).getName();
     }
 }

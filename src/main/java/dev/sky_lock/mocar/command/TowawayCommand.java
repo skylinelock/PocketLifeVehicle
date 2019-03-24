@@ -4,7 +4,7 @@ import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.Permission;
 import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
-import dev.sky_lock.mocar.util.MojangUtil;
+import dev.sky_lock.mocar.util.PlayerInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -30,7 +30,7 @@ public class TowawayCommand implements ICommand {
             return;
         }
         String name = args[1];
-        UUID targetUUID = MojangUtil.getUUID(name);
+        UUID targetUUID = PlayerInfo.getUUID(name);
         if (towaway(targetUUID)) {
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Player: " + name + " の車をアイテム化しました");
         } else {

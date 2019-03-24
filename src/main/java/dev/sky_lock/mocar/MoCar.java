@@ -2,6 +2,7 @@ package dev.sky_lock.mocar;
 
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.ProtocolManager;
+import dev.sky_lock.glassy.gui.MenuListener;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.ModelList;
 import dev.sky_lock.mocar.command.CommandHandler;
@@ -9,7 +10,6 @@ import dev.sky_lock.mocar.config.PluginConfig;
 import dev.sky_lock.mocar.gui.SignEditor;
 import dev.sky_lock.mocar.item.Glowing;
 import dev.sky_lock.mocar.json.CarEntityStoreFile;
-import dev.sky_lock.mocar.listener.GuiListener;
 import dev.sky_lock.mocar.listener.PlayerListener;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -37,7 +37,7 @@ public class MoCar extends JavaPlugin {
         CommandHandler commandHandler = new CommandHandler();
         getCommand("mocar").setExecutor(commandHandler);
 
-        getServer().getPluginManager().registerEvents(new GuiListener(), this);
+        getServer().getPluginManager().registerEvents(new MenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         SignEditor.registerListener();

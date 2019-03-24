@@ -1,32 +1,24 @@
 package dev.sky_lock.mocar.listener;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.Permission;
-import dev.sky_lock.mocar.car.CarArmorStand;
-import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.CraftCar;
-import dev.sky_lock.mocar.gui.*;
+import dev.sky_lock.mocar.click.CarClick;
+import dev.sky_lock.mocar.click.InventoryClick;
+import dev.sky_lock.mocar.gui.EditSessions;
+import dev.sky_lock.mocar.gui.SignEditor;
+import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.gui.api.GuiWindow;
-import dev.sky_lock.mocar.packet.ActionBar;
-import dev.sky_lock.mocar.util.MessageUtil;
-import net.minecraft.server.v1_12_R1.ItemStack;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.util.UUID;
 
 /**
  * @author sky_lock
@@ -44,69 +36,12 @@ public class GuiListener implements Listener {
             return;
         }
         event.setCancelled(true);
-        Player player = event.getPlayer();
-        CraftCar craftCar = (CraftCar) as;
-        CarArmorStand car = (CarArmorStand) craftCar.getHandle();
-        UUID carOwner = CarEntities.getOwner(car);
-
-        if (player.isSneaking()) {
-            CarArmorStand carArmorStand = (CarArmorStand) craftCar.getHandle();
-            UUID owner = CarEntities.getOwner(carArmorStand);
-            if (player.getUniqueId().equals(owner) || Permission.CAR_CLICK.obtained(player)) {
-                CarEntityUtility gui = new CarEntityUtility(player, carArmorStand);
-                gui.open(player);
-                return;
-            }
-            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getOfflinePlayer(carOwner).getName() + " が所有しています");
-            return;
-        }
-
-        if (carOwner.equals(player.getUniqueId())) {
-            if (car.getStatus().isLocked()) {
-                ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "車に乗るためには解錠してください");
-                return;
-            }
-            craftCar.setPassenger(player);
-            return;
-        }
-        if (car.getStatus().isLocked()) {
-            ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + "この車は " + Bukkit.getOfflinePlayer(carOwner).getName() + " によってロックされています");
-            return;
-        }
-        craftCar.setPassenger(player);
+        new CarClick(event.getPlayer(), (CraftCar) as).accept();
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        GuiWindow.click(event);
-        ItemStack itemStack = CraftItemStack.asNMSCopy(event.getCurrentItem());
-        if (itemStack.hasTag() && itemStack.getTag().hasKey("editor-result")) {
-            event.setResult(Event.Result.DENY);
-            event.setCancelled(true);
-            org.bukkit.inventory.ItemStack result = event.getCurrentItem();
-
-            StringEditor editor = StringEditor.get((Player) event.getWhoClicked());
-            EditModelData editData = EditSessions.get(event.getWhoClicked().getUniqueId());
-
-            if (editor.getEditorType() == StringEditor.Type.ID) {
-                editData.setId(result.getItemMeta().getDisplayName());
-            } else if (editor.getEditorType() == StringEditor.Type.NAME) {
-                String name = MessageUtil.attachColor(result.getItemMeta().getDisplayName());
-                editData.setName(name);
-            }
-            Player player = (Player) event.getWhoClicked();
-            StringEditor.close(player);
-            new ModelSetting(player).open(player);
-            return;
-        }
-        if (!StringEditor.isOpening((Player) event.getWhoClicked())) {
-            return;
-        }
-        if (!event.getClickedInventory().equals(event.getInventory())) {
-            return;
-        }
-        event.setResult(Event.Result.DENY);
-        event.setCancelled(true);
+        new InventoryClick(event).accept();
     }
 
     @EventHandler
@@ -128,10 +63,4 @@ public class GuiListener implements Listener {
         StringEditor.close(event.getPlayer());
         EditSessions.destroy(event.getPlayer().getUniqueId());
     }
-
-    @EventHandler
-    public void onInventoryDrag(InventoryDragEvent event) {
-        GuiWindow.drag(event);
-    }
-
 }
