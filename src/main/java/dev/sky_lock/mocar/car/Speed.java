@@ -5,16 +5,22 @@ package dev.sky_lock.mocar.car;
  */
 
 public enum Speed {
-    SLOWEST(0.20f),
-    SLOW(0.30f),
-    NORMAL(0.40f),
-    FAST(0.50f),
-    FASTEST(0.60f);
+    SLOWEST("Slowest", 0.20f),
+    SLOW("Slow", 0.30f),
+    NORMAL("Normal", 0.40f),
+    FAST("Fast", 0.50f),
+    FASTEST("Fastest", 0.60f);
 
+    private final String label;
     private final float maxSpeed;
 
-    Speed(float maxSpeed) {
+    Speed(String label, float maxSpeed) {
+        this.label = label;
         this.maxSpeed = maxSpeed;
+    }
+
+    public String getLabel() {
+        return label;
     }
 
     float getMax() {

@@ -1,8 +1,7 @@
 package dev.sky_lock.mocar.click;
 
-import dev.sky_lock.mocar.gui.EditModelData;
 import dev.sky_lock.mocar.gui.EditSessions;
-import dev.sky_lock.mocar.gui.ModelSetting;
+import dev.sky_lock.mocar.gui.ModelSettingMenu;
 import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.util.MessageUtil;
 import net.minecraft.server.v1_12_R1.ItemStack;
@@ -30,18 +29,18 @@ public class InventoryClick {
             org.bukkit.inventory.ItemStack result = event.getCurrentItem();
 
             StringEditor editor = StringEditor.get((Player) event.getWhoClicked());
-            EditModelData editData = EditSessions.get(event.getWhoClicked().getUniqueId());
+            EditSessions.get(event.getWhoClicked().getUniqueId()).ifPresent(session -> {
+                if (editor.getEditorType() == StringEditor.Type.ID) {
+                    session.setId(result.getItemMeta().getDisplayName());
+                } else if (editor.getEditorType() == StringEditor.Type.NAME) {
+                    String name = MessageUtil.attachColor(result.getItemMeta().getDisplayName());
+                    session.setName(name);
+                }
+                Player player = (Player) event.getWhoClicked();
+                StringEditor.close(player);
+                new ModelSettingMenu(player).open(player);
+            });
 
-            if (editor.getEditorType() == StringEditor.Type.ID) {
-                editData.setId(result.getItemMeta().getDisplayName());
-            } else if (editor.getEditorType() == StringEditor.Type.NAME) {
-                String name = MessageUtil.attachColor(result.getItemMeta().getDisplayName());
-                editData.setName(name);
-            }
-            Player player = (Player) event.getWhoClicked();
-            StringEditor.close(player);
-            new ModelSetting(player).open(player);
-            return;
         }
         if (!StringEditor.isOpening((Player) event.getWhoClicked())) {
             return;

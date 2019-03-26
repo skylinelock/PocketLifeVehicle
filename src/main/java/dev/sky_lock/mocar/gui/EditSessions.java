@@ -2,6 +2,7 @@ package dev.sky_lock.mocar.gui;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -20,8 +21,8 @@ public class EditSessions {
         edits.remove(uuid);
     }
 
-    public static EditModelData get(UUID uuid) {
-        return edits.get(uuid);
+    public static Optional<EditModelData> get(UUID uuid) {
+        return Optional.ofNullable(edits.get(uuid));
     }
 
 }

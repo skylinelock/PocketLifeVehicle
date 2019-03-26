@@ -4,7 +4,6 @@ import dev.sky_lock.mocar.Permission;
 import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.CraftCar;
-import dev.sky_lock.mocar.gui.CarEntityUtility;
 import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.util.PlayerInfo;
 import org.bukkit.ChatColor;
@@ -27,34 +26,31 @@ public class CarClick {
 
     public void accept() {
         CarArmorStand car = (CarArmorStand) craftCar.getHandle();
-        UUID owner = CarEntities.getOwner(car);
-        if (owner == null) {
-            return;
-        }
-        UUID clicked = player.getUniqueId();
-        String ownerName = PlayerInfo.getName(owner);
-        if (player.isSneaking()) {
-            if (!clicked.equals(owner) && !Permission.CAR_CLICK.obtained(player)) {
-                sendFailureInfo("この車は " + ownerName + " が所有しています");
+        CarEntities.getOwner(car).ifPresent(owner -> {
+            UUID clicked = player.getUniqueId();
+            String ownerName = PlayerInfo.getName(owner);
+            if (player.isSneaking()) {
+                if (!clicked.equals(owner) && !Permission.CAR_CLICK.obtained(player)) {
+                    sendFailureInfo("この車は " + ownerName + " が所有しています");
+                    return;
+                }
+                car.openUtilMenu(player);
                 return;
             }
-            CarEntityUtility gui = new CarEntityUtility(player, car);
-            gui.open(player);
-            return;
-        }
-        if (clicked.equals(owner)) {
+            if (clicked.equals(owner)) {
+                if (car.getStatus().isLocked()) {
+                    sendFailureInfo("車に乗るためには解錠してください");
+                    return;
+                }
+                craftCar.setPassenger(player);
+                return;
+            }
             if (car.getStatus().isLocked()) {
-                sendFailureInfo("車に乗るためには解錠してください");
+                sendFailureInfo("この車は " + ownerName + " によってロックされています");
                 return;
             }
             craftCar.setPassenger(player);
-            return;
-        }
-        if (car.getStatus().isLocked()) {
-            sendFailureInfo("この車は " + ownerName + " によってロックされています");
-            return;
-        }
-        craftCar.setPassenger(player);
+        });
     }
 
     private void sendFailureInfo(String message) {

@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.gui.CarUtilMenu;
 import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.task.BurnExplosionTask;
 import dev.sky_lock.mocar.task.SubmergedMessageTask;
@@ -26,6 +27,7 @@ import java.util.stream.IntStream;
 
 public class CarArmorStand extends EntityArmorStand {
     private final static Map<UUID, CarArmorStand> carMap = new HashMap<>();
+    private CarUtilMenu menu;
     private final CarModel model;
     private final CarStatus status;
     private float steer_yaw;
@@ -49,6 +51,13 @@ public class CarArmorStand extends EntityArmorStand {
         this.a(nbt);
         this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(model.getItem().getStack(model.getName())));
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
+    }
+
+    public void openUtilMenu(Player player) {
+        if (this.menu == null) {
+            this.menu = new CarUtilMenu(player, this);
+        }
+        this.menu.open(player);
     }
 
     public Location getLocation() {
@@ -138,7 +147,10 @@ public class CarArmorStand extends EntityArmorStand {
             return;
         }
 
-        status.useFuel(0.05f);
+        BigDecimal roundedSpeed = status.getSpeed().setScale(4, BigDecimal.ROUND_HALF_UP);
+        if (roundedSpeed.compareTo(BigDecimal.ZERO) != 0) {
+            status.useFuel(0.05f);
+        }
 
         StringBuilder builder = new StringBuilder("           ");
         builder.append(ChatColor.GOLD).append(ChatColor.BOLD).append("燃料計  ").append(ChatColor.GREEN);
@@ -177,13 +189,20 @@ public class CarArmorStand extends EntityArmorStand {
 
         this.fallDistance = 0.0F;
 
-        if (sideInput < 0.0F) {
-            steer_yaw += 4.0F;
-        } else if (sideInput > 0.0F) {
-            steer_yaw -= 4.0F;
+        if (sideInput != 0.0F) {
+            status.useFuel(0.05F);
         }
 
-        this.yaw = steer_yaw;
+        int roundFuel = Math.round(status.getFuel());
+        if (roundFuel != 0 && roundedSpeed.compareTo(BigDecimal.ZERO) != 0) {
+            if (sideInput < 0.0F) {
+                status.addSteerYaw(4.0F);
+            } else if (sideInput > 0.0F) {
+                status.addSteerYaw(-4.0F);
+            }
+        }
+
+        this.yaw = status.getSteerYaw();
         this.lastYaw = this.yaw;
         this.pitch = passenger.pitch * 0.5F;
         setYawPitch(this.yaw, this.pitch);

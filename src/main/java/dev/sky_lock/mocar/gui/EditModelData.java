@@ -26,7 +26,7 @@ public class EditModelData {
         return fuel;
     }
 
-    public void setLores(List<String> lores) {
+    public void setLore(List<String> lores) {
         this.lores = lores;
     }
 

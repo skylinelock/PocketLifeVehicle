@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 public class CarStatus {
     private float fuel;
     private BigDecimal speed;
+    private float steerYaw;
     private boolean locked = true;
 
     public void setFuel(float fuel) {
@@ -35,11 +36,15 @@ public class CarStatus {
         return this.locked;
     }
 
+    public void addSteerYaw(float yaw) {
+        this.steerYaw += yaw;
+    }
+
+    public float getSteerYaw() {
+        return steerYaw;
+    }
+
     public void useFuel(float used) {
-        BigDecimal roundedSpeed = speed.setScale(4, BigDecimal.ROUND_HALF_UP);
-        if (roundedSpeed.compareTo(BigDecimal.ZERO) == 0) {
-            return;
-        }
         if (fuel < 0.0f) {
             return;
         }

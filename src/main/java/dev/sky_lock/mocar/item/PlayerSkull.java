@@ -2,9 +2,9 @@ package dev.sky_lock.mocar.item;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.SkullType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.UUID;
 
@@ -12,31 +12,24 @@ import java.util.UUID;
  * @author sky_lock
  */
 
-public class PlayerSkull extends InventoryItem {
-    private UUID owner;
+public class PlayerSkull {
+    private final int amount;
+    private OfflinePlayer player;
 
-    public PlayerSkull(int amount) {
-        super(new ItemStack(Material.SKULL_ITEM, amount, (short) SkullType.PLAYER.ordinal()));
+    public PlayerSkull(OfflinePlayer player, int amount) {
+        this.player = player;
+        this.amount = amount;
     }
 
-    public void setOwner(UUID uuid) {
-        this.owner = uuid;
+    public static PlayerSkull of(UUID owner, int amount) {
+        return new PlayerSkull(Bukkit.getOfflinePlayer(owner), amount);
     }
 
-    public UUID getOwner() {
-        return owner;
-    }
-
-    @Override
     public ItemStack toItemStack() {
-        if (itemMeta == null) {
-            return super.toItemStack();
+        ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, amount, (short) SkullType.PLAYER.ordinal());
+        if (player == null) {
+            return itemStack;
         }
-        if (owner != null) {
-            SkullMeta skullMeta = (SkullMeta) itemMeta;
-            skullMeta.setOwningPlayer(Bukkit.getOfflinePlayer(owner));
-            itemStack.setItemMeta(skullMeta);
-        }
-        return super.toItemStack();
+        return new ItemStackBuilder(itemStack).name(player.getName()).build();
     }
 }

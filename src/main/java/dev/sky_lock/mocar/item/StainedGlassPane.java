@@ -3,39 +3,26 @@ package dev.sky_lock.mocar.item;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Colorable;
 
 /**
  * @author sky_lock
  */
 
-public class StainedGlassPane extends InventoryItem implements Colorable {
+public class StainedGlassPane {
 
-    private DyeColor color;
+    private final DyeColor color;
+    private final int amount;
 
-    public StainedGlassPane(int amount) {
-        super(new ItemStack(Material.STAINED_GLASS_PANE, amount));
+    public StainedGlassPane(DyeColor color, int amount) {
+        this.color = color;
+        this.amount = amount;
     }
 
-    @Override
-    public DyeColor getColor() {
-        return color;
+    public static StainedGlassPane of(DyeColor color, int amount) {
+        return new StainedGlassPane(color, amount);
     }
 
-    @Override
-    public void setColor(DyeColor dyeColor) {
-        this.color = dyeColor;
-    }
-
-    @Override
     public ItemStack toItemStack() {
-        if (itemMeta == null) {
-            return super.toItemStack();
-        }
-        if (color == null) {
-            return super.toItemStack();
-        }
-        itemStack.setDurability(color.getWoolData());
-        return super.toItemStack();
+        return ItemStackBuilder.of(Material.STAINED_GLASS_PANE, amount).durability(color.getWoolData()).build();
     }
 }

@@ -2,6 +2,7 @@ package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.packet.ActionBar;
+import dev.sky_lock.mocar.util.PlayerInfo;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -66,7 +67,7 @@ public class CarEntities {
         CarItem carItem = model.getItem();
         ItemStack itemStack = carItem.getStack(model.getName());
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setLore(Arrays.asList("Owner : " + Bukkit.getOfflinePlayer(getOwner(car)).getName(), "Fuel : " + car.getStatus().getFuel()));
+        meta.setLore(Arrays.asList("Owner : " + PlayerInfo.getName(owner), "Fuel : " + car.getStatus().getFuel()));
         itemStack.setItemMeta(meta);
         Item item = car.getBukkitEntity().getWorld().dropItem(car.getLocation(), itemStack);
         item.setMetadata("mocar-fuel", new FixedMetadataValue(MoCar.getInstance(), car.getStatus().getFuel()));
@@ -83,12 +84,7 @@ public class CarEntities {
         return entities.get(player);
     }
 
-    public static UUID getOwner(CarArmorStand car) {
-        for (Map.Entry<UUID, CarArmorStand> entry : entities.entrySet()) {
-            if (entry.getValue().equals(car)) {
-                return entry.getKey();
-            }
-        }
-        return null;
+    public static Optional<UUID> getOwner(CarArmorStand car) {
+        return entities.entrySet().stream().filter(entry -> entry.getValue().equals(car)).findFirst().map(Map.Entry::getKey);
     }
 }

@@ -25,7 +25,7 @@ public class CarItem implements ConfigurationSerializable {
     }
 
     public ItemStack getStack(String name) {
-        return new ItemStackBuilder(type, 1).name(name).durability(damage).build();
+        return ItemStackBuilder.of(type, 1).name(name).durability(damage).build();
     }
 
     public Material getType() {

@@ -10,8 +10,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.UUID;
-
 /**
  * @author sky_lock
  */
@@ -46,13 +44,15 @@ public class SubmergedMessageTask {
                     count--;
                     return;
                 }
-                UUID owner = CarEntities.getOwner(carArmorStand);
-                if (!player.getUniqueId().equals(owner)) {
-                    Player ownPlayer = Bukkit.getPlayer(owner);
+                CarEntities.getOwner(carArmorStand).ifPresent(ownerUuid -> {
+                    if (player.getUniqueId().equals(ownerUuid)) {
+                        return;
+                    }
+                    Player ownPlayer = Bukkit.getPlayer(ownerUuid);
                     if (ownPlayer != null) {
                         ownPlayer.sendMessage(MoCar.PREFIX + ChatColor.RED + "所有する車が" + player.getName() + "の運転によって破壊されました");
                     }
-                }
+                });
                 CarEntities.kill(carArmorStand);
                 warning.stop(player);
                 cancel();

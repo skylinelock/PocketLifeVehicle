@@ -1,7 +1,8 @@
 package dev.sky_lock.mocar.gui;
 
-import dev.sky_lock.mocar.item.ItemStackBuilder;
+import dev.sky_lock.mocar.item.StainedGlassPane;
 import net.minecraft.server.v1_12_R1.*;
+import org.bukkit.DyeColor;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryPlayer;
@@ -39,7 +40,7 @@ public class StringEditor extends ContainerAnvil {
         entityPlayer.activeContainer.windowId = containerId;
         entityPlayer.activeContainer.addSlotListener(entityPlayer);
 
-        org.bukkit.inventory.ItemStack itemStack = new ItemStackBuilder(org.bukkit.Material.STAINED_GLASS_PANE, 1).build();
+        org.bukkit.inventory.ItemStack itemStack = new StainedGlassPane(DyeColor.WHITE, 1).toItemStack();
         ItemStack item = CraftItemStack.asNMSCopy(itemStack);
 
         NBTTagCompound nbt = new NBTTagCompound();

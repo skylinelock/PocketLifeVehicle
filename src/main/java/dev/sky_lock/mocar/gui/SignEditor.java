@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 /**
  * @author sky_lock
@@ -40,13 +41,13 @@ public class SignEditor {
                     return;
                 }
                 List<String> lores = new ArrayList<>();
-                for (int i = 0; i < 4; i++) {
-                    lores.add(MessageUtil.attachColor(event.getPacket().getStringArrays().read(0)[i]));
-                }
+                IntStream.range(0, 4).forEachOrdered(index -> lores.add(MessageUtil.attachColor(event.getPacket().getStringArrays().read(0)[index])));
                 lores.removeAll(Arrays.asList("", null));
-                EditSessions.get(event.getPlayer().getUniqueId()).setLores(lores);
+                EditSessions.get(event.getPlayer().getUniqueId()).ifPresent(session -> {
+                    session.setLore(lores);
+                });
                 Bukkit.getScheduler().runTaskLater(MoCar.getInstance(), () -> {
-                    new ModelSetting(event.getPlayer()).open(event.getPlayer());
+                    new ModelSettingMenu(event.getPlayer()).open(event.getPlayer());
                 }, 1L);
                 event.setCancelled(true);
                 opening.remove(event.getPlayer().getUniqueId());

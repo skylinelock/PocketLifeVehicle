@@ -1,78 +1,66 @@
 package dev.sky_lock.mocar.item;
 
-import org.bukkit.DyeColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Colorable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author sky_lock
  */
 
 public class ItemStackBuilder {
-
-    private InventoryItem inventoryItem;
-
-    public ItemStackBuilder(Material material, int amount) {
-        this(new ItemStack(material, amount));
-    }
+    private final ItemStack itemStack;
 
     public ItemStackBuilder(ItemStack itemStack) {
-        Material type = itemStack.getType();
-        int amount = itemStack.getAmount();
-        switch (type) {
-            case SKULL_ITEM:
-                this.inventoryItem = new PlayerSkull(amount);
-                return;
-            case STAINED_GLASS_PANE:
-                this.inventoryItem = new StainedGlassPane(amount);
-                return;
-            case WOOL:
-                this.inventoryItem = new Wool(amount);
-                return;
+        this.itemStack = itemStack.clone();
+        if (itemStack.hasItemMeta()) {
+            return;
         }
-        this.inventoryItem = new InventoryItem(itemStack);
+        itemStack.setItemMeta(Bukkit.getServer().getItemFactory().getItemMeta(itemStack.getType()));
     }
 
-    public ItemStackBuilder skullOwner(UUID uuid) {
-        if (inventoryItem instanceof PlayerSkull) {
-            ((PlayerSkull) inventoryItem).setOwner(uuid);
-        }
-        return this;
+    public static ItemStackBuilder of(Material type, int amount) {
+        return new ItemStackBuilder(new ItemStack(type, amount));
     }
 
-    public ItemStackBuilder durability(short damage) {
-        this.inventoryItem.setDurability(damage);
-        return this;
-    }
-
-    public ItemStackBuilder dyeColor(DyeColor color) {
-        if (inventoryItem instanceof Colorable) {
-            ((Colorable) inventoryItem).setColor(color);
-        }
+    public ItemStackBuilder durability(short durability) {
+        itemStack.setDurability(durability);
         return this;
     }
 
     public ItemStackBuilder lore(List<String> lores) {
-        this.inventoryItem.setLore(lores);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setLore(lores);
+        itemStack.setItemMeta(itemMeta);
         return this;
     }
 
     public ItemStackBuilder name(String name) {
-        this.inventoryItem.setDisplayName(name);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setDisplayName(name);
+        itemStack.setItemMeta(itemMeta);
         return this;
     }
 
     public ItemStackBuilder enchant(Enchantment enchantment, int level) {
-        this.inventoryItem.addEnchant(enchantment, level);
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.addEnchant(enchantment, level, true);
+        itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
+    public ItemStackBuilder growing() {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.addEnchant(new Glowing(), 1, true);
+        itemStack.setItemMeta(itemMeta);
         return this;
     }
 
     public ItemStack build() {
-        return inventoryItem.toItemStack();
+        return itemStack;
     }
 }

@@ -43,15 +43,20 @@ public class BurnExplosionTask {
                 Player player = ((Player) passenger.getBukkitEntity());
                 if (count == 0) {
                     explode(car);
-                    Player owner = Bukkit.getPlayer(CarEntities.getOwner(car));
-                    if (owner != null && !player.getUniqueId().equals(owner.getUniqueId())) {
+                    CarEntities.getOwner(car).ifPresent(ownerUuid -> {
+                        Player owner = Bukkit.getPlayer(ownerUuid);
+                        if (owner == null) {
+                            return;
+                        }
+                        if (player.getUniqueId().equals(ownerUuid)) {
+                            return;
+                        }
                         owner.sendMessage(MoCar.PREFIX + ChatColor.RED + "所有する車が" + player.getName() + "の運転によって破壊されました");
-                    }
+                    });
                     warning.stop(player);
                     passenger.killEntity();
                     CarEntities.kill(car);
                     cancel();
-                    return;
                 }
                 warning.setCount(count);
                 warning.send(player);
