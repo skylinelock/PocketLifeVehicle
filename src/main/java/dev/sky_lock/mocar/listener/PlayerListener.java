@@ -40,9 +40,6 @@ public class PlayerListener implements Listener {
         if (model == null) {
             return;
         }
-        if (!itemStack.hasItemMeta()) {
-            return;
-        }
         ItemMeta meta = itemStack.getItemMeta();
         if (!meta.hasLore()) {
             return;
@@ -70,7 +67,7 @@ public class PlayerListener implements Listener {
         CarEntities.tow(player.getUniqueId());
         if (CarEntities.spawn(player.getUniqueId(), model, whereToSpawn, Float.valueOf(fuel))) {
             player.getInventory().remove(itemStack);
-        };
+        }
     }
 
     @EventHandler

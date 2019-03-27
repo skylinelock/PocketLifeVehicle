@@ -18,9 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 import java.util.stream.IntStream;
 
 /**
@@ -29,13 +26,9 @@ import java.util.stream.IntStream;
 
 public class CarArmorStand extends EntityArmorStand {
 
-    private final static Map<UUID, CarArmorStand> carMap = new HashMap<>();
     private CarUtilMenu menu;
     private CarModel model;
     private CarStatus status;
-    private float steer_yaw;
-    private float currentSpeed;
-    private float acceleration;
     private boolean beginExplode = false;
 
     public CarArmorStand(World world) {
@@ -55,12 +48,12 @@ public class CarArmorStand extends EntityArmorStand {
         MessageUtil.sendConsoleWarning(getBukkitEntity().toString());
     }
 
-    public void setModel(CarModel model) {
+    void setModel(CarModel model) {
         this.model = model;
         this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(model.getItem().getStack(model.getName())));
     }
 
-    public void setStatus(CarStatus status) {
+    void setStatus(CarStatus status) {
         this.status = status;
     }
 
@@ -153,10 +146,6 @@ public class CarArmorStand extends EntityArmorStand {
             new BurnExplosionTask().run(this);
             this.beginExplode = true;
         }
-    }
-
-    private void kill() {
-        CarEntities.kill(this);
     }
 
     @Override

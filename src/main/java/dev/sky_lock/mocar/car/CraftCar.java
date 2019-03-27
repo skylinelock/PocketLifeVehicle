@@ -10,7 +10,7 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
 
 public class CraftCar extends CraftArmorStand {
 
-    public CraftCar(CraftServer server, CarArmorStand entity) {
+    CraftCar(CraftServer server, CarArmorStand entity) {
         super(server, entity);
     }
 }

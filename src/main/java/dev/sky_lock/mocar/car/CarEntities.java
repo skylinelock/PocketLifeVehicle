@@ -60,12 +60,10 @@ public class CarEntities {
     }
 
     public static void tow(UUID owner) {
-        Optional.ofNullable(entities.get(owner)).ifPresent(car -> {
-            tow(owner, car);
-        });
+        Optional.ofNullable(entities.get(owner)).ifPresent(car -> tow(owner, car));
     }
 
-    public static void tow(UUID owner, CarArmorStand car) {
+    private static void tow(UUID owner, CarArmorStand car) {
         CarModel model = car.getModel();
         CarItem carItem = model.getItem();
         ItemStack itemStack = carItem.getStack(model.getName());

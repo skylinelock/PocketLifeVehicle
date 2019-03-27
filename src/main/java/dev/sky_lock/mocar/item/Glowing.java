@@ -13,7 +13,7 @@ import java.lang.reflect.Field;
 
 public class Glowing extends Enchantment {
 
-    public Glowing() {
+    Glowing() {
         super(NamespacedKey.minecraft("growing"));
     }
 

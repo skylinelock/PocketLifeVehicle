@@ -35,7 +35,7 @@ public class GsonUtil {
      * @throws IOException
      * @throws RuntimeException
      */
-    public static <T> T load(Path filePath, Type type) throws IOException {
+    static <T> T load(Path filePath, Type type) throws IOException {
         checkFile(filePath);
         try (JsonReader reader = new JsonReader(Files.newBufferedReader(filePath, StandardCharsets.UTF_8))) {
             if (!reader.hasNext()) {
@@ -54,7 +54,7 @@ public class GsonUtil {
      * @throws IOException
      * @throws RuntimeException
      */
-    public static <T> void save(Path filePath, T obj, Type type) throws IOException {
+    static <T> void save(Path filePath, T obj, Type type) throws IOException {
         checkFile(filePath);
         try (JsonWriter writer = new JsonWriter(Files.newBufferedWriter(filePath))) {
             gson.toJson(obj, type, writer);

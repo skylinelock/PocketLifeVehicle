@@ -10,7 +10,7 @@ import com.comphenix.protocol.wrappers.WrappedChatComponent;
 
 public class ChatPacket extends AbstractServerPacket {
 
-    public ChatPacket() {
+    ChatPacket() {
         super(PacketType.Play.Server.CHAT);
     }
 
@@ -18,7 +18,7 @@ public class ChatPacket extends AbstractServerPacket {
         getPacket().getChatTypes().write(0, type);
     }
 
-    public void setChatComponent(WrappedChatComponent chatComponent) {
+    void setChatComponent(WrappedChatComponent chatComponent) {
         getPacket().getChatComponents().write(0, chatComponent);
     }
 }

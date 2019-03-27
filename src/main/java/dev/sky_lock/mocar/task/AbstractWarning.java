@@ -14,18 +14,18 @@ public class AbstractWarning {
     private final TitlePacket mainTitle;
     private int count;
 
-    public AbstractWarning() {
+    AbstractWarning() {
         mainTitle = new TitlePacket();
         mainTitle.setTitle(WrappedChatComponent.fromText(ChatColor.RED + "⚠⚠WARNING⚠⚠"));
         mainTitle.setStay(20);
         mainTitle.setAction(EnumWrappers.TitleAction.TITLE);
     }
 
-    protected int getCount() {
+    int getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    void setCount(int count) {
         this.count = count;
     }
 
@@ -38,7 +38,7 @@ public class AbstractWarning {
         subTitle.send(player);
     }
 
-    public void stop(Player player) {
+    void stop(Player player) {
         mainTitle.setTitle(WrappedChatComponent.fromText(""));
         TitlePacket subReset = new TitlePacket();
         subReset.setAction(EnumWrappers.TitleAction.SUBTITLE);

@@ -16,7 +16,7 @@ public class PlayerSkull {
     private final int amount;
     private OfflinePlayer player;
 
-    public PlayerSkull(OfflinePlayer player, int amount) {
+    private PlayerSkull(OfflinePlayer player, int amount) {
         this.player = player;
         this.amount = amount;
     }

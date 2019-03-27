@@ -16,12 +16,12 @@ public class CarStatus {
         this.fuel = fuel;
     }
 
-    public void setSpeed(BigDecimal speed) {
-        this.speed = speed;
+    BigDecimal getSpeed() {
+        return speed;
     }
 
-    public BigDecimal getSpeed() {
-        return speed;
+    void setSpeed(BigDecimal speed) {
+        this.speed = speed;
     }
 
     public float getFuel() {
@@ -36,15 +36,15 @@ public class CarStatus {
         return this.locked;
     }
 
-    public void addSteerYaw(float yaw) {
+    void addSteerYaw(float yaw) {
         this.steerYaw += yaw;
     }
 
-    public float getSteerYaw() {
+    float getSteerYaw() {
         return steerYaw;
     }
 
-    public void useFuel(float used) {
+    void useFuel(float used) {
         if (fuel < 0.0f) {
             return;
         }

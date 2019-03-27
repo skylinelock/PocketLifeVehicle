@@ -14,7 +14,7 @@ public class CarEntity {
     private final Location location;
     private final float fuel;
 
-    public CarEntity(String owner_uuid, CarModel model, Location location, float fuel) {
+    CarEntity(String owner_uuid, CarModel model, Location location, float fuel) {
         this.owner_uuid = owner_uuid;
         this.model = model;
         this.location = location;
