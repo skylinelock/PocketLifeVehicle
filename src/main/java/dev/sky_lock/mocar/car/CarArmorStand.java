@@ -5,7 +5,6 @@ import dev.sky_lock.mocar.gui.CarUtilMenu;
 import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.task.BurnExplosionTask;
 import dev.sky_lock.mocar.task.SubmergedMessageTask;
-import dev.sky_lock.mocar.util.MessageUtil;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -44,8 +43,6 @@ public class CarArmorStand extends EntityArmorStand {
         nbt.setBoolean("Small", true);
         this.a(nbt);
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
-
-        MessageUtil.sendConsoleWarning(getBukkitEntity().toString());
     }
 
     void setModel(CarModel model) {

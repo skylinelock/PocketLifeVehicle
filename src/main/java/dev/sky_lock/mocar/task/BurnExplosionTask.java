@@ -57,6 +57,7 @@ public class BurnExplosionTask {
                     passenger.killEntity();
                     CarEntities.kill(car);
                     cancel();
+                    return;
                 }
                 warning.setCount(count);
                 warning.send(player);

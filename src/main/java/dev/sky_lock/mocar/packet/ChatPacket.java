@@ -3,12 +3,13 @@ package dev.sky_lock.mocar.packet;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import dev.sky_lock.glassy.packet.ServerPacket;
 
 /**
  * @author sky_lock
  */
 
-public class ChatPacket extends AbstractServerPacket {
+public class ChatPacket extends ServerPacket {
 
     ChatPacket() {
         super(PacketType.Play.Server.CHAT);

@@ -1,12 +1,13 @@
 package dev.sky_lock.mocar.packet;
 
 import com.comphenix.protocol.PacketType;
+import dev.sky_lock.glassy.packet.ServerPacket;
 
 /**
  * @author sky_lock
  */
 
-public class FakeExplosionPacket extends AbstractServerPacket {
+public class FakeExplosionPacket extends ServerPacket {
 
     public FakeExplosionPacket() {
         super(PacketType.Play.Server.EXPLOSION);

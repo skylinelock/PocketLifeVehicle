@@ -35,7 +35,6 @@ public class CarUtilContents extends MenuContents {
         ItemStack closeItem = ItemStackBuilder.of(Material.ENDER_PEARL, 1).name(ChatColor.RED + "閉じる").build();
         ItemStack towItem = ItemStackBuilder.of(Material.MINECART, 1).name(colorizeTitle("レッカー移動")).lore(colorizeInfoAsList("アイテム化して持ち運べるようにします")).build();
 
-        //TODO: なんかいい感じにしたい
         this.ownerSlot = CarEntities.getOwner(car).map(owner -> {
             ItemStack playerSkull = PlayerSkull.of(owner, 1).toItemStack();
             ItemStack ownerSkull = new ItemStackBuilder(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(PlayerInfo.getName(owner))).build();
@@ -53,6 +52,7 @@ public class CarUtilContents extends MenuContents {
             Player player = (Player) event.getWhoClicked();
             CarEntities.tow(player.getUniqueId());
             ((CarUtilMenu) event.getInventory().getHolder()).close(player);
+            player.closeInventory();
         });
         this.carInfoSlot = new Slot(24, carInfoBook, event -> {
         });

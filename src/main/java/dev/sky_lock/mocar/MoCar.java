@@ -10,12 +10,10 @@ import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.ModelList;
 import dev.sky_lock.mocar.command.CommandHandler;
 import dev.sky_lock.mocar.config.PluginConfig;
-import dev.sky_lock.mocar.gui.SignEditor;
 import dev.sky_lock.mocar.item.Glowing;
 import dev.sky_lock.mocar.json.CarEntityStoreFile;
 import dev.sky_lock.mocar.listener.GuiListener;
 import dev.sky_lock.mocar.listener.PlayerListener;
-import dev.sky_lock.mocar.util.MessageUtil;
 import net.minecraft.server.v1_13_R2.DataConverterRegistry;
 import net.minecraft.server.v1_13_R2.DataConverterTypes;
 import net.minecraft.server.v1_13_R2.EntityTypes;
@@ -51,13 +49,11 @@ public class MoCar extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryMenuListener(), this);
         getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
-        SignEditor.registerListener();
         Glowing.register();
 
         Map<Object, Type<?>> types = (Map<Object, Type<?>>) DataConverterRegistry.a().getSchema(DataFixUtils.makeKey(1628)).findChoiceType(DataConverterTypes.n).types();
         types.put("minecraft:car_armor_stand", types.get("minecraft:armor_stand"));
         EntityTypes.a("armor_stand", EntityTypes.a.a(CarArmorStand.class, CarArmorStand::new));
-        MessageUtil.sendConsoleWarning("registered!");
 
         spawnCarEntities();
     }

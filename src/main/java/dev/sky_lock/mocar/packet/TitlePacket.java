@@ -3,12 +3,13 @@ package dev.sky_lock.mocar.packet;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
+import dev.sky_lock.glassy.packet.ServerPacket;
 
 /**
  * @author sky_lock
  */
 
-public class TitlePacket extends AbstractServerPacket {
+public class TitlePacket extends ServerPacket {
 
     public TitlePacket() {
         super(PacketType.Play.Server.TITLE);

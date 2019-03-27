@@ -4,7 +4,7 @@ import dev.sky_lock.glassy.gui.MenuContents;
 import dev.sky_lock.glassy.gui.Slot;
 import dev.sky_lock.mocar.car.CarItem;
 import dev.sky_lock.mocar.gui.EditSessions;
-import dev.sky_lock.mocar.gui.ModelSettingMenu;
+import dev.sky_lock.mocar.gui.SettingIndex;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,11 +14,11 @@ import org.bukkit.inventory.ItemStack;
  * @author sky_lock
  */
 
-public class DurabilitySelectContents extends MenuContents {
+public class DurabilityHoeContents extends MenuContents {
     private final Material hoeType;
 
-    public DurabilitySelectContents(Material hoeType) {
-        this.hoeType = hoeType;
+    public DurabilityHoeContents(Material type) {
+        this.hoeType = type;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class DurabilitySelectContents extends MenuContents {
                     EditSessions.get(player.getUniqueId()).ifPresent(session -> {
                         session.setCarItem(carItem);
                     });
-                    new ModelSettingMenu(player).open(player);
+                    setPage(player, SettingIndex.MAIN_MENU.value());
                 }));
                 damage += 1;
             }

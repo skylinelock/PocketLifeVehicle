@@ -6,7 +6,6 @@ import dev.sky_lock.mocar.car.CraftCar;
 import dev.sky_lock.mocar.click.CarClick;
 import dev.sky_lock.mocar.click.InventoryClick;
 import dev.sky_lock.mocar.gui.EditSessions;
-import dev.sky_lock.mocar.gui.SignEditor;
 import dev.sky_lock.mocar.gui.StringEditor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.ArmorStand;
@@ -51,7 +50,6 @@ public class GuiListener implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        SignEditor.close(player);
         StringEditor.close(player);
         Bukkit.getScheduler().runTaskLater(MoCar.getInstance(), () -> {
             if (player.getOpenInventory().getTopInventory().getType() == InventoryType.CRAFTING) {
@@ -62,7 +60,6 @@ public class GuiListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
-        SignEditor.close(event.getPlayer());
         StringEditor.close(event.getPlayer());
         EditSessions.destroy(event.getPlayer().getUniqueId());
     }

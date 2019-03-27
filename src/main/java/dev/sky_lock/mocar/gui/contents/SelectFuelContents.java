@@ -3,7 +3,7 @@ package dev.sky_lock.mocar.gui.contents;
 import dev.sky_lock.glassy.gui.MenuContents;
 import dev.sky_lock.glassy.gui.Slot;
 import dev.sky_lock.mocar.gui.EditSessions;
-import dev.sky_lock.mocar.gui.ModelSettingMenu;
+import dev.sky_lock.mocar.gui.SettingIndex;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -28,7 +28,7 @@ public class SelectFuelContents extends MenuContents {
                 ItemStack iron = ItemStackBuilder.of(Material.IRON_BLOCK, 1).name(fuel + "").build();
                 addSlot(new Slot(slot, iron, (event) -> {
                     EditSessions.get(player.getUniqueId()).ifPresent(session -> session.setFuel(fuel));
-                    new ModelSettingMenu(player).open(player);
+                    setPage(player, SettingIndex.MAIN_MENU.value());
                 }));
                 index += 1;
             }
