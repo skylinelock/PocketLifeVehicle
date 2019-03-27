@@ -4,11 +4,12 @@ import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.ModelSettingMenu;
 import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.util.MessageUtil;
-import net.minecraft.server.v1_12_R1.ItemStack;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+import net.minecraft.server.v1_13_R2.ItemStack;
+import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
 
 /**
  * @author sky_lock
@@ -23,6 +24,9 @@ public class InventoryClick {
 
     public void accept() {
         ItemStack itemStack = CraftItemStack.asNMSCopy(event.getCurrentItem());
+        if (event.getSlotType() == InventoryType.SlotType.OUTSIDE) {
+            return;
+        }
         if (itemStack.hasTag() && itemStack.getTag().hasKey("editor-result")) {
             event.setResult(Event.Result.DENY);
             event.setCancelled(true);

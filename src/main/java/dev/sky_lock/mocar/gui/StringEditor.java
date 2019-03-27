@@ -1,13 +1,14 @@
 package dev.sky_lock.mocar.gui;
 
-import dev.sky_lock.mocar.item.StainedGlassPane;
-import net.minecraft.server.v1_12_R1.*;
-import org.bukkit.DyeColor;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftInventoryPlayer;
-import org.bukkit.craftbukkit.v1_12_R1.inventory.CraftItemStack;
+
+import net.minecraft.server.v1_13_R2.*;
+import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,14 +41,16 @@ public class StringEditor extends ContainerAnvil {
         entityPlayer.activeContainer.windowId = containerId;
         entityPlayer.activeContainer.addSlotListener(entityPlayer);
 
-        org.bukkit.inventory.ItemStack itemStack = new StainedGlassPane(DyeColor.WHITE, 1).toItemStack();
+        org.bukkit.inventory.ItemStack itemStack = new org.bukkit.inventory.ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setDisplayName(editorType.getName());
+        itemStack.setItemMeta(meta);
         ItemStack item = CraftItemStack.asNMSCopy(itemStack);
-
-        NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound nbt = item.getTag();
         nbt.setBoolean("editor-result", true);
-        NBTTagCompound displayNBT = new NBTTagCompound();
+/*        NBTTagCompound displayNBT = new NBTTagCompound();
         displayNBT.setString("Name", editor.getEditorType().getName());
-        nbt.set("display", displayNBT);
+        nbt.set("display", displayNBT);*/
         item.setTag(nbt);
 
         editor.getBukkitView().getTopInventory().setItem(0, CraftItemStack.asBukkitCopy(item));
@@ -76,8 +79,8 @@ public class StringEditor extends ContainerAnvil {
     }
 
     @Override
-    public void e() {
-        super.e();
+    public void d() {
+        super.d();
         this.levelCost = 0;
     }
 

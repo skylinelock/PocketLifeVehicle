@@ -16,7 +16,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class EditCarModelContents extends MenuContents {
 
-    private final ItemStack addCarItem = ItemStackBuilder.of(Material.STORAGE_MINECART, 1).name(ChatColor.GREEN + "車種を追加する").build();
+    private final ItemStack addCarItem = ItemStackBuilder.of(Material.CHEST_MINECART, 1).name(ChatColor.GREEN + "車種を追加する").build();
 
     @Override
     public void open(Player player) {

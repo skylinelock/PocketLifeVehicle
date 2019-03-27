@@ -1,5 +1,6 @@
 package dev.sky_lock.mocar.item;
 
+import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
@@ -13,7 +14,7 @@ import java.lang.reflect.Field;
 public class Glowing extends Enchantment {
 
     public Glowing() {
-        super(100);
+        super(NamespacedKey.minecraft("growing"));
     }
 
     @Override
@@ -23,7 +24,7 @@ public class Glowing extends Enchantment {
 
     @Override
     public String getName() {
-        return null;
+        return getKey().getNamespace();
     }
 
     @Override

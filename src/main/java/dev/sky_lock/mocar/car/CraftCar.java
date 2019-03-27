@@ -1,8 +1,8 @@
 package dev.sky_lock.mocar.car;
 
-import net.minecraft.server.v1_12_R1.EntityArmorStand;
-import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftArmorStand;
+
+import org.bukkit.craftbukkit.v1_13_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
 
 /**
  * @author sky_lock
@@ -10,7 +10,7 @@ import org.bukkit.craftbukkit.v1_12_R1.entity.CraftArmorStand;
 
 public class CraftCar extends CraftArmorStand {
 
-    public CraftCar(CraftServer server, EntityArmorStand entity) {
+    public CraftCar(CraftServer server, CarArmorStand entity) {
         super(server, entity);
     }
 }

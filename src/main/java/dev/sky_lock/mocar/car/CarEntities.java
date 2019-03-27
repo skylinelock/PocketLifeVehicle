@@ -7,13 +7,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author sky_lock
@@ -30,7 +31,9 @@ public class CarEntities {
             ActionBar.sendPacket(Bukkit.getPlayer(player), ChatColor.RED + "ブロックがあるので車を設置できません");
             return false;
         }
-        CarArmorStand armorStand = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle(), model, new CarStatus());
+        CarArmorStand armorStand = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle());
+        armorStand.setModel(model);
+        armorStand.setStatus(new CarStatus());
         armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
         ((CraftWorld) location.getWorld()).getHandle().addEntity(armorStand);
@@ -75,9 +78,7 @@ public class CarEntities {
     }
 
     public static Set<CarEntity> getCarEntities() {
-        Set<CarEntity> carEntities = new HashSet<>();
-        entities.forEach((key, value) -> carEntities.add(new CarEntity(key.toString(), value.getModel(), value.getLocation(), value.getStatus().getFuel())));
-        return carEntities;
+        return entities.entrySet().stream().map(entry -> new CarEntity(entry.getKey().toString(), entry.getValue().getModel(), entry.getValue().getLocation(), entry.getValue().getStatus().getFuel())).collect(Collectors.toSet());
     }
 
     public static CarArmorStand get(UUID player) {

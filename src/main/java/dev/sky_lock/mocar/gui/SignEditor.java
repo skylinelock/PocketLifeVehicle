@@ -6,9 +6,11 @@ import com.comphenix.protocol.events.PacketAdapter;
 import com.comphenix.protocol.events.PacketEvent;
 import com.comphenix.protocol.wrappers.BlockPosition;
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.packet.BlockChangePacket;
 import dev.sky_lock.mocar.packet.OpenSignEditorPacket;
 import dev.sky_lock.mocar.util.MessageUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -24,13 +26,12 @@ import java.util.stream.IntStream;
 public class SignEditor {
     private final static List<UUID> opening = new ArrayList<>();
 
-    public void open(Player player) {
-        OpenSignEditorPacket packet = new OpenSignEditorPacket();
-        packet.setBlockPosition(BlockPosition.ORIGIN);
-        packet.send(player);
-
+    public static void close(Player player) {
         opening.remove(player.getUniqueId());
-        opening.add(player.getUniqueId());
+        BlockChangePacket blockChange = new BlockChangePacket();
+        blockChange.setLocation(player.getLocation());
+        blockChange.setBlockData(Bukkit.getServer().createBlockData(Material.AIR));
+        blockChange.send(player);
     }
 
     public static void registerListener() {
@@ -56,8 +57,18 @@ public class SignEditor {
         MoCar.getInstance().getProtocolManager().addPacketListener(adapter);
     }
 
-    public static void close(Player player) {
+    public void open(Player player) {
+        BlockChangePacket blockChange = new BlockChangePacket();
+        blockChange.setLocation(player.getLocation());
+        blockChange.setBlockData(Bukkit.getServer().createBlockData(Material.WALL_SIGN));
+        blockChange.send(player);
+
+        OpenSignEditorPacket packet = new OpenSignEditorPacket();
+        packet.setBlockPosition(new BlockPosition(player.getLocation().getBlockX(), player.getLocation().getBlockY(), player.getLocation().getBlockZ()));
+        packet.send(player);
+
         opening.remove(player.getUniqueId());
+        opening.add(player.getUniqueId());
     }
 
 }

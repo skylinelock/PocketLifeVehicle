@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.gui;
 
 import dev.sky_lock.mocar.car.CarItem;
-import dev.sky_lock.mocar.car.Speed;
+import dev.sky_lock.mocar.car.MaxSpeed;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public class EditModelData {
 
     private String id;
     private String name;
-    private Speed speed;
+    private MaxSpeed maxSpeed;
     private CarItem carItem;
     private List<String> lores;
     private float fuel;
@@ -42,8 +42,8 @@ public class EditModelData {
         return id;
     }
 
-    public Speed getSpeed() {
-        return speed;
+    public MaxSpeed getMaxSpeed() {
+        return maxSpeed;
     }
 
     public String getName() {
@@ -62,7 +62,7 @@ public class EditModelData {
         this.name = name;
     }
 
-    public void setSpeed(Speed speed) {
-        this.speed = speed;
+    public void setMaxSpeed(MaxSpeed maxSpeed) {
+        this.maxSpeed = maxSpeed;
     }
 }

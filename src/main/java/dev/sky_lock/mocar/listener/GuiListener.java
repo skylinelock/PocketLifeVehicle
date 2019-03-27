@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.listener;
 
 import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CraftCar;
 import dev.sky_lock.mocar.click.CarClick;
 import dev.sky_lock.mocar.click.InventoryClick;
@@ -34,8 +35,12 @@ public class GuiListener implements Listener {
         if (!(as instanceof CraftCar)) {
             return;
         }
+        CraftCar craftCar = (CraftCar) as;
+        if (!((CarArmorStand) craftCar.getHandle()).isCarArmorStand()) {
+            return;
+        }
         event.setCancelled(true);
-        new CarClick(event.getPlayer(), (CraftCar) as).accept();
+        new CarClick(event.getPlayer(), craftCar).accept();
     }
 
     @EventHandler

@@ -1,6 +1,5 @@
 package dev.sky_lock.mocar.item;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -17,10 +16,6 @@ public class ItemStackBuilder {
 
     public ItemStackBuilder(ItemStack itemStack) {
         this.itemStack = itemStack.clone();
-        if (itemStack.hasItemMeta()) {
-            return;
-        }
-        itemStack.setItemMeta(Bukkit.getServer().getItemFactory().getItemMeta(itemStack.getType()));
     }
 
     public static ItemStackBuilder of(Material type, int amount) {

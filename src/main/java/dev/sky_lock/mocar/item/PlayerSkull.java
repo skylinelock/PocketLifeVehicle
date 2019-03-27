@@ -3,8 +3,8 @@ package dev.sky_lock.mocar.item;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.SkullType;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.UUID;
 
@@ -26,10 +26,13 @@ public class PlayerSkull {
     }
 
     public ItemStack toItemStack() {
-        ItemStack itemStack = new ItemStack(Material.SKULL_ITEM, amount, (short) SkullType.PLAYER.ordinal());
+        ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, amount);
         if (player == null) {
             return itemStack;
         }
+        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+        meta.setOwningPlayer(player);
+        itemStack.setItemMeta(meta);
         return new ItemStackBuilder(itemStack).name(player.getName()).build();
     }
 }

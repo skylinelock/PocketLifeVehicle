@@ -5,8 +5,8 @@ import dev.sky_lock.glassy.gui.Slot;
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.CarItem;
 import dev.sky_lock.mocar.car.CarModel;
+import dev.sky_lock.mocar.car.MaxSpeed;
 import dev.sky_lock.mocar.car.ModelList;
-import dev.sky_lock.mocar.car.Speed;
 import dev.sky_lock.mocar.gui.*;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
 import dev.sky_lock.mocar.util.ListUtil;
@@ -36,7 +36,7 @@ public class ModelSettingContents extends MenuContents {
                 EditSessions.destroy(player.getUniqueId());
             }));
 
-            addSlot(new Slot(4, ItemStackBuilder.of(Material.EYE_OF_ENDER, 1).name(ChatColor.RED + "閉じる").build(), event -> {
+            addSlot(new Slot(4, ItemStackBuilder.of(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build(), event -> {
                 player.closeInventory();
                 EditSessions.destroy(player.getUniqueId());
             }));
@@ -50,10 +50,10 @@ public class ModelSettingContents extends MenuContents {
                 StringEditor.open(player, StringEditor.Type.NAME);
             }));
 
-            ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("Speed").build();
-            Speed speed = session.getSpeed();
-            if (speed != null) {
-                speedItem = new ItemStackBuilder(speedItem).lore(ListUtil.singleton(speed.getLabel())).growing().build();
+            ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("MaxSpeed").build();
+            MaxSpeed maxSpeed = session.getMaxSpeed();
+            if (maxSpeed != null) {
+                speedItem = new ItemStackBuilder(speedItem).lore(ListUtil.singleton(maxSpeed.getLabel())).growing().build();
             }
 
             addSlot(new Slot(24, speedItem, event -> {
@@ -109,7 +109,7 @@ public class ModelSettingContents extends MenuContents {
         addSlot(new Slot(49, createItem, event -> {
             new ConfirmMenu(player, (event1) -> {
                 ItemStack clicked = event1.getCurrentItem();
-                if (session.getId() == null || session.getName() == null || session.getSpeed() == null || session.getFuel() == 0.0F || session.getCarItem() == null) {
+                if (session.getId() == null || session.getName() == null || session.getMaxSpeed() == null || session.getFuel() == 0.0F || session.getCarItem() == null) {
                     List<String> lores = new ArrayList<>();
                     lores.add(ChatColor.RED + "設定が完了していません");
                     lores.add(ChatColor.RED + "未設定項目");
@@ -119,8 +119,8 @@ public class ModelSettingContents extends MenuContents {
                     if (session.getName() == null) {
                         lores.add(ChatColor.RED + "- Name");
                     }
-                    if (session.getSpeed() == null) {
-                        lores.add(ChatColor.RED + "- Speed");
+                    if (session.getMaxSpeed() == null) {
+                        lores.add(ChatColor.RED + "- MaxSpeed");
                     }
                     if (session.getCarItem() == null) {
                         lores.add(ChatColor.RED + "- Item");
@@ -141,7 +141,7 @@ public class ModelSettingContents extends MenuContents {
                     event1.setCurrentItem(clicked);
                     return;
                 }
-                ModelList.add(new CarModel(session.getId(), session.getCarItem(), session.getName(), session.getLores(), session.getFuel(), session.getSpeed().ordinal() + 1));
+                ModelList.add(new CarModel(session.getId(), session.getCarItem(), session.getName(), session.getLores(), session.getFuel(), session.getMaxSpeed().ordinal() + 1));
                 player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "新しい車種を追加しました");
                 EditSessions.destroy(player.getUniqueId());
                 player.closeInventory();

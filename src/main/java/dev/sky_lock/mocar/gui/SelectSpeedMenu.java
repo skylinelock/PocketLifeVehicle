@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class SelectSpeedMenu extends InventoryMenu {
 
     public SelectSpeedMenu(Player holder) {
-        super("Select : Speed", Type.BIG, holder);
+        super("Select : MaxSpeed", Type.BIG, holder);
         addContents(new SelectSpeedContents());
     }
 }

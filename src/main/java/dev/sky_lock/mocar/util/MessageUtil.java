@@ -16,4 +16,8 @@ public class MessageUtil {
     public static String attachColor(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
+
+    public static void sendConsoleWarning(String message) {
+        Bukkit.getLogger().warning(message);
+    }
 }

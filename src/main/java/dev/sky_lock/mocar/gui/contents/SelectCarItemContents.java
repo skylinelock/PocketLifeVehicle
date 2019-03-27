@@ -15,8 +15,8 @@ public class SelectCarItemContents extends MenuContents {
 
     @Override
     public void open(Player player) {
-        addSlot(new Slot(9, ItemStackBuilder.of(Material.WOOD_HOE, 1).build(), (event) -> {
-            new SelectDurabilityMenu(player, Material.WOOD_HOE).open(player);
+        addSlot(new Slot(9, ItemStackBuilder.of(Material.WOODEN_HOE, 1).build(), (event) -> {
+            new SelectDurabilityMenu(player, Material.WOODEN_HOE).open(player);
         }));
         addSlot(new Slot(11, ItemStackBuilder.of(Material.STONE_HOE, 1).build(), (event) -> {
             new SelectDurabilityMenu(player, Material.STONE).open(player);
@@ -24,8 +24,8 @@ public class SelectCarItemContents extends MenuContents {
         addSlot(new Slot(13, ItemStackBuilder.of(Material.IRON_HOE, 1).build(), (event) -> {
             new SelectDurabilityMenu(player, Material.IRON_HOE).open(player);
         }));
-        addSlot(new Slot(15, ItemStackBuilder.of(Material.GOLD_HOE, 1).build(), (event) -> {
-            new SelectDurabilityMenu(player, Material.GOLD_HOE).open(player);
+        addSlot(new Slot(15, ItemStackBuilder.of(Material.GOLDEN_HOE, 1).build(), (event) -> {
+            new SelectDurabilityMenu(player, Material.GOLDEN_HOE).open(player);
         }));
         addSlot(new Slot(17, ItemStackBuilder.of(Material.DIAMOND_HOE, 1).build(), (event) -> {
             new SelectDurabilityMenu(player, Material.DIAMOND_HOE).open(player);
