@@ -39,7 +39,7 @@ public class CarClick {
             }
             if (clicked.equals(owner)) {
                 if (car.getStatus().isLocked()) {
-                    sendFailureInfo("車に乗るためには解錠してください");
+                    sendFailureInfo("乗車するためには解錠する必要があります");
                     return;
                 }
                 craftCar.setPassenger(player);
@@ -54,6 +54,6 @@ public class CarClick {
     }
 
     private void sendFailureInfo(String message) {
-        ActionBar.sendPacket(player, ChatColor.RED + "" + ChatColor.BOLD + message);
+        ActionBar.sendPacket(player, ChatColor.YELLOW + "" + ChatColor.BOLD + "⚠⚠ " + ChatColor.RED + "" + ChatColor.BOLD + message + ChatColor.YELLOW + "" + ChatColor.BOLD + " ⚠⚠");
     }
 }

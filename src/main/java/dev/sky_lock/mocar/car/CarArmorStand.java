@@ -41,7 +41,6 @@ public class CarArmorStand extends EntityArmorStand {
         nbt.setBoolean("NoGravity", false);
         nbt.setBoolean("Invisible", true);
         nbt.setBoolean("Marker", false);
-        nbt.setBoolean("Small", true);
         this.a(nbt);
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
