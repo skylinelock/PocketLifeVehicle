@@ -1,3 +1,4 @@
+
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
@@ -16,7 +17,6 @@ import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.math.BigDecimal;
 import java.util.stream.IntStream;
 
 /**
@@ -28,6 +28,9 @@ public class CarArmorStand extends EntityArmorStand {
     private CarUtilMenu menu;
     private CarModel model;
     private CarStatus status;
+
+    private Engine engine;
+    private Steering steering;
     private boolean beginExplode = false;
 
     public CarArmorStand(World world) {
@@ -45,13 +48,15 @@ public class CarArmorStand extends EntityArmorStand {
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
 
-    void setModel(CarModel model) {
+    void assemble(CarModel model) {
         this.model = model;
         this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(model.getItem().getStack(model.getName())));
-    }
-
-    void setStatus(CarStatus status) {
-        this.status = status;
+        this.status = new CarStatus();
+        this.engine = new Engine(status, model);
+        this.steering = new Steering(status);
+        //乗れるブロックの高さ
+        this.Q = 1.0F;
+        setSize(2.5F, 2.5F);
     }
 
     public void openUtilMenu(Player player) {
@@ -70,17 +75,7 @@ public class CarArmorStand extends EntityArmorStand {
     }
 
     public boolean refuel(float fuel) {
-        float current = status.getFuel();
-        float max = model.getMaxFuel();
-        if (current >= max) {
-            return false;
-        }
-        if (current + fuel > max) {
-            status.setFuel(max);
-            return true;
-        }
-        status.setFuel(current + fuel);
-        return true;
+        return engine.refuel(fuel);
     }
 
     //降りた時
@@ -109,16 +104,6 @@ public class CarArmorStand extends EntityArmorStand {
     @Override
     public boolean isSilent() {
         return isCarArmorStand();
-    }
-
-    @Override
-    public void tick() {
-        if (!isCarArmorStand()) {
-            super.tick();
-            return;
-        }
-        super.tick();
-        setSize(2.5F, 2.5F);
     }
 
     //水に入った時
@@ -152,8 +137,8 @@ public class CarArmorStand extends EntityArmorStand {
             return;
         }
         if (passengers == null || passengers.isEmpty()) {
+            status.getSpeed().zero();
             super.a(sideMot, f1, forMot);
-            status.setSpeed(BigDecimal.ZERO);
             return;
         }
 
@@ -163,42 +148,6 @@ public class CarArmorStand extends EntityArmorStand {
             return;
         }
 
-        BigDecimal roundedSpeed = status.getSpeed().setScale(4, BigDecimal.ROUND_HALF_UP);
-        if (roundedSpeed.compareTo(BigDecimal.ZERO) != 0) {
-            status.useFuel(0.05f);
-        }
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(ChatColor.YELLOW).append(ChatColor.BOLD).append("Fuel  ");
-
-        builder.append(" ").append(ChatColor.GRAY).append(">>  ").append(ChatColor.GREEN);
-
-        float fuelRate = status.getFuel() / model.getMaxFuel();
-        int filled = Math.round(70 * fuelRate);
-
-        IntStream.range(0, filled).forEach(count -> builder.append("ǀ"));
-        builder.append(ChatColor.RED);
-        IntStream.range(0, 70 - filled).forEach(count -> builder.append("ǀ"));
-
-        builder.append(" ");
-
-        if (Math.round(status.getFuel()) == 0) {
-            builder.append(ChatColor.RED).append(ChatColor.BOLD).append("Empty");
-        } else {
-            if (fuelRate > 0.7f) {
-                builder.append(ChatColor.DARK_GREEN);
-            } else if (fuelRate <= 0.7f && fuelRate >= 0.2f) {
-                builder.append(ChatColor.GOLD);
-            } else {
-                builder.append(ChatColor.RED);
-            }
-            builder.append(ChatColor.BOLD);
-            builder.append(Math.round(status.getFuel()));
-            builder.append(ChatColor.GRAY).append(ChatColor.BOLD).append(" / ").append(ChatColor.DARK_GREEN).append(ChatColor.BOLD);
-            builder.append(Math.round(model.getMaxFuel()));
-        }
-        ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
-
         float sideInput = passenger.bh;
         float forInput = passenger.bj;
 
@@ -207,28 +156,18 @@ public class CarArmorStand extends EntityArmorStand {
 
         this.fallDistance = 0.0F;
 
-        if (sideInput != 0.0F) {
-            status.useFuel(0.05F);
+        if (sideInput < 0.0F) {
+            steering.right();
+        } else if (sideInput > 0.0F) {
+            steering.left();
         }
 
-        int roundFuel = Math.round(status.getFuel());
-        if (roundFuel != 0 && roundedSpeed.compareTo(BigDecimal.ZERO) != 0) {
-            if (sideInput < 0.0F) {
-                status.addSteerYaw(4.0F);
-            } else if (sideInput > 0.0F) {
-                status.addSteerYaw(-4.0F);
-            }
-        }
-
-        this.yaw = status.getSteerYaw();
+        this.yaw = status.getYaw();
         this.lastYaw = this.yaw;
         this.pitch = passenger.pitch * 0.5F;
         setYawPitch(this.yaw, this.pitch);
         this.aQ = this.yaw;
         this.aS = this.aQ;
-
-        //乗れるブロックの高さ
-        this.Q = 1.0F;
 
         this.aU = this.cK() * 0.1f;
 
@@ -243,41 +182,28 @@ public class CarArmorStand extends EntityArmorStand {
 
         this.aJ += (f4 - this.aJ) * 0.4f;
         this.aK += this.aJ;
-        this.o(calculateSpeed(forInput));
+        this.o(engine.speedPerTick(forInput));
         super.a(sideMot, f1, forMot);
-    }
 
-    private float calculateSpeed(float passengerInput) {
-        if (status.getFuel() <= 0.0f) {
-            return BigDecimal.ZERO.floatValue();
-        }
+        engine.consumeFuel(sideInput);
 
-        BigDecimal acceleration = new BigDecimal("0.0085");
-        if (passengerInput == 0.0f) {
-            if (status.getSpeed().compareTo(BigDecimal.ZERO) > 0) {
-                status.setSpeed(status.getSpeed().subtract(acceleration));
-            }
-        } else if (passengerInput < 0.0f) {
-            status.setSpeed(status.getSpeed().subtract(acceleration.add(new BigDecimal("0.010"))));
-        }
 
-        MaxSpeed maxSpeed;
-        if (model.getMaxSpeed() > MaxSpeed.values().length) {
-            maxSpeed = MaxSpeed.NORMAL;
-        } else {
-            maxSpeed = MaxSpeed.values()[model.getMaxSpeed() - 1];
-        }
-        if (status.getSpeed().floatValue() > maxSpeed.getMax()) {
-            return status.getSpeed().floatValue();
-        }
+        StringBuilder builder = new StringBuilder();
+        builder.append(ChatColor.RED).append(ChatColor.BOLD).append("E ").append(ChatColor.GREEN);
 
-        if (passengerInput > 0.0f) {
-            status.setSpeed(status.getSpeed().add(acceleration));
-        }
-        if (status.getSpeed().compareTo(BigDecimal.ZERO) < 0) {
-            status.setSpeed(status.getSpeed().multiply(new BigDecimal("0.85")));
-        }
-        return status.getSpeed().floatValue();
+        float fuelRate = status.getFuel() / model.getMaxFuel();
+        int filled = Math.round(70 * fuelRate);
+
+        IntStream.range(0, filled).forEach(count -> builder.append("ǀ"));
+        builder.append(ChatColor.RED);
+        IntStream.range(0, 70 - filled).forEach(count -> builder.append("ǀ"));
+
+        builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("     ");
+        builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD);
+        String blockPerSecond = String.format("%.1f", Math.abs(engine.speedPerSecond()));
+        builder.append(blockPerSecond).append(ChatColor.GRAY).append(ChatColor.BOLD).append(" b/s");
+
+        ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
     }
 
     public CarModel getModel() {
@@ -292,6 +218,7 @@ public class CarArmorStand extends EntityArmorStand {
             }
             return super.getBukkitEntity();
         }
+
         if (this.bukkitEntity == null || !(this.bukkitEntity instanceof CraftCar)) {
             this.bukkitEntity = new CraftCar((CraftServer) Bukkit.getServer(), this);
         }
@@ -306,6 +233,5 @@ public class CarArmorStand extends EntityArmorStand {
     public boolean isCarArmorStand() {
         return this.model != null && status != null;
     }
-
 
 }

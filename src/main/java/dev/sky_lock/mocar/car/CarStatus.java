@@ -1,27 +1,25 @@
 package dev.sky_lock.mocar.car;
 
-import java.math.BigDecimal;
-
 /**
  * @author sky_lock
  */
 
 public class CarStatus {
+    private final Speed speed;
     private float fuel;
-    private BigDecimal speed;
-    private float steerYaw;
+    private float yaw;
     private boolean locked = true;
+
+    CarStatus() {
+        this.speed = new Speed();
+    }
 
     public void setFuel(float fuel) {
         this.fuel = fuel;
     }
 
-    BigDecimal getSpeed() {
+    Speed getSpeed() {
         return speed;
-    }
-
-    void setSpeed(BigDecimal speed) {
-        this.speed = speed;
     }
 
     public float getFuel() {
@@ -36,18 +34,11 @@ public class CarStatus {
         return this.locked;
     }
 
-    void addSteerYaw(float yaw) {
-        this.steerYaw += yaw;
+    float getYaw() {
+        return yaw;
     }
 
-    float getSteerYaw() {
-        return steerYaw;
-    }
-
-    void useFuel(float used) {
-        if (fuel < 0.0f) {
-            return;
-        }
-        this.fuel -= used;
+    void setYaw(float yaw) {
+        this.yaw = yaw;
     }
 }

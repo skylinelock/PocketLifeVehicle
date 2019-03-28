@@ -68,7 +68,7 @@ public class ModelSettingContents extends MenuContents {
             }
 
             addSlot(new Slot(29, loreItem, event -> {
-                setPage(player, SettingIndex.LORE.value());
+                new LoreEditor(player).open();
             }));
 
             ItemStack carItem = ItemStackBuilder.of(Material.DIAMOND_HOE, 1).name("Item").build();
@@ -91,6 +91,7 @@ public class ModelSettingContents extends MenuContents {
                 setPage(player, SettingIndex.FUEL.value());
             }));
 
+            addCreateModelSlot(player, session);
         });
     }
 

@@ -27,13 +27,12 @@ public class CarEntities {
         if (player == null || model == null || location == null) {
             return false;
         }
-        if (location.getBlock() == null || location.getBlock().getType() != Material.AIR) {
+        if (location.getBlock().getType() != Material.AIR) {
             ActionBar.sendPacket(Bukkit.getPlayer(player), ChatColor.RED + "ブロックがあるので車を設置できません");
             return false;
         }
         CarArmorStand armorStand = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle());
-        armorStand.setModel(model);
-        armorStand.setStatus(new CarStatus());
+        armorStand.assemble(model);
         armorStand.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
 
         ((CraftWorld) location.getWorld()).getHandle().addEntity(armorStand);
@@ -57,6 +56,10 @@ public class CarEntities {
             entities.values().remove(armorStand);
             armorStand.killEntity();
         }
+    }
+
+    public static void killAll() {
+        entities.values().forEach(CarArmorStand::killEntity);
     }
 
     public static void tow(UUID owner) {
