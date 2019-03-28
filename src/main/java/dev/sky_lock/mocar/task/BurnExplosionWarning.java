@@ -14,7 +14,7 @@ public class BurnExplosionWarning extends AbstractWarning {
     public void send(Player player) {
         super.send(player);
         TitlePacket subTitle = new TitlePacket();
-        subTitle.setTitle(WrappedChatComponent.fromText( ChatColor.GOLD + "車は" + getCount() + "秒後に爆発します"));
+        subTitle.setTitle(WrappedChatComponent.fromText( ChatColor.GOLD + "乗り物は" + getCount() + "秒後に爆発します"));
         subTitle.setStay(20);
         subTitle.setAction(EnumWrappers.TitleAction.SUBTITLE);
         subTitle.send(player);

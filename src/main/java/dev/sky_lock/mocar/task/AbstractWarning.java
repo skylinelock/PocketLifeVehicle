@@ -31,11 +31,6 @@ public class AbstractWarning {
 
     public void send(Player player) {
         mainTitle.send(player);
-        TitlePacket subTitle = new TitlePacket();
-        subTitle.setTitle(WrappedChatComponent.fromText( ChatColor.GOLD + "車は" + count + "秒後に水没します"));
-        subTitle.setStay(20);
-        subTitle.setAction(EnumWrappers.TitleAction.SUBTITLE);
-        subTitle.send(player);
     }
 
     void stop(Player player) {
