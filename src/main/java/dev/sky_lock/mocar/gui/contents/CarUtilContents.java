@@ -11,6 +11,7 @@ import dev.sky_lock.mocar.item.PlayerSkull;
 import dev.sky_lock.mocar.util.PlayerInfo;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -72,8 +73,10 @@ public class CarUtilContents extends MenuContents {
 
         super.addSlot(new ToggleSlot(15, car.getStatus().isLocked(), keyOpen, keyClose, event -> {
             car.getStatus().setLocked(false);
+            player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.4F);
         }, event -> {
             car.getStatus().setLocked(true);
+            player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 1.0F, 1.4F);
         }));
 
         ItemStack refuelHopper = ItemStackBuilder.of(Material.HOPPER, 1).name(colorizeTitle("給油口")).lore(refuelInfo(car.getStatus().getFuel())).build();
