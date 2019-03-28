@@ -48,6 +48,7 @@ public class CarUtilContents extends MenuContents {
         this.closeSlot = new Slot(4, closeItem, event -> {
             CarUtilMenu menu = (CarUtilMenu) event.getInventory().getHolder();
             menu.close((Player) event.getWhoClicked());
+            event.getWhoClicked().closeInventory();
         });
         this.towSlot = new Slot(11, towItem, event -> {
             Player player = (Player) event.getWhoClicked();
