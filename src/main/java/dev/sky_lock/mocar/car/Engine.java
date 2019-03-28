@@ -20,6 +20,10 @@ class Engine {
             if (sideInput == 0.0F) {
                 return;
             }
+            if (status.getFuel() - 0.05F <= 0.0F) {
+                status.setFuel(0.0F);
+                return;
+            }
             status.setFuel(status.getFuel() - 0.05F);
         } else {
             status.setFuel(status.getFuel() - 0.05F);

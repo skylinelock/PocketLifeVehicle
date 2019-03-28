@@ -8,7 +8,6 @@ import dev.sky_lock.mocar.task.BurnExplosionTask;
 import dev.sky_lock.mocar.task.SubmergedMessageTask;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
@@ -16,8 +15,6 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
-
-import java.util.stream.IntStream;
 
 /**
  * @author sky_lock
@@ -31,6 +28,7 @@ public class CarArmorStand extends EntityArmorStand {
 
     private Engine engine;
     private Steering steering;
+    private MeterPanel meterPanel;
     private boolean beginExplode = false;
 
     public CarArmorStand(World world) {
@@ -54,6 +52,7 @@ public class CarArmorStand extends EntityArmorStand {
         this.status = new CarStatus();
         this.engine = new Engine(status, model);
         this.steering = new Steering(status);
+        this.meterPanel = new MeterPanel(status, model, engine);
         //乗れるブロックの高さ
         this.Q = 1.0F;
         setSize(2.5F, 2.5F);
@@ -186,34 +185,8 @@ public class CarArmorStand extends EntityArmorStand {
         super.a(sideMot, f1, forMot);
 
         engine.consumeFuel(sideInput);
+        meterPanel.display((Player)((EntityHuman) passenger).getBukkitEntity());
 
-
-        StringBuilder builder = new StringBuilder();
-        builder.append(ChatColor.RED).append(ChatColor.BOLD).append("E ").append(ChatColor.GREEN);
-
-        float fuelRate = status.getFuel() / model.getMaxFuel();
-        int filled = Math.round(70 * fuelRate);
-
-        IntStream.range(0, filled).forEach(count -> builder.append("ǀ"));
-        builder.append(ChatColor.RED);
-        IntStream.range(0, 70 - filled).forEach(count -> builder.append("ǀ"));
-
-        builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("   ").append(ChatColor.DARK_PURPLE).append(ChatColor.BOLD);
-        if (status.getSpeed().isApproximateZero()) {
-            builder.append("N");
-        } else {
-            if (status.getSpeed().isPositive()) {
-                builder.append("D");
-            } else if (status.getSpeed().isNegative()) {
-                builder.append("R");
-            }
-        }
-        builder.append("   ");
-        builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD);
-        String blockPerSecond = String.format("%.1f", Math.abs(engine.speedPerSecond()));
-        builder.append(blockPerSecond).append(ChatColor.GRAY).append(ChatColor.BOLD).append(" b/s");
-
-        ActionBar.sendPacket(((EntityPlayer) passenger).getBukkitEntity(), builder.toString());
     }
 
     public CarModel getModel() {

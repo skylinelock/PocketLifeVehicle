@@ -95,7 +95,7 @@ public class CarUtilContents extends MenuContents {
     }
 
     private List<String> refuelInfo(float fuel) {
-        return Arrays.asList(ChatColor.GRAY + "残燃料 : " + fuel, ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
+        return Arrays.asList(ChatColor.GRAY + "残燃料 : " + String.format("%.1f", Math.abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
 
     }
 
