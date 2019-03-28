@@ -58,6 +58,9 @@ class Engine {
         }
 
         if (speed.exact() > maxSpeed.getMax()) {
+            if (status.getFuel() <= 0.0f) {
+                speed.zero();
+            }
             return speed.exact();
         }
         if (passengerInput > 0.0f) {

@@ -198,7 +198,17 @@ public class CarArmorStand extends EntityArmorStand {
         builder.append(ChatColor.RED);
         IntStream.range(0, 70 - filled).forEach(count -> builder.append("ǀ"));
 
-        builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("     ");
+        builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("   ").append(ChatColor.DARK_PURPLE).append(ChatColor.BOLD);
+        if (status.getSpeed().isApproximateZero()) {
+            builder.append("N");
+        } else {
+            if (status.getSpeed().isPositive()) {
+                builder.append("D");
+            } else if (status.getSpeed().isNegative()) {
+                builder.append("R");
+            }
+        }
+        builder.append("   ");
         builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD);
         String blockPerSecond = String.format("%.1f", Math.abs(engine.speedPerSecond()));
         builder.append(blockPerSecond).append(ChatColor.GRAY).append(ChatColor.BOLD).append(" b/s");

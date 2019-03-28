@@ -45,11 +45,11 @@ class Speed {
     }
 
     float approximate() {
-        return exactSpeed.setScale(4, BigDecimal.ROUND_HALF_UP).floatValue();
+        return exactSpeed.setScale(3, BigDecimal.ROUND_HALF_UP).floatValue();
     }
 
-    boolean isNotApproximateZero() {
-        return approximate() != 0.0F;
+    boolean isApproximateZero() {
+        return approximate() == 0.0F;
     }
 
     float exact() {

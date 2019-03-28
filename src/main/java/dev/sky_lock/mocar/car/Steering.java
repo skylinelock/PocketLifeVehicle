@@ -12,13 +12,13 @@ class Steering {
     }
 
     void right() {
-        if (Math.round(status.getFuel()) != 0 && status.getSpeed().isNotApproximateZero()) {
+        if (Math.round(status.getFuel()) != 0 && !status.getSpeed().isApproximateZero()) {
             status.setYaw(status.getYaw() + 4.0F);
         }
     }
 
     void left() {
-        if (Math.round(status.getFuel()) != 0 && status.getSpeed().isNotApproximateZero()) {
+        if (Math.round(status.getFuel()) != 0 && !status.getSpeed().isApproximateZero()) {
             status.setYaw(status.getYaw() - 4.0F);
         }
     }
