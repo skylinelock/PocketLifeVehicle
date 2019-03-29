@@ -17,6 +17,7 @@ public class EditModelData {
     private CarItem carItem;
     private List<String> lores;
     private float fuel;
+    private int capacity = -1;
 
     public void setFuel(float fuel) {
         this.fuel = fuel;
@@ -50,6 +51,10 @@ public class EditModelData {
         return name;
     }
 
+    public int getCapacity() {
+        return capacity;
+    }
+
     public void setCarItem(CarItem carItem) {
         this.carItem = carItem;
     }
@@ -64,5 +69,9 @@ public class EditModelData {
 
     public void setMaxSpeed(MaxSpeed maxSpeed) {
         this.maxSpeed = maxSpeed;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 }

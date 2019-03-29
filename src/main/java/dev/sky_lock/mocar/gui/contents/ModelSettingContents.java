@@ -40,7 +40,7 @@ public class ModelSettingContents extends MenuContents {
                 nameItem = new ItemStackBuilder(nameItem).lore(ListUtil.singleton(session.getName())).growing().build();
             }
 
-            addSlot(new Slot(22, nameItem, event -> {
+            addSlot(new Slot(21, nameItem, event -> {
                 StringEditor.open(player, StringEditor.Type.NAME);
             }));
 
@@ -50,7 +50,7 @@ public class ModelSettingContents extends MenuContents {
                 speedItem = new ItemStackBuilder(speedItem).lore(ListUtil.singleton(maxSpeed.getLabel())).growing().build();
             }
 
-            addSlot(new Slot(24, speedItem, event -> {
+            addSlot(new Slot(23, speedItem, event -> {
                 setPage(player, SettingIndex.SPEED.value());
             }));
 
@@ -58,7 +58,7 @@ public class ModelSettingContents extends MenuContents {
             if (session.getId() != null) {
                 idItem = new ItemStackBuilder(idItem).lore(ListUtil.singleton(session.getId())).growing().build();
             }
-            addSlot(new Slot(20, idItem, event -> {
+            addSlot(new Slot(19, idItem, event -> {
                 StringEditor.open(player, StringEditor.Type.ID);
             }));
 
@@ -67,7 +67,7 @@ public class ModelSettingContents extends MenuContents {
                 loreItem = new ItemStackBuilder(loreItem).lore(session.getLores()).growing().build();
             }
 
-            addSlot(new Slot(29, loreItem, event -> {
+            addSlot(new Slot(28, loreItem, event -> {
                 new LoreEditor(player).open();
             }));
 
@@ -77,7 +77,7 @@ public class ModelSettingContents extends MenuContents {
                 List<String> details = Arrays.asList(item.getStack("").getType().toString(), String.valueOf(item.getStack("").getDurability()));
                 carItem = new ItemStackBuilder(carItem).lore(details).growing().build();
             }
-            addSlot(new Slot(31, carItem, event -> {
+            addSlot(new Slot(30, carItem, event -> {
                 setPage(player, SettingIndex.CAR_ITEM.value());
 
             }));
@@ -87,8 +87,17 @@ public class ModelSettingContents extends MenuContents {
                 fuelItem = new ItemStackBuilder(fuelItem).lore(ListUtil.singleton(String.valueOf(session.getFuel()))).growing().build();
             }
 
-            addSlot(new Slot(33, fuelItem, event -> {
+            addSlot(new Slot(32, fuelItem, event -> {
                 setPage(player, SettingIndex.FUEL.value());
+            }));
+
+            ItemStack capacityItem = ItemStackBuilder.of(Material.CHEST_MINECART, 1).name("Capacity").build();
+            if (session.getCapacity() != -1) {
+                capacityItem = new ItemStackBuilder(capacityItem).lore(ListUtil.singleton(String.valueOf(session.getCapacity()))).growing().build();
+            }
+
+            addSlot(new Slot(25, capacityItem, event -> {
+                setPage(player, SettingIndex.CAPACITY.value());
             }));
 
             addCreateModelSlot(player, session);

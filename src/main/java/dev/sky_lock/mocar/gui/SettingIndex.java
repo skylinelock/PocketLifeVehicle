@@ -15,7 +15,8 @@ public enum SettingIndex {
     IRON_HOE(7),
     GOLDEN_HOE(8),
     DIAMOND_HOE(9),
-    CONFIRM(10);
+    CONFIRM(10),
+    CAPACITY(11);
 
 
     private final int value;

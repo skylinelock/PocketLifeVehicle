@@ -27,6 +27,7 @@ public class ListModelCommand implements ICommand {
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "LORE          : " + model.getLores());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "SPEED        : " + model.getMaxSpeed());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "MAXFUEL     : " + model.getMaxFuel());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "CAPACITY     : " + model.getCapacity());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "-------------------------------------------");
         });
     }

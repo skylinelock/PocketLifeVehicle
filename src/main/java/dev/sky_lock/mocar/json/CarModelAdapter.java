@@ -31,7 +31,8 @@ public class CarModelAdapter implements JsonSerializer<CarModel>, JsonDeserializ
         Material material = Material.valueOf(itemObj.get("material").getAsString());
         short durability = itemObj.get("durability").getAsShort();
         CarItem carItem = new CarItem(material, durability);
-        return new CarModel(id, carItem, name, modelLore, maxfuel, maxspeed);
+        int capacity = obj.get("capacity").getAsInt();
+        return new CarModel(id, carItem, name, modelLore, maxfuel, maxspeed, capacity);
     }
 
     @Override
@@ -41,6 +42,7 @@ public class CarModelAdapter implements JsonSerializer<CarModel>, JsonDeserializ
         obj.add("name", new JsonPrimitive(carModel.getName()));
         obj.add("maxfuel", new JsonPrimitive(carModel.getMaxFuel()));
         obj.add("maxspeed", new JsonPrimitive(carModel.getMaxSpeed()));
+        obj.add("capacity", new JsonPrimitive(carModel.getCapacity()));
         JsonArray array = new JsonArray();
         carModel.getLores().forEach(array::add);
         obj.add("lore", array);

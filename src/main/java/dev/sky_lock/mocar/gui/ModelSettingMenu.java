@@ -22,5 +22,6 @@ public class ModelSettingMenu extends InventoryMenu {
         addContents(new GoldenHoeContents());
         addContents(new DiamondHoeContents());
         addContents(new ConfirmContents());
+        addContents(new SelectCapacityContents());
     }
 }

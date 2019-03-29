@@ -37,7 +37,7 @@ public class ConfirmContents extends MenuContents {
         addSlot(new Slot(20, yesItem, event -> {
             ItemStack clicked = event.getCurrentItem();
             EditSessions.get(event.getWhoClicked().getUniqueId()).ifPresent(session -> {
-                if (session.getId() == null || session.getName() == null || session.getMaxSpeed() == null || session.getFuel() == 0.0F || session.getCarItem() == null) {
+                if (session.getId() == null || session.getName() == null || session.getMaxSpeed() == null || session.getFuel() == 0.0F || session.getCarItem() == null || session.getCapacity() == -1) {
                     List<String> lores = new ArrayList<>();
                     lores.add(ChatColor.RED + "設定が完了していません");
                     lores.add(ChatColor.RED + "未設定項目");
@@ -56,6 +56,9 @@ public class ConfirmContents extends MenuContents {
                     if (session.getFuel() == 0.0F) {
                         lores.add(ChatColor.RED + "- Fuel");
                     }
+                    if (session.getCapacity() == -1) {
+                        lores.add(ChatColor.RED + "- Capacity");
+                    }
                     ItemMeta itemMeta = clicked.getItemMeta();
                     itemMeta.setLore(lores);
                     clicked.setItemMeta(itemMeta);
@@ -69,7 +72,7 @@ public class ConfirmContents extends MenuContents {
                     event.setCurrentItem(clicked);
                     return;
                 }
-                ModelList.add(new CarModel(session.getId(), session.getCarItem(), session.getName(), session.getLores(), session.getFuel(), session.getMaxSpeed().ordinal() + 1));
+                ModelList.add(new CarModel(session.getId(), session.getCarItem(), session.getName(), session.getLores(), session.getFuel(), session.getMaxSpeed().ordinal() + 1, session.getCapacity()));
                 player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "新しい車種を追加しました");
                 EditSessions.destroy(player.getUniqueId());
                 player.closeInventory();
