@@ -94,6 +94,7 @@ public class CarUtilContents extends MenuContents {
             if (success) {
                 event.getInventory().setItem(22, new ItemStackBuilder(refuelHopper).lore(refuelInfo(car.getStatus().getFuel())).build());
                 cursor.setAmount(cursor.getAmount() - 1);
+                player.playSound(player.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 1.0F, 0.6F);
             }
         }));
     }
