@@ -1,5 +1,7 @@
 package dev.sky_lock.mocar.car;
 
+import org.bukkit.Location;
+
 /**
  * @author sky_lock
  */
@@ -9,9 +11,18 @@ public class CarStatus {
     private float fuel;
     private float yaw;
     private boolean locked = true;
+    private Location location;
 
     CarStatus() {
         this.speed = new Speed();
+    }
+
+    public Location getLocation() {
+        return location;
+    }
+
+    public void setLocation(Location location) {
+        this.location = location;
     }
 
     public void setFuel(float fuel) {

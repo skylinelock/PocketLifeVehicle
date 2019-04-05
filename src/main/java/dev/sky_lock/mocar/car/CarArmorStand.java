@@ -42,6 +42,7 @@ public class CarArmorStand extends EntityArmorStand {
         this.car = car;
         this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(car.getModel().getItem().getStack(car.getModel().getName())));
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
+        car.getSound().start();
     }
 
     @Override
@@ -52,6 +53,12 @@ public class CarArmorStand extends EntityArmorStand {
 
     public Location getLocation() {
         return getBukkitEntity().getLocation();
+    }
+
+    @Override
+    public void killEntity() {
+        super.killEntity();
+        car.getSound().stop();
     }
 
     //ツタとかはしごとかを登れなくする
@@ -75,6 +82,7 @@ public class CarArmorStand extends EntityArmorStand {
         }
         super.au();
         new SubmergedMessageTask().run(car);
+        car.getSound().stop();
     }
 
     @Override
@@ -140,6 +148,7 @@ public class CarArmorStand extends EntityArmorStand {
         this.aK += this.aJ;
         this.o(car.getEngine().getCurrentSpeed());
         super.a(sideMot, f1, forMot);
+        car.getStatus().setLocation(getLocation());
     }
 
     @Override

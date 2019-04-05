@@ -24,6 +24,7 @@ public class Car {
     private CarArmorStand center;
     private CarUtilMenu menu;
     private CarStatus status;
+    private CarSoundTask sound;
 
     private Engine engine;
     private Steering steering;
@@ -36,6 +37,11 @@ public class Car {
         this.engine = new Engine(status, model);
         this.steering = new Steering(status);
         this.meterPanel = new MeterPanel(status, model, engine);
+        this.sound = new CarSoundTask(status);
+    }
+
+    public CarSoundTask getSound() {
+        return sound;
     }
 
     public CarStatus getStatus() {
@@ -98,6 +104,7 @@ public class Car {
 
     void spawn(Location location) {
         center = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle());
+        getStatus().setLocation(location);
         center.assemble(this);
         center.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0.0F);
         status.setYaw(location.getYaw());
