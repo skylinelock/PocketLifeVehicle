@@ -2,7 +2,7 @@ package dev.sky_lock.mocar.command;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.Permission;
-import dev.sky_lock.mocar.car.CarArmorStand;
+import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.util.PlayerInfo;
 import org.bukkit.ChatColor;
@@ -39,7 +39,7 @@ public class TowawayCommand implements ICommand {
     }
 
     private boolean towaway(UUID uuid) {
-        CarArmorStand carEntity = CarEntities.get(uuid);
+        Car carEntity = CarEntities.get(uuid);
         if (carEntity == null) {
             return false;
         }

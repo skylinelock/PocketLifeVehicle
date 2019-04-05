@@ -20,16 +20,16 @@ public class LoreEditor extends SignEditor {
     public LoreEditor(Player player) {
         super(MoCar.getInstance(), player, (packet) -> {
             List<String> lores = Arrays.stream(packet.getLines()).filter(line -> line.length() > 0).map(line -> ChatColor.translateAlternateColorCodes('&', line)).collect(Collectors.toList());
-            EditSessions.get(player.getUniqueId()).ifPresent(session -> {
+            EditSessions.of(player.getUniqueId()).ifPresent(session -> {
                 session.setLore(lores);
             });
             new BukkitRunnable() {
                 @Override
                 public void run() {
                     InventoryMenu inventoryMenu = (InventoryMenu) player.getOpenInventory().getTopInventory().getHolder();
-                    inventoryMenu.open(player);
+                    inventoryMenu.open(player, ModelMenuIndex.SETTING.value());
                 }
-            }.runTaskLater(MoCar.getInstance(), 2L);
+            }.runTaskLater(MoCar.getInstance(), 1L);
         });
     }
 }

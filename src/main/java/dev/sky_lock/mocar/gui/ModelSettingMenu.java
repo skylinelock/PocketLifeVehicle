@@ -10,18 +10,19 @@ import org.bukkit.entity.Player;
 
 public class ModelSettingMenu extends InventoryMenu {
 
-    public ModelSettingMenu(Player holder) {
-        super("Edit : ModelSetting", Type.BIG, holder);
-        addContents(new ModelSettingContents());
-        addContents(new SelectSpeedContents());
-        addContents(new SelectCarItemContents());
-        addContents(new SelectFuelContents());
-        addContents(new WoodenHoeContents());
-        addContents(new StoneHoeContents());
-        addContents(new IronHoeContents());
-        addContents(new GoldenHoeContents());
-        addContents(new DiamondHoeContents());
-        addContents(new ConfirmContents());
-        addContents(new SelectCapacityContents());
+    public ModelSettingMenu(Player player) {
+        super("Edit : ModelSetting", Type.BIG, player);
+        addContents(new EditCarModelContents(player));
+        addContents(new ModelSettingContents(player));
+        addContents(new SelectSpeedContents(player));
+        addContents(new SelectCarItemContents(player));
+        addContents(new SelectFuelContents(player));
+        addContents(new WoodenHoeContents(player));
+        addContents(new StoneHoeContents(player));
+        addContents(new IronHoeContents(player));
+        addContents(new GoldenHoeContents(player));
+        addContents(new DiamondHoeContents(player));
+        addContents(new ConfirmContents(player));
+        addContents(new SelectCapacityContents(player));
     }
 }

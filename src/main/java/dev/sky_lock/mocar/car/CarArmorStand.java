@@ -2,8 +2,6 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.gui.CarUtilMenu;
-import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.task.BurnExplosionTask;
 import dev.sky_lock.mocar.task.SubmergedMessageTask;
 import net.minecraft.server.v1_13_R2.*;
@@ -12,8 +10,8 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_13_R2.CraftServer;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
 /**
@@ -22,18 +20,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public class CarArmorStand extends EntityArmorStand {
 
-    private CarUtilMenu menu;
-    private CarModel model;
-    private CarStatus status;
-
-    private Engine engine;
-    private Steering steering;
-    private MeterPanel meterPanel;
-    private boolean beginExplode = false;
+    private Car car;
 
     public CarArmorStand(World world) {
         super(world);
-
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("NoBasePlate", true);
         nbt.setBoolean("Invulnerable", true);
@@ -41,55 +31,27 @@ public class CarArmorStand extends EntityArmorStand {
         nbt.setBoolean("NoGravity", false);
         nbt.setBoolean("Invisible", true);
         nbt.setBoolean("Marker", false);
+        nbt.setBoolean("Small", true);
         this.a(nbt);
+        //乗れるブロックの高さ
+        this.Q = 1.0F;
+        this.setSize(6.0F, 6.0F);
+    }
+
+    void assemble(Car car) {
+        this.car = car;
+        this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(car.getModel().getItem().getStack(car.getModel().getName())));
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
     }
 
-    void assemble(CarModel model) {
-        this.model = model;
-        this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(model.getItem().getStack(model.getName())));
-        this.status = new CarStatus();
-        this.engine = new Engine(status, model);
-        this.steering = new Steering(status);
-        this.meterPanel = new MeterPanel(status, model, engine);
-        //乗れるブロックの高さ
-        this.Q = 1.0F;
-        setSize(2.5F, 2.5F);
-    }
-
-    public void openUtilMenu(Player player) {
-        if (this.menu == null) {
-            this.menu = new CarUtilMenu(player, this);
-        }
-        this.menu.open(player);
+    @Override
+    public void tick() {
+        super.tick();
+        setSize(6.0F, 6.0F);
     }
 
     public Location getLocation() {
         return getBukkitEntity().getLocation();
-    }
-
-    public CarStatus getStatus() {
-        return status;
-    }
-
-    public boolean refuel(float fuel) {
-        return engine.refuel(fuel);
-    }
-
-    //降りた時
-    @Override
-    protected boolean removePassenger(Entity entity) {
-        if (!isCarArmorStand()) {
-            super.removePassenger(entity);
-            return true;
-        }
-        super.removePassenger(entity);
-        if (!(entity.getBukkitEntity() instanceof Player)) {
-            return true;
-        }
-        Player player = (Player) entity.getBukkitEntity();
-        ActionBar.sendPacket(player, "");
-        return true;
     }
 
     //ツタとかはしごとかを登れなくする
@@ -112,7 +74,7 @@ public class CarArmorStand extends EntityArmorStand {
             return;
         }
         super.au();
-        new SubmergedMessageTask().run(this);
+        new SubmergedMessageTask().run(car);
     }
 
     @Override
@@ -122,47 +84,43 @@ public class CarArmorStand extends EntityArmorStand {
             return;
         }
         super.burn(i);
-        if (!beginExplode) {
-            new BurnExplosionTask().run(this);
-            this.beginExplode = true;
+        if (!car.isBeginExplode()) {
+            new BurnExplosionTask().run(car);
+            car.setBeginExplode(true);
         }
     }
 
     @Override
     public void a(float sideMot, float f1, float forMot) {
-        if (!isCarArmorStand()) {
+        if (car.getPassengers().isEmpty() || !car.getDriver().isPresent()) {
+            car.getEngine().stop();
             super.a(sideMot, f1, forMot);
             return;
         }
-        if (passengers == null || passengers.isEmpty()) {
-            status.getSpeed().zero();
-            super.a(sideMot, f1, forMot);
-            return;
-        }
-
-        EntityLiving passenger = (EntityLiving) passengers.get(0);
-        if (!(passenger instanceof EntityPlayer)) {
-            super.a(sideMot, f1, forMot);
-            return;
-        }
-
-        float sideInput = passenger.bh;
-        float forInput = passenger.bj;
 
         sideMot = 0.0f;
         forMot = 3.0f;
 
+        car.getDriver().ifPresent(driver -> {
+            EntityPlayer player = ((CraftPlayer) driver).getHandle();
+            float sideInput = player.bh;
+            float forInput = player.bj;
+
+            if (sideInput < 0.0F) {
+                car.getSteering().right();
+            } else if (sideInput > 0.0F) {
+                car.getSteering().left();
+            }
+
+            car.getEngine().update(forInput);
+            car.getEngine().consumeFuel(sideInput);
+        });
+
         this.fallDistance = 0.0F;
 
-        if (sideInput < 0.0F) {
-            steering.right();
-        } else if (sideInput > 0.0F) {
-            steering.left();
-        }
-
-        this.yaw = status.getYaw();
+        this.yaw = car.getStatus().getYaw();
         this.lastYaw = this.yaw;
-        this.pitch = passenger.pitch * 0.5F;
+        this.pitch = 0.0F;
         setYawPitch(this.yaw, this.pitch);
         this.aQ = this.yaw;
         this.aS = this.aQ;
@@ -180,27 +138,12 @@ public class CarArmorStand extends EntityArmorStand {
 
         this.aJ += (f4 - this.aJ) * 0.4f;
         this.aK += this.aJ;
-        this.o(engine.speedPerTick(forInput));
+        this.o(car.getEngine().getCurrentSpeed());
         super.a(sideMot, f1, forMot);
-
-        engine.consumeFuel(sideInput);
-        meterPanel.display((Player)((EntityHuman) passenger).getBukkitEntity());
-
-    }
-
-    public CarModel getModel() {
-        return model;
     }
 
     @Override
     public CraftEntity getBukkitEntity() {
-        if (!isCarArmorStand()) {
-            if (this.bukkitEntity == null || !(this.bukkitEntity instanceof CraftArmorStand)) {
-                this.bukkitEntity = new CraftArmorStand((CraftServer) Bukkit.getServer(), this);
-            }
-            return super.getBukkitEntity();
-        }
-
         if (this.bukkitEntity == null || !(this.bukkitEntity instanceof CraftCar)) {
             this.bukkitEntity = new CraftCar((CraftServer) Bukkit.getServer(), this);
         }
@@ -212,8 +155,14 @@ public class CarArmorStand extends EntityArmorStand {
         return super.getId();
     }
 
-    public boolean isCarArmorStand() {
-        return this.model != null && status != null;
+    private boolean isCarArmorStand() {
+        return car.getModel() != null && car.getStatus() != null;
+    }
+
+    public class CraftCar extends CraftArmorStand {
+        CraftCar(CraftServer server, EntityArmorStand entity) {
+            super(server, entity);
+        }
     }
 
 }

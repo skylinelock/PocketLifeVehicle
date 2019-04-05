@@ -21,6 +21,7 @@ import java.util.UUID;
 public class StringEditor extends ContainerAnvil {
     private static final Map<UUID, StringEditor> openingMaps = new HashMap<>();
     private final Type editorType;
+    private ModelSettingMenu menu;
 
     public StringEditor(Type editorType, PlayerInventory playerinventory, World world, EntityHuman entityhuman) {
         super(playerinventory, world, BlockPosition.ZERO, entityhuman);
@@ -28,15 +29,15 @@ public class StringEditor extends ContainerAnvil {
         this.editorType = editorType;
     }
 
-    public static void open(Player player, Type editorType) {
+    public static void open(Player player, Type editorType, ModelSettingMenu menu) {
         PlayerInventory inventory = ((CraftInventoryPlayer) player.getInventory()).getInventory();
         World world = ((CraftWorld) player.getWorld()).getHandle();
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         int containerId = entityPlayer.nextContainerCounter();
         StringEditor editor = new StringEditor(editorType, inventory, world, entityPlayer);
+        editor.setMenu(menu);
 
-        entityPlayer.playerConnection.sendPacket(new PacketPlayOutOpenWindow(containerId, "minecraft:anvil", new ChatMessage("ChangeTheName", new Object[]{}), 0));
-
+        entityPlayer.playerConnection.sendPacket(new PacketPlayOutOpenWindow(containerId, "minecraft:anvil", new ChatMessage("ChangeTheName"), 0));
         entityPlayer.activeContainer = editor;
         entityPlayer.activeContainer.windowId = containerId;
         entityPlayer.activeContainer.addSlotListener(entityPlayer);
@@ -56,6 +57,14 @@ public class StringEditor extends ContainerAnvil {
         editor.getBukkitView().getTopInventory().setItem(0, CraftItemStack.asBukkitCopy(item));
 
         openingMaps.put(player.getUniqueId(), editor);
+    }
+
+    public ModelSettingMenu getMenu() {
+        return menu;
+    }
+
+    public void setMenu(ModelSettingMenu menu) {
+        this.menu = menu;
     }
 
     public static StringEditor get(Player player) {

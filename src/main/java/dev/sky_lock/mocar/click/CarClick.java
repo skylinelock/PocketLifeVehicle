@@ -1,9 +1,9 @@
 package dev.sky_lock.mocar.click;
 
 import dev.sky_lock.mocar.Permission;
-import dev.sky_lock.mocar.car.CarArmorStand;
+import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarEntities;
-import dev.sky_lock.mocar.car.CraftCar;
+import dev.sky_lock.mocar.car.SeatArmorStand;
 import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.util.PlayerInfo;
 import org.bukkit.ChatColor;
@@ -17,24 +17,28 @@ import java.util.UUID;
 
 public class CarClick {
     private final Player player;
-    private final CraftCar craftCar;
+    private final SeatArmorStand.CraftSeat seat;
+    private final Car car;
 
-    public CarClick(Player player, CraftCar craftCar) {
+    public CarClick(Player player, SeatArmorStand.CraftSeat seat) {
         this.player = player;
-        this.craftCar = craftCar;
+        this.seat = seat;
+        this.car = CarEntities.getCar((SeatArmorStand) seat.getHandle());
     }
 
     public void accept() {
-        CarArmorStand car = (CarArmorStand) craftCar.getHandle();
+        if (!seat.getPassengers().isEmpty()) {
+            return;
+        }
         CarEntities.getOwner(car).ifPresent(owner -> {
             UUID clicked = player.getUniqueId();
             String ownerName = PlayerInfo.getName(owner);
             if (player.isSneaking()) {
                 if (!clicked.equals(owner) && !Permission.CAR_CLICK.obtained(player)) {
-                    sendFailureInfo("この車は " + ownerName + " が所有しています");
+                    sendFailureInfo("この乗り物は " + ownerName + " が所有しています");
                     return;
                 }
-                car.openUtilMenu(player);
+                car.openMenu(player);
                 return;
             }
             if (clicked.equals(owner)) {
@@ -42,14 +46,15 @@ public class CarClick {
                     sendFailureInfo("乗車するためには解錠する必要があります");
                     return;
                 }
-                craftCar.setPassenger(player);
+                this.seat.setPassenger(player);
+                player.sendMessage(((SeatArmorStand) seat.getHandle()).getPosition().toString());
                 return;
             }
             if (car.getStatus().isLocked()) {
-                sendFailureInfo("この車は " + ownerName + " によってロックされています");
+                sendFailureInfo("この乗り物には鍵が掛かっています");
                 return;
             }
-            craftCar.setPassenger(player);
+            this.seat.setPassenger(player);
         });
     }
 

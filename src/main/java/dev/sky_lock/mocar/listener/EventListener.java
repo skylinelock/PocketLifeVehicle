@@ -1,19 +1,27 @@
 package dev.sky_lock.mocar.listener;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.car.CarEntities;
-import dev.sky_lock.mocar.car.CarModel;
-import dev.sky_lock.mocar.car.CraftCar;
-import dev.sky_lock.mocar.car.ModelList;
+import dev.sky_lock.mocar.car.*;
+import dev.sky_lock.mocar.click.CarClick;
+import dev.sky_lock.mocar.click.InventoryClick;
+import dev.sky_lock.mocar.gui.EditSessions;
+import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.packet.ActionBar;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
@@ -25,7 +33,41 @@ import java.util.List;
  * @author sky_lock
  */
 
-public class PlayerListener implements Listener {
+public class EventListener implements Listener {
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractAtEntityEvent event) {
+        if (event.getRightClicked().getType() != EntityType.ARMOR_STAND) {
+            return;
+        }
+        ArmorStand as = (ArmorStand) event.getRightClicked();
+        if (as instanceof CarArmorStand.CraftCar) {
+            event.setCancelled(true);
+            return;
+        }
+        if (!(as instanceof SeatArmorStand.CraftSeat)) {
+            return;
+        }
+        SeatArmorStand.CraftSeat seat = (SeatArmorStand.CraftSeat) as;
+        event.setCancelled(true);
+        new CarClick(event.getPlayer(), seat).accept();
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        new InventoryClick(event).accept();
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+        StringEditor.close(player);
+        Bukkit.getScheduler().runTaskLater(MoCar.getInstance(), () -> {
+            if (player.getOpenInventory().getTopInventory().getType() == InventoryType.CRAFTING) {
+                EditSessions.destroy(player.getUniqueId());
+            }
+        }, 1L);
+    }
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -72,15 +114,19 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event) {
+        StringEditor.close(event.getPlayer());
+        EditSessions.destroy(event.getPlayer().getUniqueId());
+
         Player player = event.getPlayer();
         Entity vehicle = player.getVehicle();
         if (vehicle == null) {
             return;
         }
-        if (!(vehicle instanceof CraftCar)) {
+        if (!(vehicle instanceof SeatArmorStand.CraftSeat)) {
             return;
         }
-        CraftCar craftCar = (CraftCar) vehicle;
-        craftCar.removePassenger(player);
+        SeatArmorStand.CraftSeat seat = (SeatArmorStand.CraftSeat) vehicle;
+        seat.removePassenger(player);
     }
+
 }

@@ -8,6 +8,7 @@ class Engine {
     private final CarStatus status;
     private final CarModel model;
     private final Speed speed;
+    private float currentSpeed;
 
     Engine(CarStatus status, CarModel model) {
         this.status = status;
@@ -45,7 +46,7 @@ class Engine {
     }
 
 
-    float speedPerTick(float passengerInput) {
+    void update(float passengerInput) {
         if (passengerInput == 0.0f) {
             if (speed.isPositive()) {
                 speed.frictionalDecelerate();
@@ -55,17 +56,18 @@ class Engine {
         }
 
         MaxSpeed maxSpeed;
-        if (model.getMaxSpeed() > MaxSpeed.values().length) {
+        if (model.getMaxSpeed() == null) {
             maxSpeed = MaxSpeed.NORMAL;
         } else {
-            maxSpeed = MaxSpeed.values()[model.getMaxSpeed() - 1];
+            maxSpeed = model.getMaxSpeed();
         }
 
         if (speed.exact() > maxSpeed.getMax()) {
             if (status.getFuel() <= 0.0f) {
-                speed.zero();
+                speed.zeroize();
             }
-            return speed.exact();
+            this.currentSpeed = speed.exact();
+            return;
         }
         if (passengerInput > 0.0f) {
             speed.accelerate();
@@ -74,9 +76,17 @@ class Engine {
             speed.decrease();
         }
         if (status.getFuel() <= 0.0f) {
-            speed.zero();
+            speed.zeroize();
         }
-        return speed.exact();
+        this.currentSpeed = speed.exact();
+    }
+
+    float getCurrentSpeed() {
+        return currentSpeed;
+    }
+
+    void stop() {
+        status.getSpeed().zeroize();
     }
 
     float speedPerSecond() {

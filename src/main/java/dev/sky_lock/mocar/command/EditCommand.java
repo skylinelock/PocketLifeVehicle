@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.command;
 
-import dev.sky_lock.mocar.gui.EditCarModelMenu;
+import dev.sky_lock.mocar.gui.ModelMenuIndex;
+import dev.sky_lock.mocar.gui.ModelSettingMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -14,6 +15,6 @@ public class EditCommand implements ICommand, IAdminCommand {
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
        Player player = (Player) sender;
-       new EditCarModelMenu(player).open(player);
+       new ModelSettingMenu(player).open(player, ModelMenuIndex.MAIN_MENU.value());
     }
 }

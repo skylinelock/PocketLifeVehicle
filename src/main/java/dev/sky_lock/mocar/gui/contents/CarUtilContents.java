@@ -1,9 +1,10 @@
 package dev.sky_lock.mocar.gui.contents;
 
+import dev.sky_lock.glassy.gui.InventoryMenu;
 import dev.sky_lock.glassy.gui.MenuContents;
 import dev.sky_lock.glassy.gui.Slot;
 import dev.sky_lock.glassy.gui.ToggleSlot;
-import dev.sky_lock.mocar.car.CarArmorStand;
+import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.gui.CarUtilMenu;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
@@ -25,18 +26,15 @@ import java.util.stream.Collectors;
  */
 
 public class CarUtilContents extends MenuContents {
-    private final CarArmorStand car;
-    private final Slot closeSlot;
-    private final Slot towSlot;
-    private final Slot ownerSlot;
-    private final Slot carInfoSlot;
+    private final Car car;
+    private ItemStack refuelHopper;
 
-    public CarUtilContents(CarArmorStand car) {
+    public CarUtilContents(Car car) {
         this.car = car;
         ItemStack closeItem = ItemStackBuilder.of(Material.ENDER_PEARL, 1).name(ChatColor.RED + "閉じる").build();
         ItemStack towItem = ItemStackBuilder.of(Material.MINECART, 1).name(colorizeTitle("レッカー移動")).lore(colorizeInfoAsList("アイテム化して持ち運べるようにします")).build();
 
-        this.ownerSlot = CarEntities.getOwner(car).map(owner -> {
+        Slot ownerSlot = CarEntities.getOwner(car).map(owner -> {
             ItemStack playerSkull = PlayerSkull.of(owner, 1).toItemStack();
             ItemStack ownerSkull = new ItemStackBuilder(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(PlayerInfo.getName(owner))).build();
             return new Slot(20, ownerSkull, event -> {
@@ -45,44 +43,35 @@ public class CarUtilContents extends MenuContents {
 
         ItemStack carInfoBook = ItemStackBuilder.of(Material.BOOK, 1).name(colorizeTitle("車輌情報")).lore(carInfoLore()).build();
 
-        this.closeSlot = new Slot(4, closeItem, event -> {
+        Slot closeSlot = new Slot(4, closeItem, event -> {
             CarUtilMenu menu = (CarUtilMenu) event.getInventory().getHolder();
             menu.close((Player) event.getWhoClicked());
-            event.getWhoClicked().closeInventory();
         });
-        this.towSlot = new Slot(11, towItem, event -> {
-            Player player = (Player) event.getWhoClicked();
-            CarEntities.tow(player.getUniqueId());
-            ((CarUtilMenu) event.getInventory().getHolder()).close(player);
-            player.closeInventory();
-        });
-        this.carInfoSlot = new Slot(24, carInfoBook, event -> {
-        });
-    }
 
-    @Override
-    public void open(Player player) {
-        super.addSlot(closeSlot);
-        super.addSlot(towSlot);
-        CarEntities.getOwner(car).ifPresent(owner -> {
-            super.addSlot(ownerSlot);
+        Slot towSlot = new Slot(11, towItem, event -> {
+            CarEntities.tow(car);
+            car.closeMenu((Player) event.getWhoClicked());
         });
+
+        Slot carInfoSlot = new Slot(24, carInfoBook, event -> {
+        });
+
         ItemStack keyClose = ItemStackBuilder.of(Material.BARRIER, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "鍵を閉める").build();
         ItemStack keyOpen = ItemStackBuilder.of(Material.STRUCTURE_VOID, 1).name(ChatColor.AQUA + "" + ChatColor.BOLD + "鍵を開ける").build();
 
-        super.addSlot(carInfoSlot);
-
-        super.addSlot(new ToggleSlot(15, car.getStatus().isLocked(), keyOpen, keyClose, event -> {
+        Slot keySlot = new ToggleSlot(15, car.getStatus().isLocked(), keyOpen, keyClose, event -> {
             car.getStatus().setLocked(false);
+            Player player = (Player) event.getWhoClicked();
             player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.4F);
         }, event -> {
             car.getStatus().setLocked(true);
+            Player player = (Player) event.getWhoClicked();
             player.playSound(player.getLocation(), Sound.BLOCK_IRON_DOOR_CLOSE, 1.0F, 1.4F);
-        }));
+        });
 
-        ItemStack refuelHopper = ItemStackBuilder.of(Material.HOPPER, 1).name(colorizeTitle("給油口")).lore(refuelInfo(car.getStatus().getFuel())).build();
+        refuelHopper = ItemStackBuilder.of(Material.HOPPER, 1).name(colorizeTitle("給油口")).lore(refuelInfo(car.getStatus().getFuel())).build();
 
-        super.addSlot(new Slot(22, refuelHopper, (event) -> {
+        Slot fuelSlot = new Slot(22, refuelHopper, (event) -> {
             ItemStack cursor = event.getCursor();
             if (cursor == null) {
                 return;
@@ -92,16 +81,51 @@ public class CarUtilContents extends MenuContents {
             }
             boolean success = car.refuel(30F);
             if (success) {
-                event.getInventory().setItem(22, new ItemStackBuilder(refuelHopper).lore(refuelInfo(car.getStatus().getFuel())).build());
                 cursor.setAmount(cursor.getAmount() - 1);
+                Player player = (Player) event.getWhoClicked();
                 player.playSound(player.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 1.0F, 0.6F);
+                updateItemStack(22, new ItemStackBuilder(refuelHopper).lore(refuelInfo(car.getStatus().getFuel())).build());
+                InventoryMenu.of(player).ifPresent(menu -> {
+                    menu.update();
+                    setFuelGage(menu);
+                });
             }
-        }));
+        });
+
+        super.addSlot(ownerSlot);
+        super.addSlot(closeSlot, towSlot, carInfoSlot, keySlot, fuelSlot);
+    }
+
+    @Override
+    public void onFlip(InventoryMenu menu) {
+        refuelHopper = new ItemStackBuilder(refuelHopper).lore(refuelInfo(car.getStatus().getFuel())).build();
+        updateItemStack(22, refuelHopper);
+        menu.update();
+        setFuelGage(menu);
+    }
+
+    private void setFuelGage(InventoryMenu menu) {
+        ItemStack filled = ItemStackBuilder.of(Material.GREEN_STAINED_GLASS_PANE, 1).name(ChatColor.GREEN + "補充済み").build();
+        ItemStack unFilled = ItemStackBuilder.of(Material.RED_STAINED_GLASS_PANE, 1).name(ChatColor.RED + "未補充").build();
+        float fuel = car.getStatus().getFuel();
+        float maxFuel = car.getModel().getMaxFuel();
+        float rate = fuel / maxFuel;
+        int filledSlots = Math.round(9 * rate);
+        for (int j = 0; j < 9; j++) {
+            if (j < filledSlots) {
+                menu.getInventory().setItem(27 + j, filled);
+                menu.getInventory().setItem(36 + j, filled);
+                menu.getInventory().setItem(45 + j, filled);
+            } else {
+                menu.getInventory().setItem(27 + j, unFilled);
+                menu.getInventory().setItem(36 + j, unFilled);
+                menu.getInventory().setItem(45 + j, unFilled);
+            }
+        }
     }
 
     private List<String> refuelInfo(float fuel) {
         return Arrays.asList(ChatColor.GRAY + "残燃料 : " + String.format("%.1f", Math.abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
-
     }
 
     private String colorizeTitle(String title) {

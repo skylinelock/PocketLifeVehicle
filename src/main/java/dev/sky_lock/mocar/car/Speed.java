@@ -56,7 +56,7 @@ class Speed {
         return exactSpeed.floatValue();
     }
 
-    void zero() {
+    void zeroize() {
         exactSpeed = BigDecimal.ZERO;
     }
 

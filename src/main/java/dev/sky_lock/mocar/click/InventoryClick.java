@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.click;
 
 import dev.sky_lock.mocar.gui.EditSessions;
-import dev.sky_lock.mocar.gui.ModelSettingMenu;
+import dev.sky_lock.mocar.gui.ModelMenuIndex;
 import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.util.MessageUtil;
 import net.minecraft.server.v1_13_R2.ItemStack;
@@ -33,7 +33,7 @@ public class InventoryClick {
             org.bukkit.inventory.ItemStack result = event.getCurrentItem();
 
             StringEditor editor = StringEditor.get((Player) event.getWhoClicked());
-            EditSessions.get(event.getWhoClicked().getUniqueId()).ifPresent(session -> {
+            EditSessions.of(event.getWhoClicked().getUniqueId()).ifPresent(session -> {
                 if (editor.getEditorType() == StringEditor.Type.ID) {
                     session.setId(result.getItemMeta().getDisplayName());
                 } else if (editor.getEditorType() == StringEditor.Type.NAME) {
@@ -41,8 +41,8 @@ public class InventoryClick {
                     session.setName(name);
                 }
                 Player player = (Player) event.getWhoClicked();
+                StringEditor.get(player).getMenu().open(player, ModelMenuIndex.SETTING.value());
                 StringEditor.close(player);
-                new ModelSettingMenu(player).open(player);
             });
 
         }

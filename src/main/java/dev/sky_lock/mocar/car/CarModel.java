@@ -19,16 +19,18 @@ public class CarModel implements ConfigurationSerializable {
     private final String name;
     private final List<String> lores;
     private final float maxFuel;
-    private final int maxSpeed;
+    private final MaxSpeed maxSpeed;
     private final CarItem item;
+    private final Capacity capacity;
 
-    public CarModel(String id, CarItem carItem, String name, List<String> lore, float maxFuel, int maxSpeed) {
+    public CarModel(String id, CarItem carItem, String name, List<String> lore, float maxFuel, MaxSpeed maxSpeed, Capacity capacity) {
         this.id = id;
         this.item = carItem;
         this.name = name;
         this.lores = lore;
         this.maxFuel = maxFuel;
         this.maxSpeed = maxSpeed;
+        this.capacity = capacity;
     }
 
     public CarItem getItem() {
@@ -47,26 +49,6 @@ public class CarModel implements ConfigurationSerializable {
         return maxFuel;
     }
 
-    public int getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("id", id);
-        map.put("item", item);
-        map.put("name", name);
-        map.put("lores", lores);
-        map.put("maxfuel", maxFuel);
-        map.put("maxspeed", maxSpeed);
-        return map;
-    }
-
     public static CarModel deserialize(Map<String, Object> map) {
         String id = (String) map.get("id");
         CarItem item = (CarItem) map.get("item");
@@ -83,8 +65,34 @@ public class CarModel implements ConfigurationSerializable {
             }
         }
         float maxFuel = (float) ((double) map.get("maxfuel"));
-        int speed = (int) map.get("maxspeed");
-        return new CarModel(id, item, name, lores, maxFuel, speed);
+        MaxSpeed speed = MaxSpeed.values()[(int) map.get("maxspeed")];
+        Capacity capacity = Capacity.from((int) map.get("capacity"));
+        return new CarModel(id, item, name, lores, maxFuel, speed, capacity);
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public MaxSpeed getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public Capacity getCapacity() {
+        return capacity;
+    }
+
+    @Override
+    public Map<String, Object> serialize() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("id", id);
+        map.put("item", item);
+        map.put("name", name);
+        map.put("lores", lores);
+        map.put("maxfuel", maxFuel);
+        map.put("maxspeed", maxSpeed.ordinal());
+        map.put("capacity", capacity.value());
+        return map;
     }
 
 }

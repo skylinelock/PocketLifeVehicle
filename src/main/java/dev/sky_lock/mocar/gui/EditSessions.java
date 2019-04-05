@@ -21,7 +21,7 @@ public class EditSessions {
         edits.remove(uuid);
     }
 
-    public static Optional<EditModelData> get(UUID uuid) {
+    public static Optional<EditModelData> of(UUID uuid) {
         return Optional.ofNullable(edits.get(uuid));
     }
 

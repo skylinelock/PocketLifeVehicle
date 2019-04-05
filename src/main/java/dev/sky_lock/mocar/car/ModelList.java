@@ -6,6 +6,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author sky_lock
@@ -25,8 +26,8 @@ public class ModelList {
         carModels.addAll(config.loadModels());
     }
 
-    public static CarModel get(String id) {
-        return carModels.stream().filter(model -> model.getId().equalsIgnoreCase(id)).findFirst().orElse(null);
+    public static Optional<CarModel> get(String id) {
+        return carModels.stream().filter(model -> model.getId().equalsIgnoreCase(id)).findFirst();
     }
 
     public static boolean add(CarModel model) {
@@ -39,13 +40,11 @@ public class ModelList {
     }
 
     public static boolean remove(String id) {
-        CarModel model = get(id);
-        if (model == null) {
-            return false;
-        }
-        carModels.remove(model);
-        config.writeModels(carModels);
-        return true;
+        return get(id).map(model -> {
+            carModels.remove(model);
+            config.writeModels(carModels);
+            return true;
+        }).orElseGet(() -> false);
     }
 
     public static List<CarModel> unmodified() {

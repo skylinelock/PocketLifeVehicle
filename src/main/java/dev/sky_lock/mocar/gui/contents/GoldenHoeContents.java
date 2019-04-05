@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.gui.contents;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 
 /**
  * @author sky_lock
@@ -8,7 +9,7 @@ import org.bukkit.Material;
 
 public class GoldenHoeContents extends DurabilityHoeContents {
 
-    public GoldenHoeContents() {
-        super(Material.GOLDEN_HOE);
+    public GoldenHoeContents(Player player) {
+        super(player, Material.GOLDEN_HOE);
     }
 }

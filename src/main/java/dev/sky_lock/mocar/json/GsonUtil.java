@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
-import dev.sky_lock.mocar.car.CarModel;
 import org.bukkit.Location;
 
 import java.io.IOException;
@@ -22,7 +21,6 @@ public class GsonUtil {
     private static final Gson gson = new GsonBuilder()
             .serializeNulls()
             .registerTypeAdapter(Location.class, new LocationAdapter())
-            .registerTypeAdapter(CarModel.class, new CarModelAdapter())
             .create();
 
     /**

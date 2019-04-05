@@ -17,7 +17,7 @@ public class ListModelCommand implements ICommand {
     public void execute(CommandSender sender, Command cmd, String[] args) {
         Player player = (Player) sender;
         if (ModelList.unmodified().isEmpty()) {
-            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "Failed : Could not find any models");
+            player.sendMessage(MoCar.PREFIX + ChatColor.RED + "モデルが見つかりませんでした");
             return;
         }
         ModelList.unmodified().forEach(model -> {
@@ -25,9 +25,9 @@ public class ListModelCommand implements ICommand {
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "ID             : " + model.getId());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "NAME          : " + model.getName());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "LORE          : " + model.getLores());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "SPEED        : " + model.getMaxSpeed());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "SPEED        : " + model.getMaxSpeed().getLabel());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "MAXFUEL     : " + model.getMaxFuel());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "CAPACITY     : " + model.getCapacity());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "CAPACITY     : " + model.getCapacity().value());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "-------------------------------------------");
         });
     }

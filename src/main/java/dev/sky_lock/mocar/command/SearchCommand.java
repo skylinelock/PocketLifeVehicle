@@ -2,7 +2,7 @@ package dev.sky_lock.mocar.command;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.Permission;
-import dev.sky_lock.mocar.car.CarArmorStand;
+import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.util.PlayerInfo;
 import org.bukkit.ChatColor;
@@ -43,7 +43,7 @@ public class SearchCommand implements ICommand {
     }
 
     private Location getCarLocation(UUID target) {
-        CarArmorStand car = CarEntities.get(target);
+        Car car = CarEntities.get(target);
         if (car == null) {
             return null;
         }
