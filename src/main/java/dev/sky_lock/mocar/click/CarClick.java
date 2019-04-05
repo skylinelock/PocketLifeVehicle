@@ -47,7 +47,6 @@ public class CarClick {
                     return;
                 }
                 this.seat.setPassenger(player);
-                player.sendMessage(((SeatArmorStand) seat.getHandle()).getPosition().toString());
                 return;
             }
             if (car.getStatus().isLocked()) {

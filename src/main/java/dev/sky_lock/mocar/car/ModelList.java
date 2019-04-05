@@ -57,14 +57,15 @@ public class ModelList {
 
     public static CarModel get(ItemStack itemStack) {
         return carModels.stream().filter(model -> {
-            ItemStack modelItem = model.getItem().getStack(model.getName());
-            ItemMeta meta = modelItem.getItemMeta();
-            if (!itemStack.hasItemMeta() || meta == null) {
+            ItemMeta meta = itemStack.getItemMeta();
+            if (!meta.hasDisplayName()) {
                 return false;
             }
+            ItemStack modelItem = model.getItem().getStack(model.getName());
+            ItemMeta modelMeta = modelItem.getItemMeta();
             String displayName = itemStack.getItemMeta().getDisplayName();
-            String carName = meta.getDisplayName();
-            return itemStack.getType() == modelItem.getType() && displayName.equals(carName);
+            String carName = modelMeta.getDisplayName();
+            return itemStack.getType() == modelItem.getType() && displayName.equals(carName) && itemStack.getDurability() == modelItem.getDurability();
         }).findFirst().orElse(null);
     }
 }
