@@ -122,10 +122,6 @@ public class SeatArmorStand extends EntityArmorStand {
         return super.getId();
     }
 
-    public SeatPosition getPosition() {
-        return position;
-    }
-
     Optional<Player> getPassenger() {
         if (passengers.isEmpty()) {
             return Optional.empty();

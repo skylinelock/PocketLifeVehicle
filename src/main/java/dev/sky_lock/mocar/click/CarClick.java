@@ -42,10 +42,6 @@ public class CarClick {
                 return;
             }
             if (clicked.equals(owner)) {
-                if (car.getStatus().isLocked()) {
-                    sendFailureInfo("乗車するためには解錠する必要があります");
-                    return;
-                }
                 this.seat.setPassenger(player);
                 return;
             }

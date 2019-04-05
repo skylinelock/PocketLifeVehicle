@@ -2,6 +2,7 @@ package dev.sky_lock.mocar.util;
 
 import org.apache.commons.io.IOUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.ParseException;
@@ -18,6 +19,10 @@ import java.util.UUID;
 public class PlayerInfo {
 
     public static UUID getUUID(String name) {
+        Player player = Bukkit.getPlayer(name);
+        if (player != null) {
+            return player.getUniqueId();
+        }
         String apiUri = "https://api.mojang.com/users/profiles/minecraft/" + name;
         try {
             String uuidJson = IOUtils.toString(new URL(apiUri), StandardCharsets.UTF_8);

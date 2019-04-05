@@ -3,6 +3,7 @@ package dev.sky_lock.mocar.car;
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.util.PlayerInfo;
+import dev.sky_lock.mocar.util.StringUtil;
 import net.minecraft.server.v1_13_R2.World;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
@@ -84,7 +85,7 @@ public class CarEntities {
         CarItem carItem = model.getItem();
         ItemStack itemStack = carItem.getStack(model.getName());
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setLore(Arrays.asList("Owner : " + PlayerInfo.getName(owner), "Fuel : " + car.getStatus().getFuel()));
+        meta.setLore(Arrays.asList("Owner : " + PlayerInfo.getName(owner), "Fuel  : " + StringUtil.scaledFloatText(car.getStatus().getFuel())));
         itemStack.setItemMeta(meta);
         Item item = car.getLocation().getWorld().dropItem(car.getLocation(), itemStack);
         item.setMetadata("mocar-fuel", new FixedMetadataValue(MoCar.getInstance(), car.getStatus().getFuel()));

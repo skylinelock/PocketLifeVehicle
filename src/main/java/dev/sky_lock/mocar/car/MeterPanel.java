@@ -1,6 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.packet.ActionBar;
+import dev.sky_lock.mocar.util.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -44,7 +45,7 @@ class MeterPanel {
         }
         builder.append("   ");
         builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD);
-        String blockPerSecond = String.format("%.1f", Math.abs(engine.speedPerSecond()));
+        String blockPerSecond = StringUtil.scaledFloatText(Math.abs(engine.speedPerSecond()));
         builder.append(blockPerSecond).append(ChatColor.GRAY).append(ChatColor.BOLD).append(" blocks/s");
 
         ActionBar.sendPacket(player, builder.toString());
