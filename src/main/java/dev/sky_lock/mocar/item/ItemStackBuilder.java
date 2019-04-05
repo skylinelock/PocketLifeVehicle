@@ -3,6 +3,7 @@ package dev.sky_lock.mocar.item;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
@@ -22,8 +23,10 @@ public class ItemStackBuilder {
         return new ItemStackBuilder(new ItemStack(type, amount));
     }
 
-    public ItemStackBuilder durability(short durability) {
-        itemStack.setDurability(durability);
+    public ItemStackBuilder durability(short damage) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        ((Damageable) itemMeta).setDamage(damage);
+        itemStack.setItemMeta(itemMeta);
         return this;
     }
 

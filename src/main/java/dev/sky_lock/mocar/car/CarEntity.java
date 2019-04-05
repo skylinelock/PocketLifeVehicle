@@ -21,11 +21,11 @@ public class CarEntity {
         this.fuel = fuel;
     }
 
-    public UUID getOwner() {
+    UUID getOwner() {
         return UUID.fromString(ownerUUID);
     }
 
-    public String getModelID() {
+    String getModelID() {
         return modelID;
     }
 

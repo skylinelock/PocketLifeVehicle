@@ -6,7 +6,7 @@ import org.bukkit.Location;
  * @author sky_lock
  */
 
-public class OneSeatCar extends Car {
+class OneSeatCar extends Car {
 
     OneSeatCar(CarModel model) {
         super(model);

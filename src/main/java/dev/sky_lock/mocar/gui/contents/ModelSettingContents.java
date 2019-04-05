@@ -10,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -84,7 +85,8 @@ public class ModelSettingContents extends MenuContents {
     public void onFlip(InventoryMenu menu) {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             if (session.getCarItem() != null) {
-                List<String> details = Arrays.asList(session.getCarItem().getStack("").getType().toString(), String.valueOf(session.getCarItem().getStack("").getDurability()));
+                int damage = ((Damageable) session.getCarItem().getStack("").getItemMeta()).getDamage();
+                List<String> details = Arrays.asList(session.getCarItem().getStack("").getType().toString(), String.valueOf(damage));
                 carItem = new ItemStackBuilder(carItem).lore(details).growing().build();
                 updateItemStack(30, carItem);
             }

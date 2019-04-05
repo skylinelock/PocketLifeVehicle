@@ -43,7 +43,7 @@ public class SearchCommand implements ICommand {
     }
 
     private Location getCarLocation(UUID target) {
-        Car car = CarEntities.get(target);
+        Car car = CarEntities.of(target);
         if (car == null) {
             return null;
         }

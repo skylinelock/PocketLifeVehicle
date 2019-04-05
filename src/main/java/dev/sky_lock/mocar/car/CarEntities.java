@@ -5,7 +5,10 @@ import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.util.PlayerInfo;
 import dev.sky_lock.mocar.util.StringUtil;
 import net.minecraft.server.v1_13_R2.World;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
@@ -66,7 +69,7 @@ public class CarEntities {
         }
     }
 
-    public static void killAll() {
+    static void killAll() {
         entities.values().forEach(Car::kill);
     }
 
@@ -96,11 +99,11 @@ public class CarEntities {
         return entities.values().stream().filter(abstractCar -> abstractCar.contains(seat)).findFirst().orElse(null);
     }
 
-    public static Set<CarEntity> getCarEntities() {
+    static Set<CarEntity> getCarEntities() {
         return entities.entrySet().stream().map(entry -> new CarEntity(entry.getKey().toString(), entry.getValue().getModel().getId(), entry.getValue().getLocation(), entry.getValue().getStatus().getFuel())).collect(Collectors.toSet());
     }
 
-    public static Car get(UUID player) {
+    public static Car of(UUID player) {
         return entities.get(player);
     }
 

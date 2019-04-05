@@ -2,6 +2,7 @@ package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.config.CarsConfig;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
@@ -61,11 +62,13 @@ public class ModelList {
             if (!meta.hasDisplayName()) {
                 return false;
             }
+            int damage = ((Damageable) itemStack.getItemMeta()).getDamage();
             ItemStack modelItem = model.getItem().getStack(model.getName());
             ItemMeta modelMeta = modelItem.getItemMeta();
+            int modelDamage = ((Damageable) modelItem.getItemMeta()).getDamage();
             String displayName = itemStack.getItemMeta().getDisplayName();
             String carName = modelMeta.getDisplayName();
-            return itemStack.getType() == modelItem.getType() && displayName.equals(carName) && itemStack.getDurability() == modelItem.getDurability();
+            return itemStack.getType() == modelItem.getType() && displayName.equals(carName) && damage == modelDamage;
         }).findFirst().orElse(null);
     }
 }

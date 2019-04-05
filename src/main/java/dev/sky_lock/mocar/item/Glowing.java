@@ -4,6 +4,7 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
@@ -53,7 +54,7 @@ public class Glowing extends Enchantment {
     }
 
     @Override
-    public boolean conflictsWith(Enchantment enchantment) {
+    public boolean conflictsWith(@NotNull Enchantment enchantment) {
         return false;
     }
 

@@ -39,7 +39,7 @@ public class TowawayCommand implements ICommand {
     }
 
     private boolean towaway(UUID uuid) {
-        Car carEntity = CarEntities.get(uuid);
+        Car carEntity = CarEntities.of(uuid);
         if (carEntity == null) {
             return false;
         }
