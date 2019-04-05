@@ -3,7 +3,6 @@ package dev.sky_lock.mocar.task;
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarEntities;
-import dev.sky_lock.mocar.util.MessageUtil;
 import net.minecraft.server.v1_13_R2.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -56,7 +55,6 @@ public class BurnExplosionTask {
                 warning.setCount(count);
                 car.getPassengers().forEach(player -> {
                     warning.send(player);
-                    MessageUtil.sendDebugMessage(player.getName());
                 });
                 count--;
             }
