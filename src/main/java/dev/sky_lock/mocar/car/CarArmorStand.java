@@ -136,7 +136,7 @@ public class CarArmorStand extends EntityArmorStand {
         this.pitch = 0.0F;
         setYawPitch(this.yaw, this.pitch);
         this.aQ = this.yaw;
-        this.aS = this.aQ;
+/*        this.aS = this.aQ;
 
         this.aU = this.cK() * 0.1f;
 
@@ -150,7 +150,7 @@ public class CarArmorStand extends EntityArmorStand {
         }
 
         this.aJ += (f4 - this.aJ) * 0.4f;
-        this.aK += this.aJ;
+        this.aK += this.aJ;*/
         this.o(car.getEngine().getCurrentSpeed());
         super.a(sideMot, f1, forMot);
         car.getStatus().setLocation(getLocation());
