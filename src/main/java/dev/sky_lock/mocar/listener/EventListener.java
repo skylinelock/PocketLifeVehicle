@@ -26,6 +26,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -118,7 +119,11 @@ public class EventListener implements Listener {
         Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
         CarEntities.tow(uuid);
         if (CarEntities.spawn(uuid, model, whereToSpawn, Float.valueOf(fuel))) {
-            player.getInventory().remove(itemStack);
+            if (event.getHand() == EquipmentSlot.OFF_HAND) {
+                player.getInventory().setItemInOffHand(null);
+            } else {
+                player.getInventory().remove(itemStack);
+            }
         }
     }
 

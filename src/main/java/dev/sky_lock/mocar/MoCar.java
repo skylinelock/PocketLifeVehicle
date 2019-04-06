@@ -15,7 +15,6 @@ import net.minecraft.server.v1_13_R2.DataConverterRegistry;
 import net.minecraft.server.v1_13_R2.DataConverterTypes;
 import net.minecraft.server.v1_13_R2.EntityTypes;
 import net.minecraft.server.v1_13_R2.World;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -90,6 +89,6 @@ public class MoCar extends JavaPlugin {
         Map<Object, Type<?>> types = (Map<Object, Type<?>>) DataConverterRegistry.a().getSchema(15190).findChoiceType(DataConverterTypes.n).types();
         types.put("minecraft:" + id, types.get("minecraft:armor_stand"));
 
-        Bukkit.getLogger().info(EntityTypes.a(id, EntityTypes.a.a(clazz, function)).d());
+        EntityTypes.a(id, EntityTypes.a.a(clazz, function));
     }
 }
