@@ -13,11 +13,13 @@ import org.bukkit.scheduler.BukkitTask;
  */
 
 class CarSoundTask {
-    private CarStatus status;
+    private final CarModel model;
+    private final CarStatus status;
     private BukkitTask task;
     private int soundTick;
 
-    CarSoundTask(CarStatus status) {
+    CarSoundTask(CarModel model, CarStatus status) {
+        this.model = model;
         this.status = status;
     }
 
@@ -28,6 +30,8 @@ class CarSoundTask {
             world.playSound(location, Sound.ENTITY_PIG_HURT, 0.3F, 0.7F);
             world.playSound(location, Sound.ENTITY_MINECART_RIDING, 0.2F, 0.8F);
             world.playSound(location, Sound.ENTITY_PLAYER_BURP, 0.1F, 0.8F);
+            float engine_pitch = status.getSpeed().approximate() / model.getMaxSpeed().getMax();
+            world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.2F, engine_pitch);
         }, 0L, 2L);
     }
 

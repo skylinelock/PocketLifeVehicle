@@ -19,10 +19,11 @@ public class Glowing extends Enchantment {
     }
 
     @Override
-    public boolean canEnchantItem(ItemStack itemStack) {
+    public boolean canEnchantItem(@NotNull ItemStack itemStack) {
         return false;
     }
 
+    @NotNull
     @Override
     public String getName() {
         return getKey().getNamespace();
@@ -38,9 +39,10 @@ public class Glowing extends Enchantment {
         return 0;
     }
 
+    @NotNull
     @Override
     public EnchantmentTarget getItemTarget() {
-        return null;
+        return EnchantmentTarget.ALL;
     }
 
     @Override

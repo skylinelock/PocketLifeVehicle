@@ -37,7 +37,7 @@ public class Car {
         this.engine = new Engine(status, model);
         this.steering = new Steering(status);
         this.meterPanel = new MeterPanel(status, model, engine);
-        this.sound = new CarSoundTask(status);
+        this.sound = new CarSoundTask(model, status);
     }
 
     public CarSoundTask getSound() {
