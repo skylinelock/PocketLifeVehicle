@@ -88,7 +88,7 @@ public class CarEntities {
         CarItem carItem = model.getItem();
         ItemStack itemStack = carItem.getStack(model.getName());
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setLore(Arrays.asList("Owner : " + PlayerInfo.getName(owner), "Fuel  : " + StringUtil.scaledFloatText(car.getStatus().getFuel())));
+        meta.setLore(Arrays.asList("Owner : " + PlayerInfo.getName(owner), "Fuel  : " + StringUtil.formatDecimal(car.getStatus().getFuel())));
         itemStack.setItemMeta(meta);
         Item item = car.getLocation().getWorld().dropItem(car.getLocation(), itemStack);
         item.setMetadata("mocar-fuel", new FixedMetadataValue(MoCar.getInstance(), car.getStatus().getFuel()));

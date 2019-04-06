@@ -9,6 +9,7 @@ import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.util.PlayerInfo;
+import dev.sky_lock.mocar.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -105,9 +106,9 @@ public class EventListener implements Listener {
             return;
         }
         List<String> lores = meta.getLore();
-        String ownerName = lores.get(0).replaceAll("\\s", "").split(":")[1];
+        String ownerName = StringUtil.removeBlanks(lores.get(0)).split(":")[1];
         String rawFuel = lores.get(1);
-        String fuel = rawFuel.replaceAll("\\s", "").split(":")[1];
+        String fuel = StringUtil.removeBlanks(rawFuel.replaceAll("\\s", "")).split(":")[1];
 
         if (!player.getName().equals(ownerName)) {
             if (!Permission.CAR_PLACE.obtained(player)) {

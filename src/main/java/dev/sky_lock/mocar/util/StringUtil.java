@@ -6,7 +6,13 @@ package dev.sky_lock.mocar.util;
 
 public class StringUtil {
 
-    public static String scaledFloatText(float f) {
+    public static String formatDecimal(float f) {
         return String.format("%.1f", f);
     }
+
+    public static String removeBlanks(String blankText) {
+        return blankText.replaceAll("\\s", "");
+    }
+
+
 }

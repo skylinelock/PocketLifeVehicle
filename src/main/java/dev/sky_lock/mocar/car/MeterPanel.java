@@ -45,7 +45,7 @@ class MeterPanel {
         }
         builder.append("   ");
         builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD);
-        String blockPerSecond = StringUtil.scaledFloatText(Math.abs(engine.speedPerSecond()));
+        String blockPerSecond = StringUtil.formatDecimal(Math.abs(engine.speedPerSecond()));
         builder.append(blockPerSecond).append(ChatColor.GRAY).append(ChatColor.BOLD).append(" blocks/s");
 
         ActionBar.sendPacket(player, builder.toString());
