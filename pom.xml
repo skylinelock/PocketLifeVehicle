@@ -6,7 +6,7 @@
 
     <groupId>dev.sky_lock</groupId>
     <artifactId>mocar</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>MoCar</name>
 
     <inceptionYear>2019</inceptionYear>
