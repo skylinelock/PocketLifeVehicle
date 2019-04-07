@@ -149,6 +149,10 @@ public class CarUtilContents extends MenuContents {
         carInfo.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + car.getModel().getMaxFuel());
         carInfo.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + car.getModel().getMaxSpeed());
         carInfo.add(ChatColor.GREEN + "説明 :");
+        if (car.getModel().getLores() == null) {
+            carInfo.add("- " + ChatColor.RESET + "None");
+            return carInfo;
+        }
         car.getModel().getLores().forEach(lore -> carInfo.add("- " + ChatColor.RESET + lore));
         return carInfo;
     }

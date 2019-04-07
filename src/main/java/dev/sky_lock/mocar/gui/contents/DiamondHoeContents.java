@@ -10,6 +10,6 @@ import org.bukkit.entity.Player;
 public class DiamondHoeContents extends DurabilityHoeContents {
 
     public DiamondHoeContents(Player player) {
-        super(player, Material.DIAMOND);
+        super(player, Material.DIAMOND_HOE);
     }
 }
