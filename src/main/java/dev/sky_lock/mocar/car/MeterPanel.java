@@ -35,7 +35,7 @@ class MeterPanel {
 
         builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("   ").append(ChatColor.DARK_PURPLE).append(ChatColor.BOLD);
         if (status.getSpeed().isApproximateZero()) {
-            builder.append("N");
+            builder.append("P");
         } else {
             if (status.getSpeed().isPositive()) {
                 builder.append("D");
