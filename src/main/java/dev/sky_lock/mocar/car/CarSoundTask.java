@@ -27,11 +27,11 @@ class CarSoundTask {
         task = Bukkit.getScheduler().runTaskTimerAsynchronously(MoCar.getInstance(), () -> {
             Location location = status.getLocation();
             World world = location.getWorld();
-            world.playSound(location, Sound.ENTITY_PIG_HURT, 0.009F, 0.7F);
-            world.playSound(location, Sound.ENTITY_MINECART_RIDING, 0.009F, 0.8F);
-            world.playSound(location, Sound.ENTITY_PLAYER_BURP, 0.009F, 0.8F);
+            world.playSound(location, Sound.ENTITY_PIG_HURT, 0.05F, 0.7F);
+            world.playSound(location, Sound.ENTITY_MINECART_RIDING, 0.05F, 0.8F);
+            world.playSound(location, Sound.ENTITY_PLAYER_BURP, 0.05F, 0.8F);
             float engine_pitch = status.getSpeed().approximate() / model.getMaxSpeed().getMax();
-            world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.009F, engine_pitch);
+            world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.05F, engine_pitch);
         }, 0L, 2L);
     }
 
