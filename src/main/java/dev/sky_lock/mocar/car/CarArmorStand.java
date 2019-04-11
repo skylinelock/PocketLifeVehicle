@@ -103,7 +103,7 @@ public class CarArmorStand extends EntityArmorStand {
 
     @Override
     public void a(float sideMot, float f1, float forMot) {
-        if (car.getPassengers().isEmpty() || !car.getDriver().isPresent()) {
+        if (car.getPassengers().isEmpty() || !car.getDriver().isPresent() || this.isInWater()) {
             car.getEngine().stop();
             super.a(sideMot, f1, forMot);
             return;
