@@ -13,6 +13,7 @@ import dev.sky_lock.mocar.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -101,6 +102,7 @@ public class EventListener implements Listener {
             Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
             CarEntities.tow(player.getUniqueId());
             if (CarEntities.spawn(player.getUniqueId(), model, whereToSpawn, model.getMaxFuel())) {
+                player.playSound(whereToSpawn, Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.0F);
                 player.getInventory().remove(itemStack);
             }
             return;
@@ -118,8 +120,10 @@ public class EventListener implements Listener {
         }
         UUID uuid = PlayerInfo.getUUID(ownerName);
         Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
+        //TODO: プレイヤーのロケーションにItemをドロップさせる
         CarEntities.tow(uuid);
         if (CarEntities.spawn(uuid, model, whereToSpawn, Float.valueOf(fuel))) {
+            player.playSound(whereToSpawn, Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.0F);
             if (event.getHand() == EquipmentSlot.OFF_HAND) {
                 player.getInventory().setItemInOffHand(null);
             } else {
