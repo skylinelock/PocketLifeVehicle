@@ -16,6 +16,7 @@ import net.minecraft.server.v1_13_R2.DataConverterTypes;
 import net.minecraft.server.v1_13_R2.EntityTypes;
 import net.minecraft.server.v1_13_R2.World;
 import org.bukkit.ChatColor;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Map;
@@ -31,7 +32,7 @@ public class MoCar extends JavaPlugin {
     private final CarEntityStoreFile carStoreFile = new CarEntityStoreFile(getDataFolder().toPath());
 
     private PluginConfig pluginConfig;
-    public static String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "Car" + ChatColor.DARK_GRAY +"] " + ChatColor.RESET;
+    public static String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "Car" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;
 
     @Override
     public void onLoad() {
@@ -47,12 +48,10 @@ public class MoCar extends JavaPlugin {
         pluginConfig = new PluginConfig();
 
         CommandHandler commandHandler = new CommandHandler();
-        getCommand("mocar").setExecutor(commandHandler);
+        this.getCommand("mocar").setExecutor(commandHandler);
         CarEntities.spawnAll();
 
-        getServer().getPluginManager().registerEvents(new EventListener(), this);
-        getServer().getPluginManager().registerEvents(new InventoryMenuListener(this), this);
-
+        this.registerPluginEvents();
         Glowing.register();
     }
 
@@ -62,6 +61,14 @@ public class MoCar extends JavaPlugin {
         ModelList.saveConfig();
         pluginConfig.saveToFile();
     }
+
+    private void registerPluginEvents() {
+        PluginManager pluginManager = getServer().getPluginManager();
+        pluginManager.registerEvents(new EventListener(), this);
+        pluginManager.registerEvents(new ChunkEventListener(), this);
+        pluginManager.registerEvents(new InventoryMenuListener(this), this);
+    }
+
 
     public CarEntityStoreFile getCarStoreFile() {
         return carStoreFile;
@@ -90,5 +97,5 @@ public class MoCar extends JavaPlugin {
         types.put("minecraft:" + id, types.get("minecraft:armor_stand"));
 
         EntityTypes.a(id, EntityTypes.a.a(clazz, function));
-    }
+    }*/
 }
