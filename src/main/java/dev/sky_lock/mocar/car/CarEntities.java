@@ -52,6 +52,10 @@ public class CarEntities {
         return true;
     }
 
+    public static boolean spawn(Car car) {
+        return getOwner(car).map(owner -> spawn(owner, car.getModel(), car.getLocation(), car.getStatus().getFuel())).orElse(false);
+    }
+
     public static void kill(UUID owner) {
         if (entities.containsKey(owner)) {
             Car car = entities.remove(owner);
@@ -95,7 +99,11 @@ public class CarEntities {
     }
 
     public static Car getCar(SeatArmorStand seat) {
-        return entities.values().stream().filter(abstractCar -> abstractCar.contains(seat)).findFirst().orElse(null);
+        return entities.values().stream().filter(car -> car.contains(seat)).findFirst().orElse(null);
+    }
+
+    public static Car getCar(CarArmorStand basis) {
+        return entities.values().stream().filter(car -> car.contains(basis)).findFirst().orElse(null);
     }
 
     static Set<CarEntity> getCarEntities() {

@@ -120,6 +120,10 @@ public class Car {
         return this.seats.contains(seat);
     }
 
+    public boolean contains(CarArmorStand basis) {
+        return this.center.equals(basis);
+    }
+
     public List<Player> getPassengers() {
         return seats.stream().filter(seat -> !seat.passengers.isEmpty()).map(seat -> (CraftPlayer) seat.passengers.get(0).getBukkitEntity()).collect(Collectors.toList());
     }
@@ -128,7 +132,7 @@ public class Car {
         return seats.stream().filter(seat -> seat.isDriverSheet() && !seat.passengers.isEmpty()).findFirst().map(seat -> seat.getPassenger().orElse(null));
     }
 
-    void kill() {
+    public void kill() {
         center.killEntity();
         seats.forEach(SeatArmorStand::killEntity);
     }

@@ -1,6 +1,5 @@
 package dev.sky_lock.mocar.util;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
 /**
@@ -9,15 +8,8 @@ import org.bukkit.ChatColor;
 
 public class MessageUtil {
 
-    public static void sendDebugMessage(String message) {
-        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(message));
-    }
-
     public static String attachColor(String text) {
         return ChatColor.translateAlternateColorCodes('&', text);
     }
 
-    public static void sendConsoleWarning(String message) {
-        Bukkit.getLogger().warning(message);
-    }
 }
