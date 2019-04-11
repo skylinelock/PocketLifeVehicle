@@ -193,6 +193,10 @@ public class CarArmorStand extends EntityArmorStand {
         CraftCar(CraftServer server, EntityArmorStand entity) {
             super(server, entity);
         }
+
+        public CarArmorStand getHandle() {
+            return (CarArmorStand) super.getHandle();
+        }
     }
 
 }

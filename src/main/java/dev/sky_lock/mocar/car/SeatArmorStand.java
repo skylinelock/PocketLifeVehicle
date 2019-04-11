@@ -136,5 +136,9 @@ public class SeatArmorStand extends EntityArmorStand {
         CraftSeat(CraftServer server, EntityArmorStand entity) {
             super(server, entity);
         }
+
+        public SeatArmorStand getHandle() {
+            return (SeatArmorStand) super.getHandle();
+        }
     }
 }

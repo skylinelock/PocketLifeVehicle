@@ -23,7 +23,7 @@ public class CarClick {
     public CarClick(Player player, SeatArmorStand.CraftSeat seat) {
         this.player = player;
         this.seat = seat;
-        this.car = CarEntities.getCar((SeatArmorStand) seat.getHandle());
+        this.car = CarEntities.getCar(seat.getHandle());
     }
 
     public void accept() {

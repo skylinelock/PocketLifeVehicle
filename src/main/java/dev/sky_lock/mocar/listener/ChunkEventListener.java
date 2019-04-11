@@ -26,7 +26,7 @@ public class ChunkEventListener implements Listener {
         Arrays.stream(event.getChunk().getEntities())
                 .filter(entity -> entity instanceof CarArmorStand.CraftCar)
                 .forEach(entity -> {
-                    Car car = CarEntities.getCar(((CarArmorStand) ((CarArmorStand.CraftCar) entity).getHandle()));
+                    Car car = CarEntities.getCar((((CarArmorStand.CraftCar) entity).getHandle()));
                     car.kill();
                     cars.add(car);
                 });
