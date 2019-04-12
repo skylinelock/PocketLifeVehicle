@@ -24,8 +24,12 @@ public class CarModel implements ConfigurationSerializable {
     private final MaxSpeed maxSpeed;
     private final CarItem item;
     private final Capacity capacity;
+    private final CollideBox collideBox;
+    private final SteeringLevel steeringLevel;
+    private final float height;
+    private final CarSound sound;
 
-    public CarModel(String id, CarItem carItem, String name, List<String> lore, float maxFuel, MaxSpeed maxSpeed, Capacity capacity) {
+    CarModel(String id, CarItem carItem, String name, List<String> lore, float maxFuel, MaxSpeed maxSpeed, Capacity capacity, SteeringLevel steeringLevel, CollideBox collideBox, float height, CarSound sound) {
         this.id = id;
         this.item = carItem;
         this.name = name;
@@ -33,22 +37,10 @@ public class CarModel implements ConfigurationSerializable {
         this.maxFuel = maxFuel;
         this.maxSpeed = maxSpeed;
         this.capacity = capacity;
-    }
-
-    public ItemStack getItemStack() {
-        return ItemStackBuilder.of(item.getType(), 1).name(name).durability(item.getDamage()).unbreakable(true).build();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<String> getLores() {
-        return lores;
-    }
-
-    public float getMaxFuel() {
-        return maxFuel;
+        this.collideBox = collideBox;
+        this.steeringLevel = steeringLevel;
+        this.height = height;
+        this.sound = sound;
     }
 
     public static CarModel deserialize(Map<String, Object> map) {
@@ -69,7 +61,38 @@ public class CarModel implements ConfigurationSerializable {
         float maxFuel = (float) ((double) map.get("maxfuel"));
         MaxSpeed speed = MaxSpeed.values()[(int) map.get("maxspeed")];
         Capacity capacity = Capacity.from((int) map.get("capacity"));
-        return new CarModel(id, item, name, lores, maxFuel, speed, capacity);
+        CollideBox collideBox = (CollideBox) map.get("collidebox");
+        SteeringLevel steeringLevel = SteeringLevel.valueOf(String.valueOf(map.get("steering")));
+        float height = (float) ((double) map.get("height"));
+        CarSound sound = CarSound.valueOf(String.valueOf(map.get("sound")));
+        return CarModelBuilder.of(id)
+                .name(name)
+                .item(item)
+                .lores(lores)
+                .maxFuel(maxFuel)
+                .maxSpeed(speed)
+                .capacity(capacity)
+                .collideBox(collideBox.getBaseSide(), collideBox.getHeight())
+                .steering(steeringLevel)
+                .height(height)
+                .sound(sound)
+                .build();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<String> getLores() {
+        return lores;
+    }
+
+    public float getMaxFuel() {
+        return maxFuel;
+    }
+
+    ItemStack getItemStack() {
+        return ItemStackBuilder.of(item.getType(), 1).name(name).durability(item.getDamage()).unbreakable(true).build();
     }
 
     public String getId() {
@@ -84,6 +107,22 @@ public class CarModel implements ConfigurationSerializable {
         return capacity;
     }
 
+    public CollideBox getCollideBox() {
+        return collideBox;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public CarSound getSound() {
+        return sound;
+    }
+
+    public SteeringLevel getSteeringLevel() {
+        return steeringLevel;
+    }
+
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
@@ -94,6 +133,10 @@ public class CarModel implements ConfigurationSerializable {
         map.put("maxfuel", maxFuel);
         map.put("maxspeed", maxSpeed.ordinal());
         map.put("capacity", capacity.value());
+        map.put("collidebox", collideBox);
+        map.put("height", height);
+        map.put("steering", steeringLevel.toString());
+        map.put("sound", sound.toString());
         return map;
     }
 

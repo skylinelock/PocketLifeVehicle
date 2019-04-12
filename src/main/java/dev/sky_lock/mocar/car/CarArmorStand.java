@@ -35,7 +35,6 @@ public class CarArmorStand extends EntityArmorStand {
         this.a(nbt);
         //乗れるブロックの高さ
         this.Q = 1.0F;
-        this.setSize(6.0F, 6.0F);
     }
 
     void assemble(Car car) {
@@ -48,7 +47,8 @@ public class CarArmorStand extends EntityArmorStand {
     @Override
     public void tick() {
         super.tick();
-        setSize(6.0F, 6.0F);
+        CollideBox collideBox = car.getModel().getCollideBox();
+        setSize(collideBox.getBaseSide(), collideBox.getHeight());
     }
 
     public Location getLocation() {

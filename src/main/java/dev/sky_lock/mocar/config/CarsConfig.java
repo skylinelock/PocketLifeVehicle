@@ -3,6 +3,7 @@ package dev.sky_lock.mocar.config;
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.CarItem;
 import dev.sky_lock.mocar.car.CarModel;
+import dev.sky_lock.mocar.car.CollideBox;
 import dev.sky_lock.mocar.util.ListUtil;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -25,6 +26,7 @@ public class CarsConfig {
     public CarsConfig() {
         ConfigurationSerialization.registerClass(CarModel.class, "CarModel");
         ConfigurationSerialization.registerClass(CarItem.class, "CarItem");
+        ConfigurationSerialization.registerClass(CollideBox.class, "CollideBox");
         this.path = MoCar.getInstance().getDataFolder().toPath().resolve("cars.yml");
     }
 

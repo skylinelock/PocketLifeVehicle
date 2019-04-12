@@ -4,8 +4,7 @@ import dev.sky_lock.glassy.gui.InventoryMenu;
 import dev.sky_lock.glassy.gui.MenuContents;
 import dev.sky_lock.glassy.gui.Slot;
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.car.CarModel;
-import dev.sky_lock.mocar.car.ModelList;
+import dev.sky_lock.mocar.car.*;
 import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.ModelMenuIndex;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
@@ -37,26 +36,34 @@ public class ConfirmContents extends MenuContents {
         addSlot(new Slot(20, yesItem, event -> {
             ItemStack clicked = event.getCurrentItem();
             EditSessions.of(event.getWhoClicked().getUniqueId()).ifPresent(session -> {
-                if (session.getId() == null || session.getName() == null || session.getMaxSpeed() == null || session.getFuel() == 0.0F || session.getCarItem() == null || session.getCapacity() == null) {
+
+                String id = session.getId();
+                String name = session.getName();
+                Capacity capacity = session.getCapacity();
+                MaxSpeed maxSpeed = session.getMaxSpeed();
+                float maxFuel = session.getFuel();
+                CarItem carItem = session.getCarItem();
+
+                if (id == null || name == null || maxSpeed == null || maxFuel == 0.0F || carItem == null || capacity == null) {
                     List<String> lores = new ArrayList<>();
                     lores.add(ChatColor.RED + "設定が完了していません");
                     lores.add(ChatColor.RED + "未設定項目");
-                    if (session.getId() == null) {
+                    if (id == null) {
                         lores.add(ChatColor.RED + "- ID");
                     }
-                    if (session.getName() == null) {
+                    if (name == null) {
                         lores.add(ChatColor.RED + "- Name");
                     }
-                    if (session.getMaxSpeed() == null) {
+                    if (maxSpeed == null) {
                         lores.add(ChatColor.RED + "- MaxSpeed");
                     }
-                    if (session.getCarItem() == null) {
+                    if (carItem == null) {
                         lores.add(ChatColor.RED + "- Item");
                     }
-                    if (session.getFuel() == 0.0F) {
+                    if (maxFuel == 0.0F) {
                         lores.add(ChatColor.RED + "- Fuel");
                     }
-                    if (session.getCapacity() == null) {
+                    if (capacity == null) {
                         lores.add(ChatColor.RED + "- Capacity");
                     }
                     ItemMeta itemMeta = clicked.getItemMeta();
@@ -65,6 +72,7 @@ public class ConfirmContents extends MenuContents {
                     event.setCurrentItem(clicked);
                     return;
                 }
+
                 if (ModelList.exists(session.getId())) {
                     ItemMeta itemMeta = clicked.getItemMeta();
                     itemMeta.setLore(Collections.singletonList(ChatColor.RED + "既に存在するIDです"));
@@ -72,7 +80,20 @@ public class ConfirmContents extends MenuContents {
                     event.setCurrentItem(clicked);
                     return;
                 }
-                ModelList.add(new CarModel(session.getId(), session.getCarItem(), session.getName(), session.getLores(), session.getFuel(), session.getMaxSpeed(), session.getCapacity()));
+                List<String> carLores = session.getLores();
+                CarModel model = CarModelBuilder.of(session.getId())
+                        .name(name)
+                        .capacity(capacity)
+                        .height(2.0F)
+                        .collideBox(6.0F, 6.0F)
+                        .maxFuel(maxFuel)
+                        .maxSpeed(maxSpeed)
+                        .item(carItem)
+                        .sound(CarSound.NONE)
+                        .steering(SteeringLevel.NORMAL)
+                        .lores(carLores)
+                        .build();
+                ModelList.add(model);
                 player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "新しい車種を追加しました");
                 EditSessions.destroy(player.getUniqueId());
                 player.closeInventory();
