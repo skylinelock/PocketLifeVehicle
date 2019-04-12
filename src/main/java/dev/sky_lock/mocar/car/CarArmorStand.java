@@ -2,7 +2,6 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.packet.AnimationPacket;
 import dev.sky_lock.mocar.task.BurnExplosionTask;
 import dev.sky_lock.mocar.task.SubmergedMessageTask;
 import net.minecraft.server.v1_13_R2.*;
@@ -13,8 +12,6 @@ import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.MainHand;
 import org.bukkit.metadata.FixedMetadataValue;
 
 /**
@@ -118,11 +115,9 @@ public class CarArmorStand extends EntityArmorStand {
             float forInput = player.bj;
 
             if (sideInput < 0.0F) {
-                car.getSteering().right();
-                raiseLeftArm(driver);
+                car.getSteering().right(driver);
             } else if (sideInput > 0.0F) {
-                car.getSteering().left();
-                raiseRightArm(driver);
+                car.getSteering().left(driver);
             }
 
             car.getEngine().update(forInput);
@@ -142,35 +137,6 @@ public class CarArmorStand extends EntityArmorStand {
         car.getStatus().setLocation(getLocation());
     }
 
-    private void raiseLeftArm(Player player) {
-        if (player.getMainHand() == MainHand.RIGHT) {
-            raiseOffhand(player.getEntityId());
-        } else {
-            raiseMainHand(player.getEntityId());
-        }
-    }
-
-    private void raiseRightArm(Player player) {
-        if (player.getMainHand() == MainHand.RIGHT) {
-            raiseMainHand(player.getEntityId());
-        } else {
-            raiseOffhand(player.getEntityId());
-        }
-    }
-
-    private void raiseMainHand(int entityID) {
-        AnimationPacket packet = new AnimationPacket();
-        packet.setEntityID(entityID);
-        packet.setAnimation(AnimationPacket.AnimationType.SWING_MAIN_ARM);
-        packet.broadCast();
-    }
-
-    private void raiseOffhand(int entityID) {
-        AnimationPacket packet = new AnimationPacket();
-        packet.setEntityID(entityID);
-        packet.setAnimation(AnimationPacket.AnimationType.SWING_OFFHAND);
-        packet.broadCast();
-    }
 
     @Override
     public CraftEntity getBukkitEntity() {

@@ -54,6 +54,15 @@ public class CarUtilContents extends MenuContents {
             car.closeMenu((Player) event.getWhoClicked());
         });
 
+        ItemStack wield = ItemStackBuilder.of(Material.LIME_DYE, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build();
+        ItemStack notWield = ItemStackBuilder.of(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build();
+
+        Slot wieldHandSlot = new ToggleSlot(13, car.getStatus().isWieldHand(), wield, notWield, (event) -> {
+            car.getStatus().setWieldHand(false);
+        }, (event) -> {
+            car.getStatus().setWieldHand(true);
+        });
+
         Slot carInfoSlot = new Slot(24, carInfoBook, event -> {
         });
 
@@ -93,8 +102,7 @@ public class CarUtilContents extends MenuContents {
             }
         });
 
-        super.addSlot(ownerSlot);
-        super.addSlot(closeSlot, towSlot, carInfoSlot, keySlot, fuelSlot);
+        super.addSlot(ownerSlot, closeSlot, wieldHandSlot, towSlot, carInfoSlot, keySlot, fuelSlot);
     }
 
     @Override
