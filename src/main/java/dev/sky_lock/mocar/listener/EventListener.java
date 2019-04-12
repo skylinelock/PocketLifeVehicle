@@ -10,7 +10,11 @@ import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.util.PlayerInfo;
 import dev.sky_lock.mocar.util.StringUtil;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Sound;
+import org.bukkit.block.BlockFace;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -89,11 +93,16 @@ public class EventListener implements Listener {
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
+        Player player = event.getPlayer();
+
         if (!MoCar.getInstance().getPluginConfig().getAllowWorlds().contains(event.getPlayer().getWorld())) {
-            ActionBar.sendPacket(event.getPlayer(), ChatColor.RED + "このワールドでは車は使用できません");
+            ActionBar.sendPacket(player, ChatColor.RED + "このワールドでは車は使用できません");
             return;
         }
-        Player player = event.getPlayer();
+        if (event.getBlockFace() != BlockFace.UP) {
+            ActionBar.sendPacket(player, ChatColor.RED + "乗り物は地面にのみ設置できます");
+            return;
+        }
         Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
 
         if (!meta.hasLore()) {
@@ -105,14 +114,18 @@ public class EventListener implements Listener {
         String rawFuel = lores.get(1);
         String fuel = StringUtil.removeBlanks(rawFuel.replaceAll("\\s", "")).split(":")[1];
 
-        if (!player.getName().equals(ownerName)) {
-            if (!Permission.CAR_PLACE.obtained(player)) {
-                ActionBar.sendPacket(player, ChatColor.RED + "この車を所有していないので設置できません");
-                return;
-            }
+        if (player.getName().equals(ownerName)) {
+            UUID uuid = PlayerInfo.getUUID(ownerName);
+            this.placeCarEntity(player, itemStack, event.getHand(), uuid, model, whereToSpawn, Float.valueOf(fuel));
+            return;
+        }
+        if (!Permission.CAR_PLACE.obtained(player)) {
+            ActionBar.sendPacket(player, ChatColor.RED + "この車を所有していないので設置できません");
+            return;
         }
         UUID uuid = PlayerInfo.getUUID(ownerName);
         this.placeCarEntity(player, itemStack, event.getHand(), uuid, model, whereToSpawn, Float.valueOf(fuel));
+
     }
 
     private void placeCarEntity(Player whoPlaced, ItemStack carItem, EquipmentSlot hand, UUID owner, CarModel model, Location location, float fuel) {
