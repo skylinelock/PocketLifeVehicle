@@ -45,7 +45,7 @@ public class ModelList {
             carModels.remove(model);
             config.writeModels(carModels);
             return true;
-        }).orElseGet(() -> false);
+        }).orElse(false);
     }
 
     public static List<CarModel> unmodified() {

@@ -32,10 +32,6 @@ public class CarItem implements ConfigurationSerializable {
         return type;
     }
 
-    public short getDurability() {
-        return damage;
-    }
-
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();

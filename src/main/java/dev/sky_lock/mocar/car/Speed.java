@@ -12,10 +12,6 @@ class Speed {
     private final static BigDecimal magnification = new BigDecimal("0.85");
     private BigDecimal exactSpeed = BigDecimal.ZERO;
 
-    void setSpeed(float speed) {
-        this.exactSpeed = BigDecimal.valueOf(speed);
-    }
-
     void accelerate() {
         exactSpeed = exactSpeed.add(acceleration);
     }
@@ -34,10 +30,6 @@ class Speed {
 
     boolean isPositive() {
         return exactSpeed.compareTo(BigDecimal.ZERO) > 0;
-    }
-
-    boolean isExactZero() {
-        return exactSpeed.compareTo(BigDecimal.ZERO) == 0;
     }
 
     boolean isNegative() {

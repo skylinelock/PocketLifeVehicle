@@ -87,31 +87,31 @@ public class ModelSettingContents extends MenuContents {
             if (session.getCarItem() != null) {
                 int damage = ((Damageable) session.getCarItem().getStack("").getItemMeta()).getDamage();
                 List<String> details = Arrays.asList(session.getCarItem().getStack("").getType().toString(), String.valueOf(damage));
-                carItem = new ItemStackBuilder(carItem).lore(details).growing().build();
+                carItem = new ItemStackBuilder(carItem).lore(details).grow().build();
                 updateItemStack(30, carItem);
             }
             if (session.getCapacity() != null) {
-                capacityItem = new ItemStackBuilder(capacityItem).lore(ListUtil.singleton(String.valueOf(session.getCapacity()))).growing().build();
+                capacityItem = new ItemStackBuilder(capacityItem).lore(ListUtil.singleton(String.valueOf(session.getCapacity()))).grow().build();
                 updateItemStack(25, capacityItem);
             }
             if (session.getFuel() != 0.0F) {
-                fuelItem = new ItemStackBuilder(fuelItem).lore(ListUtil.singleton(String.valueOf(session.getFuel()))).growing().build();
+                fuelItem = new ItemStackBuilder(fuelItem).lore(ListUtil.singleton(String.valueOf(session.getFuel()))).grow().build();
                 updateItemStack(32, fuelItem);
             }
             if (session.getId() != null && !session.getId().equalsIgnoreCase("id")) {
-                idItem = new ItemStackBuilder(idItem).lore(ListUtil.singleton(session.getId())).growing().build();
+                idItem = new ItemStackBuilder(idItem).lore(ListUtil.singleton(session.getId())).grow().build();
                 updateItemStack(19, idItem);
             }
             if (session.getName() != null && !session.getName().equalsIgnoreCase("name")) {
-                nameItem = new ItemStackBuilder(nameItem).lore(ListUtil.singleton(session.getName())).growing().build();
+                nameItem = new ItemStackBuilder(nameItem).lore(ListUtil.singleton(session.getName())).grow().build();
                 updateItemStack(21, nameItem);
             }
             if (session.getMaxSpeed() != null) {
-                speedItem = new ItemStackBuilder(speedItem).lore(ListUtil.singleton(session.getMaxSpeed().getLabel())).growing().build();
+                speedItem = new ItemStackBuilder(speedItem).lore(ListUtil.singleton(session.getMaxSpeed().getLabel())).grow().build();
                 updateItemStack(23, speedItem);
             }
             if (session.getLores() != null) {
-                loreItem = new ItemStackBuilder(loreItem).lore(session.getLores()).growing().build();
+                loreItem = new ItemStackBuilder(loreItem).lore(session.getLores()).grow().build();
                 updateItemStack(28, loreItem);
             }
 

@@ -16,7 +16,6 @@ class CarSoundTask {
     private final CarModel model;
     private final CarStatus status;
     private BukkitTask task;
-    private int soundTick;
 
     CarSoundTask(CarModel model, CarStatus status) {
         this.model = model;

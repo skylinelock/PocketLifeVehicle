@@ -1,7 +1,6 @@
 package dev.sky_lock.mocar.item;
 
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -44,14 +43,7 @@ public class ItemStackBuilder {
         return this;
     }
 
-    public ItemStackBuilder enchant(Enchantment enchantment, int level) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.addEnchant(enchantment, level, true);
-        itemStack.setItemMeta(itemMeta);
-        return this;
-    }
-
-    public ItemStackBuilder growing() {
+    public ItemStackBuilder grow() {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.addEnchant(new Glowing(), 1, true);
         itemStack.setItemMeta(itemMeta);

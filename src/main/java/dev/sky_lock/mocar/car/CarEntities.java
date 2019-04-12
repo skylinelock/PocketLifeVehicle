@@ -4,9 +4,7 @@ import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.util.PlayerInfo;
 import dev.sky_lock.mocar.util.StringUtil;
-import net.minecraft.server.v1_13_R2.World;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -31,7 +29,6 @@ public class CarEntities {
             ActionBar.sendPacket(Bukkit.getPlayer(player), ChatColor.RED + "ブロックがあるので車を設置できません");
             return false;
         }
-        World worldHandle = ((CraftWorld) location.getWorld()).getHandle();
 
         Car car = null;
         if (model.getCapacity() == Capacity.ONE_SEAT) {
@@ -70,14 +67,12 @@ public class CarEntities {
         }
     }
 
-    static void killAll() {
+    private static void killAll() {
         entities.values().forEach(Car::kill);
     }
 
     public static void tow(Car car) {
-        getOwner(car).ifPresent(owner -> {
-            tow(owner, car);
-        });
+        getOwner(car).ifPresent(owner -> tow(owner, car));
     }
 
     public static void tow(UUID owner) {
