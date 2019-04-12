@@ -27,56 +27,59 @@ public class ModelSettingContents extends MenuContents {
     private ItemStack nameItem = ItemStackBuilder.of(Material.NAME_TAG, 1).name("Name").build();
     private ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("MaxSpeed").build();
     private ItemStack loreItem = ItemStackBuilder.of(Material.SIGN, 1).name("Lore").build();
-
+    private ItemStack steeringItem = ItemStackBuilder.of(Material.SADDLE, 1).name("Steering").build();
+    private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name("CollideRange").build();
+    private ItemStack heightItem = ItemStackBuilder.of(Material.PURPUR_STAIRS, 1).name("Height").build();
+    private ItemStack soundItem = ItemStackBuilder.of(Material.NOTE_BLOCK, 1).name("Sound").lore(ListUtil.singleton(ChatColor.RED + "Coming soon")).build();
 
     public ModelSettingContents(Player player) {
         this.player = player;
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
-            addSlot(new Slot(3, ItemStackBuilder.of(Material.ENDER_PEARL, 1).name(ChatColor.RED + "戻る").build(), event -> {
+            this.addSlot(new Slot(3, ItemStackBuilder.of(Material.ENDER_PEARL, 1).name(ChatColor.RED + "戻る").build(), event -> {
                 InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.MAIN_MENU.value()));
                 EditSessions.destroy(player.getUniqueId());
             }));
 
-            addSlot(new Slot(4, ItemStackBuilder.of(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build(), event -> {
+            this.addSlot(new Slot(4, ItemStackBuilder.of(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build(), event -> {
                 InventoryMenu.of(player).ifPresent(menu -> menu.close((Player) event.getWhoClicked()));
                 EditSessions.destroy(player.getUniqueId());
             }));
 
-            addSlot(new Slot(21, nameItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> {
-                    StringEditor.open(player, StringEditor.Type.NAME, (ModelSettingMenu) menu);
-                });
-            }));
-
-            addSlot(new Slot(23, speedItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> {
-                    menu.flip(player, ModelMenuIndex.SPEED.value());
-                });
-            }));
-
-            addSlot(new Slot(19, idItem, event -> {
+            this.addSlot(new Slot(11, idItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> {
                     StringEditor.open(player, StringEditor.Type.ID, (ModelSettingMenu) menu);
                 });
             }));
 
-            addSlot(new Slot(28, loreItem, event -> {
+            this.addSlot(new Slot(13, nameItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> {
+                    StringEditor.open(player, StringEditor.Type.NAME, (ModelSettingMenu) menu);
+                });
+            }));
+
+            this.addSlot(new Slot(15, speedItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> {
+                    menu.flip(player, ModelMenuIndex.SPEED.value());
+                });
+            }));
+
+            this.addSlot(new Slot(20, loreItem, event -> {
                 new LoreEditor(player).open();
             }));
 
-            addSlot(new Slot(30, carItem, event -> {
+            this.addSlot(new Slot(22, carItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.CAR_ITEM.value()));
             }));
 
-            addSlot(new Slot(32, fuelItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.FUEL.value()));
-            }));
-
-            addSlot(new Slot(25, capacityItem, event -> {
+            this.addSlot(new Slot(24, capacityItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.CAPACITY.value()));
             }));
 
-            addCreateModelSlot(player, session);
+            this.addSlot(new Slot(29, fuelItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.FUEL.value()));
+            }));
+
+            this.addCreateModelSlot(player, session);
         });
     }
 
@@ -87,31 +90,31 @@ public class ModelSettingContents extends MenuContents {
                 int damage = session.getCarItem().getDamage();
                 List<String> details = Arrays.asList(session.getCarItem().getType().toString(), String.valueOf(damage));
                 carItem = new ItemStackBuilder(carItem).lore(details).grow().build();
-                updateItemStack(30, carItem);
+                updateItemStack(22, carItem);
             }
             if (session.getCapacity() != null) {
                 capacityItem = new ItemStackBuilder(capacityItem).lore(ListUtil.singleton(String.valueOf(session.getCapacity()))).grow().build();
-                updateItemStack(25, capacityItem);
+                updateItemStack(24, capacityItem);
             }
             if (session.getFuel() != 0.0F) {
                 fuelItem = new ItemStackBuilder(fuelItem).lore(ListUtil.singleton(String.valueOf(session.getFuel()))).grow().build();
-                updateItemStack(32, fuelItem);
+                updateItemStack(29, fuelItem);
             }
             if (session.getId() != null && !session.getId().equalsIgnoreCase("id")) {
                 idItem = new ItemStackBuilder(idItem).lore(ListUtil.singleton(session.getId())).grow().build();
-                updateItemStack(19, idItem);
+                updateItemStack(11, idItem);
             }
             if (session.getName() != null && !session.getName().equalsIgnoreCase("name")) {
                 nameItem = new ItemStackBuilder(nameItem).lore(ListUtil.singleton(session.getName())).grow().build();
-                updateItemStack(21, nameItem);
+                updateItemStack(13, nameItem);
             }
             if (session.getMaxSpeed() != null) {
                 speedItem = new ItemStackBuilder(speedItem).lore(ListUtil.singleton(session.getMaxSpeed().getLabel())).grow().build();
-                updateItemStack(23, speedItem);
+                updateItemStack(15, speedItem);
             }
             if (session.getLores() != null) {
                 loreItem = new ItemStackBuilder(loreItem).lore(session.getLores()).grow().build();
-                updateItemStack(28, loreItem);
+                updateItemStack(20, loreItem);
             }
 
             menu.update();
