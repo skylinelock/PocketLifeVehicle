@@ -81,8 +81,7 @@ public class CarEntities {
 
     private static void tow(UUID owner, Car car) {
         CarModel model = car.getModel();
-        CarItem carItem = model.getItem();
-        ItemStack itemStack = carItem.getStack(model.getName());
+        ItemStack itemStack = model.getItemStack();
         ItemMeta meta = itemStack.getItemMeta();
         meta.setLore(Arrays.asList("Owner : " + PlayerInfo.getName(owner), "Fuel  : " + StringUtil.formatDecimal(car.getStatus().getFuel())));
         itemStack.setItemMeta(meta);
@@ -116,7 +115,7 @@ public class CarEntities {
     public static void spawnAll() {
         try {
             MoCar.getInstance().getCarStoreFile().load().forEach(carEntity -> {
-                ModelList.get(carEntity.getModelID()).ifPresent(model -> {
+                ModelList.of(carEntity.getModelID()).ifPresent(model -> {
                     CarEntities.spawn(carEntity.getOwner(), model, carEntity.getLocation(), carEntity.getFuel());
                 });
             });

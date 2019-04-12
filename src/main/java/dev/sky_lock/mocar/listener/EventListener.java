@@ -84,7 +84,7 @@ public class EventListener implements Listener {
         if (itemStack == null) {
             return;
         }
-        CarModel model = ModelList.get(itemStack);
+        CarModel model = ModelList.of(itemStack);
         if (model == null) {
             return;
         }

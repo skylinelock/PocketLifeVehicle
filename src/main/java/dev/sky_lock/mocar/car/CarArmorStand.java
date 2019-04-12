@@ -43,7 +43,7 @@ public class CarArmorStand extends EntityArmorStand {
 
     void assemble(Car car) {
         this.car = car;
-        this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(car.getModel().getItem().getStack(car.getModel().getName())));
+        this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(car.getModel().getItemStack()));
         this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(MoCar.getInstance(), null));
         car.getSound().start();
     }

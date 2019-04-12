@@ -27,7 +27,7 @@ public class ModelList {
         carModels.addAll(config.loadModels());
     }
 
-    public static Optional<CarModel> get(String id) {
+    public static Optional<CarModel> of(String id) {
         return carModels.stream().filter(model -> model.getId().equalsIgnoreCase(id)).findFirst();
     }
 
@@ -41,7 +41,7 @@ public class ModelList {
     }
 
     public static boolean remove(String id) {
-        return get(id).map(model -> {
+        return of(id).map(model -> {
             carModels.remove(model);
             config.writeModels(carModels);
             return true;
@@ -56,14 +56,14 @@ public class ModelList {
         return carModels.stream().anyMatch(carModel -> carModel.getId().equalsIgnoreCase(id));
     }
 
-    public static CarModel get(ItemStack itemStack) {
+    public static CarModel of(ItemStack itemStack) {
         return carModels.stream().filter(model -> {
             ItemMeta meta = itemStack.getItemMeta();
             if (!meta.hasDisplayName()) {
                 return false;
             }
             int damage = ((Damageable) itemStack.getItemMeta()).getDamage();
-            ItemStack modelItem = model.getItem().getStack(model.getName());
+            ItemStack modelItem = model.getItemStack();
             ItemMeta modelMeta = modelItem.getItemMeta();
             int modelDamage = ((Damageable) modelItem.getItemMeta()).getDamage();
             String displayName = itemStack.getItemMeta().getDisplayName();

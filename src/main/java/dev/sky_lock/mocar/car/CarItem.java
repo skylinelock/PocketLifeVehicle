@@ -1,10 +1,8 @@
 package dev.sky_lock.mocar.car;
 
-import dev.sky_lock.mocar.item.ItemStackBuilder;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,8 +22,8 @@ public class CarItem implements ConfigurationSerializable {
         this.damage = damage;
     }
 
-    public ItemStack getStack(String name) {
-        return ItemStackBuilder.of(type, 1).name(name).durability(damage).build();
+    public short getDamage() {
+        return damage;
     }
 
     public Material getType() {

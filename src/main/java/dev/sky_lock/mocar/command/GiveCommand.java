@@ -29,7 +29,7 @@ public class GiveCommand implements ICommand, IAdminCommand {
             return;
         }
         String id = args[2];
-        ModelList.get(id).map(model -> {
+        ModelList.of(id).map(model -> {
             if (!MoCar.getInstance().getPluginConfig().getAllowWorlds().contains(target.getWorld())) {
                 player.sendMessage(MoCar.PREFIX + ChatColor.RED + "対象のプレイヤーがいるワールドは車の使用が許可されていません");
                 return model;
