@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ModelSettingContents extends MenuContents {
     private final Player player;
-    private ItemStack carItem = ItemStackBuilder.of(Material.DIAMOND_HOE, 1).name("Item").build();
+    private ItemStack carItem = ItemStackBuilder.of(Material.SLIME_BALL, 1).name("Item").build();
     private ItemStack capacityItem = ItemStackBuilder.of(Material.CHEST_MINECART, 1).name("Capacity").build();
     private ItemStack fuelItem = ItemStackBuilder.of(Material.COAL_BLOCK, 1).name("Fuel").build();
     private ItemStack idItem = ItemStackBuilder.of(Material.EMERALD, 1).name("Id").build();
