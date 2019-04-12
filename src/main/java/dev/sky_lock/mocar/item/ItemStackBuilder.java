@@ -43,6 +43,13 @@ public class ItemStackBuilder {
         return this;
     }
 
+    public ItemStackBuilder unbreakable(boolean unbreakable) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        itemMeta.setUnbreakable(unbreakable);
+        itemStack.setItemMeta(itemMeta);
+        return this;
+    }
+
     public ItemStackBuilder grow() {
         ItemMeta itemMeta = itemStack.getItemMeta();
         itemMeta.addEnchant(new Glowing(), 1, true);
