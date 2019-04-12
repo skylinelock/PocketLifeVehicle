@@ -118,7 +118,7 @@ public class EventListener implements Listener {
     private void placeCarEntity(Player whoPlaced, ItemStack carItem, EquipmentSlot hand, UUID owner, CarModel model, Location location, float fuel) {
         CarEntities.tow(owner);
         if (CarEntities.spawn(owner, model, location, fuel)) {
-            whoPlaced.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.0F);
+            location.getWorld().playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.0F);
             if (hand == EquipmentSlot.OFF_HAND) {
                 whoPlaced.getInventory().setItemInOffHand(null);
             } else {
