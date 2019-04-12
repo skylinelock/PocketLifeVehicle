@@ -10,10 +10,7 @@ import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.util.PlayerInfo;
 import dev.sky_lock.mocar.util.StringUtil;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -97,14 +94,10 @@ public class EventListener implements Listener {
             return;
         }
         Player player = event.getPlayer();
+        Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
 
         if (!meta.hasLore()) {
-            Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
-            CarEntities.tow(player.getUniqueId());
-            if (CarEntities.spawn(player.getUniqueId(), model, whereToSpawn, model.getMaxFuel())) {
-                player.playSound(whereToSpawn, Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.0F);
-                player.getInventory().remove(itemStack);
-            }
+            this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getMaxFuel());
             return;
         }
         List<String> lores = meta.getLore();
@@ -119,15 +112,17 @@ public class EventListener implements Listener {
             }
         }
         UUID uuid = PlayerInfo.getUUID(ownerName);
-        Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
-        //TODO: プレイヤーのロケーションにItemをドロップさせる
-        CarEntities.tow(uuid);
-        if (CarEntities.spawn(uuid, model, whereToSpawn, Float.valueOf(fuel))) {
-            player.playSound(whereToSpawn, Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.0F);
-            if (event.getHand() == EquipmentSlot.OFF_HAND) {
-                player.getInventory().setItemInOffHand(null);
+        this.placeCarEntity(player, itemStack, event.getHand(), uuid, model, whereToSpawn, Float.valueOf(fuel));
+    }
+
+    private void placeCarEntity(Player whoPlaced, ItemStack carItem, EquipmentSlot hand, UUID owner, CarModel model, Location location, float fuel) {
+        CarEntities.tow(owner);
+        if (CarEntities.spawn(owner, model, location, fuel)) {
+            whoPlaced.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.0F);
+            if (hand == EquipmentSlot.OFF_HAND) {
+                whoPlaced.getInventory().setItemInOffHand(null);
             } else {
-                player.getInventory().remove(itemStack);
+                whoPlaced.getInventory().remove(carItem);
             }
         }
     }
