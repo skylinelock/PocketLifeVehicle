@@ -16,7 +16,7 @@ public class CollideBox implements ConfigurationSerializable {
     private final float baseSide;
     private final float height;
 
-    CollideBox(float baseSide, float height) {
+    public CollideBox(float baseSide, float height) {
         this.baseSide = baseSide;
         this.height = height;
     }
@@ -27,11 +27,11 @@ public class CollideBox implements ConfigurationSerializable {
         return new CollideBox(baseSide, height);
     }
 
-    float getBaseSide() {
+    public float getBaseSide() {
         return baseSide;
     }
 
-    float getHeight() {
+    public float getHeight() {
         return height;
     }
 

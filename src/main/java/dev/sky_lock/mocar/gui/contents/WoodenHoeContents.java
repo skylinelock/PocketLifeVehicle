@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
  * @author sky_lock
  */
 
-public class WoodenHoeContents extends DurabilityHoeContents {
+public class WoodenHoeContents extends DamagedHoeContents {
 
     public WoodenHoeContents(Player player) {
         super(player, Material.WOODEN_HOE);

@@ -28,9 +28,11 @@ public class ModelSettingContents extends MenuContents {
     private ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("MaxSpeed").build();
     private ItemStack loreItem = ItemStackBuilder.of(Material.SIGN, 1).name("Lore").build();
     private ItemStack steeringItem = ItemStackBuilder.of(Material.SADDLE, 1).name("Steering").build();
-    private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name("CollideRange").build();
+    private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name("CollideBox").build();
     private ItemStack heightItem = ItemStackBuilder.of(Material.PURPUR_STAIRS, 1).name("Height").build();
     private ItemStack soundItem = ItemStackBuilder.of(Material.NOTE_BLOCK, 1).name("Sound").lore(ListUtil.singleton(ChatColor.RED + "Coming soon")).build();
+    private ItemStack createItem = ItemStackBuilder.of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "追加する").build();
+
 
     public ModelSettingContents(Player player) {
         this.player = player;
@@ -79,7 +81,13 @@ public class ModelSettingContents extends MenuContents {
                 InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.FUEL.value()));
             }));
 
-            this.addCreateModelSlot(player, session);
+            this.addSlot(new Slot(31, collideItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.value()));
+            }));
+
+            this.addSlot(new Slot(49, createItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.CONFIRM.value()));
+            }));
         });
     }
 
@@ -116,16 +124,13 @@ public class ModelSettingContents extends MenuContents {
                 loreItem = new ItemStackBuilder(loreItem).lore(session.getLores()).grow().build();
                 updateItemStack(20, loreItem);
             }
+            if (session.getCollideHeight() != 0.0F && session.getCollideBaseSide() != 0.0F) {
+                collideItem = new ItemStackBuilder(collideItem).lore(Arrays.asList(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight()))).grow().build();
+                updateItemStack(31, collideItem);
+            }
 
             menu.update();
         });
     }
 
-    private void addCreateModelSlot(Player player, EditModelData session) {
-        ItemStack createItem = ItemStackBuilder.of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "追加する").build();
-        addSlot(new Slot(49, createItem, event -> {
-            InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.CONFIRM.value()));
-        }));
-
-    }
 }

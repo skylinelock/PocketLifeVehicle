@@ -24,5 +24,8 @@ public class ModelSettingMenu extends InventoryMenu {
         addContents(new DiamondHoeContents(player));
         addContents(new ConfirmContents(player));
         addContents(new SelectCapacityContents(player));
+        addContents(new CollideBoxContents(player));
+        addContents(new BaseSideContents(player));
+        addContents(new CollideHeightContents(player));
     }
 }

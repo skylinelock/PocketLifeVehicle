@@ -43,6 +43,7 @@ public class ConfirmContents extends MenuContents {
                 MaxSpeed maxSpeed = session.getMaxSpeed();
                 float maxFuel = session.getFuel();
                 CarItem carItem = session.getCarItem();
+                CollideBox collideBox = new CollideBox(session.getCollideBaseSide(), session.getCollideHeight());
 
                 if (id == null || name == null || maxSpeed == null || maxFuel == 0.0F || carItem == null || capacity == null) {
                     List<String> lores = new ArrayList<>();
@@ -85,7 +86,7 @@ public class ConfirmContents extends MenuContents {
                         .name(name)
                         .capacity(capacity)
                         .height(2.0F)
-                        .collideBox(6.0F, 6.0F)
+                        .collideBox(collideBox.getBaseSide(), collideBox.getHeight())
                         .maxFuel(maxFuel)
                         .maxSpeed(maxSpeed)
                         .item(carItem)

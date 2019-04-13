@@ -15,17 +15,17 @@ import org.bukkit.inventory.ItemStack;
  * @author sky_lock
  */
 
-public class DurabilityHoeContents extends MenuContents {
+public class DamagedHoeContents extends MenuContents {
     private final Material hoeType;
 
-    public DurabilityHoeContents(Player player, Material type) {
+    public DamagedHoeContents(Player player, Material type) {
         this.hoeType = type;
         short damage = 0;
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 9; j++) {
                 ItemStack item = ItemStackBuilder.of(hoeType, 1).durability(damage).build();
                 final short dmg = damage;
-                addSlot(new Slot(i * 9 + j, item, (event) -> {
+                this.addSlot(new Slot(i * 9 + j, item, (event) -> {
                     CarItem carItem = new CarItem(hoeType, dmg);
                     EditSessions.of(player.getUniqueId()).ifPresent(session -> {
                         session.setCarItem(carItem);
