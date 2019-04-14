@@ -12,6 +12,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  */
 
 public class CarEntities {
+    private static final Logger logger = MoCar.getInstance().getLogger();
     private static final Map<UUID, Car> entities = new HashMap<>();
 
     public static boolean spawn(UUID player, CarModel model, Location location, float fuel) {
@@ -111,7 +113,6 @@ public class CarEntities {
     public static Optional<UUID> getOwner(Car car) {
         return entities.entrySet().stream().filter(entry -> entry.getValue().equals(car)).findFirst().map(Map.Entry::getKey);
     }
-
     public static void spawnAll() {
         try {
             MoCar.getInstance().getCarStoreFile().load().forEach(carEntity -> {
@@ -120,7 +121,7 @@ public class CarEntities {
                 });
             });
         } catch (IOException ex) {
-            Bukkit.getLogger().warning("CarEntityの読み込みに失敗しました");
+            logger.warning("CarEntityの読み込みに失敗しました");
         }
     }
 
@@ -129,7 +130,7 @@ public class CarEntities {
             MoCar.getInstance().getCarStoreFile().save(CarEntities.getCarEntities());
             CarEntities.killAll();
         } catch (IOException ex) {
-            Bukkit.getLogger().warning("CarEntityの保存に失敗しました");
+            logger.warning("CarEntityの保存に失敗しました");
         }
     }
 }

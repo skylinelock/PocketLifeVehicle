@@ -14,7 +14,6 @@ import dev.sky_lock.mocar.json.CarEntityStoreFile;
 import dev.sky_lock.mocar.listener.ChunkEventListener;
 import dev.sky_lock.mocar.listener.EventListener;
 import net.minecraft.server.v1_13_R2.*;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -78,7 +77,7 @@ public class MoCar extends JavaPlugin {
     private void registerEntities() {
         registerEntity("car_armor_stand", CarArmorStand.class, CarArmorStand::new);
         registerEntity("seat_armor_stand", SeatArmorStand.class, SeatArmorStand::new);
-        Bukkit.getLogger().info("Car entities were successfully registered!");
+        this.getLogger().info("Car entities were successfully registered!");
     }
 
     private <T extends Entity> void registerEntity(String id, Class<T> clazz, Function<? super World, T> function) {
