@@ -2,7 +2,7 @@ package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.packet.ActionBar;
-import dev.sky_lock.mocar.util.PlayerInfo;
+import dev.sky_lock.mocar.util.Profiles;
 import dev.sky_lock.mocar.util.StringUtil;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
@@ -85,7 +85,7 @@ public class CarEntities {
         CarModel model = car.getModel();
         ItemStack itemStack = model.getItemStack();
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setLore(Arrays.asList("Owner : " + PlayerInfo.getName(owner), "Fuel  : " + StringUtil.formatDecimal(car.getStatus().getFuel())));
+        meta.setLore(Arrays.asList("Owner : " + Profiles.getName(owner), "Fuel  : " + StringUtil.formatDecimal(car.getStatus().getFuel())));
         itemStack.setItemMeta(meta);
         Location location = car.getLocation();
         Item item = location.getWorld().dropItem(car.getLocation(), itemStack);

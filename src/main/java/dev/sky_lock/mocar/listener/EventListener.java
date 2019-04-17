@@ -8,7 +8,7 @@ import dev.sky_lock.mocar.click.InventoryClick;
 import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.packet.ActionBar;
-import dev.sky_lock.mocar.util.PlayerInfo;
+import dev.sky_lock.mocar.util.Profiles;
 import dev.sky_lock.mocar.util.StringUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -115,7 +115,7 @@ public class EventListener implements Listener {
         String fuel = StringUtil.removeBlanks(rawFuel.replaceAll("\\s", "")).split(":")[1];
 
         if (player.getName().equals(ownerName)) {
-            UUID uuid = PlayerInfo.getUUID(ownerName);
+            UUID uuid = Profiles.getUUID(ownerName);
             this.placeCarEntity(player, itemStack, event.getHand(), uuid, model, whereToSpawn, Float.valueOf(fuel));
             return;
         }
@@ -123,7 +123,7 @@ public class EventListener implements Listener {
             ActionBar.sendPacket(player, ChatColor.RED + "この車を所有していないので設置できません");
             return;
         }
-        UUID uuid = PlayerInfo.getUUID(ownerName);
+        UUID uuid = Profiles.getUUID(ownerName);
         this.placeCarEntity(player, itemStack, event.getHand(), uuid, model, whereToSpawn, Float.valueOf(fuel));
 
     }

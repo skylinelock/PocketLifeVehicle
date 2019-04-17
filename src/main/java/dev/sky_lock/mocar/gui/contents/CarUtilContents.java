@@ -9,7 +9,7 @@ import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.gui.CarUtilMenu;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
 import dev.sky_lock.mocar.item.PlayerSkull;
-import dev.sky_lock.mocar.util.PlayerInfo;
+import dev.sky_lock.mocar.util.Profiles;
 import dev.sky_lock.mocar.util.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,7 +37,7 @@ public class CarUtilContents extends MenuContents {
 
         Slot ownerSlot = CarEntities.getOwner(car).map(owner -> {
             ItemStack playerSkull = PlayerSkull.of(owner, 1).toItemStack();
-            ItemStack ownerSkull = new ItemStackBuilder(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(PlayerInfo.getName(owner))).build();
+            ItemStack ownerSkull = new ItemStackBuilder(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(Profiles.getName(owner))).build();
             return new Slot(20, ownerSkull, event -> {
             });
         }).orElse(null);
