@@ -1,6 +1,6 @@
 package dev.sky_lock.mocar.gui;
 
-import dev.sky_lock.glassy.gui.InventoryMenu;
+import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.gui.contents.CarUtilContents;
 import org.bukkit.entity.Player;

@@ -88,11 +88,6 @@
             <version>4.4.0</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>dev.sky_lock</groupId>
-            <artifactId>glassy</artifactId>
-            <version>1.0.1</version>
-        </dependency>
     </dependencies>
 
 </project>

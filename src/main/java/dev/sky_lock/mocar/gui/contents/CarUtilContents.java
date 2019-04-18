@@ -1,9 +1,9 @@
 package dev.sky_lock.mocar.gui.contents;
 
-import dev.sky_lock.glassy.gui.InventoryMenu;
-import dev.sky_lock.glassy.gui.MenuContents;
-import dev.sky_lock.glassy.gui.Slot;
-import dev.sky_lock.glassy.gui.ToggleSlot;
+import dev.sky_lock.menu.InventoryMenu;
+import dev.sky_lock.menu.MenuContents;
+import dev.sky_lock.menu.Slot;
+import dev.sky_lock.menu.ToggleSlot;
 import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.gui.CarUtilMenu;

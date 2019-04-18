@@ -2,7 +2,6 @@ package dev.sky_lock.mocar.car;
 
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,7 +35,7 @@ public class CollideBox implements ConfigurationSerializable {
     }
 
     @Override
-    public @NotNull Map<String, Object> serialize() {
+    public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
         map.put("baseside", baseSide);
         map.put("height", height);

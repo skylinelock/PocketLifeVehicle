@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.packet.ActionBar;
+import dev.sky_lock.packetcontrol.ActionBar;
 import dev.sky_lock.mocar.util.Profiles;
 import dev.sky_lock.mocar.util.StringUtil;
 import org.bukkit.*;

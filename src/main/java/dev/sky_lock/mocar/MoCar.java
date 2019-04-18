@@ -2,7 +2,7 @@ package dev.sky_lock.mocar;
 
 import com.mojang.datafixers.DataFixUtils;
 import com.mojang.datafixers.types.Type;
-import dev.sky_lock.glassy.gui.InventoryMenuListener;
+import dev.sky_lock.menu.InventoryMenuListener;
 import dev.sky_lock.mocar.car.CarArmorStand;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.ModelList;

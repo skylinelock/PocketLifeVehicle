@@ -1,8 +1,8 @@
 package dev.sky_lock.mocar.gui.contents;
 
-import dev.sky_lock.glassy.gui.InventoryMenu;
-import dev.sky_lock.glassy.gui.MenuContents;
-import dev.sky_lock.glassy.gui.Slot;
+import dev.sky_lock.menu.InventoryMenu;
+import dev.sky_lock.menu.MenuContents;
+import dev.sky_lock.menu.Slot;
 import dev.sky_lock.mocar.gui.*;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
 import dev.sky_lock.mocar.util.ListUtil;

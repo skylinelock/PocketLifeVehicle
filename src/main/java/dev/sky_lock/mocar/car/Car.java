@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.gui.CarUtilMenu;
-import dev.sky_lock.mocar.packet.FakeExplosionPacket;
+import dev.sky_lock.packetcontrol.FakeExplosionPacket;
 import net.minecraft.server.v1_13_R2.World;
 import org.bukkit.Location;
 import org.bukkit.Sound;

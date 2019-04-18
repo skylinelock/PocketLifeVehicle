@@ -4,7 +4,7 @@ import dev.sky_lock.mocar.Permission;
 import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.car.SeatArmorStand;
-import dev.sky_lock.mocar.packet.ActionBar;
+import dev.sky_lock.packetcontrol.ActionBar;
 import dev.sky_lock.mocar.util.Profiles;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
