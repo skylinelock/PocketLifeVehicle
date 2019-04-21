@@ -1,4 +1,4 @@
-package dev.sky_lock.packetcontrol;
+package dev.sky_lock.packet;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.wrappers.EnumWrappers;

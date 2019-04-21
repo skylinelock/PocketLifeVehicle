@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.packetcontrol.ActionBar;
+import dev.sky_lock.packet.ActionBar;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

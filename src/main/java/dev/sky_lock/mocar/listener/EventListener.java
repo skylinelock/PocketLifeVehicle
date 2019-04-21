@@ -7,7 +7,7 @@ import dev.sky_lock.mocar.click.CarClick;
 import dev.sky_lock.mocar.click.InventoryClick;
 import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.StringEditor;
-import dev.sky_lock.packetcontrol.ActionBar;
+import dev.sky_lock.packet.ActionBar;
 import dev.sky_lock.mocar.util.Profiles;
 import dev.sky_lock.mocar.util.StringUtil;
 import org.bukkit.Bukkit;
