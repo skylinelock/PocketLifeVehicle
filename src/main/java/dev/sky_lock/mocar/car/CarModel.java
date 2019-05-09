@@ -53,7 +53,7 @@ public class CarModel implements ConfigurationSerializable {
             lores = Collections.emptyList();
         } else {
             try {
-                lores = ListUtil.checkedListObject(mapObj, String.class);
+                lores = ListUtil.checkListTypeDynamically(mapObj, String.class);
             } catch (ClassCastException ex) {
                 lores = Collections.emptyList();
             }

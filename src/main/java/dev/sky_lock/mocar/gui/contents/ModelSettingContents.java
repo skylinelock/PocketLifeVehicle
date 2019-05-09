@@ -1,17 +1,16 @@
 package dev.sky_lock.mocar.gui.contents;
 
+import com.google.common.collect.ImmutableList;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
 import dev.sky_lock.mocar.gui.*;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
-import dev.sky_lock.mocar.util.ListUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,7 +29,7 @@ public class ModelSettingContents extends MenuContents {
     private ItemStack steeringItem = ItemStackBuilder.of(Material.SADDLE, 1).name("Steering").build();
     private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name("CollideBox").build();
     private ItemStack heightItem = ItemStackBuilder.of(Material.PURPUR_STAIRS, 1).name("Height").build();
-    private ItemStack soundItem = ItemStackBuilder.of(Material.NOTE_BLOCK, 1).name("Sound").lore(ListUtil.singleton(ChatColor.RED + "Coming soon")).build();
+    private ItemStack soundItem = ItemStackBuilder.of(Material.NOTE_BLOCK, 1).name("Sound").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
     private ItemStack createItem = ItemStackBuilder.of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "追加する").build();
 
 
@@ -96,28 +95,28 @@ public class ModelSettingContents extends MenuContents {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             if (session.getCarItem() != null) {
                 int damage = session.getCarItem().getDamage();
-                List<String> details = Arrays.asList(session.getCarItem().getType().toString(), String.valueOf(damage));
+                List<String> details = ImmutableList.of(session.getCarItem().getType().toString(), String.valueOf(damage));
                 carItem = new ItemStackBuilder(carItem).lore(details).grow().build();
                 updateItemStack(22, carItem);
             }
             if (session.getCapacity() != null) {
-                capacityItem = new ItemStackBuilder(capacityItem).lore(ListUtil.singleton(String.valueOf(session.getCapacity()))).grow().build();
+                capacityItem = new ItemStackBuilder(capacityItem).lore(ImmutableList.of(String.valueOf(session.getCapacity()))).grow().build();
                 updateItemStack(24, capacityItem);
             }
             if (session.getFuel() != 0.0F) {
-                fuelItem = new ItemStackBuilder(fuelItem).lore(ListUtil.singleton(String.valueOf(session.getFuel()))).grow().build();
+                fuelItem = new ItemStackBuilder(fuelItem).lore(ImmutableList.of(String.valueOf(session.getFuel()))).grow().build();
                 updateItemStack(29, fuelItem);
             }
             if (session.getId() != null && !session.getId().equalsIgnoreCase("id")) {
-                idItem = new ItemStackBuilder(idItem).lore(ListUtil.singleton(session.getId())).grow().build();
+                idItem = new ItemStackBuilder(idItem).lore(ImmutableList.of(session.getId())).grow().build();
                 updateItemStack(11, idItem);
             }
             if (session.getName() != null && !session.getName().equalsIgnoreCase("name")) {
-                nameItem = new ItemStackBuilder(nameItem).lore(ListUtil.singleton(session.getName())).grow().build();
+                nameItem = new ItemStackBuilder(nameItem).lore(ImmutableList.of(session.getName())).grow().build();
                 updateItemStack(13, nameItem);
             }
             if (session.getMaxSpeed() != null) {
-                speedItem = new ItemStackBuilder(speedItem).lore(ListUtil.singleton(session.getMaxSpeed().getLabel())).grow().build();
+                speedItem = new ItemStackBuilder(speedItem).lore(ImmutableList.of(session.getMaxSpeed().getLabel())).grow().build();
                 updateItemStack(15, speedItem);
             }
             if (session.getLores() != null) {
@@ -125,7 +124,7 @@ public class ModelSettingContents extends MenuContents {
                 updateItemStack(20, loreItem);
             }
             if (session.getCollideHeight() != 0.0F && session.getCollideBaseSide() != 0.0F) {
-                collideItem = new ItemStackBuilder(collideItem).lore(Arrays.asList(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight()))).grow().build();
+                collideItem = new ItemStackBuilder(collideItem).lore(ImmutableList.of(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight()))).grow().build();
                 updateItemStack(31, collideItem);
             }
 

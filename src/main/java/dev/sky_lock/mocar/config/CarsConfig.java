@@ -39,7 +39,7 @@ public class CarsConfig {
         if (object == null) {
             return new ArrayList<>();
         }
-        List<CarModel> models = ListUtil.checkedListObject(object, CarModel.class);
+        List<CarModel> models = ListUtil.checkListTypeDynamically(object, CarModel.class);
         if (models == null) {
             return new ArrayList<>();
         }

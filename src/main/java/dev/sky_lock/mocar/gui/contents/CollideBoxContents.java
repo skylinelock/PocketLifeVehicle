@@ -1,12 +1,12 @@
 package dev.sky_lock.mocar.gui.contents;
 
+import com.google.common.collect.ImmutableList;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
 import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.ModelMenuIndex;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
-import dev.sky_lock.mocar.util.ListUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -40,11 +40,11 @@ public class CollideBoxContents extends MenuContents {
                 return;
             }
             if (session.getCollideBaseSide() != 0.0F) {
-                ItemStack growBaseSide = new ItemStackBuilder(baseSideItem).grow().lore(ListUtil.singleton(String.valueOf(session.getCollideBaseSide()))).build();
+                ItemStack growBaseSide = new ItemStackBuilder(baseSideItem).grow().lore(ImmutableList.of(String.valueOf(session.getCollideBaseSide()))).build();
                 updateItemStack(20, growBaseSide);
             }
             if (session.getCollideHeight() != 0.0F) {
-                ItemStack growHeight = new ItemStackBuilder(heightItem).grow().lore(ListUtil.singleton(String.valueOf(session.getCollideHeight()))).build();
+                ItemStack growHeight = new ItemStackBuilder(heightItem).grow().lore(ImmutableList.of(String.valueOf(session.getCollideHeight()))).build();
                 updateItemStack(24, growHeight);
             }
             inventoryMenu.update();

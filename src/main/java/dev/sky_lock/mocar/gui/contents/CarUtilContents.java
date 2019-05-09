@@ -1,5 +1,6 @@
 package dev.sky_lock.mocar.gui.contents;
 
+import com.google.common.collect.ImmutableList;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
@@ -134,7 +135,7 @@ public class CarUtilContents extends MenuContents {
     }
 
     private List<String> refuelInfo(float fuel) {
-        return Arrays.asList(ChatColor.GRAY + "残燃料 : " + StringUtil.formatDecimal(Math.abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
+        return ImmutableList.of(ChatColor.GRAY + "残燃料 : " + StringUtil.formatDecimal(Math.abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
     }
 
     private String colorizeTitle(String title) {
