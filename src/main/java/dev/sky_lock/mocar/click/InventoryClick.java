@@ -3,7 +3,7 @@ package dev.sky_lock.mocar.click;
 import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.ModelMenuIndex;
 import dev.sky_lock.mocar.gui.StringEditor;
-import dev.sky_lock.mocar.util.Messages;
+import dev.sky_lock.mocar.util.Formats;
 import net.minecraft.server.v1_13_R2.ItemStack;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
@@ -37,7 +37,7 @@ public class InventoryClick {
                 if (editor.getEditorType() == StringEditor.Type.ID) {
                     session.setId(result.getItemMeta().getDisplayName());
                 } else if (editor.getEditorType() == StringEditor.Type.NAME) {
-                    String name = Messages.colorize(result.getItemMeta().getDisplayName());
+                    String name = Formats.colorize(result.getItemMeta().getDisplayName());
                     session.setName(name);
                 }
                 Player player = (Player) event.getWhoClicked();

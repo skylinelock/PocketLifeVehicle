@@ -7,7 +7,7 @@ import dev.sky_lock.mocar.click.CarClick;
 import dev.sky_lock.mocar.click.InventoryClick;
 import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.StringEditor;
-import dev.sky_lock.mocar.util.StringUtil;
+import dev.sky_lock.mocar.util.Formats;
 import dev.sky_lock.packet.ActionBar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -117,7 +117,7 @@ public class EventListener implements Listener {
         UUID owner = UUID.fromString(ownerUUID);
         List<String> lores = meta.getLore();
         String rawFuel = lores.get(1);
-        String fuel = StringUtil.removeBlanks(rawFuel.replaceAll("\\s", "")).split(":")[1];
+        String fuel = Formats.removeBlanks(rawFuel.replaceAll("\\s", "")).split(":")[1];
 
         if (player.getUniqueId().equals(owner)) {
             this.placeCarEntity(player, itemStack, event.getHand(), owner, model, whereToSpawn, Float.valueOf(fuel));

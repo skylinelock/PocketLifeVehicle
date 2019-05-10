@@ -11,7 +11,7 @@ import dev.sky_lock.mocar.gui.CarUtilMenu;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
 import dev.sky_lock.mocar.item.PlayerSkull;
 import dev.sky_lock.mocar.util.Profiles;
-import dev.sky_lock.mocar.util.StringUtil;
+import dev.sky_lock.mocar.util.Formats;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -135,7 +135,7 @@ public class CarUtilContents extends MenuContents {
     }
 
     private List<String> refuelInfo(float fuel) {
-        return ImmutableList.of(ChatColor.GRAY + "残燃料 : " + StringUtil.formatDecimal(Math.abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
+        return ImmutableList.of(ChatColor.GRAY + "残燃料 : " + Formats.truncateToOneDecimalPlace(Math.abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
     }
 
     private String colorizeTitle(String title) {

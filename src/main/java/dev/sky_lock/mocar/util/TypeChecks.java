@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
  * @author sky_lock
  */
 
-public class ListUtil {
+public class TypeChecks {
 
     public static <E> List<E> checkListTypeDynamically(Object listObj, Class<E> type) {
         return Optional.of(listObj)

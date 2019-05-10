@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.item.ItemStackBuilder;
-import dev.sky_lock.mocar.util.ListUtil;
+import dev.sky_lock.mocar.util.TypeChecks;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 import org.bukkit.inventory.ItemStack;
@@ -53,7 +53,7 @@ public class CarModel implements ConfigurationSerializable {
             lores = Collections.emptyList();
         } else {
             try {
-                lores = ListUtil.checkListTypeDynamically(mapObj, String.class);
+                lores = TypeChecks.checkListTypeDynamically(mapObj, String.class);
             } catch (ClassCastException ex) {
                 lores = Collections.emptyList();
             }

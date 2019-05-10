@@ -4,7 +4,7 @@ import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.car.CarItem;
 import dev.sky_lock.mocar.car.CarModel;
 import dev.sky_lock.mocar.car.CollideBox;
-import dev.sky_lock.mocar.util.ListUtil;
+import dev.sky_lock.mocar.util.TypeChecks;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
@@ -39,7 +39,7 @@ public class CarsConfig {
         if (object == null) {
             return new ArrayList<>();
         }
-        List<CarModel> models = ListUtil.checkListTypeDynamically(object, CarModel.class);
+        List<CarModel> models = TypeChecks.checkListTypeDynamically(object, CarModel.class);
         if (models == null) {
             return new ArrayList<>();
         }

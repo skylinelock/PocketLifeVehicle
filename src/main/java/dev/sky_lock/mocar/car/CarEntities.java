@@ -3,7 +3,7 @@ package dev.sky_lock.mocar.car;
 import com.google.common.collect.ImmutableList;
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.util.Profiles;
-import dev.sky_lock.mocar.util.StringUtil;
+import dev.sky_lock.mocar.util.Formats;
 import dev.sky_lock.packet.ActionBar;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
@@ -90,7 +90,7 @@ public class CarEntities {
         ItemMeta meta = itemStack.getItemMeta();
         CustomItemTagContainer tagContainer = meta.getCustomTagContainer();
         tagContainer.setCustomTag(MoCar.getInstance().createKey("owner"), ItemTagType.STRING, owner.toString());
-        meta.setLore(ImmutableList.of("Owner : " + Profiles.getName(owner), "Fuel  : " + StringUtil.formatDecimal(car.getStatus().getFuel())));
+        meta.setLore(ImmutableList.of("Owner : " + Profiles.getName(owner), "Fuel  : " + Formats.truncateToOneDecimalPlace(car.getStatus().getFuel())));
         itemStack.setItemMeta(meta);
         Location location = car.getLocation();
         Item item = location.getWorld().dropItem(car.getLocation(), itemStack);
