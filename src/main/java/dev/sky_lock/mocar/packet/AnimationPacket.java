@@ -1,4 +1,4 @@
-package dev.sky_lock.packet;
+package dev.sky_lock.mocar.packet;
 
 import com.comphenix.protocol.PacketType;
 

@@ -1,4 +1,4 @@
-package dev.sky_lock.packet;
+package dev.sky_lock.mocar.packet;
 
 import com.comphenix.protocol.events.PacketContainer;
 
@@ -9,11 +9,11 @@ import com.comphenix.protocol.events.PacketContainer;
 public class AbstractPacket {
     private final PacketContainer packet;
 
-    public AbstractPacket(PacketContainer packet) {
+    AbstractPacket(PacketContainer packet) {
         this.packet = packet;
     }
 
-    protected PacketContainer getPacket() {
+    public PacketContainer getPacket() {
         return packet;
     }
 }

@@ -8,7 +8,7 @@ import dev.sky_lock.mocar.click.InventoryClick;
 import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.StringEditor;
 import dev.sky_lock.mocar.util.Formats;
-import dev.sky_lock.packet.ActionBar;
+import dev.sky_lock.mocar.packet.ActionBar;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

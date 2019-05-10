@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.util.Formats;
-import dev.sky_lock.packet.ActionBar;
+import dev.sky_lock.mocar.packet.ActionBar;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 

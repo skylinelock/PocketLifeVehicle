@@ -1,4 +1,4 @@
-package dev.sky_lock.packet;
+package dev.sky_lock.mocar.packet;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -14,7 +14,7 @@ import java.util.logging.Level;
 
 public class ServerPacket extends AbstractPacket {
 
-    public ServerPacket(PacketType type) {
+    ServerPacket(PacketType type) {
         super(ProtocolLibrary.getProtocolManager().createPacket(type));
     }
 

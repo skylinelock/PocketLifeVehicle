@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableList;
 import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.util.Profiles;
 import dev.sky_lock.mocar.util.Formats;
-import dev.sky_lock.packet.ActionBar;
+import dev.sky_lock.mocar.packet.ActionBar;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;

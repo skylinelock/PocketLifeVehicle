@@ -1,6 +1,6 @@
 package dev.sky_lock.mocar.car;
 
-import dev.sky_lock.packet.AnimationPacket;
+import dev.sky_lock.mocar.packet.AnimationPacket;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.MainHand;
 
