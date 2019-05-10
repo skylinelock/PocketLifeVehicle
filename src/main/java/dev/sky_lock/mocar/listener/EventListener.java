@@ -7,7 +7,6 @@ import dev.sky_lock.mocar.click.CarClick;
 import dev.sky_lock.mocar.click.InventoryClick;
 import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.StringEditor;
-import dev.sky_lock.mocar.util.Profiles;
 import dev.sky_lock.mocar.util.StringUtil;
 import dev.sky_lock.packet.ActionBar;
 import org.bukkit.Bukkit;
@@ -32,6 +31,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.tags.ItemTagType;
 
 import java.util.List;
 import java.util.UUID;
@@ -89,10 +89,10 @@ public class EventListener implements Listener {
         if (model == null) {
             return;
         }
-        ItemMeta meta = itemStack.getItemMeta();
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
+        ItemMeta meta = itemStack.getItemMeta();
         Player player = event.getPlayer();
 
         if (!MoCar.getInstance().getPluginConfig().getAllowWorlds().contains(event.getPlayer().getWorld())) {
@@ -103,28 +103,31 @@ public class EventListener implements Listener {
             ActionBar.sendPacket(player, ChatColor.RED + "乗り物は地面にのみ設置できます");
             return;
         }
-        Location whereToSpawn = event.getClickedBlock().getLocation().add(0.5, 1.0, 0.5);
+        Location whereToSpawn = event.getClickedBlock().getLocation().clone().add(0.5, 1.0, 0.5);
 
         if (!meta.hasLore()) {
             this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getMaxFuel());
             return;
         }
+        String ownerUUID = meta.getCustomTagContainer().getCustomTag(MoCar.getInstance().createKey("owner"), ItemTagType.STRING);
+        if (ownerUUID == null) {
+            this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getMaxFuel());
+            return;
+        }
+        UUID owner = UUID.fromString(ownerUUID);
         List<String> lores = meta.getLore();
-        String ownerName = StringUtil.removeBlanks(lores.get(0)).split(":")[1];
         String rawFuel = lores.get(1);
         String fuel = StringUtil.removeBlanks(rawFuel.replaceAll("\\s", "")).split(":")[1];
 
-        if (player.getName().equals(ownerName)) {
-            UUID uuid = Profiles.getUUID(ownerName);
-            this.placeCarEntity(player, itemStack, event.getHand(), uuid, model, whereToSpawn, Float.valueOf(fuel));
+        if (player.getUniqueId().equals(owner)) {
+            this.placeCarEntity(player, itemStack, event.getHand(), owner, model, whereToSpawn, Float.valueOf(fuel));
             return;
         }
         if (!Permission.CAR_PLACE.obtained(player)) {
             ActionBar.sendPacket(player, ChatColor.RED + "この車を所有していないので設置できません");
             return;
         }
-        UUID uuid = Profiles.getUUID(ownerName);
-        this.placeCarEntity(player, itemStack, event.getHand(), uuid, model, whereToSpawn, Float.valueOf(fuel));
+        this.placeCarEntity(player, itemStack, event.getHand(), owner, model, whereToSpawn, Float.valueOf(fuel));
 
     }
 

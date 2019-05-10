@@ -15,6 +15,7 @@ import dev.sky_lock.mocar.listener.ChunkEventListener;
 import dev.sky_lock.mocar.listener.EventListener;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.ChatColor;
+import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -84,5 +85,9 @@ public class MoCar extends JavaPlugin {
         Map<Object, Type<?>> types = (Map<Object, Type<?>>) DataConverterRegistry.a().getSchema(DataFixUtils.makeKey(1631)).findChoiceType(DataConverterTypes.n).types();
         types.put("minecraft:" + id, types.get("minecraft:armor_stand"));
         EntityTypes.a(id, EntityTypes.a.a(clazz, function));
+    }
+
+    public NamespacedKey createKey(String key) {
+        return new NamespacedKey(this, key);
     }
 }

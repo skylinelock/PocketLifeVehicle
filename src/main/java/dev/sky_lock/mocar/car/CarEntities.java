@@ -9,6 +9,8 @@ import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
+import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.metadata.FixedMetadataValue;
 
 import java.io.IOException;
@@ -86,6 +88,8 @@ public class CarEntities {
         CarModel model = car.getModel();
         ItemStack itemStack = model.getItemStack();
         ItemMeta meta = itemStack.getItemMeta();
+        CustomItemTagContainer tagContainer = meta.getCustomTagContainer();
+        tagContainer.setCustomTag(MoCar.getInstance().createKey("owner"), ItemTagType.STRING, owner.toString());
         meta.setLore(ImmutableList.of("Owner : " + Profiles.getName(owner), "Fuel  : " + StringUtil.formatDecimal(car.getStatus().getFuel())));
         itemStack.setItemMeta(meta);
         Location location = car.getLocation();
