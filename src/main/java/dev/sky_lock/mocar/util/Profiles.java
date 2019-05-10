@@ -1,15 +1,17 @@
 package dev.sky_lock.mocar.util;
 
-import org.apache.commons.io.IOUtils;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import dev.sky_lock.mocar.MoCar;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.ParseException;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
@@ -18,21 +20,34 @@ import java.util.UUID;
 
 public class Profiles {
 
-    public static UUID getUUID(String name) {
+    public static UUID fetchUUID(String name) {
         Player player = Bukkit.getPlayer(name);
         if (player != null) {
             return player.getUniqueId();
         }
-        String apiUri = "https://api.mojang.com/users/profiles/minecraft/" + name;
+        String urlString = "https://api.mojang.com/users/profiles/minecraft/" + name;
+        HttpURLConnection connection = null;
         try {
-            String uuidJson = IOUtils.toString(new URL(apiUri), StandardCharsets.UTF_8);
-            if (uuidJson.isEmpty()) {
+            URL url = new URL(urlString);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+            connection.connect();
+            int status = connection.getResponseCode();
+            if (status != HttpURLConnection.HTTP_OK) {
                 return null;
             }
-            JSONObject uuid = (JSONObject) JSONValue.parseWithException(uuidJson);
-            return toUUID(String.valueOf(uuid.get("id")));
-        } catch (ParseException | IOException ex) {
-            ex.printStackTrace();
+            InputStream inputStream = connection.getInputStream();
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+                String jsonText = reader.readLine();
+                JsonObject json = new JsonParser().parse(jsonText).getAsJsonObject();
+                return toUUID(json.get("id").getAsString());
+            }
+        } catch (IOException ex) {
+            MoCar.getInstance().getLogger().warning("Could not fetch an uuid for " + name);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return null;
     }
@@ -42,7 +57,7 @@ public class Profiles {
         return UUID.fromString(plain);
     }
 
-    public static String getName(UUID player) {
-        return Bukkit.getOfflinePlayer(player).getName();
+    public static String getName(UUID uuid) {
+        return Bukkit.getOfflinePlayer(uuid).getName();
     }
 }

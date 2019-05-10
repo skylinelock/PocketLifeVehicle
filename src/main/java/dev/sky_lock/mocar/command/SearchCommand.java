@@ -33,7 +33,7 @@ public class SearchCommand implements ICommand {
         }
 
         String name = args[1];
-        UUID targetUUID = Profiles.getUUID(name);
+        UUID targetUUID = Profiles.fetchUUID(name);
         Location location = getCarLocation(targetUUID);
         if (location == null) {
             player.sendMessage(MoCar.PREFIX + ChatColor.RED + "指定したプレイヤーは車を所有していません");

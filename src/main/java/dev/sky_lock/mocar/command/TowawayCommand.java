@@ -30,7 +30,7 @@ public class TowawayCommand implements ICommand {
             return;
         }
         String name = args[1];
-        UUID targetUUID = Profiles.getUUID(name);
+        UUID targetUUID = Profiles.fetchUUID(name);
         if (towaway(targetUUID)) {
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Player: " + name + " の車をアイテム化しました");
         } else {
