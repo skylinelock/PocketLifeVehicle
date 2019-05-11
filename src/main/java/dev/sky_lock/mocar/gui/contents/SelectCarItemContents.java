@@ -3,10 +3,13 @@ package dev.sky_lock.mocar.gui.contents;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
+import dev.sky_lock.mocar.MoCar;
+import dev.sky_lock.mocar.car.CarItem;
+import dev.sky_lock.mocar.gui.EditSessions;
 import dev.sky_lock.mocar.gui.ModelMenuIndex;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * @author sky_lock
@@ -15,21 +18,21 @@ import org.bukkit.entity.Player;
 public class SelectCarItemContents extends MenuContents {
 
     public SelectCarItemContents(Player player) {
-        addSlot(new Slot(9, ItemStackBuilder.of(Material.WOODEN_HOE, 1).build(), (event) -> {
-            flipPage(player, ModelMenuIndex.WOODEN_HOE.value());
-        }));
-        addSlot(new Slot(11, ItemStackBuilder.of(Material.STONE_HOE, 1).build(), (event) -> {
-            flipPage(player, ModelMenuIndex.STONE_HOE.value());
-        }));
-        addSlot(new Slot(13, ItemStackBuilder.of(Material.IRON_HOE, 1).build(), (event) -> {
-            flipPage(player, ModelMenuIndex.IRON_HOE.value());
-        }));
-        addSlot(new Slot(15, ItemStackBuilder.of(Material.GOLDEN_HOE, 1).build(), (event) -> {
-            flipPage(player, ModelMenuIndex.GOLDEN_HOE.value());
-        }));
-        addSlot(new Slot(17, ItemStackBuilder.of(Material.DIAMOND_HOE, 1).build(), (event) -> {
-            flipPage(player, ModelMenuIndex.DIAMOND_HOE.value());
-        }));
+        short damage = 0;
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 9; j++) {
+                ItemStack item = ItemStackBuilder.of(MoCar.CAR_ITEM, 1).damage(damage).build();
+                final short dmg = damage;
+                this.addSlot(new Slot(i * 9 + j, item, (event) -> {
+                    CarItem carItem = new CarItem(MoCar.CAR_ITEM, dmg);
+                    EditSessions.of(player.getUniqueId()).ifPresent(session -> {
+                        session.setCarItem(carItem);
+                    });
+                    flipPage(player, ModelMenuIndex.SETTING.value());
+                }));
+                damage ++;
+            }
+        }
     }
 
     @Override

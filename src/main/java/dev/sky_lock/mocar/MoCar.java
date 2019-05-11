@@ -15,6 +15,7 @@ import dev.sky_lock.mocar.listener.ChunkEventListener;
 import dev.sky_lock.mocar.listener.EventListener;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,6 +31,7 @@ public class MoCar extends JavaPlugin {
 
     private static MoCar instance;
     private final CarEntityStoreFile carStoreFile = new CarEntityStoreFile(getDataFolder().toPath());
+    public static final Material CAR_ITEM = Material.IRON_PICKAXE;
 
     private PluginConfig pluginConfig;
     public static String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "Car" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;

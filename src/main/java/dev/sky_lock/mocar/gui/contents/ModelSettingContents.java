@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
+import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.gui.*;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
 import org.bukkit.ChatColor;
@@ -19,7 +20,7 @@ import java.util.List;
 
 public class ModelSettingContents extends MenuContents {
     private final Player player;
-    private ItemStack carItem = ItemStackBuilder.of(Material.SLIME_BALL, 1).name("Item").build();
+    private ItemStack carItem = ItemStackBuilder.of(MoCar.CAR_ITEM, 1).name("Item").build();
     private ItemStack capacityItem = ItemStackBuilder.of(Material.CHEST_MINECART, 1).name("Capacity").build();
     private ItemStack fuelItem = ItemStackBuilder.of(Material.COAL_BLOCK, 1).name("Fuel").build();
     private ItemStack idItem = ItemStackBuilder.of(Material.EMERALD, 1).name("Id").build();

@@ -11,19 +11,14 @@ public enum ModelMenuIndex {
     SPEED(3),
     CAR_ITEM(4),
     FUEL(5),
-    WOODEN_HOE(6),
-    STONE_HOE(7),
-    IRON_HOE(8),
-    GOLDEN_HOE(9),
-    DIAMOND_HOE(10),
-    CONFIRM(11),
-    CAPACITY(12),
-    COLLIDE_BOX(13),
-    COLLIDE_BASESIDE(14),
-    COLLIDE_HEIGHT(15),
-    HEIGHT(16),
-    STEERING(17),
-    SOUND(18);
+    CONFIRM(6),
+    CAPACITY(7),
+    COLLIDE_BOX(8),
+    COLLIDE_BASESIDE(9),
+    COLLIDE_HEIGHT(10),
+    HEIGHT(11),
+    STEERING(12),
+    SOUND(13);
 
 
     private final int value;
