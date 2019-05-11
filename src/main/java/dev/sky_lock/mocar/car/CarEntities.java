@@ -121,7 +121,7 @@ public class CarEntities {
     public static void spawnAll() {
         try {
             MoCar.getInstance().getCarStoreFile().load().forEach(carEntity -> {
-                ModelList.of(carEntity.getModelID()).ifPresent(model -> {
+                ModelList.of(carEntity.getModelId()).ifPresent(model -> {
                     CarEntities.spawn(carEntity.getOwner(), model, carEntity.getLocation(), carEntity.getFuel());
                 });
             });

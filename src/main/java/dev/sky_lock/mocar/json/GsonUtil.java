@@ -1,5 +1,6 @@
 package dev.sky_lock.mocar.json;
 
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.stream.JsonReader;
@@ -20,6 +21,8 @@ public class GsonUtil {
 
     private static final Gson gson = new GsonBuilder()
             .serializeNulls()
+            .setPrettyPrinting()
+            .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
             .registerTypeAdapter(Location.class, new LocationAdapter())
             .create();
 
@@ -55,6 +58,7 @@ public class GsonUtil {
     static <T> void save(Path filePath, T obj, Type type) throws IOException {
         checkFile(filePath);
         try (JsonWriter writer = new JsonWriter(Files.newBufferedWriter(filePath))) {
+            writer.setIndent("   ");
             gson.toJson(obj, type, writer);
         }
     }

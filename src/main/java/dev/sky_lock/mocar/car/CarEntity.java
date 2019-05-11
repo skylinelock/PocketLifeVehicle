@@ -9,24 +9,24 @@ import java.util.UUID;
  */
 
 public class CarEntity {
-    private final String ownerUUID;
-    private final String modelID;
+    private final String ownerUuid;
+    private final String modelId;
     private final Location location;
     private final float fuel;
 
-    CarEntity(String ownerUUID, String modelID, Location location, float fuel) {
-        this.ownerUUID = ownerUUID;
-        this.modelID = modelID;
+    CarEntity(String ownerUuid, String modelId, Location location, float fuel) {
+        this.ownerUuid = ownerUuid;
+        this.modelId = modelId;
         this.location = location;
         this.fuel = fuel;
     }
 
     UUID getOwner() {
-        return UUID.fromString(ownerUUID);
+        return UUID.fromString(ownerUuid);
     }
 
-    String getModelID() {
-        return modelID;
+    String getModelId() {
+        return modelId;
     }
 
     public Location getLocation() {
