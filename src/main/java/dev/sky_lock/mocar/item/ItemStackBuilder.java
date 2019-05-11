@@ -1,9 +1,13 @@
 package dev.sky_lock.mocar.item;
 
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
+import org.bukkit.inventory.meta.tags.ItemTagType;
 
 import java.util.List;
 import java.util.Objects;
@@ -33,31 +37,46 @@ public class ItemStackBuilder {
         return new ItemStackBuilder(itemStack);
     }
 
-    public ItemStackBuilder durability(short damage) {
-        ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
-        ((Damageable) itemMeta).setDamage(damage);
-        itemStack.setItemMeta(itemMeta);
+    public ItemStackBuilder damage(short damage) {
+        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
+        ((Damageable) meta).setDamage(damage);
+        itemStack.setItemMeta(meta);
         return this;
     }
 
     public ItemStackBuilder lore(List<String> lores) {
-        ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
-        itemMeta.setLore(lores);
-        itemStack.setItemMeta(itemMeta);
+        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
+        meta.setLore(lores);
+        itemStack.setItemMeta(meta);
         return this;
     }
 
     public ItemStackBuilder name(String name) {
-        ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
-        itemMeta.setDisplayName(name);
-        itemStack.setItemMeta(itemMeta);
+        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
+        meta.setDisplayName(name);
+        itemStack.setItemMeta(meta);
         return this;
     }
 
     public ItemStackBuilder unbreakable(boolean unbreakable) {
-        ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
-        itemMeta.setUnbreakable(unbreakable);
-        itemStack.setItemMeta(itemMeta);
+        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
+        meta.setUnbreakable(unbreakable);
+        itemStack.setItemMeta(meta);
+        return this;
+    }
+
+    public ItemStackBuilder itemFlags(ItemFlag... flags) {
+        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
+        meta.addItemFlags(flags);
+        itemStack.setItemMeta(meta);
+        return this;
+    }
+
+    public <T, Z> ItemStackBuilder tag(NamespacedKey key, ItemTagType<T, Z> tagType, Z object) {
+        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
+        CustomItemTagContainer tagContainer = meta.getCustomTagContainer();
+        tagContainer.setCustomTag(key, tagType, object);
+        itemStack.setItemMeta(meta);
         return this;
     }
 

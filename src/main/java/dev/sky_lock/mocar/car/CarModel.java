@@ -96,7 +96,7 @@ public class CarModel implements ConfigurationSerializable {
     }
 
     ItemStack getItemStack() {
-        return ItemStackBuilder.of(item.getType(), 1).name(name).durability(item.getDamage()).unbreakable(true).build();
+        return ItemStackBuilder.of(item.getType(), 1).name(name).damage(item.getDamage()).unbreakable(true).build();
     }
 
     public String getId() {

@@ -2,14 +2,14 @@ package dev.sky_lock.mocar.car;
 
 import com.google.common.collect.ImmutableList;
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.util.Profiles;
-import dev.sky_lock.mocar.util.Formats;
+import dev.sky_lock.mocar.item.ItemStackBuilder;
 import dev.sky_lock.mocar.packet.ActionBar;
+import dev.sky_lock.mocar.util.Formats;
+import dev.sky_lock.mocar.util.Profiles;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -86,16 +86,16 @@ public class CarEntities {
 
     private static void tow(UUID owner, Car car) {
         CarModel model = car.getModel();
-        ItemStack itemStack = model.getItemStack();
-        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
-        CustomItemTagContainer tagContainer = meta.getCustomTagContainer();
-        tagContainer.setCustomTag(MoCar.getInstance().createKey("owner"), ItemTagType.STRING, owner.toString());
-        meta.setLore(ImmutableList.of("Owner : " + Profiles.getName(owner), "Fuel  : " + Formats.truncateToOneDecimalPlace(car.getStatus().getFuel())));
-        itemStack.setItemMeta(meta);
+        ItemStack itemStack = ItemStackBuilder.of(model.getItemStack())
+                .tag(MoCar.getInstance().createKey("owner"), ItemTagType.STRING, owner.toString())
+                .lore(ImmutableList.of("所有者: " + Profiles.getName(owner), "残燃料: " + Formats.truncateToOneDecimalPlace(car.getStatus().getFuel())))
+                .itemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES)
+                .build();
         Location location = car.getLocation();
         Item item = location.getWorld().dropItem(car.getLocation(), itemStack);
-        location.getWorld().playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1F, 0.2F);
         item.setMetadata("mocar-fuel", new FixedMetadataValue(MoCar.getInstance(), car.getStatus().getFuel()));
+
+        location.getWorld().playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1F, 0.2F);
         kill(owner);
     }
 

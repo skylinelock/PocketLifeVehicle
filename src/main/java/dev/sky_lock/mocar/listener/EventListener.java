@@ -118,7 +118,7 @@ public class EventListener implements Listener {
         UUID owner = UUID.fromString(ownerUUID);
         List<String> lores = Objects.requireNonNull(meta.getLore());
         String rawFuel = lores.get(1);
-        String fuel = Formats.removeBlanks(rawFuel.replaceAll("\\s", "")).split(":")[1];
+        String fuel = Formats.removeBlanks(rawFuel).split(":")[1];
 
         if (player.getUniqueId().equals(owner)) {
             this.placeCarEntity(player, itemStack, event.getHand(), owner, model, whereToSpawn, Float.valueOf(fuel));

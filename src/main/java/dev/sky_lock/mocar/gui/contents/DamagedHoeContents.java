@@ -23,7 +23,7 @@ public class DamagedHoeContents extends MenuContents {
         short damage = 0;
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 9; j++) {
-                ItemStack item = ItemStackBuilder.of(hoeType, 1).durability(damage).build();
+                ItemStack item = ItemStackBuilder.of(hoeType, 1).damage(damage).build();
                 final short dmg = damage;
                 this.addSlot(new Slot(i * 9 + j, item, (event) -> {
                     CarItem carItem = new CarItem(hoeType, dmg);
