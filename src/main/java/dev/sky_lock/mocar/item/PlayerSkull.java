@@ -6,6 +6,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -30,9 +31,9 @@ public class PlayerSkull {
         if (player == null) {
             return itemStack;
         }
-        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+        SkullMeta meta = Objects.requireNonNull((SkullMeta) itemStack.getItemMeta());
         meta.setOwningPlayer(player);
         itemStack.setItemMeta(meta);
-        return new ItemStackBuilder(itemStack).name(player.getName()).build();
+        return ItemStackBuilder.of(itemStack).name(player.getName()).build();
     }
 }

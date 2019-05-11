@@ -18,6 +18,7 @@ import org.bukkit.material.Wool;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author sky_lock
@@ -28,13 +29,13 @@ public class ConfirmContents extends MenuContents {
     public ConfirmContents(Player player) {
         Wool yes = new Wool();
         yes.setColor(DyeColor.GREEN);
-        ItemStack yesItem = new ItemStackBuilder(yes.toItemStack(1)).name(ChatColor.GREEN + "Yes").build();
+        ItemStack yesItem = ItemStackBuilder.of(yes.toItemStack(1)).name(ChatColor.GREEN + "Yes").build();
         Wool no = new Wool();
         no.setColor(DyeColor.RED);
-        ItemStack noItem = new ItemStackBuilder(no.toItemStack(1)).name(ChatColor.RED + "No").build();
+        ItemStack noItem = ItemStackBuilder.of(no.toItemStack(1)).name(ChatColor.RED + "No").build();
 
         addSlot(new Slot(20, yesItem, event -> {
-            ItemStack clicked = event.getCurrentItem();
+            ItemStack clicked = Objects.requireNonNull(event.getCurrentItem());
             EditSessions.of(event.getWhoClicked().getUniqueId()).ifPresent(session -> {
 
                 String id = session.getId();
@@ -67,7 +68,7 @@ public class ConfirmContents extends MenuContents {
                     if (capacity == null) {
                         lores.add(ChatColor.RED + "- Capacity");
                     }
-                    ItemMeta itemMeta = clicked.getItemMeta();
+                    ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
                     itemMeta.setLore(lores);
                     clicked.setItemMeta(itemMeta);
                     event.setCurrentItem(clicked);
@@ -75,7 +76,7 @@ public class ConfirmContents extends MenuContents {
                 }
 
                 if (ModelList.exists(session.getId())) {
-                    ItemMeta itemMeta = clicked.getItemMeta();
+                    ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
                     itemMeta.setLore(Collections.singletonList(ChatColor.RED + "既に存在するIDです"));
                     clicked.setItemMeta(itemMeta);
                     event.setCurrentItem(clicked);

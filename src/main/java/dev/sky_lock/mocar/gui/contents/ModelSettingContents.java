@@ -96,35 +96,35 @@ public class ModelSettingContents extends MenuContents {
             if (session.getCarItem() != null) {
                 int damage = session.getCarItem().getDamage();
                 List<String> details = ImmutableList.of(session.getCarItem().getType().toString(), String.valueOf(damage));
-                carItem = new ItemStackBuilder(carItem).lore(details).grow().build();
+                carItem = ItemStackBuilder.of(carItem).lore(details).grow().build();
                 updateItemStack(22, carItem);
             }
             if (session.getCapacity() != null) {
-                capacityItem = new ItemStackBuilder(capacityItem).lore(ImmutableList.of(String.valueOf(session.getCapacity()))).grow().build();
+                capacityItem = ItemStackBuilder.of(capacityItem).lore(ImmutableList.of(String.valueOf(session.getCapacity()))).grow().build();
                 updateItemStack(24, capacityItem);
             }
             if (session.getFuel() != 0.0F) {
-                fuelItem = new ItemStackBuilder(fuelItem).lore(ImmutableList.of(String.valueOf(session.getFuel()))).grow().build();
+                fuelItem = ItemStackBuilder.of(fuelItem).lore(ImmutableList.of(String.valueOf(session.getFuel()))).grow().build();
                 updateItemStack(29, fuelItem);
             }
             if (session.getId() != null && !session.getId().equalsIgnoreCase("id")) {
-                idItem = new ItemStackBuilder(idItem).lore(ImmutableList.of(session.getId())).grow().build();
+                idItem = ItemStackBuilder.of(idItem).lore(ImmutableList.of(session.getId())).grow().build();
                 updateItemStack(11, idItem);
             }
             if (session.getName() != null && !session.getName().equalsIgnoreCase("name")) {
-                nameItem = new ItemStackBuilder(nameItem).lore(ImmutableList.of(session.getName())).grow().build();
+                nameItem = ItemStackBuilder.of(nameItem).lore(ImmutableList.of(session.getName())).grow().build();
                 updateItemStack(13, nameItem);
             }
             if (session.getMaxSpeed() != null) {
-                speedItem = new ItemStackBuilder(speedItem).lore(ImmutableList.of(session.getMaxSpeed().getLabel())).grow().build();
+                speedItem = ItemStackBuilder.of(speedItem).lore(ImmutableList.of(session.getMaxSpeed().getLabel())).grow().build();
                 updateItemStack(15, speedItem);
             }
             if (session.getLores() != null) {
-                loreItem = new ItemStackBuilder(loreItem).lore(session.getLores()).grow().build();
+                loreItem = ItemStackBuilder.of(loreItem).lore(session.getLores()).grow().build();
                 updateItemStack(20, loreItem);
             }
             if (session.getCollideHeight() != 0.0F && session.getCollideBaseSide() != 0.0F) {
-                collideItem = new ItemStackBuilder(collideItem).lore(ImmutableList.of(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight()))).grow().build();
+                collideItem = ItemStackBuilder.of(collideItem).lore(ImmutableList.of(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight()))).grow().build();
                 updateItemStack(31, collideItem);
             }
 

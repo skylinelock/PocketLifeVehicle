@@ -40,11 +40,11 @@ public class CollideBoxContents extends MenuContents {
                 return;
             }
             if (session.getCollideBaseSide() != 0.0F) {
-                ItemStack growBaseSide = new ItemStackBuilder(baseSideItem).grow().lore(ImmutableList.of(String.valueOf(session.getCollideBaseSide()))).build();
+                ItemStack growBaseSide = ItemStackBuilder.of(baseSideItem).grow().lore(ImmutableList.of(String.valueOf(session.getCollideBaseSide()))).build();
                 updateItemStack(20, growBaseSide);
             }
             if (session.getCollideHeight() != 0.0F) {
-                ItemStack growHeight = new ItemStackBuilder(heightItem).grow().lore(ImmutableList.of(String.valueOf(session.getCollideHeight()))).build();
+                ItemStack growHeight = ItemStackBuilder.of(heightItem).grow().lore(ImmutableList.of(String.valueOf(session.getCollideHeight()))).build();
                 updateItemStack(24, growHeight);
             }
             inventoryMenu.update();

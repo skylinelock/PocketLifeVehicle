@@ -91,6 +91,10 @@ public class CarModel implements ConfigurationSerializable {
         return maxFuel;
     }
 
+    CarItem getCarItem() {
+        return item;
+    }
+
     ItemStack getItemStack() {
         return ItemStackBuilder.of(item.getType(), 1).name(name).durability(item.getDamage()).unbreakable(true).build();
     }

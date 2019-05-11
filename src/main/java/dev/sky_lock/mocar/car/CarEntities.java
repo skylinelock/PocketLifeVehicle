@@ -87,7 +87,7 @@ public class CarEntities {
     private static void tow(UUID owner, Car car) {
         CarModel model = car.getModel();
         ItemStack itemStack = model.getItemStack();
-        ItemMeta meta = itemStack.getItemMeta();
+        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
         CustomItemTagContainer tagContainer = meta.getCustomTagContainer();
         tagContainer.setCustomTag(MoCar.getInstance().createKey("owner"), ItemTagType.STRING, owner.toString());
         meta.setLore(ImmutableList.of("Owner : " + Profiles.getName(owner), "Fuel  : " + Formats.truncateToOneDecimalPlace(car.getStatus().getFuel())));

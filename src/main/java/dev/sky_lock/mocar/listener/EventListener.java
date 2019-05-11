@@ -34,6 +34,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -92,7 +93,7 @@ public class EventListener implements Listener {
         event.setCancelled(true);
         event.setUseInteractedBlock(Event.Result.DENY);
         event.setUseItemInHand(Event.Result.DENY);
-        ItemMeta meta = itemStack.getItemMeta();
+        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
         Player player = event.getPlayer();
 
         if (!MoCar.getInstance().getPluginConfig().getAllowWorlds().contains(event.getPlayer().getWorld())) {
@@ -103,7 +104,7 @@ public class EventListener implements Listener {
             ActionBar.sendPacket(player, ChatColor.RED + "乗り物は地面にのみ設置できます");
             return;
         }
-        Location whereToSpawn = event.getClickedBlock().getLocation().clone().add(0.5, 1.0, 0.5);
+        Location whereToSpawn = Objects.requireNonNull(event.getClickedBlock()).getLocation().clone().add(0.5, 1.0, 0.5);
 
         if (!meta.hasLore()) {
             this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getMaxFuel());
@@ -115,7 +116,7 @@ public class EventListener implements Listener {
             return;
         }
         UUID owner = UUID.fromString(ownerUUID);
-        List<String> lores = meta.getLore();
+        List<String> lores = Objects.requireNonNull(meta.getLore());
         String rawFuel = lores.get(1);
         String fuel = Formats.removeBlanks(rawFuel.replaceAll("\\s", "")).split(":")[1];
 

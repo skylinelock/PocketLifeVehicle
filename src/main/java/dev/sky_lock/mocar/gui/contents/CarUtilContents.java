@@ -38,7 +38,7 @@ public class CarUtilContents extends MenuContents {
 
         Slot ownerSlot = CarEntities.getOwner(car).map(owner -> {
             ItemStack playerSkull = PlayerSkull.of(owner, 1).toItemStack();
-            ItemStack ownerSkull = new ItemStackBuilder(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(Profiles.getName(owner))).build();
+            ItemStack ownerSkull = ItemStackBuilder.of(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(Profiles.getName(owner))).build();
             return new Slot(20, ownerSkull, event -> {
             });
         }).orElse(null);
@@ -95,7 +95,7 @@ public class CarUtilContents extends MenuContents {
                 cursor.setAmount(cursor.getAmount() - 1);
                 Player player = (Player) event.getWhoClicked();
                 player.playSound(player.getLocation(), Sound.BLOCK_BREWING_STAND_BREW, 1.0F, 0.6F);
-                updateItemStack(22, new ItemStackBuilder(refuelHopper).lore(refuelInfo(car.getStatus().getFuel())).build());
+                updateItemStack(22, ItemStackBuilder.of(refuelHopper).lore(refuelInfo(car.getStatus().getFuel())).build());
                 InventoryMenu.of(player).ifPresent(menu -> {
                     menu.update();
                     setFuelGage(menu);
@@ -108,7 +108,7 @@ public class CarUtilContents extends MenuContents {
 
     @Override
     public void onFlip(InventoryMenu menu) {
-        refuelHopper = new ItemStackBuilder(refuelHopper).lore(refuelInfo(car.getStatus().getFuel())).build();
+        refuelHopper = ItemStackBuilder.of(refuelHopper).lore(refuelInfo(car.getStatus().getFuel())).build();
         updateItemStack(22, refuelHopper);
         menu.update();
         setFuelGage(menu);

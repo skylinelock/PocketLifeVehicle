@@ -1,12 +1,14 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.config.CarsConfig;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -57,18 +59,23 @@ public class ModelList {
     }
 
     public static CarModel of(ItemStack itemStack) {
+        if (itemStack.getType() == Material.AIR) {
+            return null;
+        }
         return carModels.stream().filter(model -> {
-            ItemMeta meta = itemStack.getItemMeta();
+            ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
             if (!meta.hasDisplayName()) {
                 return false;
             }
-            int damage = ((Damageable) itemStack.getItemMeta()).getDamage();
-            ItemStack modelItem = model.getItemStack();
-            ItemMeta modelMeta = modelItem.getItemMeta();
-            int modelDamage = ((Damageable) modelItem.getItemMeta()).getDamage();
-            String displayName = itemStack.getItemMeta().getDisplayName();
-            String carName = modelMeta.getDisplayName();
-            return itemStack.getType() == modelItem.getType() && displayName.equals(carName) && damage == modelDamage;
+            int damage = ((Damageable) meta).getDamage();
+            String displayName = meta.getDisplayName();
+
+            String carName = model.getName();
+            CarItem carItem = model.getCarItem();
+            int modelDamage = carItem.getDamage();
+            Material type = carItem.getType();
+
+            return itemStack.getType() == type && displayName.equals(carName) && damage == modelDamage;
         }).findFirst().orElse(null);
     }
 }

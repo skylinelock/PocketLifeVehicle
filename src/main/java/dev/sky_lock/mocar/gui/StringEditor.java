@@ -12,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -43,11 +44,11 @@ public class StringEditor extends ContainerAnvil {
         entityPlayer.activeContainer.addSlotListener(entityPlayer);
 
         org.bukkit.inventory.ItemStack itemStack = new org.bukkit.inventory.ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
-        ItemMeta meta = itemStack.getItemMeta();
+        ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
         meta.setDisplayName(editorType.getName());
         itemStack.setItemMeta(meta);
         ItemStack item = CraftItemStack.asNMSCopy(itemStack);
-        NBTTagCompound nbt = item.getTag();
+        NBTTagCompound nbt = item.getOrCreateTag();
         nbt.setBoolean("editor-result", true);
 /*        NBTTagCompound displayNBT = new NBTTagCompound();
         displayNBT.setString("Name", editor.getEditorType().getName());
