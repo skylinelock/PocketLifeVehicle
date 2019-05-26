@@ -17,7 +17,13 @@ public enum ModelMenuIndex {
     GOLDEN_HOE(9),
     DIAMOND_HOE(10),
     CONFIRM(11),
-    CAPACITY(12);
+    CAPACITY(12),
+    COLLIDE_BOX(13),
+    COLLIDE_BASESIDE(14),
+    COLLIDE_HEIGHT(15),
+    HEIGHT(16),
+    STEERING(17),
+    SOUND(18);
 
 
     private final int value;

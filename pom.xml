@@ -6,7 +6,7 @@
 
     <groupId>dev.sky_lock</groupId>
     <artifactId>mocar</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.2</version>
     <name>MoCar</name>
 
     <inceptionYear>2019</inceptionYear>
@@ -87,11 +87,6 @@
             <artifactId>ProtocolLib-API</artifactId>
             <version>4.4.0</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>dev.sky_lock</groupId>
-            <artifactId>glassy</artifactId>
-            <version>1.0.1</version>
         </dependency>
     </dependencies>
 

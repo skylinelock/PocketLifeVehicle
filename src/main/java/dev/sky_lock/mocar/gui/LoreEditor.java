@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.gui;
 
-import dev.sky_lock.glassy.gui.InventoryMenu;
-import dev.sky_lock.glassy.gui.SignEditor;
+import dev.sky_lock.menu.InventoryMenu;
+import dev.sky_lock.menu.SignEditor;
 import dev.sky_lock.mocar.MoCar;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

@@ -1,12 +1,11 @@
 package dev.sky_lock.mocar.car;
 
+import com.google.common.collect.ImmutableList;
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.packet.ActionBar;
-import dev.sky_lock.mocar.util.PlayerInfo;
+import dev.sky_lock.mocar.util.Profiles;
 import dev.sky_lock.mocar.util.StringUtil;
-import net.minecraft.server.v1_13_R2.World;
+import dev.sky_lock.packet.ActionBar;
 import org.bukkit.*;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -14,6 +13,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  */
 
 public class CarEntities {
+    private static final Logger logger = MoCar.getInstance().getLogger();
     private static final Map<UUID, Car> entities = new HashMap<>();
 
     public static boolean spawn(UUID player, CarModel model, Location location, float fuel) {
@@ -31,7 +32,6 @@ public class CarEntities {
             ActionBar.sendPacket(Bukkit.getPlayer(player), ChatColor.RED + "ブロックがあるので車を設置できません");
             return false;
         }
-        World worldHandle = ((CraftWorld) location.getWorld()).getHandle();
 
         Car car = null;
         if (model.getCapacity() == Capacity.ONE_SEAT) {
@@ -52,6 +52,10 @@ public class CarEntities {
         return true;
     }
 
+    public static boolean spawn(Car car) {
+        return getOwner(car).map(owner -> spawn(owner, car.getModel(), car.getLocation(), car.getStatus().getFuel())).orElse(false);
+    }
+
     public static void kill(UUID owner) {
         if (entities.containsKey(owner)) {
             Car car = entities.remove(owner);
@@ -66,14 +70,12 @@ public class CarEntities {
         }
     }
 
-    static void killAll() {
+    private static void killAll() {
         entities.values().forEach(Car::kill);
     }
 
     public static void tow(Car car) {
-        getOwner(car).ifPresent(owner -> {
-            tow(owner, car);
-        });
+        getOwner(car).ifPresent(owner -> tow(owner, car));
     }
 
     public static void tow(UUID owner) {
@@ -82,10 +84,9 @@ public class CarEntities {
 
     private static void tow(UUID owner, Car car) {
         CarModel model = car.getModel();
-        CarItem carItem = model.getItem();
-        ItemStack itemStack = carItem.getStack(model.getName());
+        ItemStack itemStack = model.getItemStack();
         ItemMeta meta = itemStack.getItemMeta();
-        meta.setLore(Arrays.asList("Owner : " + PlayerInfo.getName(owner), "Fuel  : " + StringUtil.formatDecimal(car.getStatus().getFuel())));
+        meta.setLore(ImmutableList.of("Owner : " + Profiles.getName(owner), "Fuel  : " + StringUtil.formatDecimal(car.getStatus().getFuel())));
         itemStack.setItemMeta(meta);
         Location location = car.getLocation();
         Item item = location.getWorld().dropItem(car.getLocation(), itemStack);
@@ -95,7 +96,11 @@ public class CarEntities {
     }
 
     public static Car getCar(SeatArmorStand seat) {
-        return entities.values().stream().filter(abstractCar -> abstractCar.contains(seat)).findFirst().orElse(null);
+        return entities.values().stream().filter(car -> car.contains(seat)).findFirst().orElse(null);
+    }
+
+    public static Car getCar(CarArmorStand basis) {
+        return entities.values().stream().filter(car -> car.contains(basis)).findFirst().orElse(null);
     }
 
     static Set<CarEntity> getCarEntities() {
@@ -109,16 +114,15 @@ public class CarEntities {
     public static Optional<UUID> getOwner(Car car) {
         return entities.entrySet().stream().filter(entry -> entry.getValue().equals(car)).findFirst().map(Map.Entry::getKey);
     }
-
     public static void spawnAll() {
         try {
             MoCar.getInstance().getCarStoreFile().load().forEach(carEntity -> {
-                ModelList.get(carEntity.getModelID()).ifPresent(model -> {
+                ModelList.of(carEntity.getModelID()).ifPresent(model -> {
                     CarEntities.spawn(carEntity.getOwner(), model, carEntity.getLocation(), carEntity.getFuel());
                 });
             });
         } catch (IOException ex) {
-            Bukkit.getLogger().warning("CarEntityの読み込みに失敗しました");
+            logger.warning("CarEntityの読み込みに失敗しました");
         }
     }
 
@@ -127,7 +131,7 @@ public class CarEntities {
             MoCar.getInstance().getCarStoreFile().save(CarEntities.getCarEntities());
             CarEntities.killAll();
         } catch (IOException ex) {
-            Bukkit.getLogger().warning("CarEntityの保存に失敗しました");
+            logger.warning("CarEntityの保存に失敗しました");
         }
     }
 }

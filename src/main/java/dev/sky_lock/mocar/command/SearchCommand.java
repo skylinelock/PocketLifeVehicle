@@ -4,7 +4,7 @@ import dev.sky_lock.mocar.MoCar;
 import dev.sky_lock.mocar.Permission;
 import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarEntities;
-import dev.sky_lock.mocar.util.PlayerInfo;
+import dev.sky_lock.mocar.util.Profiles;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -33,7 +33,7 @@ public class SearchCommand implements ICommand {
         }
 
         String name = args[1];
-        UUID targetUUID = PlayerInfo.getUUID(name);
+        UUID targetUUID = Profiles.getUUID(name);
         Location location = getCarLocation(targetUUID);
         if (location == null) {
             player.sendMessage(MoCar.PREFIX + ChatColor.RED + "指定したプレイヤーは車を所有していません");

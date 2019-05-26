@@ -1,15 +1,16 @@
 package dev.sky_lock.mocar.gui.contents;
 
-import dev.sky_lock.glassy.gui.InventoryMenu;
-import dev.sky_lock.glassy.gui.MenuContents;
-import dev.sky_lock.glassy.gui.Slot;
-import dev.sky_lock.glassy.gui.ToggleSlot;
+import com.google.common.collect.ImmutableList;
+import dev.sky_lock.menu.InventoryMenu;
+import dev.sky_lock.menu.MenuContents;
+import dev.sky_lock.menu.Slot;
+import dev.sky_lock.menu.ToggleSlot;
 import dev.sky_lock.mocar.car.Car;
 import dev.sky_lock.mocar.car.CarEntities;
 import dev.sky_lock.mocar.gui.CarUtilMenu;
 import dev.sky_lock.mocar.item.ItemStackBuilder;
 import dev.sky_lock.mocar.item.PlayerSkull;
-import dev.sky_lock.mocar.util.PlayerInfo;
+import dev.sky_lock.mocar.util.Profiles;
 import dev.sky_lock.mocar.util.StringUtil;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -37,7 +38,7 @@ public class CarUtilContents extends MenuContents {
 
         Slot ownerSlot = CarEntities.getOwner(car).map(owner -> {
             ItemStack playerSkull = PlayerSkull.of(owner, 1).toItemStack();
-            ItemStack ownerSkull = new ItemStackBuilder(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(PlayerInfo.getName(owner))).build();
+            ItemStack ownerSkull = new ItemStackBuilder(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(Profiles.getName(owner))).build();
             return new Slot(20, ownerSkull, event -> {
             });
         }).orElse(null);
@@ -52,6 +53,15 @@ public class CarUtilContents extends MenuContents {
         Slot towSlot = new Slot(11, towItem, event -> {
             CarEntities.tow(car);
             car.closeMenu((Player) event.getWhoClicked());
+        });
+
+        ItemStack wield = ItemStackBuilder.of(Material.LIME_DYE, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build();
+        ItemStack notWield = ItemStackBuilder.of(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build();
+
+        Slot wieldHandSlot = new ToggleSlot(13, car.getStatus().isWieldHand(), wield, notWield, (event) -> {
+            car.getStatus().setWieldHand(false);
+        }, (event) -> {
+            car.getStatus().setWieldHand(true);
         });
 
         Slot carInfoSlot = new Slot(24, carInfoBook, event -> {
@@ -93,8 +103,7 @@ public class CarUtilContents extends MenuContents {
             }
         });
 
-        super.addSlot(ownerSlot);
-        super.addSlot(closeSlot, towSlot, carInfoSlot, keySlot, fuelSlot);
+        super.addSlot(ownerSlot, closeSlot, wieldHandSlot, towSlot, carInfoSlot, keySlot, fuelSlot);
     }
 
     @Override
@@ -126,7 +135,7 @@ public class CarUtilContents extends MenuContents {
     }
 
     private List<String> refuelInfo(float fuel) {
-        return Arrays.asList(ChatColor.GRAY + "残燃料 : " + StringUtil.formatDecimal(Math.abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
+        return ImmutableList.of(ChatColor.GRAY + "残燃料 : " + StringUtil.formatDecimal(Math.abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます");
     }
 
     private String colorizeTitle(String title) {

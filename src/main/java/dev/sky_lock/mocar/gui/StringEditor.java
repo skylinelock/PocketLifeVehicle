@@ -23,7 +23,7 @@ public class StringEditor extends ContainerAnvil {
     private final Type editorType;
     private ModelSettingMenu menu;
 
-    public StringEditor(Type editorType, PlayerInventory playerinventory, World world, EntityHuman entityhuman) {
+    private StringEditor(Type editorType, PlayerInventory playerinventory, World world, EntityHuman entityhuman) {
         super(playerinventory, world, BlockPosition.ZERO, entityhuman);
         this.checkReachable = false;
         this.editorType = editorType;

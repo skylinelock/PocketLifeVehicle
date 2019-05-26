@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
-import dev.sky_lock.mocar.packet.ActionBar;
+import dev.sky_lock.packet.ActionBar;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -135,6 +135,10 @@ public class SeatArmorStand extends EntityArmorStand {
     public class CraftSeat extends CraftArmorStand {
         CraftSeat(CraftServer server, EntityArmorStand entity) {
             super(server, entity);
+        }
+
+        public SeatArmorStand getHandle() {
+            return (SeatArmorStand) super.getHandle();
         }
     }
 }
