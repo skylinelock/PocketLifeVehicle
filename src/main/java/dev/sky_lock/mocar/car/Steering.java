@@ -1,5 +1,9 @@
 package dev.sky_lock.mocar.car;
 
+import dev.sky_lock.packet.AnimationPacket;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.MainHand;
+
 /**
  * @author sky_lock
  */
@@ -11,7 +15,7 @@ class Steering {
         this.status = status;
     }
 
-    void right() {
+    void right(Player driver) {
         if (Math.round(status.getFuel()) == 0 || status.getSpeed().isApproximateZero()) {
             return;
         }
@@ -20,9 +24,12 @@ class Steering {
         } else {
             status.setYaw(status.getYaw() - 4.0F);
         }
+        if (status.isWieldHand()) {
+            raiseLeftArm(driver);
+        }
     }
 
-    void left() {
+    void left(Player driver) {
         if (Math.round(status.getFuel()) == 0 ||status.getSpeed().isApproximateZero()) {
             return;
         }
@@ -31,5 +38,38 @@ class Steering {
         } else {
             status.setYaw(status.getYaw() + 4.0F);
         }
+        if (status.isWieldHand()) {
+            raiseRightArm(driver);
+        }
+    }
+
+    private void raiseLeftArm(Player player) {
+        if (player.getMainHand() == MainHand.RIGHT) {
+            raiseOffhand(player.getEntityId());
+        } else {
+            raiseMainHand(player.getEntityId());
+        }
+    }
+
+    private void raiseRightArm(Player player) {
+        if (player.getMainHand() == MainHand.RIGHT) {
+            raiseMainHand(player.getEntityId());
+        } else {
+            raiseOffhand(player.getEntityId());
+        }
+    }
+
+    private void raiseMainHand(int entityID) {
+        AnimationPacket packet = new AnimationPacket();
+        packet.setEntityID(entityID);
+        packet.setAnimation(AnimationPacket.AnimationType.SWING_MAIN_ARM);
+        packet.broadCast();
+    }
+
+    private void raiseOffhand(int entityID) {
+        AnimationPacket packet = new AnimationPacket();
+        packet.setEntityID(entityID);
+        packet.setAnimation(AnimationPacket.AnimationType.SWING_OFFHAND);
+        packet.broadCast();
     }
 }

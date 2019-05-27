@@ -1,7 +1,6 @@
-package dev.sky_lock.mocar.packet;
+package dev.sky_lock.packet;
 
 import com.comphenix.protocol.PacketType;
-import dev.sky_lock.glassy.packet.ServerPacket;
 
 /**
  * @author sky_lock

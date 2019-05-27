@@ -16,7 +16,7 @@ import java.util.UUID;
  * @author sky_lock
  */
 
-public class PlayerInfo {
+public class Profiles {
 
     public static UUID getUUID(String name) {
         Player player = Bukkit.getPlayer(name);

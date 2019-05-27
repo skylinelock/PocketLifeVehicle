@@ -104,10 +104,6 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
                     tabCompletes.addAll(Stream.of("from", "to").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
                     break;
                 case "search":
-                    if (Permission.ADMIN_COMMAND.obtained(sender)) {
-                        tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
-                    }
-                    break;
                 case "towaway":
                     if (Permission.ADMIN_COMMAND.obtained(sender)) {
                         tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));

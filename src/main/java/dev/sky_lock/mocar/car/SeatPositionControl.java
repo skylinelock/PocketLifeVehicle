@@ -8,7 +8,6 @@ import org.bukkit.util.Vector;
  */
 
 class SeatPositionControl {
-    private final static float RADIUS = 2.0F;
 
     Location calculate(Location location, SeatPosition position) {
         Vector vector = location.getDirection();

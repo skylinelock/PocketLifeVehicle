@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
  * @author sky_lock
  */
 
-public class DiamondHoeContents extends DurabilityHoeContents {
+public class DiamondHoeContents extends DamagedHoeContents {
 
     public DiamondHoeContents(Player player) {
         super(player, Material.DIAMOND_HOE);

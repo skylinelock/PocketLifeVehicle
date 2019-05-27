@@ -1,4 +1,4 @@
-package dev.sky_lock.mocar.packet;
+package dev.sky_lock.packet;
 
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;

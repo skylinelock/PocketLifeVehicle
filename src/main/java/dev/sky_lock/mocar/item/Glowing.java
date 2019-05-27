@@ -4,7 +4,6 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 
@@ -19,11 +18,10 @@ public class Glowing extends Enchantment {
     }
 
     @Override
-    public boolean canEnchantItem(@NotNull ItemStack itemStack) {
+    public boolean canEnchantItem(ItemStack itemStack) {
         return false;
     }
 
-    @NotNull
     @Override
     public String getName() {
         return getKey().getNamespace();
@@ -39,7 +37,6 @@ public class Glowing extends Enchantment {
         return 0;
     }
 
-    @NotNull
     @Override
     public EnchantmentTarget getItemTarget() {
         return EnchantmentTarget.ALL;
@@ -56,7 +53,7 @@ public class Glowing extends Enchantment {
     }
 
     @Override
-    public boolean conflictsWith(@NotNull Enchantment enchantment) {
+    public boolean conflictsWith(Enchantment enchantment) {
         return false;
     }
 

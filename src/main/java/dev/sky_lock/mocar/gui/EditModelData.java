@@ -19,6 +19,24 @@ public class EditModelData {
     private List<String> lores;
     private Capacity capacity;
     private float fuel;
+    private float baseSide;
+    private float collideHeight;
+
+    public float getCollideBaseSide() {
+        return baseSide;
+    }
+
+    public void setCollideBaseSide(float baseSide) {
+        this.baseSide = baseSide;
+    }
+
+    public float getCollideHeight() {
+        return collideHeight;
+    }
+
+    public void setCollideHeight(float height) {
+        this.collideHeight = height;
+    }
 
     public void setFuel(float fuel) {
         this.fuel = fuel;
@@ -28,7 +46,7 @@ public class EditModelData {
         return fuel;
     }
 
-    public void setLore(List<String> lores) {
+    void setLore(List<String> lores) {
         this.lores = lores;
     }
 

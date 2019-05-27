@@ -11,6 +11,7 @@ public class CarStatus {
     private float fuel;
     private float yaw;
     private boolean locked = true;
+    private boolean wieldHand = true;
     private Location location;
 
     CarStatus() {
@@ -39,6 +40,14 @@ public class CarStatus {
 
     public void setLocked(boolean locked) {
         this.locked = locked;
+    }
+
+    public boolean isWieldHand() {
+        return wieldHand;
+    }
+
+    public void setWieldHand(boolean wieldHand) {
+        this.wieldHand = wieldHand;
     }
 
     public boolean isLocked() {

@@ -1,9 +1,8 @@
-package dev.sky_lock.mocar.packet;
+package dev.sky_lock.packet;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.wrappers.EnumWrappers;
 import com.comphenix.protocol.wrappers.WrappedChatComponent;
-import dev.sky_lock.glassy.packet.ServerPacket;
 
 /**
  * @author sky_lock

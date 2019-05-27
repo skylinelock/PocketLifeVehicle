@@ -1,7 +1,7 @@
 package dev.sky_lock.mocar.car;
 
-import dev.sky_lock.mocar.packet.ActionBar;
 import dev.sky_lock.mocar.util.StringUtil;
+import dev.sky_lock.packet.ActionBar;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -35,7 +35,7 @@ class MeterPanel {
 
         builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("   ").append(ChatColor.DARK_PURPLE).append(ChatColor.BOLD);
         if (status.getSpeed().isApproximateZero()) {
-            builder.append("N");
+            builder.append("P");
         } else {
             if (status.getSpeed().isPositive()) {
                 builder.append("D");
