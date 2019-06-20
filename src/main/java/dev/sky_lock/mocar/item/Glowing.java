@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 public class Glowing extends Enchantment {
 
     Glowing() {
-        super(NamespacedKey.minecraft("growing"));
+        super(NamespacedKey.minecraft("glowing"));
     }
 
     @Override
