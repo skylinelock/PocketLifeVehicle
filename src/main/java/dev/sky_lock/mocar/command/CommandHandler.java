@@ -31,8 +31,8 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
 
         if (args.length > 0) {
             switch (args[0].toLowerCase()) {
-                case "give":
-                    cmd = new GiveCommand();
+                case "spawn":
+                    cmd = new SpawnCommand();
                     break;
                 case "towaway":
                     cmd = new TowawayCommand();
@@ -87,13 +87,13 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
         if (args.length < 2) {
             String input = args[0];
             if (Permission.ADMIN_COMMAND.obtained(sender)) {
-                tabCompletes.addAll(Stream.of("give", "edit", "removemodel", "debug", "reload", "allowworld").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
+                tabCompletes.addAll(Stream.of("spawn", "edit", "removemodel", "debug", "reload", "allowworld").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
             }
             tabCompletes.addAll(Stream.of("towaway", "listmodel", "search").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
         } else if (args.length  == 2) {
             String input = args[1];
             switch (args[0].toLowerCase()) {
-                case "give":
+                case "spawn":
                     tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
                     break;
                 case "removemodel":

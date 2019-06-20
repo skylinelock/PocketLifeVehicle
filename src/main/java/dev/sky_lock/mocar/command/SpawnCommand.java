@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
  * @author sky_lock
  */
 
-public class GiveCommand implements ICommand, IAdminCommand {
+public class SpawnCommand implements ICommand, IAdminCommand {
 
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
