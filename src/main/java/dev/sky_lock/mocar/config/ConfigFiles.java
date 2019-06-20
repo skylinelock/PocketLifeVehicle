@@ -39,7 +39,7 @@ class ConfigFiles {
             createPath(path);
             config.save(path.toFile());
         } catch (IOException ex) {
-            logger.log(Level.WARNING, "Could not saveToFile configurations to " + path.toString());
+            logger.log(Level.WARNING, "Could not save configurations to " + path.toString());
         }
     }
 
