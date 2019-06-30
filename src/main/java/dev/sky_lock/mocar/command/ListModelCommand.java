@@ -22,12 +22,14 @@ public class ListModelCommand implements ICommand {
         }
         ModelList.unmodified().forEach(model -> {
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "-------------------------------------------");
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "ID             : " + model.getId());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "NAME          : " + model.getName());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "LORE          : " + model.getLores());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "SPEED        : " + model.getMaxSpeed().getLabel());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "MAXFUEL     : " + model.getMaxFuel());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "CAPACITY     : " + model.getCapacity().value());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Id             : " + model.getId());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Name          : " + model.getName());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Lore          : " + model.getLores());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Speed        : " + model.getMaxSpeed().getLabel());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "MaxFuel     : " + model.getMaxFuel());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Capacity     : " + model.getCapacity().value());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Collision     : " + model.getCollideBox().getBaseSide() + ":" + model.getCollideBox().getHeight());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Height       : " + model.getHeight());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "-------------------------------------------");
         });
     }
