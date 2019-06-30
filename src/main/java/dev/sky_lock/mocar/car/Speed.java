@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 class Speed {
     private final static BigDecimal acceleration = new BigDecimal("0.0085");
-    private final static BigDecimal frictionDeceleration = new BigDecimal("0.010");
+    private final static BigDecimal frictionalDeceleration = new BigDecimal("0.010");
     private final static BigDecimal magnification = new BigDecimal("0.85");
     private BigDecimal exactSpeed = BigDecimal.ZERO;
 
@@ -21,7 +21,7 @@ class Speed {
     }
 
     void decelerate() {
-        exactSpeed = exactSpeed.subtract(acceleration.add(frictionDeceleration));
+        exactSpeed = exactSpeed.subtract(acceleration.add(frictionalDeceleration));
     }
 
     void decrease() {

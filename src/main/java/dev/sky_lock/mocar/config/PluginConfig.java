@@ -63,7 +63,7 @@ public class PluginConfig {
         try {
             config.save(new File(plugin.getDataFolder(), "config.yml"));
         } catch (IOException e) {
-            plugin.getLogger().warning("configの保存に失敗しました");
+            plugin.getLogger().warning("Failed to save configurations");
         }
     }
 
@@ -71,7 +71,7 @@ public class PluginConfig {
         try {
             config.load(new File(plugin.getDataFolder(), "config.yml"));
         } catch (IOException | InvalidConfigurationException ex) {
-            plugin.getLogger().warning("config.ymlの読み込みに失敗しました");
+            plugin.getLogger().warning("Failed to load config.yml");
         }
     }
 

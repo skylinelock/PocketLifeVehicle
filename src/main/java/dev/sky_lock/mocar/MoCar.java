@@ -80,7 +80,7 @@ public class MoCar extends JavaPlugin {
     private void registerEntities() {
         registerEntity("car_armor_stand", CarArmorStand.class, CarArmorStand::new);
         registerEntity("seat_armor_stand", SeatArmorStand.class, SeatArmorStand::new);
-        this.getLogger().info("Car entities were successfully registered!");
+        this.getLogger().info("Car entities were successfully registered");
     }
 
     private <T extends Entity> void registerEntity(String id, Class<T> clazz, Function<? super World, T> function) {

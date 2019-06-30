@@ -34,6 +34,9 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
                 case "give":
                     cmd = new GiveCommand();
                     break;
+                case "spawn":
+                    cmd = new SpawnCommand();
+                    break;
                 case "towaway":
                     cmd = new TowawayCommand();
                     break;
@@ -87,13 +90,16 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
         if (args.length < 2) {
             String input = args[0];
             if (Permission.ADMIN_COMMAND.obtained(sender)) {
-                tabCompletes.addAll(Stream.of("give", "edit", "removemodel", "debug", "reload", "allowworld").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
+                tabCompletes.addAll(Stream.of("give", "spawn", "edit", "removemodel", "debug", "reload", "allowworld").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
             }
             tabCompletes.addAll(Stream.of("towaway", "listmodel", "search").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
         } else if (args.length  == 2) {
             String input = args[1];
             switch (args[0].toLowerCase()) {
                 case "give":
+                    tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
+                    break;
+                case "spawn":
                     tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
                     break;
                 case "removemodel":
@@ -111,7 +117,7 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
             }
         } else if (args.length == 3) {
             String input = args[2];
-            if (args[0].equalsIgnoreCase("give")) {
+            if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("spawn")) {
                 tabCompletes.addAll(ModelList.unmodified().stream().map(CarModel::getId).filter(str -> str.startsWith(input)).collect(Collectors.toList()));
             }
         }

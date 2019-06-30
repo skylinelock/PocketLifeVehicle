@@ -95,7 +95,7 @@ public class CarModel implements ConfigurationSerializable {
         return item;
     }
 
-    ItemStack getItemStack() {
+    public ItemStack getItemStack() {
         return ItemStackBuilder.of(item.getType(), 1).name(name).damage(item.getDamage()).unbreakable(true).build();
     }
 
