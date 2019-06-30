@@ -44,9 +44,11 @@ public class ConfirmContents extends MenuContents {
                 MaxSpeed maxSpeed = session.getMaxSpeed();
                 float maxFuel = session.getFuel();
                 CarItem carItem = session.getCarItem();
-                CollideBox collideBox = new CollideBox(session.getCollideBaseSide(), session.getCollideHeight());
+                float collideBaseSide = session.getCollideBaseSide();
+                float collideHeight = session.getCollideHeight();
+                float height = session.getHeight();
 
-                if (id == null || name == null || maxSpeed == null || maxFuel == 0.0F || carItem == null || capacity == null) {
+                if (id == null || name == null || maxSpeed == null || maxFuel == 0.0F || carItem == null || capacity == null || height == -1) {
                     List<String> lores = new ArrayList<>();
                     lores.add(ChatColor.RED + "設定が完了していません");
                     lores.add(ChatColor.RED + "未設定項目");
@@ -68,6 +70,9 @@ public class ConfirmContents extends MenuContents {
                     if (capacity == null) {
                         lores.add(ChatColor.RED + "- Capacity");
                     }
+                    if (height == -1) {
+                        lores.add(ChatColor.RED + "- Height");
+                    }
                     ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
                     itemMeta.setLore(lores);
                     clicked.setItemMeta(itemMeta);
@@ -86,8 +91,8 @@ public class ConfirmContents extends MenuContents {
                 CarModel model = CarModelBuilder.of(session.getId())
                         .name(name)
                         .capacity(capacity)
-                        .height(2.0F)
-                        .collideBox(collideBox.getBaseSide(), collideBox.getHeight())
+                        .height(height)
+                        .collideBox(collideBaseSide, collideHeight)
                         .maxFuel(maxFuel)
                         .maxSpeed(maxSpeed)
                         .item(carItem)

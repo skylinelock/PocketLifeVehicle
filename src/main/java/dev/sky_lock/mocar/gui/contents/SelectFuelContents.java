@@ -27,7 +27,7 @@ public class SelectFuelContents extends MenuContents {
                     int slot = 9 * i + j;
                     int fuel = index * 25;
                     ItemStack iron = ItemStackBuilder.of(Material.IRON_BLOCK, 1).name(fuel + "").build();
-                    addSlot(new Slot(slot, iron, (event) -> {
+                    addSlot(new Slot(slot, iron, event -> {
                         session.setFuel(fuel);
                         flipPage(player, ModelMenuIndex.SETTING.value());
                     }));

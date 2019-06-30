@@ -29,7 +29,7 @@ public class ListModelCommand implements ICommand {
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "MaxFuel     : " + model.getMaxFuel());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Capacity     : " + model.getCapacity().value());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Collision     : " + model.getCollideBox().getBaseSide() + ":" + model.getCollideBox().getHeight());
-            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Height       : " + model.getHeight());
+            player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "Height        : " + model.getHeight());
             player.sendMessage(MoCar.PREFIX + ChatColor.GREEN + "-------------------------------------------");
         });
     }

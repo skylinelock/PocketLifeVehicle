@@ -85,6 +85,10 @@ public class ModelSettingContents extends MenuContents {
                 InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.value()));
             }));
 
+            this.addSlot(new Slot(33, heightItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.HEIGHT.value()));
+            }));
+
             this.addSlot(new Slot(49, createItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.CONFIRM.value()));
             }));
@@ -127,6 +131,10 @@ public class ModelSettingContents extends MenuContents {
             if (session.getCollideHeight() != 0.0F && session.getCollideBaseSide() != 0.0F) {
                 collideItem = ItemStackBuilder.of(collideItem).lore(ImmutableList.of(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight()))).grow().build();
                 updateItemStack(31, collideItem);
+            }
+            if (session.getHeight() != -1) {
+                heightItem = ItemStackBuilder.of(heightItem).lore(ImmutableList.of(String.valueOf(session.getHeight()))).grow().build();
+                updateItemStack(33, heightItem);
             }
 
             menu.update();

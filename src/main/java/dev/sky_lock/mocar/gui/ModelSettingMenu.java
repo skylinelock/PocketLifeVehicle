@@ -22,5 +22,6 @@ public class ModelSettingMenu extends InventoryMenu {
         addContents(new CollideBoxContents(player));
         addContents(new BaseSideContents(player));
         addContents(new CollideHeightContents(player));
+        addContents(new SelectHeightContents(player));
     }
 }

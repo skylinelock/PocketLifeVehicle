@@ -21,6 +21,7 @@ public class EditModelData {
     private float fuel;
     private float baseSide;
     private float collideHeight;
+    private float height = -1;
 
     public float getCollideBaseSide() {
         return baseSide;
@@ -46,8 +47,16 @@ public class EditModelData {
         return fuel;
     }
 
+    public float getHeight() {
+        return height;
+    }
+
     void setLore(List<String> lores) {
         this.lores = lores;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
     }
 
     public List<String> getLores() {

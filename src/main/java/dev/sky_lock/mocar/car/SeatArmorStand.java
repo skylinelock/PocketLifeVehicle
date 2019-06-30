@@ -43,7 +43,7 @@ public class SeatArmorStand extends EntityArmorStand {
         this.control = new SeatPositionControl();
         Location center = car.getLocation();
         Location loc = control.calculate(center, position);
-        setLocation(loc.getX(), center.getY() - 0.75D, loc.getZ(), center.getYaw(), center.getPitch());
+        setLocation(loc.getX(), center.getY() - 1.675 + car.getModel().getHeight(), loc.getZ(), center.getYaw(), center.getPitch());
     }
 
     //降りた時
@@ -96,7 +96,7 @@ public class SeatArmorStand extends EntityArmorStand {
     private void synchronize() {
         Location loc = control.calculate(car.getLocation(), position);
         this.locX = loc.getX();
-        this.locY = car.getLocation().getY() - 0.75D;
+        this.locY = car.getLocation().getY() - 1.675 + car.getModel().getHeight();
         this.locZ = loc.getZ();
         setPosition(locX, locY, locZ);
         this.yaw = car.getLocation().getYaw();
