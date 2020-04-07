@@ -118,22 +118,19 @@ public class CarArmorStand extends EntityArmorStand {
             return;
         }
 
-/*        sideMot = 0.0f;
-        forMot = 3.0f;*/
-
         car.getDriver().ifPresent(driver -> {
             EntityPlayer player = ((CraftPlayer) driver).getHandle();
-            float sideInput = player.bb;
-            float forInput = player.bd;
+            float sideIn = player.bb;
+            float forwardIn = player.bd;
 
-            if (sideInput < 0.0F) {
+            if (sideIn < 0.0F) {
                 car.getSteering().right(driver);
-            } else if (sideInput > 0.0F) {
+            } else if (sideIn > 0.0F) {
                 car.getSteering().left(driver);
             }
 
-            car.getEngine().update(forInput);
-            car.getEngine().consumeFuel(sideInput);
+            car.getEngine().update(forwardIn);
+            car.getEngine().consumeFuel(sideIn);
         });
 
         this.fallDistance = 0.0F;
@@ -142,10 +139,10 @@ public class CarArmorStand extends EntityArmorStand {
         this.lastYaw = this.yaw;
         this.pitch = 0.0F;
         setYawPitch(this.yaw, this.pitch);
-/*        this.aQ = this.yaw;*/
+        // this.aQ = this.yaw;
 
         this.o(car.getEngine().getCurrentSpeed());
-        super.a(vec3d);
+        super.e(vec3d.e(new Vec3D(3.0, 1.0, 3.0)));
         car.getStatus().setLocation(getLocation());
     }
 
