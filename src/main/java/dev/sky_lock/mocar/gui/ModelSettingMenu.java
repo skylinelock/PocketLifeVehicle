@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 public class ModelSettingMenu extends InventoryMenu {
 
     public ModelSettingMenu(Player player) {
-        super("Edit : ModelSetting", InventoryMenu.Type.BIG, player);
+        super("モデル設定", InventoryMenu.Type.BIG, player);
         addContents(new EditCarModelContents(player));
         addContents(new ModelSettingContents(player));
         addContents(new SelectSpeedContents(player));

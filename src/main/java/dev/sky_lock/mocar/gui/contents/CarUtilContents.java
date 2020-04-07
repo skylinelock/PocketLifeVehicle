@@ -43,7 +43,7 @@ public class CarUtilContents extends MenuContents {
             });
         }).orElse(null);
 
-        ItemStack carInfoBook = ItemStackBuilder.of(Material.BOOK, 1).name(colorizeTitle("車輌情報")).lore(carInfoLore()).build();
+        ItemStack carInfoBook = ItemStackBuilder.of(Material.BOOK, 1).name(colorizeTitle("車両情報")).lore(carInfoLore()).build();
 
         Slot closeSlot = new Slot(4, closeItem, event -> {
             CarUtilMenu menu = (CarUtilMenu) event.getInventory().getHolder();

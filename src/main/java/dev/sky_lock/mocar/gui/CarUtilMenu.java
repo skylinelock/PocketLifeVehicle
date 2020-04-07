@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class CarUtilMenu extends InventoryMenu {
 
     public CarUtilMenu(Player holder, Car car) {
-        super("CarUtility", Type.BIG, holder);
+        super("ユーティリティ", Type.BIG, holder);
         addContents(new CarUtilContents(car));
     }
 }
