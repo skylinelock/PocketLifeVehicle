@@ -23,7 +23,7 @@ public class MoCar extends JavaPlugin {
 
     private static MoCar instance;
     private final CarEntityStoreFile carStoreFile = new CarEntityStoreFile(getDataFolder().toPath());
-    public static final Material CAR_ITEM = Material.IRON_PICKAXE;
+    public static final Material CAR_ITEM = Material.IRON_NUGGET;
 
     private PluginConfig pluginConfig;
     public static String PREFIX = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "Car" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET;

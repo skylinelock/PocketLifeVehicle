@@ -4,7 +4,6 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.inventory.meta.tags.ItemTagType;
@@ -37,9 +36,9 @@ public class ItemStackBuilder {
         return new ItemStackBuilder(itemStack);
     }
 
-    public ItemStackBuilder damage(short damage) {
+    public ItemStackBuilder customModelData(int id) {
         ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
-        ((Damageable) meta).setDamage(damage);
+        meta.setCustomModelData(id);
         itemStack.setItemMeta(meta);
         return this;
     }

@@ -15,32 +15,32 @@ import java.util.Map;
 public class CarItem implements ConfigurationSerializable {
 
     private final Material type;
-    private final short damage;
+    private final int modelId;
 
-    public CarItem(Material type, short damage) {
+    public CarItem(Material type, int modelId) {
         this.type = type;
-        this.damage = damage;
+        this.modelId = modelId;
     }
 
-    public short getDamage() {
-        return damage;
+    public static CarItem deserialize(Map<String, Object> map) {
+        Material type = Material.valueOf((String) map.get("type"));
+        int modelId = Integer.valueOf(String.valueOf(map.get("modelid")));
+        return new CarItem(type, modelId);
     }
 
     public Material getType() {
         return type;
     }
 
+    public int getModelId() {
+        return modelId;
+    }
+
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
         map.put("type", type.name());
-        map.put("damage", damage);
+        map.put("modelid", modelId);
         return map;
-    }
-
-    public static CarItem deserialize(Map<String, Object> map) {
-        Material type = Material.valueOf((String) map.get("type"));
-        short damage = Short.valueOf(String.valueOf(map.get("damage")));
-        return new CarItem(type, damage);
     }
 }

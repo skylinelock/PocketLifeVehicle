@@ -18,19 +18,20 @@ import org.bukkit.inventory.ItemStack;
 public class SelectCarItemContents extends MenuContents {
 
     public SelectCarItemContents(Player player) {
-        short damage = 0;
+        short idOffset = 0;
+        short k = 0;
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 9; j++) {
-                ItemStack item = ItemStackBuilder.of(MoCar.CAR_ITEM, 1).damage(damage).build();
-                final short dmg = damage;
+                int modelId = idOffset + k;
+                ItemStack item = ItemStackBuilder.of(MoCar.CAR_ITEM, 1).customModelData(modelId).build();
                 this.addSlot(new Slot(i * 9 + j, item, (event) -> {
-                    CarItem carItem = new CarItem(MoCar.CAR_ITEM, dmg);
+                    CarItem carItem = new CarItem(MoCar.CAR_ITEM, modelId);
                     EditSessions.of(player.getUniqueId()).ifPresent(session -> {
                         session.setCarItem(carItem);
                     });
                     flipPage(player, ModelMenuIndex.SETTING.value());
                 }));
-                damage ++;
+                k++;
             }
         }
     }

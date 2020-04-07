@@ -99,8 +99,8 @@ public class ModelSettingContents extends MenuContents {
     public void onFlip(InventoryMenu menu) {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             if (session.getCarItem() != null) {
-                int damage = session.getCarItem().getDamage();
-                List<String> details = ImmutableList.of(session.getCarItem().getType().toString(), String.valueOf(damage));
+                int modelId = session.getCarItem().getModelId();
+                List<String> details = ImmutableList.of(session.getCarItem().getType().toString(), String.valueOf(modelId));
                 carItem = ItemStackBuilder.of(carItem).lore(details).grow().build();
                 updateItemStack(22, carItem);
             }
