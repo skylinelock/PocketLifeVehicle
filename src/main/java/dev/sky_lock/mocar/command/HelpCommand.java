@@ -19,7 +19,7 @@ public class HelpCommand implements ICommand {
             sender.sendMessage(MoCar.PREFIX + "/mocar give [target] [carId] - 指定した車種の車のアイテムをプレイヤーにインベントリーに追加します");
             sender.sendMessage(MoCar.PREFIX + "/mocar spawn [target] [carId] - 指定した車種の車を指定したプレイヤーの位置にスポーンさせます");
             sender.sendMessage(MoCar.PREFIX + "/mocar search [target] - 所有している車の現在地を表示します");
-            sender.sendMessage(MoCar.PREFIX + "/mocar toaway [target] - 指定したプレイヤーの車をアイテム化します");
+            sender.sendMessage(MoCar.PREFIX + "/mocar towaway [target] - 指定したプレイヤーの車をアイテム化します");
             sender.sendMessage(MoCar.PREFIX + "/mocar edit - カーモデルエディタを開きます");
             sender.sendMessage(MoCar.PREFIX + "/mocar removemodel(rm) [carId] - 指定したidの車種を削除します");
             sender.sendMessage(MoCar.PREFIX + "/mocar listmodel(lm) - 全ての車種を表示します");
