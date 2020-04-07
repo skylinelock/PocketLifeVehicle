@@ -1,14 +1,14 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.MoCar;
+import net.minecraft.server.v1_14_R1.*;
 import dev.sky_lock.mocar.packet.ActionBar;
-import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_13_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftArmorStand;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
@@ -23,8 +23,8 @@ public class SeatArmorStand extends EntityArmorStand {
     private SeatPosition position;
     private SeatPositionControl control;
 
-    public SeatArmorStand(World world) {
-        super(world);
+    public SeatArmorStand(World world, double x, double y, double z) {
+        super(world, x, y, z);
 
         NBTTagCompound nbt = new NBTTagCompound();
         nbt.setBoolean("NoBasePlate", true);
@@ -111,10 +111,7 @@ public class SeatArmorStand extends EntityArmorStand {
 
     @Override
     public CraftEntity getBukkitEntity() {
-        if (this.bukkitEntity == null || !(this.bukkitEntity instanceof CraftSeat)) {
-            this.bukkitEntity = new CraftSeat((CraftServer) Bukkit.getServer(), this);
-        }
-        return super.getBukkitEntity();
+        return new CraftSeat((CraftServer) Bukkit.getServer(), this);
     }
 
     @Override

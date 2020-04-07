@@ -15,7 +15,7 @@ class OneSeatCar extends Car {
     @Override
     void spawn(Location location) {
         super.spawn(location);
-        SeatArmorStand driver = new SeatArmorStand(getCenter().getWorld());
+        SeatArmorStand driver = new SeatArmorStand(getCenter().getWorld(), location.getX(), location.getY(), location.getZ());
         driver.assemble(this, SeatPosition.ONE_DRIVER);
         addSeat(driver);
         super.seats.forEach(getCenter().getWorld()::addEntity);

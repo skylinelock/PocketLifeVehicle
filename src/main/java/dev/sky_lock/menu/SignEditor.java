@@ -9,7 +9,6 @@ import com.comphenix.protocol.wrappers.BlockPosition;
 import dev.sky_lock.mocar.packet.BlockChangePacket;
 import dev.sky_lock.mocar.packet.OpenSignEditorPacket;
 import dev.sky_lock.mocar.packet.UpdateSignPacket;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -51,7 +50,7 @@ public class SignEditor {
         Location location = player.getLocation().clone();
         location.setY(0);
         blockChange.setLocation(location);
-        blockChange.setBlockData(Bukkit.getServer().createBlockData(Material.BEDROCK));
+        blockChange.setBlockData(Material.BEDROCK);
         blockChange.send(player);
 
     }
@@ -61,7 +60,7 @@ public class SignEditor {
         Location location = player.getLocation().clone();
         location.setY(0);
         blockChange.setLocation(location);
-        blockChange.setBlockData(Bukkit.getServer().createBlockData(Material.WALL_SIGN));
+        blockChange.setBlockData(Material.OAK_WALL_SIGN);
         blockChange.send(player);
 
         OpenSignEditorPacket packet = new OpenSignEditorPacket();

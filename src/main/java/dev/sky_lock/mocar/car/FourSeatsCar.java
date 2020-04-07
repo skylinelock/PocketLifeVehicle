@@ -15,13 +15,13 @@ class FourSeatsCar extends Car {
     @Override
     void spawn(Location location) {
         super.spawn(location);
-        SeatArmorStand driver = new SeatArmorStand(getCenter().getWorld());
+        SeatArmorStand driver = new SeatArmorStand(getCenter().getWorld(), location.getX(), location.getY(), location.getZ());
         driver.assemble(this, SeatPosition.FOUR_DRIVER);
-        SeatArmorStand passenger = new SeatArmorStand(getCenter().getWorld());
+        SeatArmorStand passenger = new SeatArmorStand(getCenter().getWorld(), location.getX(), location.getY(), location.getZ());
         passenger.assemble(this, SeatPosition.FOUR_PASSENGER);
-        SeatArmorStand rearRight = new SeatArmorStand(getCenter().getWorld());
+        SeatArmorStand rearRight = new SeatArmorStand(getCenter().getWorld(), location.getX(), location.getY(), location.getZ());
         rearRight.assemble(this, SeatPosition.FOUR_REAR_RIGHT);
-        SeatArmorStand rearLeft = new SeatArmorStand(getCenter().getWorld());
+        SeatArmorStand rearLeft = new SeatArmorStand(getCenter().getWorld(), location.getX(), location.getY(), location.getZ());
         rearLeft.assemble(this, SeatPosition.FOUR_REAR_LEFT);
         addSeat(driver);
         addSeat(passenger);

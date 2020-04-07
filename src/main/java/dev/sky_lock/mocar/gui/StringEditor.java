@@ -1,12 +1,11 @@
 package dev.sky_lock.mocar.gui;
 
-
-import net.minecraft.server.v1_13_R2.*;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Material;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftInventoryPlayer;
-import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventoryPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -24,8 +23,8 @@ public class StringEditor extends ContainerAnvil {
     private final Type editorType;
     private ModelSettingMenu menu;
 
-    private StringEditor(Type editorType, PlayerInventory playerinventory, World world, EntityHuman entityhuman) {
-        super(playerinventory, world, BlockPosition.ZERO, entityhuman);
+    private StringEditor(int windowId, Type editorType, PlayerInventory playerinventory, World world) {
+        super(windowId, playerinventory, ContainerAccess.at(world, BlockPosition.ZERO));
         this.checkReachable = false;
         this.editorType = editorType;
     }
@@ -35,12 +34,11 @@ public class StringEditor extends ContainerAnvil {
         World world = ((CraftWorld) player.getWorld()).getHandle();
         EntityPlayer entityPlayer = ((CraftPlayer) player).getHandle();
         int containerId = entityPlayer.nextContainerCounter();
-        StringEditor editor = new StringEditor(editorType, inventory, world, entityPlayer);
+        StringEditor editor = new StringEditor(containerId, editorType, inventory, world);
         editor.setMenu(menu);
 
-        entityPlayer.playerConnection.sendPacket(new PacketPlayOutOpenWindow(containerId, "minecraft:anvil", new ChatMessage("ChangeTheName"), 0));
+        entityPlayer.playerConnection.sendPacket(new PacketPlayOutOpenWindow(containerId, Containers.ANVIL, new ChatMessage("ChangeTheName")));
         entityPlayer.activeContainer = editor;
-        entityPlayer.activeContainer.windowId = containerId;
         entityPlayer.activeContainer.addSlotListener(entityPlayer);
 
         org.bukkit.inventory.ItemStack itemStack = new org.bukkit.inventory.ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1);
@@ -89,9 +87,9 @@ public class StringEditor extends ContainerAnvil {
     }
 
     @Override
-    public void d() {
-        super.d();
-        this.levelCost = 0;
+    public void e() {
+        super.e();
+        this.levelCost.set(0);
     }
 
     public enum Type {

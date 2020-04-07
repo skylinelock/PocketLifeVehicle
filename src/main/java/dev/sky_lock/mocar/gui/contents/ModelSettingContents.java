@@ -26,7 +26,7 @@ public class ModelSettingContents extends MenuContents {
     private ItemStack idItem = ItemStackBuilder.of(Material.EMERALD, 1).name("Id").build();
     private ItemStack nameItem = ItemStackBuilder.of(Material.NAME_TAG, 1).name("Name").build();
     private ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("MaxSpeed").build();
-    private ItemStack loreItem = ItemStackBuilder.of(Material.SIGN, 1).name("Lore").build();
+    private ItemStack loreItem = ItemStackBuilder.of(Material.OAK_SIGN, 1).name("Lore").build();
     private ItemStack steeringItem = ItemStackBuilder.of(Material.SADDLE, 1).name("Steering").build();
     private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name("CollideBox").build();
     private ItemStack heightItem = ItemStackBuilder.of(Material.PURPUR_STAIRS, 1).name("Height").build();

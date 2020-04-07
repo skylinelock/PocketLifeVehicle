@@ -1,12 +1,12 @@
 package dev.sky_lock.mocar.car;
 
 import dev.sky_lock.mocar.gui.CarUtilMenu;
+import net.minecraft.server.v1_14_R1.World;
 import dev.sky_lock.mocar.packet.FakeExplosionPacket;
-import net.minecraft.server.v1_13_R2.World;
 import org.bukkit.Location;
 import org.bukkit.Sound;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -103,10 +103,9 @@ public class Car {
     }
 
     void spawn(Location location) {
-        center = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle());
+        center = new CarArmorStand(((CraftWorld) location.getWorld()).getHandle(), location.getX(), location.getY(), location.getZ());
         getStatus().setLocation(location);
         center.assemble(this);
-        center.setLocation(location.getX(), location.getY(), location.getZ(), location.getYaw(), 0.0F);
         status.setYaw(location.getYaw());
         World world = center.world;
         world.addEntity(center);
