@@ -89,7 +89,7 @@ public class CarEntities {
         ItemStack itemStack = ItemStackBuilder.of(model.getItemStack())
                 .tag(MoCar.getInstance().createKey("owner"), ItemTagType.STRING, owner.toString())
                 .lore(ImmutableList.of("所有者: " + Profiles.getName(owner), "残燃料: " + Formats.truncateToOneDecimalPlace(car.getStatus().getFuel())))
-                .itemFlags(ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES)
+                .itemFlags(ItemFlag.values())
                 .build();
         Location location = car.getLocation();
         Item item = location.getWorld().dropItem(car.getLocation(), itemStack);

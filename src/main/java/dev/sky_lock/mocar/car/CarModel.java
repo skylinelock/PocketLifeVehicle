@@ -4,6 +4,7 @@ import dev.sky_lock.mocar.item.ItemStackBuilder;
 import dev.sky_lock.mocar.util.TypeChecks;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
@@ -96,7 +97,7 @@ public class CarModel implements ConfigurationSerializable {
     }
 
     public ItemStack getItemStack() {
-        return ItemStackBuilder.of(item.getType(), 1).name(name).customModelData(item.getModelId()).unbreakable(true).build();
+        return ItemStackBuilder.of(item.getType(), 1).name(name).customModelData(item.getModelId()).unbreakable(true).itemFlags(ItemFlag.values()).build();
     }
 
     public String getId() {
