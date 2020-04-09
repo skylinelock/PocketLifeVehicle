@@ -142,7 +142,7 @@ public class CarArmorStand extends EntityArmorStand {
         // this.aQ = this.yaw;
 
         this.o(car.getEngine().getCurrentSpeed());
-        super.e(vec3d.e(new Vec3D(3.0, 1.0, 3.0)));
+        super.e(vec3d.e(new Vec3D(0.0, 1.0, 3.0)));
         car.getStatus().setLocation(getLocation());
     }
 
