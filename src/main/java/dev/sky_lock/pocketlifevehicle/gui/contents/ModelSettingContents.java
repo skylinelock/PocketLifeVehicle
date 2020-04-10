@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableList;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
-import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.gui.*;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
 import org.bukkit.ChatColor;
@@ -20,17 +19,20 @@ import java.util.List;
 
 public class ModelSettingContents extends MenuContents {
     private final Player player;
-    private ItemStack carItem = ItemStackBuilder.of(PLVehicle.CAR_ITEM, 1).name("アイテム").build();
+
+    private ItemStack carItem = ItemStackBuilder.of(Material.ITEM_FRAME, 1).name("アイテム").build();
     private ItemStack capacityItem = ItemStackBuilder.of(Material.CHEST_MINECART, 1).name("乗車人数").build();
     private ItemStack fuelItem = ItemStackBuilder.of(Material.COAL_BLOCK, 1).name("燃料上限").build();
     private ItemStack idItem = ItemStackBuilder.of(Material.EMERALD, 1).name("ID").build();
     private ItemStack nameItem = ItemStackBuilder.of(Material.NAME_TAG, 1).name("名前").build();
     private ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("最高速度").build();
     private ItemStack loreItem = ItemStackBuilder.of(Material.OAK_SIGN, 1).name("説明").build();
-    private ItemStack steeringItem = ItemStackBuilder.of(Material.SADDLE, 1).name("ステアリング").build();
     private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name("当たり判定").build();
     private ItemStack heightItem = ItemStackBuilder.of(Material.PURPUR_STAIRS, 1).name("座高").build();
-    private ItemStack soundItem = ItemStackBuilder.of(Material.NOTE_BLOCK, 1).name("エンジン音").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
+    private ItemStack soundItem = ItemStackBuilder.of(Material.BELL, 1).name("エンジン音").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
+    private ItemStack steeringItem = ItemStackBuilder.of(Material.LEAD, 1).name("ステアリング").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
+    private ItemStack equipOnHandItem = ItemStackBuilder.of(Material.SCUTE, 1).name("モデルのアイテム位置").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
+
     private ItemStack createItem = ItemStackBuilder.of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "追加する").build();
 
 
@@ -87,6 +89,18 @@ public class ModelSettingContents extends MenuContents {
 
             this.addSlot(new Slot(33, heightItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.HEIGHT.value()));
+            }));
+
+            this.addSlot(new Slot(38, soundItem, event -> {
+
+            }));
+
+            this.addSlot(new Slot(40, steeringItem, event -> {
+
+            }));
+
+            this.addSlot(new Slot(42, equipOnHandItem, event -> {
+
             }));
 
             this.addSlot(new Slot(49, createItem, event -> {
