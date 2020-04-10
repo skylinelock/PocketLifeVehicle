@@ -17,8 +17,8 @@ import org.bukkit.inventory.ItemStack;
 
 public class CollideBoxContents extends MenuContents {
     private final Player player;
-    private final ItemStack baseSideItem = ItemStackBuilder.of(Material.LIGHT_BLUE_CONCRETE, 1).name("BaseSide").build();
-    private final ItemStack heightItem = ItemStackBuilder.of(Material.YELLOW_CONCRETE, 1).name("Height").build();
+    private final ItemStack baseSideItem = ItemStackBuilder.of(Material.LIGHT_BLUE_CONCRETE, 1).name("横").build();
+    private final ItemStack heightItem = ItemStackBuilder.of(Material.YELLOW_CONCRETE, 1).name("高さ").build();
 
     public CollideBoxContents(Player player) {
         this.player = player;

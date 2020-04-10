@@ -5,11 +5,11 @@ package dev.sky_lock.pocketlifevehicle.car;
  */
 
 public enum MaxSpeed {
-    SLOWEST("Slowest", 0.20f),
-    SLOW("Slow", 0.30f),
-    NORMAL("Normal", 0.40f),
-    FAST("Fast", 0.50f),
-    FASTEST("Fastest", 0.60f);
+    SLOWEST("最も遅い", 0.20f),
+    SLOW("遅い", 0.30f),
+    NORMAL("普通", 0.40f),
+    FAST("速い", 0.50f),
+    FASTEST("最も速い", 0.60f);
 
     private final String label;
     private final float maxSpeed;

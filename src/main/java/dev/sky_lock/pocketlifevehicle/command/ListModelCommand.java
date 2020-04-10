@@ -22,14 +22,14 @@ public class ListModelCommand implements ICommand {
         }
         ModelList.unmodified().forEach(model -> {
             player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "-------------------------------------------");
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Id             : " + model.getId());
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Name          : " + model.getName());
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Lore          : " + model.getLores());
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Speed        : " + model.getMaxSpeed().getLabel());
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "MaxFuel     : " + model.getMaxFuel());
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Capacity     : " + model.getCapacity().value());
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Collision     : " + model.getCollideBox().getBaseSide() + ":" + model.getCollideBox().getHeight());
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Height        : " + model.getHeight());
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "ID            : " + model.getId());
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "名前          : " + model.getName());
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "説明          : " + model.getLores());
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "最高速度      : " + model.getMaxSpeed().getLabel());
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "燃料上限     : " + model.getMaxFuel());
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "乗車人数     : " + model.getCapacity().value());
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "当たり判定   : " + model.getCollideBox().getBaseSide() + ":" + model.getCollideBox().getHeight());
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "座高         : " + model.getHeight());
             player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "-------------------------------------------");
         });
     }

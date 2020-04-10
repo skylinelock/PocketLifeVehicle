@@ -37,7 +37,7 @@ public class StringEditor extends ContainerAnvil {
         StringEditor editor = new StringEditor(containerId, editorType, inventory, world);
         editor.setMenu(menu);
 
-        entityPlayer.playerConnection.sendPacket(new PacketPlayOutOpenWindow(containerId, Containers.ANVIL, new ChatMessage("ChangeTheName")));
+        entityPlayer.playerConnection.sendPacket(new PacketPlayOutOpenWindow(containerId, Containers.ANVIL, new ChatMessage("文字を編集する")));
         entityPlayer.activeContainer = editor;
         entityPlayer.activeContainer.addSlotListener(entityPlayer);
 
@@ -93,8 +93,8 @@ public class StringEditor extends ContainerAnvil {
     }
 
     public enum Type {
-        ID("Id"),
-        NAME("Name");
+        ID("ID"),
+        NAME("名前");
 
         private final String name;
 

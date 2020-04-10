@@ -29,10 +29,10 @@ public class ConfirmContents extends MenuContents {
     public ConfirmContents(Player player) {
         Wool yes = new Wool();
         yes.setColor(DyeColor.GREEN);
-        ItemStack yesItem = ItemStackBuilder.of(yes.toItemStack(1)).name(ChatColor.GREEN + "Yes").build();
+        ItemStack yesItem = ItemStackBuilder.of(yes.toItemStack(1)).name(ChatColor.GREEN + "追加する").build();
         Wool no = new Wool();
         no.setColor(DyeColor.RED);
-        ItemStack noItem = ItemStackBuilder.of(no.toItemStack(1)).name(ChatColor.RED + "No").build();
+        ItemStack noItem = ItemStackBuilder.of(no.toItemStack(1)).name(ChatColor.RED + "追加しない").build();
 
         addSlot(new Slot(20, yesItem, event -> {
             ItemStack clicked = Objects.requireNonNull(event.getCurrentItem());
@@ -56,22 +56,22 @@ public class ConfirmContents extends MenuContents {
                         lores.add(ChatColor.RED + "- ID");
                     }
                     if (name == null) {
-                        lores.add(ChatColor.RED + "- Name");
+                        lores.add(ChatColor.RED + "- 名前");
                     }
                     if (maxSpeed == null) {
-                        lores.add(ChatColor.RED + "- MaxSpeed");
+                        lores.add(ChatColor.RED + "- 最高速度");
                     }
                     if (carItem == null) {
-                        lores.add(ChatColor.RED + "- Item");
+                        lores.add(ChatColor.RED + "- アイテム");
                     }
                     if (maxFuel == 0.0F) {
-                        lores.add(ChatColor.RED + "- Fuel");
+                        lores.add(ChatColor.RED + "- 燃料");
                     }
                     if (capacity == null) {
-                        lores.add(ChatColor.RED + "- Capacity");
+                        lores.add(ChatColor.RED + "- 乗車人数");
                     }
                     if (height == -1) {
-                        lores.add(ChatColor.RED + "- Height");
+                        lores.add(ChatColor.RED + "- 座高");
                     }
                     ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
                     itemMeta.setLore(lores);

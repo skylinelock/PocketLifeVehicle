@@ -153,13 +153,12 @@ public class CarUtilContents extends MenuContents {
 
     private List<String> carInfoLore() {
         List<String> carInfo = new ArrayList<>();
-        carInfo.add(ChatColor.GREEN + "識別子   : " + ChatColor.RESET + car.getModel().getId());
         carInfo.add(ChatColor.GREEN + "名前     : " + ChatColor.RESET + car.getModel().getName());
         carInfo.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + car.getModel().getMaxFuel());
         carInfo.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + car.getModel().getMaxSpeed());
         carInfo.add(ChatColor.GREEN + "説明 :");
         if (car.getModel().getLores() == null) {
-            carInfo.add("- " + ChatColor.RESET + "None");
+            carInfo.add("- " + ChatColor.RESET + "なし");
             return carInfo;
         }
         car.getModel().getLores().forEach(lore -> carInfo.add("- " + ChatColor.RESET + lore));

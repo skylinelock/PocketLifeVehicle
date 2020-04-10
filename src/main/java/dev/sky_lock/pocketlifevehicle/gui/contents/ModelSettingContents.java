@@ -20,17 +20,17 @@ import java.util.List;
 
 public class ModelSettingContents extends MenuContents {
     private final Player player;
-    private ItemStack carItem = ItemStackBuilder.of(PLVehicle.CAR_ITEM, 1).name("Item").build();
-    private ItemStack capacityItem = ItemStackBuilder.of(Material.CHEST_MINECART, 1).name("Capacity").build();
-    private ItemStack fuelItem = ItemStackBuilder.of(Material.COAL_BLOCK, 1).name("Fuel").build();
-    private ItemStack idItem = ItemStackBuilder.of(Material.EMERALD, 1).name("Id").build();
-    private ItemStack nameItem = ItemStackBuilder.of(Material.NAME_TAG, 1).name("Name").build();
-    private ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("MaxSpeed").build();
-    private ItemStack loreItem = ItemStackBuilder.of(Material.OAK_SIGN, 1).name("Lore").build();
-    private ItemStack steeringItem = ItemStackBuilder.of(Material.SADDLE, 1).name("Steering").build();
-    private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name("CollideBox").build();
-    private ItemStack heightItem = ItemStackBuilder.of(Material.PURPUR_STAIRS, 1).name("Height").build();
-    private ItemStack soundItem = ItemStackBuilder.of(Material.NOTE_BLOCK, 1).name("Sound").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
+    private ItemStack carItem = ItemStackBuilder.of(PLVehicle.CAR_ITEM, 1).name("アイテム").build();
+    private ItemStack capacityItem = ItemStackBuilder.of(Material.CHEST_MINECART, 1).name("乗車人数").build();
+    private ItemStack fuelItem = ItemStackBuilder.of(Material.COAL_BLOCK, 1).name("燃料上限").build();
+    private ItemStack idItem = ItemStackBuilder.of(Material.EMERALD, 1).name("ID").build();
+    private ItemStack nameItem = ItemStackBuilder.of(Material.NAME_TAG, 1).name("名前").build();
+    private ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("最高速度").build();
+    private ItemStack loreItem = ItemStackBuilder.of(Material.OAK_SIGN, 1).name("説明").build();
+    private ItemStack steeringItem = ItemStackBuilder.of(Material.SADDLE, 1).name("ステアリング").build();
+    private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name("当たり判定").build();
+    private ItemStack heightItem = ItemStackBuilder.of(Material.PURPUR_STAIRS, 1).name("座高").build();
+    private ItemStack soundItem = ItemStackBuilder.of(Material.NOTE_BLOCK, 1).name("エンジン音").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
     private ItemStack createItem = ItemStackBuilder.of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "追加する").build();
 
 
