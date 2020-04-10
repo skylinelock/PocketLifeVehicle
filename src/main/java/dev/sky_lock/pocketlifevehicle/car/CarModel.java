@@ -92,7 +92,7 @@ public class CarModel implements ConfigurationSerializable {
         return maxFuel;
     }
 
-    CarItem getCarItem() {
+    public CarItem getCarItem() {
         return item;
     }
 

@@ -20,9 +20,7 @@ public class HelpCommand implements ICommand {
             sender.sendMessage(PLVehicle.PREFIX + "/vehicle spawn [target] [carId] - 指定した車種の車を指定したプレイヤーの位置にスポーンさせます");
             sender.sendMessage(PLVehicle.PREFIX + "/vehicle search [target] - 所有している車の現在地を表示します");
             sender.sendMessage(PLVehicle.PREFIX + "/vehicle towaway [target] - 指定したプレイヤーの車をアイテム化します");
-            sender.sendMessage(PLVehicle.PREFIX + "/vehicle edit - カーモデルエディタを開きます");
-            sender.sendMessage(PLVehicle.PREFIX + "/vehicle removemodel(rm) [carId] - 指定したidの車種を削除します");
-            sender.sendMessage(PLVehicle.PREFIX + "/vehicle listmodel(lm) - 全ての車種を表示します");
+            sender.sendMessage(PLVehicle.PREFIX + "/vehicle model - カーモデルエディタを開きます");
             sender.sendMessage(PLVehicle.PREFIX + "/vehicle reload - CarModelコンフィグから車種情報を読み込みます");
             sender.sendMessage(PLVehicle.PREFIX + "/vehicle debug - デバッグ用コマンド");
             sender.sendMessage(PLVehicle.PREFIX + "----------------------------");

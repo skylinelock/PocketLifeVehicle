@@ -12,6 +12,7 @@ import java.util.List;
 
 public class EditModelData {
 
+    private boolean justEditing;
     private String id;
     private String name;
     private MaxSpeed maxSpeed;
@@ -29,6 +30,14 @@ public class EditModelData {
 
     public void setCollideBaseSide(float baseSide) {
         this.baseSide = baseSide;
+    }
+
+    public boolean isJustEditing() {
+        return justEditing;
+    }
+
+    public void setJustEditing(boolean editing) {
+        this.justEditing = editing;
     }
 
     public float getCollideHeight() {
@@ -51,7 +60,7 @@ public class EditModelData {
         return height;
     }
 
-    void setLore(List<String> lores) {
+    public void setLore(List<String> lores) {
         this.lores = lores;
     }
 

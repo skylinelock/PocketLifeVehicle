@@ -66,10 +66,11 @@ public class ModelList {
             if (!meta.hasDisplayName()) {
                 return false;
             }
-            int modelId = meta.getCustomModelData();
             String displayName = meta.getDisplayName();
+            int modelId = meta.getCustomModelData();
 
             String carName = model.getName();
+
             CarItem carItem = model.getCarItem();
             int carModelId = carItem.getModelId();
             Material type = carItem.getType();

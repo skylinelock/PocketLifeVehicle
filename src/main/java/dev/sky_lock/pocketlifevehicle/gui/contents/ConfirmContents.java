@@ -65,7 +65,7 @@ public class ConfirmContents extends MenuContents {
                         lores.add(ChatColor.RED + "- アイテム");
                     }
                     if (maxFuel == 0.0F) {
-                        lores.add(ChatColor.RED + "- 燃料");
+                        lores.add(ChatColor.RED + "- 燃料上限");
                     }
                     if (capacity == null) {
                         lores.add(ChatColor.RED + "- 乗車人数");

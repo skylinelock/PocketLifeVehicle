@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
  * @author sky_lock
  */
 
-public class EditCommand implements ICommand, IAdminCommand {
+public class ModelCommand implements ICommand, IAdminCommand {
 
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {

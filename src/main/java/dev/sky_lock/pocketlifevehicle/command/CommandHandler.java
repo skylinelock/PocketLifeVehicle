@@ -40,19 +40,11 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
                 case "towaway":
                     cmd = new TowawayCommand();
                     break;
-                case "edit":
-                    cmd = new EditCommand();
-                    break;
-                case "removemodel":
-                case "rm":
-                    cmd = new RemoveModelCommand();
+                case "model":
+                    cmd = new ModelCommand();
                     break;
                 case "debug":
                     cmd = new DebugCommand();
-                    break;
-                case "listmodel":
-                case "lm":
-                    cmd = new ListModelCommand();
                     break;
                 case "search":
                     cmd = new SearchCommand();
@@ -90,9 +82,9 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
         if (args.length < 2) {
             String input = args[0];
             if (Permission.ADMIN_COMMAND.obtained(sender)) {
-                tabCompletes.addAll(Stream.of("give", "spawn", "edit", "removemodel", "debug", "reload", "allowworld").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
+                tabCompletes.addAll(Stream.of("give", "spawn", "model", "debug", "reload", "allowworld").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
             }
-            tabCompletes.addAll(Stream.of("towaway", "listmodel", "search").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
+            tabCompletes.addAll(Stream.of("towaway", "search").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
         } else if (args.length  == 2) {
             String input = args[1];
             switch (args[0].toLowerCase()) {
@@ -101,10 +93,6 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
                     break;
                 case "spawn":
                     tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map(HumanEntity::getName).collect(Collectors.toList()));
-                    break;
-                case "removemodel":
-                case "rm":
-                    tabCompletes.addAll(ModelList.unmodified().stream().map(CarModel::getId).filter(id -> id.startsWith(input)).collect(Collectors.toList()));
                     break;
                 case "reload":
                     tabCompletes.addAll(Stream.of("from", "to").filter(str -> str.startsWith(input)).collect(Collectors.toList()));
