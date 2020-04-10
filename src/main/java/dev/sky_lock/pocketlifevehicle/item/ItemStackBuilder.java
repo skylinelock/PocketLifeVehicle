@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.item;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
@@ -52,7 +53,7 @@ public class ItemStackBuilder {
 
     public ItemStackBuilder name(String name) {
         ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
-        meta.setDisplayName(name);
+        meta.setDisplayName(ChatColor.RESET + name);
         itemStack.setItemMeta(meta);
         return this;
     }
