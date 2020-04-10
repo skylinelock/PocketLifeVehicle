@@ -58,11 +58,6 @@ public class CarArmorStand extends EntityArmorStand {
 //        return this.getEntityType().j().a(widthScale, heightScale);
 //    }
 
-    @Override
-    public void tick() {
-        super.tick();
-    }
-
     public Location getLocation() {
         return getBukkitEntity().getLocation();
     }
@@ -150,11 +145,6 @@ public class CarArmorStand extends EntityArmorStand {
     @Override
     public CraftEntity getBukkitEntity() {
         return new CraftCar((CraftServer) Bukkit.getServer(), this);
-    }
-
-    @Override
-    public int getId() {
-        return super.getId();
     }
 
     private boolean isCarArmorStand() {
