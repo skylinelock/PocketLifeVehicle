@@ -23,7 +23,7 @@ public class SelectCarItemContents extends MenuContents {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 9; j++) {
                 int modelId = idOffset + k;
-                ItemStack item = ItemStackBuilder.of(PLVehicle.CAR_ITEM, 1).customModelData(idOffset + modelId).build();
+                ItemStack item = ItemStackBuilder.of(PLVehicle.CAR_ITEM, 1).customModelData(modelId).build();
                 this.addSlot(new Slot(i * 9 + j, item, (event) -> {
                     CarItem carItem = new CarItem(PLVehicle.CAR_ITEM, modelId);
                     EditSessions.of(player.getUniqueId()).ifPresent(session -> {
