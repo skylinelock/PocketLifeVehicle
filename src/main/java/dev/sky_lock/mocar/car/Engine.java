@@ -25,10 +25,8 @@ class Engine {
                 status.setFuel(0.0F);
                 return;
             }
-            status.setFuel(status.getFuel() - 0.05F);
-        } else {
-            status.setFuel(status.getFuel() - 0.05F);
         }
+        status.setFuel(status.getFuel() - 0.05F);
     }
 
     boolean refuel(float added) {
