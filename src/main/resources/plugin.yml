@@ -3,9 +3,9 @@ main: ${bukkit.plugin.main}
 version: ${project.version}
 author: ${bukkit.plugin.author}
 depend: [ProtocolLib]
-api-version: 1.13
+api-version: 1.14
 
 commands:
-  mocar:
-    description: mocar command.
-    aliases: [car, mcar]
+  vehicle:
+    description: vehicle command.
+    aliases: [car]
