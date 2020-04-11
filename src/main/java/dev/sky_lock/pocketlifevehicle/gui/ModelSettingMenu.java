@@ -17,7 +17,6 @@ public class ModelSettingMenu extends InventoryMenu {
         addContents(new SelectSpeedContents(player));
         addContents(new SelectCarItemContents(player));
         addContents(new SelectFuelContents(player));
-        addContents(new ConfirmContents(player));
         addContents(new SelectCapacityContents(player));
         addContents(new CollideBoxContents(player));
         addContents(new BaseSideContents(player));

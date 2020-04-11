@@ -5,10 +5,7 @@ import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.car.CarModelBuilder;
-import dev.sky_lock.pocketlifevehicle.car.CarSound;
-import dev.sky_lock.pocketlifevehicle.car.ModelList;
-import dev.sky_lock.pocketlifevehicle.car.SteeringLevel;
+import dev.sky_lock.pocketlifevehicle.car.*;
 import dev.sky_lock.pocketlifevehicle.gui.*;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
 import dev.sky_lock.pocketlifevehicle.util.Formats;
@@ -16,8 +13,12 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author sky_lock
@@ -142,7 +143,74 @@ public class ModelSettingContents extends MenuContents {
                     });
                 }));
                 this.addSlot(new Slot(49, createItem, event -> {
-                    InventoryMenu.of(player).ifPresent(m -> m.flip(player, ModelMenuIndex.CONFIRM.value()));
+                    ItemStack clicked = Objects.requireNonNull(event.getCurrentItem());
+
+                    String id = session.getId();
+                    String name = session.getName();
+                    Capacity capacity = session.getCapacity();
+                    MaxSpeed maxSpeed = session.getMaxSpeed();
+                    float maxFuel = session.getFuel();
+                    CarItem carItem = session.getCarItem();
+                    float collideBaseSide = session.getCollideBaseSide();
+                    float collideHeight = session.getCollideHeight();
+                    float height = session.getHeight();
+
+                    if (id == null || name == null || maxSpeed == null || maxFuel == 0.0F || carItem == null || capacity == null || height == -1) {
+                        List<String> lores = new ArrayList<>();
+                        lores.add(ChatColor.RED + "設定が完了していません");
+                        lores.add(ChatColor.RED + "未設定項目");
+                        if (id == null) {
+                            lores.add(ChatColor.RED + "- ID");
+                        }
+                        if (name == null) {
+                            lores.add(ChatColor.RED + "- 名前");
+                        }
+                        if (maxSpeed == null) {
+                            lores.add(ChatColor.RED + "- 最高速度");
+                        }
+                        if (carItem == null) {
+                            lores.add(ChatColor.RED + "- アイテム");
+                        }
+                        if (maxFuel == 0.0F) {
+                            lores.add(ChatColor.RED + "- 燃料上限");
+                        }
+                        if (capacity == null) {
+                            lores.add(ChatColor.RED + "- 乗車人数");
+                        }
+                        if (height == -1) {
+                            lores.add(ChatColor.RED + "- 座高");
+                        }
+                        ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
+                        itemMeta.setLore(lores);
+                        clicked.setItemMeta(itemMeta);
+                        event.setCurrentItem(clicked);
+                        return;
+                    }
+
+                    if (ModelList.exists(session.getId())) {
+                        ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
+                        itemMeta.setLore(Collections.singletonList(ChatColor.RED + "既に存在するIDです"));
+                        clicked.setItemMeta(itemMeta);
+                        event.setCurrentItem(clicked);
+                        return;
+                    }
+                    List<String> carLores = session.getLores();
+                    CarModel model = CarModelBuilder.of(session.getId())
+                            .name(name)
+                            .capacity(capacity)
+                            .height(height)
+                            .collideBox(collideBaseSide, collideHeight)
+                            .maxFuel(maxFuel)
+                            .maxSpeed(maxSpeed)
+                            .item(carItem)
+                            .sound(CarSound.NONE)
+                            .steering(SteeringLevel.NORMAL)
+                            .lores(carLores)
+                            .build();
+                    ModelList.add(model);
+                    player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "新しい車種を追加しました");
+                    EditSessions.destroy(player.getUniqueId());
+                    player.closeInventory();
                 }));
             }
             if (session.getCarItem() != null) {
