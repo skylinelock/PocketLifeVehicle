@@ -8,6 +8,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
 import org.bukkit.inventory.meta.tags.ItemTagType;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -43,9 +44,14 @@ public class ItemStackBuilder {
         return this;
     }
 
-    public ItemStackBuilder lore(List<String> lores) {
+    public ItemStackBuilder lore(String... lore) {
+        this.lore(Arrays.asList(lore));
+        return this;
+    }
+
+    public ItemStackBuilder lore(List<String> lore) {
         ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
-        meta.setLore(lores);
+        meta.setLore(lore);
         itemStack.setItemMeta(meta);
         return this;
     }

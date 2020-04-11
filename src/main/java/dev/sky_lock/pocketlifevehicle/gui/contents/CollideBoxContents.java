@@ -1,6 +1,5 @@
 package dev.sky_lock.pocketlifevehicle.gui.contents;
 
-import com.google.common.collect.ImmutableList;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
@@ -40,11 +39,11 @@ public class CollideBoxContents extends MenuContents {
     public void onFlip(InventoryMenu inventoryMenu) {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             if (session.getCollideBaseSide() != 0.0F) {
-                ItemStack growBaseSide = ItemStackBuilder.of(baseSideItem).grow().lore(ImmutableList.of(String.valueOf(session.getCollideBaseSide()))).build();
+                ItemStack growBaseSide = ItemStackBuilder.of(baseSideItem).grow().lore(String.valueOf(session.getCollideBaseSide())).build();
                 updateItemStack(20, growBaseSide);
             }
             if (session.getCollideHeight() != 0.0F) {
-                ItemStack growHeight = ItemStackBuilder.of(heightItem).grow().lore(ImmutableList.of(String.valueOf(session.getCollideHeight()))).build();
+                ItemStack growHeight = ItemStackBuilder.of(heightItem).grow().lore(String.valueOf(session.getCollideHeight())).build();
                 updateItemStack(24, growHeight);
             }
             inventoryMenu.update();

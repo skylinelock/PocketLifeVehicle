@@ -1,6 +1,5 @@
 package dev.sky_lock.pocketlifevehicle.car;
 
-import com.google.common.collect.ImmutableList;
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
 import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
@@ -88,7 +87,7 @@ public class CarEntities {
         CarModel model = car.getModel();
         ItemStack itemStack = ItemStackBuilder.of(model.getItemStack())
                 .tag(PLVehicle.getInstance().createKey("owner"), ItemTagType.STRING, owner.toString())
-                .lore(ImmutableList.of("所有者: " + Profiles.getName(owner), "残燃料: " + Formats.truncateToOneDecimalPlace(car.getStatus().getFuel())))
+                .lore("所有者: " + Profiles.getName(owner), "残燃料: " + Formats.truncateToOneDecimalPlace(car.getStatus().getFuel()))
                 .itemFlags(ItemFlag.values())
                 .build();
         Location location = car.getLocation();
