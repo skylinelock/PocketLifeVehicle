@@ -34,8 +34,8 @@ public abstract class MenuContents {
         return slots.size();
     }
 
-    public void clear() {
-        slots.clear();
+    public void removeSlot(int index) {
+        slots.stream().filter(slot -> slot.index() == index).findFirst().ifPresent(slots::remove);
     }
 
     void click(InventoryClickEvent event) {

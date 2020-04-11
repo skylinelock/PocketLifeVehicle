@@ -107,6 +107,7 @@ public class ModelSettingContents extends MenuContents {
     public void onFlip(InventoryMenu menu) {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             if (session.isJustEditing()) {
+                this.removeSlot(46);
                 this.addSlot(new Slot(46, removeItem, event -> {
                     String id = session.getId();
                     if (id == null || id.equals("")) {
@@ -117,9 +118,11 @@ public class ModelSettingContents extends MenuContents {
                     EditSessions.destroy(player.getUniqueId());
                     menu.close(player);
                 }));
+                this.removeSlot(49);
                 this.addSlot(new Slot(49, updateItem, event -> {
                     ModelList.remove(session.getId());
-                    ModelList.add(CarModelBuilder.of(session.getId())
+                    ModelList.add(
+                            CarModelBuilder.of(session.getId())
                             .name(session.getName())
                             .capacity(session.getCapacity())
                             .height(session.getHeight())
@@ -137,11 +140,13 @@ public class ModelSettingContents extends MenuContents {
                     menu.close(player);
                 }));
             } else {
+                this.removeSlot(11);
                 this.addSlot(new Slot(11, idItem, event -> {
                     InventoryMenu.of(player).ifPresent(m -> {
                         StringEditor.open(player, StringEditor.Type.ID, (ModelSettingMenu) menu);
                     });
                 }));
+                this.removeSlot(49);
                 this.addSlot(new Slot(49, createItem, event -> {
                     ItemStack clicked = Objects.requireNonNull(event.getCurrentItem());
 
