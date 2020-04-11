@@ -39,30 +39,30 @@ public class EditCarModelContents extends MenuContents {
                 break;
             }
             String name = ChatColor.YELLOW + model.getName();
-            List<String> lores = new ArrayList<>();
-            lores.add(ChatColor.DARK_AQUA + "ID: " + ChatColor.AQUA + model.getId());
-            lores.add(ChatColor.DARK_AQUA + "名前: " + ChatColor.AQUA + model.getName());
+            List<String> desc = new ArrayList<>();
+            desc.add(ChatColor.DARK_AQUA + "ID: " + ChatColor.AQUA + model.getId());
+            desc.add(ChatColor.DARK_AQUA + "名前: " + ChatColor.AQUA + model.getName());
             //TODO: [] -> ""
-            List<String> lore = model.getLores();
+            List<String> lore = model.getLore();
             if (lore == null || lore.isEmpty()) {
                 lore = Collections.singletonList("");
             }
-            lores.add(ChatColor.DARK_AQUA + "説明: " + ChatColor.AQUA + lore);
-            lores.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + model.getMaxSpeed().getLabel());
-            lores.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + model.getMaxFuel());
-            lores.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + model.getCapacity().value());
+            desc.add(ChatColor.DARK_AQUA + "説明: " + ChatColor.AQUA + lore);
+            desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + model.getMaxSpeed().getLabel());
+            desc.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + model.getMaxFuel());
+            desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + model.getCapacity().value());
             CollideBox box = model.getCollideBox();
-            lores.add(ChatColor.DARK_AQUA + "当たり判定: " + ChatColor.AQUA + box.getBaseSide() + "×" + box.getHeight());
-            lores.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + Formats.truncateToOneDecimalPlace(model.getHeight()));
-            lores.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + model.getModelPosition().getLabel());
-            ItemStack modelItem = ItemStackBuilder.of(model.getItemStack()).name(name).lore(lores).build();
+            desc.add(ChatColor.DARK_AQUA + "当たり判定: " + ChatColor.AQUA + box.getBaseSide() + "×" + box.getHeight());
+            desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + Formats.truncateToOneDecimalPlace(model.getHeight()));
+            desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + model.getModelPosition().getLabel());
+            ItemStack modelItem = ItemStackBuilder.of(model.getItemStack()).name(name).lore(desc).build();
             super.addSlot(new Slot(modelSlot, modelItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> {
                     EditSessions.of(player.getUniqueId()).ifPresent(session -> {
                         session.setJustEditing(true);
                         session.setId(model.getId());
                         session.setName(model.getName());
-                        session.setLore(model.getLores());
+                        session.setLore(model.getLore());
                         session.setCollideBaseSide(model.getCollideBox().getBaseSide());
                         session.setCollideHeight(model.getCollideBox().getHeight());
                         session.setFuel(model.getMaxFuel());

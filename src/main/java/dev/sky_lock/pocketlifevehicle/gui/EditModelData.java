@@ -18,7 +18,7 @@ public class EditModelData {
     private String name;
     private MaxSpeed maxSpeed;
     private ModelItem modelItem;
-    private List<String> lores;
+    private List<String> lore;
     private Capacity capacity;
     private float fuel;
     private float collideBaseSide;
@@ -62,8 +62,8 @@ public class EditModelData {
         return height;
     }
 
-    public void setLore(List<String> lores) {
-        this.lores = lores;
+    public void setLore(List<String> lore) {
+        this.lore = lore;
     }
 
     public void setHeight(float height) {
@@ -74,8 +74,8 @@ public class EditModelData {
         this.position = position;
     }
 
-    public List<String> getLores() {
-        return lores;
+    public List<String> getLore() {
+        return lore;
     }
 
     public ModelItem getModelItem() {

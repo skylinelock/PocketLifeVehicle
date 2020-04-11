@@ -142,12 +142,12 @@ public class CarUtilContents extends MenuContents {
         return ChatColor.GOLD + "" + ChatColor.BOLD + title;
     }
 
-    private List<String> colorizeInfoAsList(String... lores) {
-        return Arrays.stream(lores).map(lore -> ChatColor.GRAY + lore).collect(Collectors.toList());
+    private List<String> colorizeInfoAsList(String... lore) {
+        return Arrays.stream(lore).map(l -> ChatColor.GRAY + l).collect(Collectors.toList());
     }
 
-    private List<String> colorizeContentAsLIst(String... lores) {
-        return Arrays.stream(lores).map(lore -> ChatColor.AQUA + lore).collect(Collectors.toList());
+    private List<String> colorizeContentAsLIst(String... lore) {
+        return Arrays.stream(lore).map(l -> ChatColor.AQUA + l).collect(Collectors.toList());
 
     }
 
@@ -157,11 +157,11 @@ public class CarUtilContents extends MenuContents {
         carInfo.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + car.getModel().getMaxFuel());
         carInfo.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + car.getModel().getMaxSpeed());
         carInfo.add(ChatColor.GREEN + "説明 :");
-        if (car.getModel().getLores() == null) {
+        if (car.getModel().getLore() == null) {
             carInfo.add("- " + ChatColor.RESET + "なし");
             return carInfo;
         }
-        car.getModel().getLores().forEach(lore -> carInfo.add("- " + ChatColor.RESET + lore));
+        car.getModel().getLore().forEach(lore -> carInfo.add("- " + ChatColor.RESET + lore));
         return carInfo;
     }
 }

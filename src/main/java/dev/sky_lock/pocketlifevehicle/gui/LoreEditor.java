@@ -19,9 +19,9 @@ public class LoreEditor extends SignEditor {
 
     public LoreEditor(Player player) {
         super(PLVehicle.getInstance(), player, (packet) -> {
-            List<String> lores = Arrays.stream(packet.getLines()).filter(line -> line.length() > 0).map(line -> ChatColor.translateAlternateColorCodes('&', line)).collect(Collectors.toList());
+            List<String> lore = Arrays.stream(packet.getLines()).filter(line -> line.length() > 0).map(line -> ChatColor.translateAlternateColorCodes('&', line)).collect(Collectors.toList());
             EditSessions.of(player.getUniqueId()).ifPresent(session -> {
-                session.setLore(lores);
+                session.setLore(lore);
             });
             new BukkitRunnable() {
                 @Override

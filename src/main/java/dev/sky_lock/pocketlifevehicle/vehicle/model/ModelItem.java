@@ -11,7 +11,7 @@ import java.util.Map;
  * @author sky_lock
  */
 
-@SerializableAs("CarItem")
+@SerializableAs("ModelItem")
 public class ModelItem implements ConfigurationSerializable {
 
     private final Material type;

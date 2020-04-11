@@ -9,7 +9,7 @@ import java.util.List;
 public class ModelBuilder {
     private final String id;
     private String name;
-    private List<String> lores;
+    private List<String> lore;
     private float maxFuel;
     private MaxSpeed maxSpeed;
     private ModelItem item;
@@ -38,8 +38,8 @@ public class ModelBuilder {
         return this;
     }
 
-    public ModelBuilder lores(List<String> lores) {
-        this.lores = lores;
+    public ModelBuilder lore(List<String> lore) {
+        this.lore = lore;
         return this;
     }
 
@@ -89,7 +89,7 @@ public class ModelBuilder {
                 sound == null || position == null) {
             throw new NullPointerException();
         }
-        return new Model(id, item, name, lores, maxFuel, maxSpeed, capacity, steeringLevel, collideBox, height, sound, position);
+        return new Model(id, item, name, lore, maxFuel, maxSpeed, capacity, steeringLevel, collideBox, height, sound, position);
     }
 
 }

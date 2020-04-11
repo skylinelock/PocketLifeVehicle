@@ -16,11 +16,11 @@ import java.util.Map;
  * @author sky_lock
  */
 
-@SerializableAs("CarModel")
+@SerializableAs("Model")
 public class Model implements ConfigurationSerializable {
     private final String id;
     private final String name;
-    private final List<String> lores;
+    private final List<String> lore;
     private final float maxFuel;
     private final MaxSpeed maxSpeed;
     private final ModelItem item;
@@ -46,7 +46,7 @@ public class Model implements ConfigurationSerializable {
         this.id = id;
         this.item = modelItem;
         this.name = name;
-        this.lores = lore;
+        this.lore = lore;
         this.maxFuel = maxFuel;
         this.maxSpeed = maxSpeed;
         this.capacity = capacity;
@@ -61,15 +61,15 @@ public class Model implements ConfigurationSerializable {
         String id = (String) map.get("id");
         ModelItem item = (ModelItem) map.get("item");
         String name = (String) map.get("name");
-        List<String> lores;
-        Object mapObj = map.get("lores");
+        List<String> lore;
+        Object mapObj = map.get("lore");
         if (mapObj == null) {
-            lores = Collections.emptyList();
+            lore = Collections.emptyList();
         } else {
             try {
-                lores = TypeChecks.checkListTypeDynamically(mapObj, String.class);
+                lore = TypeChecks.checkListTypeDynamically(mapObj, String.class);
             } catch (ClassCastException ex) {
-                lores = Collections.emptyList();
+                lore = Collections.emptyList();
             }
         }
         float maxFuel = (float) ((double) map.get("maxfuel"));
@@ -83,7 +83,7 @@ public class Model implements ConfigurationSerializable {
         return ModelBuilder.of(id)
                 .name(name)
                 .item(item)
-                .lores(lores)
+                .lore(lore)
                 .maxFuel(maxFuel)
                 .maxSpeed(speed)
                 .capacity(capacity)
@@ -99,8 +99,8 @@ public class Model implements ConfigurationSerializable {
         return name;
     }
 
-    public List<String> getLores() {
-        return lores;
+    public List<String> getLore() {
+        return lore;
     }
 
     public float getMaxFuel() {
@@ -153,7 +153,7 @@ public class Model implements ConfigurationSerializable {
         map.put("id", id);
         map.put("item", item);
         map.put("name", name);
-        map.put("lores", lores);
+        map.put("lore", lore);
         map.put("maxfuel", maxFuel);
         map.put("maxspeed", maxSpeed.ordinal());
         map.put("capacity", capacity.value());

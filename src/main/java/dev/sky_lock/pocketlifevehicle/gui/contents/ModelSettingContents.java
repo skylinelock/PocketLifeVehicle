@@ -132,7 +132,7 @@ public class ModelSettingContents extends MenuContents {
                                     .sound(Sound.NONE)
                                     .steering(SteeringLevel.NORMAL)
                                     .modelPosition(session.getPosition())
-                                    .lores(session.getLores())
+                                    .lore(session.getLore())
                                     .build()
                     );
                     player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + session.getId() + "を更新しました");
@@ -165,35 +165,35 @@ public class ModelSettingContents extends MenuContents {
                             maxSpeed == null || maxFuel == 0.0F ||
                             modelItem == null || capacity == null ||
                             height == -1 || position == null) {
-                        List<String> lores = new ArrayList<>();
-                        lores.add(ChatColor.RED + "設定が完了していません");
-                        lores.add(ChatColor.RED + "未設定項目");
+                        List<String> lore = new ArrayList<>();
+                        lore.add(ChatColor.RED + "設定が完了していません");
+                        lore.add(ChatColor.RED + "未設定項目");
                         if (id == null) {
-                            lores.add(ChatColor.RED + "- ID");
+                            lore.add(ChatColor.RED + "- ID");
                         }
                         if (name == null) {
-                            lores.add(ChatColor.RED + "- 名前");
+                            lore.add(ChatColor.RED + "- 名前");
                         }
                         if (maxSpeed == null) {
-                            lores.add(ChatColor.RED + "- 最高速度");
+                            lore.add(ChatColor.RED + "- 最高速度");
                         }
                         if (modelItem == null) {
-                            lores.add(ChatColor.RED + "- アイテム");
+                            lore.add(ChatColor.RED + "- アイテム");
                         }
                         if (maxFuel == 0.0F) {
-                            lores.add(ChatColor.RED + "- 燃料上限");
+                            lore.add(ChatColor.RED + "- 燃料上限");
                         }
                         if (capacity == null) {
-                            lores.add(ChatColor.RED + "- 乗車人数");
+                            lore.add(ChatColor.RED + "- 乗車人数");
                         }
                         if (height == -1) {
-                            lores.add(ChatColor.RED + "- 座高");
+                            lore.add(ChatColor.RED + "- 座高");
                         }
                         if (position == null) {
-                            lores.add(ChatColor.RED + "- アイテム位置");
+                            lore.add(ChatColor.RED + "- アイテム位置");
                         }
                         ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
-                        itemMeta.setLore(lores);
+                        itemMeta.setLore(lore);
                         clicked.setItemMeta(itemMeta);
                         event.setCurrentItem(clicked);
                         return;
@@ -206,7 +206,7 @@ public class ModelSettingContents extends MenuContents {
                         event.setCurrentItem(clicked);
                         return;
                     }
-                    List<String> carLores = session.getLores();
+                    List<String> lore = session.getLore();
                     Model model = ModelBuilder.of(session.getId())
                             .name(name)
                             .capacity(capacity)
@@ -217,7 +217,7 @@ public class ModelSettingContents extends MenuContents {
                             .item(modelItem)
                             .sound(Sound.NONE)
                             .steering(SteeringLevel.NORMAL)
-                            .lores(carLores)
+                            .lore(lore)
                             .modelPosition(position)
                             .build();
                     ModelList.add(model);
@@ -251,8 +251,8 @@ public class ModelSettingContents extends MenuContents {
                 speedItem = ItemStackBuilder.of(speedItem).lore(session.getMaxSpeed().getLabel()).grow().build();
                 updateItemStack(15, speedItem);
             }
-            if (session.getLores() != null) {
-                loreItem = ItemStackBuilder.of(loreItem).lore(session.getLores()).grow().build();
+            if (session.getLore() != null) {
+                loreItem = ItemStackBuilder.of(loreItem).lore(session.getLore()).grow().build();
                 updateItemStack(20, loreItem);
             }
             if (session.getCollideHeight() != 0.0F && session.getCollideBaseSide() != 0.0F) {

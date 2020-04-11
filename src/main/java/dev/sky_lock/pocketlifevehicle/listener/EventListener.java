@@ -120,8 +120,8 @@ public class EventListener implements Listener {
             return;
         }
         UUID owner = UUID.fromString(ownerUUID);
-        List<String> lores = Objects.requireNonNull(meta.getLore());
-        String rawFuel = lores.get(1);
+        List<String> lore = Objects.requireNonNull(meta.getLore());
+        String rawFuel = lore.get(1);
         String fuel = Formats.removeBlanks(rawFuel).split(":")[1];
 
         if (player.getUniqueId().equals(owner)) {

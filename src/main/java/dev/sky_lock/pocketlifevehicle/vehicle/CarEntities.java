@@ -13,7 +13,6 @@ import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.tags.ItemTagType;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.io.IOException;
 import java.util.*;
@@ -95,7 +94,7 @@ public class CarEntities {
                 .build();
         Location location = car.getLocation();
         Item item = location.getWorld().dropItem(car.getLocation(), itemStack);
-        item.setMetadata("mocar-fuel", new FixedMetadataValue(PLVehicle.getInstance(), car.getStatus().getFuel()));
+        // item.setMetadata("mocar-fuel", new FixedMetadataValue(PLVehicle.getInstance(), car.getStatus().getFuel()));
 
         location.getWorld().playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1F, 0.2F);
         kill(owner);
