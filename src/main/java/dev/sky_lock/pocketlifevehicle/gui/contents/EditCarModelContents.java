@@ -54,6 +54,7 @@ public class EditCarModelContents extends MenuContents {
             CollideBox box = model.getCollideBox();
             lores.add(ChatColor.DARK_AQUA + "当たり判定: " + ChatColor.AQUA + box.getBaseSide() + "×" + box.getHeight());
             lores.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + Formats.truncateToOneDecimalPlace(model.getHeight()));
+            lores.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + model.getModelPosition().getLabel());
             ItemStack modelItem = ItemStackBuilder.of(model.getItemStack()).name(name).lore(lores).build();
             super.addSlot(new Slot(modelSlot, modelItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> {
@@ -69,6 +70,7 @@ public class EditCarModelContents extends MenuContents {
                         session.setHeight(model.getHeight());
                         session.setCapacity(model.getCapacity());
                         session.setModelItem(model.getCarItem());
+                        session.setPosition(model.getModelPosition());
                         menu.flip(player, ModelMenuIndex.SETTING.value());
                     });
                 });
