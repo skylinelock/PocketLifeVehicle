@@ -20,16 +20,16 @@ public class EditModelData {
     private List<String> lores;
     private Capacity capacity;
     private float fuel;
-    private float baseSide;
+    private float collideBaseSide;
     private float collideHeight;
     private float height;
 
     public float getCollideBaseSide() {
-        return baseSide;
+        return this.collideBaseSide;
     }
 
     public void setCollideBaseSide(float baseSide) {
-        this.baseSide = baseSide;
+        this.collideBaseSide = baseSide;
     }
 
     public boolean isJustEditing() {
