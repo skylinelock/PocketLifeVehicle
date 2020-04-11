@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle.model;
 
 import dev.sky_lock.pocketlifevehicle.config.CarsConfig;
 import org.bukkit.Material;
@@ -17,25 +17,25 @@ import java.util.Optional;
 public class ModelList {
 
     private static final CarsConfig config = new CarsConfig();
-    private static final List<CarModel> carModels = config.loadModels();
+    private static final List<Model> models = config.loadModels();
 
     public static void saveConfig() {
         config.saveToFile();
     }
 
     public static void reloadConfig() {
-        carModels.clear();
-        carModels.addAll(config.loadModels());
+        models.clear();
+        models.addAll(config.loadModels());
     }
 
-    public static Optional<CarModel> of(String id) {
-        return carModels.stream().filter(model -> model.getId().equalsIgnoreCase(id)).findFirst();
+    public static Optional<Model> of(String id) {
+        return models.stream().filter(model -> model.getId().equalsIgnoreCase(id)).findFirst();
     }
 
-    public static boolean add(CarModel model) {
-        if (carModels.stream().noneMatch(carModel -> carModel.getId().equalsIgnoreCase(model.getId()))) {
-            carModels.add(model);
-            config.writeModels(carModels);
+    public static boolean add(Model model) {
+        if (models.stream().noneMatch(carModel -> carModel.getId().equalsIgnoreCase(model.getId()))) {
+            models.add(model);
+            config.writeModels(models);
             return true;
         }
         return false;
@@ -43,25 +43,25 @@ public class ModelList {
 
     public static boolean remove(String id) {
         return of(id).map(model -> {
-            carModels.remove(model);
-            config.writeModels(carModels);
+            models.remove(model);
+            config.writeModels(models);
             return true;
         }).orElse(false);
     }
 
-    public static List<CarModel> unmodified() {
-        return Collections.unmodifiableList(carModels);
+    public static List<Model> unmodified() {
+        return Collections.unmodifiableList(models);
     }
 
     public static boolean exists(String id) {
-        return carModels.stream().anyMatch(carModel -> carModel.getId().equalsIgnoreCase(id));
+        return models.stream().anyMatch(carModel -> carModel.getId().equalsIgnoreCase(id));
     }
 
-    public static CarModel of(ItemStack itemStack) {
+    public static Model of(ItemStack itemStack) {
         if (itemStack.getType() == Material.AIR) {
             return null;
         }
-        return carModels.stream().filter(model -> {
+        return models.stream().filter(model -> {
             ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
             if (!meta.hasDisplayName()) {
                 return false;
@@ -71,9 +71,9 @@ public class ModelList {
 
             String carName = model.getName();
 
-            CarItem carItem = model.getCarItem();
-            int carModelId = carItem.getModelId();
-            Material type = carItem.getType();
+            ModelItem modelItem = model.getCarItem();
+            int carModelId = modelItem.getModelId();
+            Material type = modelItem.getType();
 
             return itemStack.getType() == type && displayName.equals(carName) && modelId == carModelId;
         }).findFirst().orElse(null);

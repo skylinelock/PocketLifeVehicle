@@ -2,8 +2,8 @@ package dev.sky_lock.pocketlifevehicle.command;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.Permission;
-import dev.sky_lock.pocketlifevehicle.car.Car;
-import dev.sky_lock.pocketlifevehicle.car.CarEntities;
+import dev.sky_lock.pocketlifevehicle.vehicle.Car;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
 import dev.sky_lock.pocketlifevehicle.util.Profiles;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

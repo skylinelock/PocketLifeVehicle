@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.json;
 
 import com.google.gson.reflect.TypeToken;
-import dev.sky_lock.pocketlifevehicle.car.CarEntity;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarEntity;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

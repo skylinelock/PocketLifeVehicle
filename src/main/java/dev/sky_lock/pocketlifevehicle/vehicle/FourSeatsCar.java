@@ -1,5 +1,6 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle;
 
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
 import org.bukkit.Location;
 
 /**
@@ -8,7 +9,7 @@ import org.bukkit.Location;
 
 class FourSeatsCar extends Car {
 
-    FourSeatsCar(CarModel model) {
+    FourSeatsCar(Model model) {
         super(model);
     }
 

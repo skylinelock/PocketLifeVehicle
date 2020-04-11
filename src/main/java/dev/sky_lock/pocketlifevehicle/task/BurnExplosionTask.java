@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.task;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.car.Car;
-import dev.sky_lock.pocketlifevehicle.car.CarEntities;
+import dev.sky_lock.pocketlifevehicle.vehicle.Car;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
 import net.minecraft.server.v1_14_R1.EntityPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle.model;
 
 /**
  * @author sky_lock
@@ -23,7 +23,7 @@ public enum MaxSpeed {
         return label;
     }
 
-    float getMax() {
+    public float getMax() {
         return maxSpeed;
     }
 }

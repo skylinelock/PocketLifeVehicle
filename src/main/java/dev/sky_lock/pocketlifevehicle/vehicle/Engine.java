@@ -1,4 +1,7 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle;
+
+import dev.sky_lock.pocketlifevehicle.vehicle.model.MaxSpeed;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
 
 /**
  * @author sky_lock
@@ -6,11 +9,11 @@ package dev.sky_lock.pocketlifevehicle.car;
 
 class Engine {
     private final CarStatus status;
-    private final CarModel model;
+    private final Model model;
     private final Speed speed;
     private float currentSpeed;
 
-    Engine(CarStatus status, CarModel model) {
+    Engine(CarStatus status, Model model) {
         this.status = status;
         this.model = model;
         this.speed = status.getSpeed();

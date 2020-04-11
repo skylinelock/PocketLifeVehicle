@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.command;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.car.ModelList;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;

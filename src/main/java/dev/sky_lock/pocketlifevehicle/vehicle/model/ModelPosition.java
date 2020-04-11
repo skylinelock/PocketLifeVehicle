@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle.model;
 
 import org.bukkit.inventory.EquipmentSlot;
 

@@ -1,9 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.config;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.car.CarItem;
-import dev.sky_lock.pocketlifevehicle.car.CarModel;
-import dev.sky_lock.pocketlifevehicle.car.CollideBox;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelItem;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.CollideBox;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
 import dev.sky_lock.pocketlifevehicle.util.TypeChecks;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -24,13 +24,13 @@ public class CarsConfig {
     private YamlConfiguration config;
 
     public CarsConfig() {
-        ConfigurationSerialization.registerClass(CarModel.class, "CarModel");
-        ConfigurationSerialization.registerClass(CarItem.class, "CarItem");
-        ConfigurationSerialization.registerClass(CollideBox.class, "CollideBox");
-        this.path = PLVehicle.getInstance().getDataFolder().toPath().resolve("cars.yml");
+        ConfigurationSerialization.registerClass(Model.class);
+        ConfigurationSerialization.registerClass(ModelItem.class);
+        ConfigurationSerialization.registerClass(CollideBox.class);
+        this.path = PLVehicle.getInstance().getDataFolder().toPath().resolve("vehicles.yml");
     }
 
-    public List<CarModel> loadModels() {
+    public List<Model> loadModels() {
         config = ConfigFiles.load(path);
         if (config == null) {
             return new ArrayList<>();
@@ -39,7 +39,7 @@ public class CarsConfig {
         if (object == null) {
             return new ArrayList<>();
         }
-        List<CarModel> models = TypeChecks.checkListTypeDynamically(object, CarModel.class);
+        List<Model> models = TypeChecks.checkListTypeDynamically(object, Model.class);
         if (models == null) {
             return new ArrayList<>();
         }
@@ -47,9 +47,9 @@ public class CarsConfig {
         return models;
     }
 
-    public void writeModels(List<CarModel> models) {
+    public void writeModels(List<Model> models) {
         if (config == null) {
-            PLVehicle.getInstance().getLogger().log(Level.WARNING, "Could not write car models to configurations");
+            PLVehicle.getInstance().getLogger().log(Level.WARNING, "Could not write vehicle models to configurations");
             return;
         }
         config.set("cars", models);

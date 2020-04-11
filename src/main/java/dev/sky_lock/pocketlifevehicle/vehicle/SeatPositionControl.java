@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle;
 
 import org.bukkit.Location;
 import org.bukkit.util.Vector;

@@ -1,7 +1,8 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle;
 
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -13,11 +14,11 @@ import org.bukkit.scheduler.BukkitTask;
  */
 
 class CarSoundTask {
-    private final CarModel model;
+    private final Model model;
     private final CarStatus status;
     private BukkitTask task;
 
-    CarSoundTask(CarModel model, CarStatus status) {
+    CarSoundTask(Model model, CarStatus status) {
         this.model = model;
         this.status = status;
     }

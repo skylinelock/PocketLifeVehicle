@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle.model;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -12,20 +12,20 @@ import java.util.Map;
  */
 
 @SerializableAs("CarItem")
-public class CarItem implements ConfigurationSerializable {
+public class ModelItem implements ConfigurationSerializable {
 
     private final Material type;
     private final int modelId;
 
-    public CarItem(Material type, int modelId) {
+    public ModelItem(Material type, int modelId) {
         this.type = type;
         this.modelId = modelId;
     }
 
-    public static CarItem deserialize(Map<String, Object> map) {
+    public static ModelItem deserialize(Map<String, Object> map) {
         Material type = Material.valueOf((String) map.get("type"));
         int modelId = Integer.valueOf(String.valueOf(map.get("modelid")));
-        return new CarItem(type, modelId);
+        return new ModelItem(type, modelId);
     }
 
     public Material getType() {

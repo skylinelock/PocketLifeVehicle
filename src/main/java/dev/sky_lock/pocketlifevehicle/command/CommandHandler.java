@@ -2,8 +2,8 @@ package dev.sky_lock.pocketlifevehicle.command;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.Permission;
-import dev.sky_lock.pocketlifevehicle.car.CarModel;
-import dev.sky_lock.pocketlifevehicle.car.ModelList;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -106,7 +106,7 @@ public class CommandHandler implements CommandExecutor, TabExecutor {
         } else if (args.length == 3) {
             String input = args[2];
             if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("spawn")) {
-                tabCompletes.addAll(ModelList.unmodified().stream().map(CarModel::getId).filter(str -> str.startsWith(input)).collect(Collectors.toList()));
+                tabCompletes.addAll(ModelList.unmodified().stream().map(Model::getId).filter(str -> str.startsWith(input)).collect(Collectors.toList()));
             }
         }
         return tabCompletes;

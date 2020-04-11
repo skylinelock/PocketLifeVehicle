@@ -2,13 +2,17 @@ package dev.sky_lock.pocketlifevehicle.listener;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.Permission;
-import dev.sky_lock.pocketlifevehicle.car.*;
 import dev.sky_lock.pocketlifevehicle.click.CarClick;
 import dev.sky_lock.pocketlifevehicle.click.InventoryClick;
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions;
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor;
 import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
+import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -86,7 +90,7 @@ public class EventListener implements Listener {
         if (itemStack == null) {
             return;
         }
-        CarModel model = ModelList.of(itemStack);
+        Model model = ModelList.of(itemStack);
         if (model == null) {
             return;
         }
@@ -132,7 +136,7 @@ public class EventListener implements Listener {
 
     }
 
-    private void placeCarEntity(Player whoPlaced, ItemStack carItem, EquipmentSlot hand, UUID owner, CarModel model, Location location, float fuel) {
+    private void placeCarEntity(Player whoPlaced, ItemStack carItem, EquipmentSlot hand, UUID owner, Model model, Location location, float fuel) {
         CarEntities.tow(owner);
         if (CarEntities.spawn(owner, model, location, fuel)) {
             location.getWorld().playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0F, 1.0F);

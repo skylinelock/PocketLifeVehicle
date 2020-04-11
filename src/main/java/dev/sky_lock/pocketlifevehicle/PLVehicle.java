@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle;
 
 import dev.sky_lock.menu.InventoryMenuListener;
-import dev.sky_lock.pocketlifevehicle.car.CarEntities;
-import dev.sky_lock.pocketlifevehicle.car.ModelList;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler;
 import dev.sky_lock.pocketlifevehicle.config.PluginConfig;
 import dev.sky_lock.pocketlifevehicle.item.Glowing;

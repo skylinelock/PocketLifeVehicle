@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle;
 
 import dev.sky_lock.pocketlifevehicle.packet.AnimationPacket;
 import org.bukkit.entity.Player;

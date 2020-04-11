@@ -4,7 +4,7 @@ import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.car.CarItem;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelItem;
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions;
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
@@ -25,9 +25,9 @@ public class SelectCarItemContents extends MenuContents {
                 int modelId = idOffset + k;
                 ItemStack item = ItemStackBuilder.of(PLVehicle.CAR_ITEM, 1).customModelData(modelId).build();
                 this.addSlot(new Slot(i * 9 + j, item, (event) -> {
-                    CarItem carItem = new CarItem(PLVehicle.CAR_ITEM, modelId);
+                    ModelItem modelItem = new ModelItem(PLVehicle.CAR_ITEM, modelId);
                     EditSessions.of(player.getUniqueId()).ifPresent(session -> {
-                        session.setCarItem(carItem);
+                        session.setModelItem(modelItem);
                     });
                     flipPage(player, ModelMenuIndex.SETTING.value());
                 }));

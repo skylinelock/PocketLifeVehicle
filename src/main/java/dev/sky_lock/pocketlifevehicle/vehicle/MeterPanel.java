@@ -1,7 +1,8 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle;
 
 import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -13,10 +14,10 @@ import java.util.stream.IntStream;
 
 class MeterPanel {
     private final CarStatus status;
-    private final CarModel model;
+    private final Model model;
     private final Engine engine;
 
-    MeterPanel(CarStatus status, CarModel model, Engine engine) {
+    MeterPanel(CarStatus status, Model model, Engine engine) {
         this.status = status;
         this.model = model;
         this.engine = engine;

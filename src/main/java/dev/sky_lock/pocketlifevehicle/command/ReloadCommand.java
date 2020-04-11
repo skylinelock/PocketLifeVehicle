@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.command;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.car.ModelList;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -29,7 +29,7 @@ public class ReloadCommand implements ICommand, IAdminCommand, IConsoleCommand {
             ModelList.saveConfig();
             sender.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "ディスクへデータを保存しました");
         } else {
-            sender.sendMessage(PLVehicle.PREFIX + "/mocar reload [from/to]");
+            sender.sendMessage(PLVehicle.PREFIX + "/vehicle reload [from/to]");
         }
     }
 }

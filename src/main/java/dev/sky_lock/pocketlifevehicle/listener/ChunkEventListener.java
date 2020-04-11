@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.listener;
 
-import dev.sky_lock.pocketlifevehicle.car.Car;
-import dev.sky_lock.pocketlifevehicle.car.CarArmorStand;
-import dev.sky_lock.pocketlifevehicle.car.CarEntities;
+import dev.sky_lock.pocketlifevehicle.vehicle.Car;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
 import org.bukkit.Chunk;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -4,10 +4,10 @@ import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.car.*;
 import dev.sky_lock.pocketlifevehicle.gui.*;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
 import dev.sky_lock.pocketlifevehicle.util.Formats;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -121,15 +121,15 @@ public class ModelSettingContents extends MenuContents {
                 this.addSlot(new Slot(49, updateItem, event -> {
                     ModelList.remove(session.getId());
                     ModelList.add(
-                            CarModelBuilder.of(session.getId())
+                            ModelBuilder.of(session.getId())
                                     .name(session.getName())
                                     .capacity(session.getCapacity())
                                     .height(session.getHeight())
                                     .collideBox(session.getCollideBaseSide(), session.getCollideHeight())
                                     .maxFuel(session.getFuel())
                                     .maxSpeed(session.getMaxSpeed())
-                                    .item(session.getCarItem())
-                                    .sound(CarSound.NONE)
+                                    .item(session.getModelItem())
+                                    .sound(Sound.NONE)
                                     .steering(SteeringLevel.NORMAL)
                                     .modelPosition(session.getPosition())
                                     .lores(session.getLores())
@@ -155,7 +155,7 @@ public class ModelSettingContents extends MenuContents {
                     Capacity capacity = session.getCapacity();
                     MaxSpeed maxSpeed = session.getMaxSpeed();
                     float maxFuel = session.getFuel();
-                    CarItem carItem = session.getCarItem();
+                    ModelItem modelItem = session.getModelItem();
                     float collideBaseSide = session.getCollideBaseSide();
                     float collideHeight = session.getCollideHeight();
                     float height = session.getHeight();
@@ -163,7 +163,7 @@ public class ModelSettingContents extends MenuContents {
 
                     if (id == null || name == null ||
                             maxSpeed == null || maxFuel == 0.0F ||
-                            carItem == null || capacity == null ||
+                            modelItem == null || capacity == null ||
                             height == -1 || position == null) {
                         List<String> lores = new ArrayList<>();
                         lores.add(ChatColor.RED + "設定が完了していません");
@@ -177,7 +177,7 @@ public class ModelSettingContents extends MenuContents {
                         if (maxSpeed == null) {
                             lores.add(ChatColor.RED + "- 最高速度");
                         }
-                        if (carItem == null) {
+                        if (modelItem == null) {
                             lores.add(ChatColor.RED + "- アイテム");
                         }
                         if (maxFuel == 0.0F) {
@@ -207,15 +207,15 @@ public class ModelSettingContents extends MenuContents {
                         return;
                     }
                     List<String> carLores = session.getLores();
-                    CarModel model = CarModelBuilder.of(session.getId())
+                    Model model = ModelBuilder.of(session.getId())
                             .name(name)
                             .capacity(capacity)
                             .height(height)
                             .collideBox(collideBaseSide, collideHeight)
                             .maxFuel(maxFuel)
                             .maxSpeed(maxSpeed)
-                            .item(carItem)
-                            .sound(CarSound.NONE)
+                            .item(modelItem)
+                            .sound(Sound.NONE)
                             .steering(SteeringLevel.NORMAL)
                             .lores(carLores)
                             .modelPosition(position)
@@ -226,9 +226,9 @@ public class ModelSettingContents extends MenuContents {
                     player.closeInventory();
                 }));
             }
-            if (session.getCarItem() != null) {
-                int modelId = session.getCarItem().getModelId();
-                carItem = ItemStackBuilder.of(carItem).lore(session.getCarItem().getType().name(), String.valueOf(modelId)).grow().build();
+            if (session.getModelItem() != null) {
+                int modelId = session.getModelItem().getModelId();
+                carItem = ItemStackBuilder.of(carItem).lore(session.getModelItem().getType().name(), String.valueOf(modelId)).grow().build();
                 updateItemStack(22, carItem);
             }
             if (session.getCapacity() != null) {

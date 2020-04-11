@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle.model;
 
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
 import dev.sky_lock.pocketlifevehicle.util.TypeChecks;
@@ -17,34 +17,34 @@ import java.util.Map;
  */
 
 @SerializableAs("CarModel")
-public class CarModel implements ConfigurationSerializable {
+public class Model implements ConfigurationSerializable {
     private final String id;
     private final String name;
     private final List<String> lores;
     private final float maxFuel;
     private final MaxSpeed maxSpeed;
-    private final CarItem item;
+    private final ModelItem item;
     private final Capacity capacity;
     private final CollideBox collideBox;
     private final SteeringLevel steeringLevel;
     private final float height;
-    private final CarSound sound;
+    private final Sound sound;
     private final ModelPosition position;
 
-    CarModel(String id,
-             CarItem carItem,
-             String name,
-             List<String> lore,
-             float maxFuel,
-             MaxSpeed maxSpeed,
-             Capacity capacity,
-             SteeringLevel steeringLevel,
-             CollideBox collideBox,
-             float height,
-             CarSound sound,
-             ModelPosition position) {
+    Model(String id,
+          ModelItem modelItem,
+          String name,
+          List<String> lore,
+          float maxFuel,
+          MaxSpeed maxSpeed,
+          Capacity capacity,
+          SteeringLevel steeringLevel,
+          CollideBox collideBox,
+          float height,
+          Sound sound,
+          ModelPosition position) {
         this.id = id;
-        this.item = carItem;
+        this.item = modelItem;
         this.name = name;
         this.lores = lore;
         this.maxFuel = maxFuel;
@@ -57,9 +57,9 @@ public class CarModel implements ConfigurationSerializable {
         this.position = position;
     }
 
-    public static CarModel deserialize(Map<String, Object> map) {
+    public static Model deserialize(Map<String, Object> map) {
         String id = (String) map.get("id");
-        CarItem item = (CarItem) map.get("item");
+        ModelItem item = (ModelItem) map.get("item");
         String name = (String) map.get("name");
         List<String> lores;
         Object mapObj = map.get("lores");
@@ -78,9 +78,9 @@ public class CarModel implements ConfigurationSerializable {
         CollideBox collideBox = (CollideBox) map.get("collidebox");
         SteeringLevel steeringLevel = SteeringLevel.valueOf(String.valueOf(map.get("steering")));
         float height = (float) ((double) map.get("height"));
-        CarSound sound = CarSound.valueOf(String.valueOf(map.get("sound")));
+        Sound sound = Sound.valueOf(String.valueOf(map.get("sound")));
         ModelPosition position = ModelPosition.valueOf(String.valueOf(map.get("position")));
-        return CarModelBuilder.of(id)
+        return ModelBuilder.of(id)
                 .name(name)
                 .item(item)
                 .lores(lores)
@@ -107,7 +107,7 @@ public class CarModel implements ConfigurationSerializable {
         return maxFuel;
     }
 
-    public CarItem getCarItem() {
+    public ModelItem getCarItem() {
         return item;
     }
 
@@ -135,7 +135,7 @@ public class CarModel implements ConfigurationSerializable {
         return height;
     }
 
-    public CarSound getSound() {
+    public Sound getSound() {
         return sound;
     }
 

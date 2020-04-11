@@ -1,9 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.click;
 
 import dev.sky_lock.pocketlifevehicle.Permission;
-import dev.sky_lock.pocketlifevehicle.car.Car;
-import dev.sky_lock.pocketlifevehicle.car.CarEntities;
-import dev.sky_lock.pocketlifevehicle.car.SeatArmorStand;
+import dev.sky_lock.pocketlifevehicle.vehicle.Car;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
+import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand;
 import dev.sky_lock.pocketlifevehicle.util.Profiles;
 import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
 import org.bukkit.ChatColor;

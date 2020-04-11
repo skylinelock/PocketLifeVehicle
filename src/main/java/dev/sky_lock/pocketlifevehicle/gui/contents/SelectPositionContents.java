@@ -3,7 +3,7 @@ package dev.sky_lock.pocketlifevehicle.gui.contents;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
-import dev.sky_lock.pocketlifevehicle.car.ModelPosition;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelPosition;
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions;
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;

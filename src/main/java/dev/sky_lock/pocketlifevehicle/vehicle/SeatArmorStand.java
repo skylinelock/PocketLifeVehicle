@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import net.minecraft.server.v1_14_R1.*;

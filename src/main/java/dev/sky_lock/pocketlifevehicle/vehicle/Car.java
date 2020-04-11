@@ -1,6 +1,7 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle;
 
 import dev.sky_lock.pocketlifevehicle.gui.CarUtilMenu;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
 import net.minecraft.server.v1_14_R1.World;
 import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket;
 import org.bukkit.Location;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 public class Car {
     final List<SeatArmorStand> seats = new ArrayList<>();
-    private final CarModel model;
+    private final Model model;
     private CarArmorStand center;
     private CarUtilMenu menu;
     private CarStatus status;
@@ -31,7 +32,7 @@ public class Car {
     private MeterPanel meterPanel;
     private boolean beginExplode = false;
 
-    Car(CarModel model) {
+    Car(Model model) {
         this.model = model;
         this.status = new CarStatus();
         this.engine = new Engine(status, model);
@@ -64,7 +65,7 @@ public class Car {
         return center;
     }
 
-    public CarModel getModel() {
+    public Model getModel() {
         return model;
     }
 
@@ -145,6 +146,5 @@ public class Car {
         explosion.broadCast();
         getLocation().getWorld().playSound(getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1.0F, 1.0F);
     }
-
 
 }

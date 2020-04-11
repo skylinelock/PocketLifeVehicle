@@ -1,10 +1,13 @@
-package dev.sky_lock.pocketlifevehicle.car;
+package dev.sky_lock.pocketlifevehicle.vehicle;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
 import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
 import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.util.Profiles;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemFlag;
@@ -25,7 +28,7 @@ public class CarEntities {
     private static final Logger logger = PLVehicle.getInstance().getLogger();
     private static final Map<UUID, Car> entities = new HashMap<>();
 
-    public static boolean spawn(UUID player, CarModel model, Location location, float fuel) {
+    public static boolean spawn(UUID player, Model model, Location location, float fuel) {
         if (player == null || model == null || location == null) {
             return false;
         }
@@ -84,7 +87,7 @@ public class CarEntities {
     }
 
     private static void tow(UUID owner, Car car) {
-        CarModel model = car.getModel();
+        Model model = car.getModel();
         ItemStack itemStack = ItemStackBuilder.of(model.getItemStack())
                 .tag(PLVehicle.getInstance().createKey("owner"), ItemTagType.STRING, owner.toString())
                 .lore("所有者: " + Profiles.getName(owner), "残燃料: " + Formats.truncateToOneDecimalPlace(car.getStatus().getFuel()))
@@ -117,6 +120,7 @@ public class CarEntities {
     public static Optional<UUID> getOwner(Car car) {
         return entities.entrySet().stream().filter(entry -> entry.getValue().equals(car)).findFirst().map(Map.Entry::getKey);
     }
+
     public static void spawnAll() {
         try {
             PLVehicle.getInstance().getCarStoreFile().load().forEach(carEntity -> {

@@ -1,9 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.gui;
 
-import dev.sky_lock.pocketlifevehicle.car.Capacity;
-import dev.sky_lock.pocketlifevehicle.car.CarItem;
-import dev.sky_lock.pocketlifevehicle.car.MaxSpeed;
-import dev.sky_lock.pocketlifevehicle.car.ModelPosition;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelItem;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.MaxSpeed;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelPosition;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class EditModelData {
     private String id;
     private String name;
     private MaxSpeed maxSpeed;
-    private CarItem carItem;
+    private ModelItem modelItem;
     private List<String> lores;
     private Capacity capacity;
     private float fuel;
@@ -78,8 +78,8 @@ public class EditModelData {
         return lores;
     }
 
-    public CarItem getCarItem() {
-        return carItem;
+    public ModelItem getModelItem() {
+        return modelItem;
     }
 
     public String getId() {
@@ -102,8 +102,8 @@ public class EditModelData {
         return position;
     }
 
-    public void setCarItem(CarItem carItem) {
-        this.carItem = carItem;
+    public void setModelItem(ModelItem modelItem) {
+        this.modelItem = modelItem;
     }
 
     public void setId(String id) {
