@@ -1,8 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle;
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import net.minecraft.server.v1_14_R1.*;
 import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
+import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
@@ -10,7 +9,6 @@ import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.metadata.FixedMetadataValue;
 
 import java.util.Optional;
 
@@ -34,7 +32,7 @@ public class SeatArmorStand extends EntityArmorStand {
         nbt.setBoolean("Invisible", true);
         nbt.setBoolean("Marker", false);
         this.a(nbt);
-        this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
+        // this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
     }
 
     void assemble(Car car, SeatPosition position) {

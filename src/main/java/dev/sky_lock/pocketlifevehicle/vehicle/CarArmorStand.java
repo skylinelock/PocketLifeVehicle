@@ -1,7 +1,6 @@
 
 package dev.sky_lock.pocketlifevehicle.vehicle;
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.task.BurnExplosionTask;
 import dev.sky_lock.pocketlifevehicle.task.SubmergedMessageTask;
 import net.minecraft.server.v1_14_R1.*;
@@ -12,7 +11,6 @@ import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.util.EulerAngle;
 
 /**
@@ -47,7 +45,7 @@ public class CarArmorStand extends EntityArmorStand {
         ArmorStand armorstand = (CraftArmorStand) this.getBukkitEntity();
         armorstand.setRightArmPose(EulerAngle.ZERO);
         armorstand.setItem(car.getModel().getModelPosition().getSlot(), car.getModel().getItemStack());
-        armorstand.setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
+        // armorstand.setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
         car.getSound().start();
     }
 

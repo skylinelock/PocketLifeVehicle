@@ -8,9 +8,9 @@ import org.bukkit.entity.Player;
  */
 
 public enum Permission {
-    ADMIN_COMMAND("mocar.command.admin.use"),
-    CAR_CLICK("mocar.entity.gui.open"),
-    CAR_PLACE("mocar.entity.car.place");
+    ADMIN_COMMAND("plvehicle.command.admin.use"),
+    CAR_CLICK("plvehicle.entity.open-gui"),
+    CAR_PLACE("plvehicle.entity.place");
 
     private final String permission;
     Permission(String permission) {
