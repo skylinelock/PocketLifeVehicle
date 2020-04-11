@@ -9,6 +9,7 @@ import dev.sky_lock.pocketlifevehicle.car.ModelList;
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions;
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
+import dev.sky_lock.pocketlifevehicle.util.Formats;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -46,7 +47,7 @@ public class EditCarModelContents extends MenuContents {
             lores.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + model.getCapacity().value());
             CollideBox box = model.getCollideBox();
             lores.add(ChatColor.DARK_AQUA + "当たり判定: " + ChatColor.AQUA + box.getBaseSide() + "×" + box.getHeight());
-            lores.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + model.getHeight());
+            lores.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + Formats.truncateToOneDecimalPlace(model.getHeight()));
             ItemStack modelItem = ItemStackBuilder.of(model.getItemStack()).name(name).lore(lores).build();
             super.addSlot(new Slot(modelSlot, modelItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> {

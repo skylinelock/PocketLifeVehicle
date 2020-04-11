@@ -22,7 +22,7 @@ public class EditModelData {
     private float fuel;
     private float baseSide;
     private float collideHeight;
-    private float height = -1;
+    private float height;
 
     public float getCollideBaseSide() {
         return baseSide;

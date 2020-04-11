@@ -5,9 +5,13 @@ import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.car.*;
+import dev.sky_lock.pocketlifevehicle.car.CarModelBuilder;
+import dev.sky_lock.pocketlifevehicle.car.CarSound;
+import dev.sky_lock.pocketlifevehicle.car.ModelList;
+import dev.sky_lock.pocketlifevehicle.car.SteeringLevel;
 import dev.sky_lock.pocketlifevehicle.gui.*;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
+import dev.sky_lock.pocketlifevehicle.util.Formats;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -44,7 +48,7 @@ public class ModelSettingContents extends MenuContents {
         this.player = player;
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             this.addSlot(new Slot(4, ItemStackBuilder.of(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build(), event -> {
-                InventoryMenu.of(player).ifPresent(menu -> menu.close((Player) event.getWhoClicked()));
+                InventoryMenu.of(player).ifPresent(menu -> menu.close(player));
                 EditSessions.destroy(player.getUniqueId());
             }));
 
@@ -175,8 +179,8 @@ public class ModelSettingContents extends MenuContents {
                 collideItem = ItemStackBuilder.of(collideItem).lore(ImmutableList.of(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight()))).grow().build();
                 updateItemStack(31, collideItem);
             }
-            if (session.getHeight() != -1) {
-                heightItem = ItemStackBuilder.of(heightItem).lore(ImmutableList.of(String.valueOf(session.getHeight()))).grow().build();
+            if (session.getHeight() != 0.0F) {
+                heightItem = ItemStackBuilder.of(heightItem).lore(ImmutableList.of(Formats.truncateToOneDecimalPlace(session.getHeight()))).grow().build();
                 updateItemStack(33, heightItem);
             }
 
