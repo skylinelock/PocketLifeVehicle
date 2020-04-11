@@ -13,6 +13,7 @@ import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.EulerAngle;
 
 /**
  * @author sky_lock
@@ -34,7 +35,7 @@ public class CarArmorStand extends EntityArmorStand {
         nbt.setBoolean("PersistenceRequired", true);
         nbt.setBoolean("NoGravity", false);
         nbt.setBoolean("Invisible", true);
-        nbt.setBoolean("Marker", false);
+        nbt.setBoolean("Marker", false); // ArmorStand has a very small collision box when true
         nbt.setBoolean("Small", true);
         this.a(nbt);
         //乗れるブロックの高さ
@@ -43,9 +44,10 @@ public class CarArmorStand extends EntityArmorStand {
 
     void assemble(Car car) {
         this.car = car;
-        ArmorStand bukkitEntity = (CraftArmorStand) this.getBukkitEntity();
-        bukkitEntity.setItem(car.getModel().getModelPosition().getSlot(), car.getModel().getItemStack());
-        bukkitEntity.setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
+        ArmorStand armorstand = (CraftArmorStand) this.getBukkitEntity();
+        armorstand.setRightArmPose(EulerAngle.ZERO);
+        armorstand.setItem(car.getModel().getModelPosition().getSlot(), car.getModel().getItemStack());
+        armorstand.setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
         car.getSound().start();
     }
 
