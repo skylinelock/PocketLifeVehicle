@@ -121,14 +121,14 @@ public class EventListener implements Listener {
         String fuel = Formats.removeBlanks(rawFuel).split(":")[1];
 
         if (player.getUniqueId().equals(owner)) {
-            this.placeCarEntity(player, itemStack, event.getHand(), owner, model, whereToSpawn, Float.valueOf(fuel));
+            this.placeCarEntity(player, itemStack, event.getHand(), owner, model, whereToSpawn, Float.parseFloat(fuel));
             return;
         }
         if (!Permission.CAR_PLACE.obtained(player)) {
             ActionBar.sendPacket(player, ChatColor.RED + "この車を所有していないので設置できません");
             return;
         }
-        this.placeCarEntity(player, itemStack, event.getHand(), owner, model, whereToSpawn, Float.valueOf(fuel));
+        this.placeCarEntity(player, itemStack, event.getHand(), owner, model, whereToSpawn, Float.parseFloat(fuel));
 
     }
 

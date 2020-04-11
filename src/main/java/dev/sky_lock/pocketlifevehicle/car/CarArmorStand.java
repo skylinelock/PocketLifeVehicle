@@ -112,7 +112,7 @@ public class CarArmorStand extends EntityArmorStand {
     public void e(Vec3D vec3d) {
         if (car.getPassengers().isEmpty() || !car.getDriver().isPresent() || this.isInWater() || this.inLava) {
             car.getEngine().stop();
-            super.a(vec3d);
+            super.e(vec3d);
             return;
         }
 
