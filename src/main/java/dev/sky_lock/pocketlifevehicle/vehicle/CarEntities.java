@@ -37,11 +37,12 @@ public class CarEntities {
         }
 
         Car car = null;
-        if (model.getCapacity() == Capacity.ONE_SEAT) {
+        Capacity capacity = model.getSpec().getCapacity();
+        if (capacity == Capacity.ONE_SEAT) {
             car = new OneSeatCar(model);
-        } else if (model.getCapacity() == Capacity.TWO_SEATS) {
+        } else if (capacity == Capacity.TWO_SEATS) {
             car = new TwoSeatsCar(model);
-        } else if (model.getCapacity() == Capacity.FOR_SEATS) {
+        } else if (capacity == Capacity.FOR_SEATS) {
             car = new FourSeatsCar(model);
         }
         if (car == null) {

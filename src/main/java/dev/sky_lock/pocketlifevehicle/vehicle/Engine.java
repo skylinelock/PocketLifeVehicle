@@ -34,7 +34,7 @@ class Engine {
 
     boolean refuel(float added) {
         float current = status.getFuel();
-        float max = model.getMaxFuel();
+        float max = model.getSpec().getMaxFuel();
         if (current >= max) {
             return false;
         }
@@ -56,11 +56,9 @@ class Engine {
             speed.decelerate();
         }
 
-        MaxSpeed maxSpeed;
-        if (model.getMaxSpeed() == null) {
+        MaxSpeed maxSpeed = model.getSpec().getMaxSpeed();
+        if (maxSpeed == null) {
             maxSpeed = MaxSpeed.NORMAL;
-        } else {
-            maxSpeed = model.getMaxSpeed();
         }
 
         if (speed.exact() > maxSpeed.getMax()) {

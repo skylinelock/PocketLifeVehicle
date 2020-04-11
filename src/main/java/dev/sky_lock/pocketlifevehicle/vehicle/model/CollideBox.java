@@ -20,18 +20,18 @@ public class CollideBox implements ConfigurationSerializable {
         this.height = height;
     }
 
-    public static CollideBox deserialize(Map<String, Object> map) {
-        float baseSide = (float) (double) map.get("baseside");
-        float height = (float) (double) map.get("height");
-        return new CollideBox(baseSide, height);
-    }
-
     public float getBaseSide() {
         return baseSide;
     }
 
     public float getHeight() {
         return height;
+    }
+
+    public static CollideBox deserialize(Map<String, Object> map) {
+        float baseSide = (float) (double) map.get("baseside");
+        float height = (float) (double) map.get("height");
+        return new CollideBox(baseSide, height);
     }
 
     @Override

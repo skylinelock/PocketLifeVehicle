@@ -27,7 +27,7 @@ class MeterPanel {
         StringBuilder builder = new StringBuilder();
         builder.append(ChatColor.RED).append(ChatColor.BOLD).append("E ").append(ChatColor.GREEN);
 
-        float fuelRate = status.getFuel() / model.getMaxFuel();
+        float fuelRate = status.getFuel() / model.getSpec().getMaxFuel();
         int filled = Math.round(70 * fuelRate);
 
         IntStream.range(0, filled).forEach(count -> builder.append("ǀ"));

@@ -30,7 +30,7 @@ class CarSoundTask {
             world.playSound(location, Sound.ENTITY_PIG_HURT, 0.05F, 0.7F);
             world.playSound(location, Sound.ENTITY_MINECART_RIDING, 0.05F, 0.8F);
             world.playSound(location, Sound.ENTITY_PLAYER_BURP, 0.05F, 0.8F);
-            float engine_pitch = status.getSpeed().approximate() / model.getMaxSpeed().getMax();
+            float engine_pitch = status.getSpeed().approximate() / model.getSpec().getMaxSpeed().getMax();
             world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.05F, engine_pitch);
         }, 0L, 2L);
     }
@@ -40,8 +40,5 @@ class CarSoundTask {
             task.cancel();
         }
     }
-
-
-
 
 }

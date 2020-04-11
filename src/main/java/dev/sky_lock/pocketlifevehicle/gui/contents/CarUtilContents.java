@@ -118,7 +118,7 @@ public class CarUtilContents extends MenuContents {
         ItemStack filled = ItemStackBuilder.of(Material.GREEN_STAINED_GLASS_PANE, 1).name(ChatColor.GREEN + "補充済み").build();
         ItemStack unFilled = ItemStackBuilder.of(Material.RED_STAINED_GLASS_PANE, 1).name(ChatColor.RED + "未補充").build();
         float fuel = car.getStatus().getFuel();
-        float maxFuel = car.getModel().getMaxFuel();
+        float maxFuel = car.getModel().getSpec().getMaxFuel();
         float rate = fuel / maxFuel;
         int filledSlots = Math.round(9 * rate);
         for (int j = 0; j < 9; j++) {
@@ -154,8 +154,8 @@ public class CarUtilContents extends MenuContents {
     private List<String> carInfoLore() {
         List<String> carInfo = new ArrayList<>();
         carInfo.add(ChatColor.GREEN + "名前     : " + ChatColor.RESET + car.getModel().getName());
-        carInfo.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + car.getModel().getMaxFuel());
-        carInfo.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + car.getModel().getMaxSpeed());
+        carInfo.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + car.getModel().getSpec().getMaxFuel());
+        carInfo.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + car.getModel().getSpec().getMaxSpeed());
         carInfo.add(ChatColor.GREEN + "説明 :");
         if (car.getModel().getLore() == null) {
             carInfo.add("- " + ChatColor.RESET + "なし");

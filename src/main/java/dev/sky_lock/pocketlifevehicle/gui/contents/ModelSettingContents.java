@@ -14,9 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -26,7 +24,7 @@ import java.util.Objects;
 public class ModelSettingContents extends MenuContents {
     private final Player player;
 
-    private ItemStack carItem = ItemStackBuilder.of(Material.ITEM_FRAME, 1).name("アイテム").build();
+    private ItemStack itemItem = ItemStackBuilder.of(Material.ITEM_FRAME, 1).name("アイテム").build();
     private ItemStack capacityItem = ItemStackBuilder.of(Material.SADDLE, 1).name("乗車人数").build();
     private ItemStack fuelItem = ItemStackBuilder.of(Material.COAL_BLOCK, 1).name("燃料上限").build();
     private ItemStack idItem = ItemStackBuilder.of(Material.EMERALD, 1).name("ID").build();
@@ -42,7 +40,6 @@ public class ModelSettingContents extends MenuContents {
     private ItemStack updateItem = ItemStackBuilder.of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "更新する").build();
     private ItemStack removeItem = ItemStackBuilder.of(Material.BARRIER, 1).name(ChatColor.RED + "削除する").build();
     private ItemStack createItem = ItemStackBuilder.of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "追加する").build();
-
 
     public ModelSettingContents(Player player) {
         this.player = player;
@@ -68,7 +65,7 @@ public class ModelSettingContents extends MenuContents {
                 new LoreEditor(player).open();
             }));
 
-            this.addSlot(new Slot(22, carItem, event -> {
+            this.addSlot(new Slot(22, itemItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.CAR_ITEM.value()));
             }));
 
@@ -120,21 +117,7 @@ public class ModelSettingContents extends MenuContents {
                 this.removeSlot(49);
                 this.addSlot(new Slot(49, updateItem, event -> {
                     ModelList.remove(session.getId());
-                    ModelList.add(
-                            ModelBuilder.of(session.getId())
-                                    .name(session.getName())
-                                    .capacity(session.getCapacity())
-                                    .height(session.getHeight())
-                                    .collideBox(session.getCollideBaseSide(), session.getCollideHeight())
-                                    .maxFuel(session.getFuel())
-                                    .maxSpeed(session.getMaxSpeed())
-                                    .item(session.getModelItem())
-                                    .sound(Sound.NONE)
-                                    .steering(SteeringLevel.NORMAL)
-                                    .modelPosition(session.getPosition())
-                                    .lore(session.getLore())
-                                    .build()
-                    );
+                    ModelList.add(session.generate());
                     player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + session.getId() + "を更新しました");
                     EditSessions.destroy(player.getUniqueId());
                     menu.close(player);
@@ -150,50 +133,9 @@ public class ModelSettingContents extends MenuContents {
                 this.addSlot(new Slot(49, createItem, event -> {
                     ItemStack clicked = Objects.requireNonNull(event.getCurrentItem());
 
-                    String id = session.getId();
-                    String name = session.getName();
-                    Capacity capacity = session.getCapacity();
-                    MaxSpeed maxSpeed = session.getMaxSpeed();
-                    float maxFuel = session.getFuel();
-                    ModelItem modelItem = session.getModelItem();
-                    float collideBaseSide = session.getCollideBaseSide();
-                    float collideHeight = session.getCollideHeight();
-                    float height = session.getHeight();
-                    ModelPosition position = session.getPosition();
-
-                    if (id == null || name == null ||
-                            maxSpeed == null || maxFuel == 0.0F ||
-                            modelItem == null || capacity == null ||
-                            height == -1 || position == null) {
-                        List<String> lore = new ArrayList<>();
-                        lore.add(ChatColor.RED + "設定が完了していません");
-                        lore.add(ChatColor.RED + "未設定項目");
-                        if (id == null) {
-                            lore.add(ChatColor.RED + "- ID");
-                        }
-                        if (name == null) {
-                            lore.add(ChatColor.RED + "- 名前");
-                        }
-                        if (maxSpeed == null) {
-                            lore.add(ChatColor.RED + "- 最高速度");
-                        }
-                        if (modelItem == null) {
-                            lore.add(ChatColor.RED + "- アイテム");
-                        }
-                        if (maxFuel == 0.0F) {
-                            lore.add(ChatColor.RED + "- 燃料上限");
-                        }
-                        if (capacity == null) {
-                            lore.add(ChatColor.RED + "- 乗車人数");
-                        }
-                        if (height == -1) {
-                            lore.add(ChatColor.RED + "- 座高");
-                        }
-                        if (position == null) {
-                            lore.add(ChatColor.RED + "- アイテム位置");
-                        }
+                    if (!session.verifyCompleted()) {
                         ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
-                        itemMeta.setLore(lore);
+                        itemMeta.setLore(session.unfilledOptionWarning());
                         clicked.setItemMeta(itemMeta);
                         event.setCurrentItem(clicked);
                         return;
@@ -206,37 +148,23 @@ public class ModelSettingContents extends MenuContents {
                         event.setCurrentItem(clicked);
                         return;
                     }
-                    List<String> lore = session.getLore();
-                    Model model = ModelBuilder.of(session.getId())
-                            .name(name)
-                            .capacity(capacity)
-                            .height(height)
-                            .collideBox(collideBaseSide, collideHeight)
-                            .maxFuel(maxFuel)
-                            .maxSpeed(maxSpeed)
-                            .item(modelItem)
-                            .sound(Sound.NONE)
-                            .steering(SteeringLevel.NORMAL)
-                            .lore(lore)
-                            .modelPosition(position)
-                            .build();
-                    ModelList.add(model);
+                    ModelList.add(session.generate());
                     player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "新しい車種を追加しました");
                     EditSessions.destroy(player.getUniqueId());
                     player.closeInventory();
                 }));
             }
-            if (session.getModelItem() != null) {
-                int modelId = session.getModelItem().getModelId();
-                carItem = ItemStackBuilder.of(carItem).lore(session.getModelItem().getType().name(), String.valueOf(modelId)).grow().build();
-                updateItemStack(22, carItem);
+            if (session.getItemType() != null && session.getItemId() != 0) {
+                int modelId = session.getItemId();
+                itemItem = ItemStackBuilder.of(itemItem).lore(session.getItemType().name(), String.valueOf(modelId)).grow().build();
+                updateItemStack(22, itemItem);
             }
             if (session.getCapacity() != null) {
                 capacityItem = ItemStackBuilder.of(capacityItem).lore(String.valueOf(session.getCapacity().value())).grow().build();
                 updateItemStack(24, capacityItem);
             }
-            if (session.getFuel() != 0.0F) {
-                fuelItem = ItemStackBuilder.of(fuelItem).lore(String.valueOf(session.getFuel())).grow().build();
+            if (session.getMaxFuel() != 0.0F) {
+                fuelItem = ItemStackBuilder.of(fuelItem).lore(String.valueOf(session.getMaxFuel())).grow().build();
                 updateItemStack(29, fuelItem);
             }
             if (session.getId() != null && !session.getId().equalsIgnoreCase("id")) {

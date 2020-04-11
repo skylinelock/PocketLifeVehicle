@@ -44,7 +44,7 @@ public class CarArmorStand extends EntityArmorStand {
         this.car = car;
         ArmorStand armorstand = (CraftArmorStand) this.getBukkitEntity();
         armorstand.setRightArmPose(EulerAngle.ZERO);
-        armorstand.setItem(car.getModel().getModelPosition().getSlot(), car.getModel().getItemStack());
+        armorstand.setItem(car.getModel().getItemOption().getPosition().getSlot(), car.getModel().getItemStack());
         // armorstand.setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
         car.getSound().start();
     }
@@ -141,7 +141,6 @@ public class CarArmorStand extends EntityArmorStand {
         super.e(vec3d.e(new Vec3D(0.0, 1.0, 3.0)));
         car.getStatus().setLocation(getLocation());
     }
-
 
     @Override
     public CraftEntity getBukkitEntity() {

@@ -3,13 +3,11 @@ package dev.sky_lock.pocketlifevehicle.gui.contents;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.CollideBox;
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions;
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
 import dev.sky_lock.pocketlifevehicle.util.Formats;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -48,29 +46,39 @@ public class EditCarModelContents extends MenuContents {
                 lore = Collections.singletonList("");
             }
             desc.add(ChatColor.DARK_AQUA + "説明: " + ChatColor.AQUA + lore);
-            desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + model.getMaxSpeed().getLabel());
-            desc.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + model.getMaxFuel());
-            desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + model.getCapacity().value());
+            Spec spec = model.getSpec();
+            desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + spec.getMaxSpeed().getLabel());
+            desc.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + spec.getMaxFuel());
+            desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + spec.getCapacity().value());
+            ItemOption itemOption = model.getItemOption();
             CollideBox box = model.getCollideBox();
             desc.add(ChatColor.DARK_AQUA + "当たり判定: " + ChatColor.AQUA + box.getBaseSide() + "×" + box.getHeight());
             desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + Formats.truncateToOneDecimalPlace(model.getHeight()));
-            desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + model.getModelPosition().getLabel());
-            ItemStack modelItem = ItemStackBuilder.of(model.getItemStack()).name(name).lore(desc).build();
-            super.addSlot(new Slot(modelSlot, modelItem, event -> {
+            desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + itemOption.getPosition().getLabel());
+            ItemStack item = ItemStackBuilder.of(model.getItemStack()).name(name).lore(desc).build();
+            super.addSlot(new Slot(modelSlot, item, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> {
                     EditSessions.of(player.getUniqueId()).ifPresent(session -> {
                         session.setJustEditing(true);
+
                         session.setId(model.getId());
                         session.setName(model.getName());
                         session.setLore(model.getLore());
+
+                        session.setMaxFuel(spec.getMaxFuel());
+                        session.setMaxSpeed(spec.getMaxSpeed());
+                        session.setCapacity(spec.getCapacity());
+
+                        session.setItemType(itemOption.getType());
+                        session.setItemID(itemOption.getId());
+                        session.setItemPosition(itemOption.getPosition());
+
                         session.setCollideBaseSide(model.getCollideBox().getBaseSide());
                         session.setCollideHeight(model.getCollideBox().getHeight());
-                        session.setFuel(model.getMaxFuel());
-                        session.setMaxSpeed(model.getMaxSpeed());
+
+                        session.setBig(model.isBig());
                         session.setHeight(model.getHeight());
-                        session.setCapacity(model.getCapacity());
-                        session.setModelItem(model.getCarItem());
-                        session.setPosition(model.getModelPosition());
+                        session.setSound(model.getSound());
                         menu.flip(player, ModelMenuIndex.SETTING.value());
                     });
                 });

@@ -35,7 +35,7 @@ public class SpawnCommand implements ICommand, IAdminCommand {
                 return model;
             }
             CarEntities.kill(target.getUniqueId());
-            boolean success = CarEntities.spawn(target.getUniqueId(), model, target.getLocation(), model.getMaxFuel());
+            boolean success = CarEntities.spawn(target.getUniqueId(), model, target.getLocation(), model.getSpec().getMaxFuel());
 
             if (success) {
                 player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + name + " に " + id + " を渡しました");

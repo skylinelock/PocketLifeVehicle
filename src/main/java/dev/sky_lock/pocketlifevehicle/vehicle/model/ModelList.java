@@ -71,9 +71,9 @@ public class ModelList {
 
             String carName = model.getName();
 
-            ModelItem modelItem = model.getCarItem();
-            int carModelId = modelItem.getModelId();
-            Material type = modelItem.getType();
+            ItemOption itemOption = model.getItemOption();
+            int carModelId = itemOption.getId();
+            Material type = itemOption.getType();
 
             return itemStack.getType() == type && displayName.equals(carName) && modelId == carModelId;
         }).findFirst().orElse(null);

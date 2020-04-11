@@ -10,15 +10,12 @@ public class ModelBuilder {
     private final String id;
     private String name;
     private List<String> lore;
-    private float maxFuel;
-    private MaxSpeed maxSpeed;
-    private ModelItem item;
-    private Capacity capacity;
+    private Spec spec;
+    private ItemOption itemOption;
+    private boolean isBig;
     private CollideBox collideBox;
     private float height;
-    private SteeringLevel steeringLevel;
     private Sound sound;
-    private ModelPosition position;
 
     public ModelBuilder(String id) {
         this.id = id;
@@ -33,28 +30,23 @@ public class ModelBuilder {
         return this;
     }
 
-    public ModelBuilder item(ModelItem item) {
-        this.item = item;
-        return this;
-    }
-
     public ModelBuilder lore(List<String> lore) {
         this.lore = lore;
         return this;
     }
 
-    public ModelBuilder maxFuel(float maxFuel) {
-        this.maxFuel = maxFuel;
+    public ModelBuilder spec(Spec spec) {
+        this.spec = spec;
         return this;
     }
 
-    public ModelBuilder maxSpeed(MaxSpeed maxSpeed) {
-        this.maxSpeed = maxSpeed;
+    public ModelBuilder item(ItemOption itemOption) {
+        this.itemOption = itemOption;
         return this;
     }
 
-    public ModelBuilder capacity(Capacity capacity) {
-        this.capacity = capacity;
+    public ModelBuilder big(boolean isBig) {
+        this.isBig = isBig;
         return this;
     }
 
@@ -68,28 +60,16 @@ public class ModelBuilder {
         return this;
     }
 
-    public ModelBuilder steering(SteeringLevel steeringLevel) {
-        this.steeringLevel = steeringLevel;
-        return this;
-    }
-
     public ModelBuilder sound(Sound sound) {
         this.sound = sound;
         return this;
     }
 
-    public ModelBuilder modelPosition(ModelPosition position) {
-        this.position = position;
-        return this;
-    }
-
     public Model build() {
-        if (name == null || maxSpeed == null || item == null ||
-                capacity == null || collideBox == null || steeringLevel == null ||
-                sound == null || position == null) {
+        if (name == null || spec == null || itemOption == null || collideBox == null || sound == null) {
             throw new NullPointerException();
         }
-        return new Model(id, item, name, lore, maxFuel, maxSpeed, capacity, steeringLevel, collideBox, height, sound, position);
+        return new Model(id, name, lore, spec, itemOption, collideBox, isBig, height, sound);
     }
 
 }

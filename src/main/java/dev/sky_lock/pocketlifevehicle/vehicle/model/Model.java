@@ -21,45 +21,69 @@ public class Model implements ConfigurationSerializable {
     private final String id;
     private final String name;
     private final List<String> lore;
-    private final float maxFuel;
-    private final MaxSpeed maxSpeed;
-    private final ModelItem item;
-    private final Capacity capacity;
+    private final Spec spec;
+    private final ItemOption itemOption;
     private final CollideBox collideBox;
-    private final SteeringLevel steeringLevel;
+    private final boolean isBig;
     private final float height;
     private final Sound sound;
-    private final ModelPosition position;
 
-    Model(String id,
-          ModelItem modelItem,
-          String name,
-          List<String> lore,
-          float maxFuel,
-          MaxSpeed maxSpeed,
-          Capacity capacity,
-          SteeringLevel steeringLevel,
-          CollideBox collideBox,
-          float height,
-          Sound sound,
-          ModelPosition position) {
+    Model(String id, String name,
+          List<String> lore, Spec spec, ItemOption itemOption,
+          CollideBox collideBox, boolean isBig, float height, Sound sound) {
         this.id = id;
-        this.item = modelItem;
         this.name = name;
         this.lore = lore;
-        this.maxFuel = maxFuel;
-        this.maxSpeed = maxSpeed;
-        this.capacity = capacity;
+        this.spec = spec;
+        this.itemOption = itemOption;
+        this.isBig = isBig;
         this.collideBox = collideBox;
-        this.steeringLevel = steeringLevel;
         this.height = height;
         this.sound = sound;
-        this.position = position;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<String> getLore() {
+        return lore;
+    }
+
+    public Spec getSpec() {
+        return spec;
+    }
+
+    public ItemOption getItemOption() {
+        return itemOption;
+    }
+
+    public CollideBox getCollideBox() {
+        return collideBox;
+    }
+
+    public boolean isBig() {
+        return isBig;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public Sound getSound() {
+        return sound;
+    }
+
+    public ItemStack getItemStack() {
+        return ItemStackBuilder.of(itemOption.getType(), 1).name(name).customModelData(itemOption.getId()).unbreakable(true).itemFlags(ItemFlag.values()).build();
     }
 
     public static Model deserialize(Map<String, Object> map) {
         String id = (String) map.get("id");
-        ModelItem item = (ModelItem) map.get("item");
         String name = (String) map.get("name");
         List<String> lore;
         Object mapObj = map.get("lore");
@@ -72,96 +96,38 @@ public class Model implements ConfigurationSerializable {
                 lore = Collections.emptyList();
             }
         }
-        float maxFuel = (float) ((double) map.get("maxfuel"));
-        MaxSpeed speed = MaxSpeed.values()[(int) map.get("maxspeed")];
-        Capacity capacity = Capacity.from((int) map.get("capacity"));
+        Spec spec = (Spec) map.get("spec");
+        ItemOption itemOption = (ItemOption) map.get("item");
         CollideBox collideBox = (CollideBox) map.get("collidebox");
-        SteeringLevel steeringLevel = SteeringLevel.valueOf(String.valueOf(map.get("steering")));
+        boolean isBig = Boolean.parseBoolean(String.valueOf(map.get("big")));
         float height = (float) ((double) map.get("height"));
         Sound sound = Sound.valueOf(String.valueOf(map.get("sound")));
-        ModelPosition position = ModelPosition.valueOf(String.valueOf(map.get("position")));
+
         return ModelBuilder.of(id)
                 .name(name)
-                .item(item)
                 .lore(lore)
-                .maxFuel(maxFuel)
-                .maxSpeed(speed)
-                .capacity(capacity)
+                .spec(spec)
+                .item(itemOption)
                 .collideBox(collideBox.getBaseSide(), collideBox.getHeight())
-                .steering(steeringLevel)
+                .big(isBig)
                 .height(height)
                 .sound(sound)
-                .modelPosition(position)
                 .build();
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public List<String> getLore() {
-        return lore;
-    }
-
-    public float getMaxFuel() {
-        return maxFuel;
-    }
-
-    public ModelItem getCarItem() {
-        return item;
-    }
-
-    public ItemStack getItemStack() {
-        return ItemStackBuilder.of(item.getType(), 1).name(name).customModelData(item.getModelId()).unbreakable(true).itemFlags(ItemFlag.values()).build();
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public MaxSpeed getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public Capacity getCapacity() {
-        return capacity;
-    }
-
-    public CollideBox getCollideBox() {
-        return collideBox;
-    }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public Sound getSound() {
-        return sound;
-    }
-
-    public SteeringLevel getSteeringLevel() {
-        return steeringLevel;
-    }
-
-    public ModelPosition getModelPosition() {
-        return position;
     }
 
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
         map.put("id", id);
-        map.put("item", item);
         map.put("name", name);
         map.put("lore", lore);
-        map.put("maxfuel", maxFuel);
-        map.put("maxspeed", maxSpeed.ordinal());
-        map.put("capacity", capacity.value());
+        map.put("spec", spec);
+        map.put("item", itemOption);
         map.put("collidebox", collideBox);
+        map.put("big", isBig);
         map.put("height", height);
-        map.put("steering", steeringLevel.toString());
         map.put("sound", sound.toString());
-        map.put("position", position.toString());
+
         return map;
     }
 

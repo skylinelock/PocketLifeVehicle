@@ -6,7 +6,7 @@ import org.bukkit.inventory.EquipmentSlot;
  * @author sky_lock
  */
 
-public enum ModelPosition {
+public enum ItemPosition {
     HEAD("頭", EquipmentSlot.HEAD),
     HAND("手", EquipmentSlot.HAND),
     CHEST("胸", EquipmentSlot.CHEST),
@@ -16,7 +16,7 @@ public enum ModelPosition {
     private final String label;
     private final EquipmentSlot slot;
 
-    ModelPosition(String label, EquipmentSlot slot) {
+    ItemPosition(String label, EquipmentSlot slot) {
         this.label = label;
         this.slot = slot;
     }

@@ -1,10 +1,11 @@
 package dev.sky_lock.pocketlifevehicle.config;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelItem;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.CollideBox;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
 import dev.sky_lock.pocketlifevehicle.util.TypeChecks;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.CollideBox;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ItemOption;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Spec;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 
@@ -25,7 +26,8 @@ public class CarsConfig {
 
     public CarsConfig() {
         ConfigurationSerialization.registerClass(Model.class);
-        ConfigurationSerialization.registerClass(ModelItem.class);
+        ConfigurationSerialization.registerClass(Spec.class);
+        ConfigurationSerialization.registerClass(ItemOption.class);
         ConfigurationSerialization.registerClass(CollideBox.class);
         this.path = PLVehicle.getInstance().getDataFolder().toPath().resolve("vehicles.yml");
     }
@@ -49,7 +51,7 @@ public class CarsConfig {
 
     public void writeModels(List<Model> models) {
         if (config == null) {
-            PLVehicle.getInstance().getLogger().log(Level.WARNING, "Could not write vehicle models to configurations");
+            PLVehicle.getInstance().getLogger().log(Level.WARNING, "Could not write models to file");
             return;
         }
         config.set("cars", models);

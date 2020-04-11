@@ -111,12 +111,12 @@ public class EventListener implements Listener {
         Location whereToSpawn = Objects.requireNonNull(event.getClickedBlock()).getLocation().clone().add(0.5, 1.0, 0.5);
 
         if (!meta.hasLore()) {
-            this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getMaxFuel());
+            this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getSpec().getMaxFuel());
             return;
         }
         String ownerUUID = meta.getCustomTagContainer().getCustomTag(PLVehicle.getInstance().createKey("owner"), ItemTagType.STRING);
         if (ownerUUID == null) {
-            this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getMaxFuel());
+            this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getSpec().getMaxFuel());
             return;
         }
         UUID owner = UUID.fromString(ownerUUID);
