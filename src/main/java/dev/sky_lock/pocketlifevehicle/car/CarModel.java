@@ -29,8 +29,20 @@ public class CarModel implements ConfigurationSerializable {
     private final SteeringLevel steeringLevel;
     private final float height;
     private final CarSound sound;
+    private final ModelPosition position;
 
-    CarModel(String id, CarItem carItem, String name, List<String> lore, float maxFuel, MaxSpeed maxSpeed, Capacity capacity, SteeringLevel steeringLevel, CollideBox collideBox, float height, CarSound sound) {
+    CarModel(String id,
+             CarItem carItem,
+             String name,
+             List<String> lore,
+             float maxFuel,
+             MaxSpeed maxSpeed,
+             Capacity capacity,
+             SteeringLevel steeringLevel,
+             CollideBox collideBox,
+             float height,
+             CarSound sound,
+             ModelPosition position) {
         this.id = id;
         this.item = carItem;
         this.name = name;
@@ -42,6 +54,7 @@ public class CarModel implements ConfigurationSerializable {
         this.steeringLevel = steeringLevel;
         this.height = height;
         this.sound = sound;
+        this.position = position;
     }
 
     public static CarModel deserialize(Map<String, Object> map) {
@@ -66,6 +79,7 @@ public class CarModel implements ConfigurationSerializable {
         SteeringLevel steeringLevel = SteeringLevel.valueOf(String.valueOf(map.get("steering")));
         float height = (float) ((double) map.get("height"));
         CarSound sound = CarSound.valueOf(String.valueOf(map.get("sound")));
+        ModelPosition position = ModelPosition.valueOf(String.valueOf(map.get("position")));
         return CarModelBuilder.of(id)
                 .name(name)
                 .item(item)
@@ -77,6 +91,7 @@ public class CarModel implements ConfigurationSerializable {
                 .steering(steeringLevel)
                 .height(height)
                 .sound(sound)
+                .modelPosition(position)
                 .build();
     }
 
@@ -128,6 +143,10 @@ public class CarModel implements ConfigurationSerializable {
         return steeringLevel;
     }
 
+    public ModelPosition getModelPosition() {
+        return position;
+    }
+
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new HashMap<>();
@@ -142,6 +161,7 @@ public class CarModel implements ConfigurationSerializable {
         map.put("height", height);
         map.put("steering", steeringLevel.toString());
         map.put("sound", sound.toString());
+        map.put("position", position.toString());
         return map;
     }
 

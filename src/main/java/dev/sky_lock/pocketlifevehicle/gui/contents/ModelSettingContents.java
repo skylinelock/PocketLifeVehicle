@@ -38,7 +38,7 @@ public class ModelSettingContents extends MenuContents {
     private ItemStack heightItem = ItemStackBuilder.of(Material.PRISMARINE_STAIRS, 1).name("座高").build();
     private ItemStack soundItem = ItemStackBuilder.of(Material.BELL, 1).name("エンジン音").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
     private ItemStack steeringItem = ItemStackBuilder.of(Material.LEAD, 1).name("ステアリング").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
-    private ItemStack equipOnHandItem = ItemStackBuilder.of(Material.SCUTE, 1).name("モデルのアイテム位置").lore(ImmutableList.of(ChatColor.RED + "Coming soon")).build();
+    private ItemStack positionItem = ItemStackBuilder.of(Material.SCUTE, 1).name("アイテム位置").build();
 
     private ItemStack updateItem = ItemStackBuilder.of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "更新する").build();
     private ItemStack removeItem = ItemStackBuilder.of(Material.BARRIER, 1).name(ChatColor.RED + "削除する").build();
@@ -97,8 +97,8 @@ public class ModelSettingContents extends MenuContents {
 
             }));
 
-            this.addSlot(new Slot(42, equipOnHandItem, event -> {
-
+            this.addSlot(new Slot(42, positionItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.ITEM_POSITION.value()));
             }));
         });
     }
@@ -123,17 +123,18 @@ public class ModelSettingContents extends MenuContents {
                     ModelList.remove(session.getId());
                     ModelList.add(
                             CarModelBuilder.of(session.getId())
-                            .name(session.getName())
-                            .capacity(session.getCapacity())
-                            .height(session.getHeight())
-                            .collideBox(session.getCollideBaseSide(), session.getCollideHeight())
-                            .maxFuel(session.getFuel())
-                            .maxSpeed(session.getMaxSpeed())
-                            .item(session.getCarItem())
-                            .sound(CarSound.NONE)
-                            .steering(SteeringLevel.NORMAL)
-                            .lores(session.getLores())
-                            .build()
+                                    .name(session.getName())
+                                    .capacity(session.getCapacity())
+                                    .height(session.getHeight())
+                                    .collideBox(session.getCollideBaseSide(), session.getCollideHeight())
+                                    .maxFuel(session.getFuel())
+                                    .maxSpeed(session.getMaxSpeed())
+                                    .item(session.getCarItem())
+                                    .sound(CarSound.NONE)
+                                    .steering(SteeringLevel.NORMAL)
+                                    .modelPosition(session.getPosition())
+                                    .lores(session.getLores())
+                                    .build()
                     );
                     player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + session.getId() + "を更新しました");
                     EditSessions.destroy(player.getUniqueId());
@@ -159,8 +160,12 @@ public class ModelSettingContents extends MenuContents {
                     float collideBaseSide = session.getCollideBaseSide();
                     float collideHeight = session.getCollideHeight();
                     float height = session.getHeight();
+                    ModelPosition position = session.getPosition();
 
-                    if (id == null || name == null || maxSpeed == null || maxFuel == 0.0F || carItem == null || capacity == null || height == -1) {
+                    if (id == null || name == null ||
+                            maxSpeed == null || maxFuel == 0.0F ||
+                            carItem == null || capacity == null ||
+                            height == -1 || position == null) {
                         List<String> lores = new ArrayList<>();
                         lores.add(ChatColor.RED + "設定が完了していません");
                         lores.add(ChatColor.RED + "未設定項目");
@@ -184,6 +189,9 @@ public class ModelSettingContents extends MenuContents {
                         }
                         if (height == -1) {
                             lores.add(ChatColor.RED + "- 座高");
+                        }
+                        if (position == null) {
+                            lores.add(ChatColor.RED + "- アイテム位置");
                         }
                         ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
                         itemMeta.setLore(lores);
@@ -211,6 +219,7 @@ public class ModelSettingContents extends MenuContents {
                             .sound(CarSound.NONE)
                             .steering(SteeringLevel.NORMAL)
                             .lores(carLores)
+                            .modelPosition(position)
                             .build();
                     ModelList.add(model);
                     player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "新しい車種を追加しました");
@@ -255,6 +264,10 @@ public class ModelSettingContents extends MenuContents {
             if (session.getHeight() != 0.0F) {
                 heightItem = ItemStackBuilder.of(heightItem).lore(ImmutableList.of(Formats.truncateToOneDecimalPlace(session.getHeight()))).grow().build();
                 updateItemStack(33, heightItem);
+            }
+            if (session.getPosition() != null) {
+                positionItem = ItemStackBuilder.of(positionItem).lore(ImmutableList.of(session.getPosition().getLabel())).grow().build();
+                updateItemStack(42, positionItem);
             }
 
             menu.update();

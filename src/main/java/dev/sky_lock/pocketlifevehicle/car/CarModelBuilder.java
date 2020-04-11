@@ -18,6 +18,7 @@ public class CarModelBuilder {
     private float height;
     private SteeringLevel steeringLevel;
     private CarSound sound;
+    private ModelPosition position;
 
     public CarModelBuilder(String id) {
         this.id = id;
@@ -77,11 +78,18 @@ public class CarModelBuilder {
         return this;
     }
 
+    public CarModelBuilder modelPosition(ModelPosition position) {
+        this.position = position;
+        return this;
+    }
+
     public CarModel build() {
-        if (name == null || lores == null || maxSpeed == null || item == null || capacity == null || collideBox == null || steeringLevel == null || sound == null) {
+        if (name == null || lores == null || maxSpeed == null ||
+                item == null || capacity == null || collideBox == null ||
+                steeringLevel == null || sound == null || position == null) {
             throw new NullPointerException();
         }
-        return new CarModel(id, item, name, lores, maxFuel, maxSpeed, capacity, steeringLevel, collideBox, height, sound);
+        return new CarModel(id, item, name, lores, maxFuel, maxSpeed, capacity, steeringLevel, collideBox, height, sound, position);
     }
 
 }

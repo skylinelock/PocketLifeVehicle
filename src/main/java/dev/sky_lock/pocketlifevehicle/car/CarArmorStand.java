@@ -11,7 +11,7 @@ import org.bukkit.craftbukkit.v1_14_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.metadata.FixedMetadataValue;
 
 /**
@@ -43,8 +43,9 @@ public class CarArmorStand extends EntityArmorStand {
 
     void assemble(Car car) {
         this.car = car;
-        this.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(car.getModel().getItemStack()));
-        this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
+        ArmorStand bukkitEntity = (CraftArmorStand) this.getBukkitEntity();
+        bukkitEntity.setItem(car.getModel().getModelPosition().getSlot(), car.getModel().getItemStack());
+        bukkitEntity.setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
         car.getSound().start();
     }
 

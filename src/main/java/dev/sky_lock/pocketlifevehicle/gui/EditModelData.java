@@ -3,6 +3,7 @@ package dev.sky_lock.pocketlifevehicle.gui;
 import dev.sky_lock.pocketlifevehicle.car.Capacity;
 import dev.sky_lock.pocketlifevehicle.car.CarItem;
 import dev.sky_lock.pocketlifevehicle.car.MaxSpeed;
+import dev.sky_lock.pocketlifevehicle.car.ModelPosition;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class EditModelData {
     private float collideBaseSide;
     private float collideHeight;
     private float height;
+    private ModelPosition position;
 
     public float getCollideBaseSide() {
         return this.collideBaseSide;
@@ -68,6 +70,10 @@ public class EditModelData {
         this.height = height;
     }
 
+    public void setPosition(ModelPosition position) {
+        this.position = position;
+    }
+
     public List<String> getLores() {
         return lores;
     }
@@ -90,6 +96,10 @@ public class EditModelData {
 
     public Capacity getCapacity() {
         return capacity;
+    }
+
+    public ModelPosition getPosition() {
+        return position;
     }
 
     public void setCarItem(CarItem carItem) {

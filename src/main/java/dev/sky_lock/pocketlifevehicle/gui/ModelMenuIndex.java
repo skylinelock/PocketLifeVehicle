@@ -16,9 +16,9 @@ public enum ModelMenuIndex {
     COLLIDE_BASESIDE(8),
     COLLIDE_HEIGHT(9),
     HEIGHT(10),
-    SOUND(11),
-    STEERING(12),
-    ITEM_POSITION(13);
+    ITEM_POSITION(11),
+    SOUND(12),
+    STEERING(13);
 
     private final int value;
 
