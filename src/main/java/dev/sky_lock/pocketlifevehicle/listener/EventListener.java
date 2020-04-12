@@ -6,8 +6,8 @@ import dev.sky_lock.pocketlifevehicle.click.CarClick;
 import dev.sky_lock.pocketlifevehicle.click.InventoryClick;
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions;
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor;
-import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
+import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand;
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
 import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand;
@@ -35,7 +35,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.tags.ItemTagType;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.List;
 import java.util.Objects;
@@ -114,7 +114,7 @@ public class EventListener implements Listener {
             this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getSpec().getMaxFuel());
             return;
         }
-        String ownerUUID = meta.getCustomTagContainer().getCustomTag(PLVehicle.getInstance().createKey("owner"), ItemTagType.STRING);
+        String ownerUUID = meta.getPersistentDataContainer().get(PLVehicle.getInstance().createKey("owner"), PersistentDataType.STRING);
         if (ownerUUID == null) {
             this.placeCarEntity(player, itemStack, event.getHand(), player.getUniqueId(), model, player.getLocation(), model.getSpec().getMaxFuel());
             return;

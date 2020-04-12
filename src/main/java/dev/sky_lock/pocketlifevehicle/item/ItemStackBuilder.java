@@ -5,8 +5,8 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.tags.CustomItemTagContainer;
-import org.bukkit.inventory.meta.tags.ItemTagType;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Arrays;
 import java.util.List;
@@ -77,15 +77,15 @@ public class ItemStackBuilder {
         return this;
     }
 
-    public <T, Z> ItemStackBuilder tag(NamespacedKey key, ItemTagType<T, Z> tagType, Z object) {
+    public <T, Z> ItemStackBuilder persistentData(NamespacedKey key, PersistentDataType<T, Z> type, Z object) {
         ItemMeta meta = Objects.requireNonNull(itemStack.getItemMeta());
-        CustomItemTagContainer tagContainer = meta.getCustomTagContainer();
-        tagContainer.setCustomTag(key, tagType, object);
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        container.set(key, type, object);
         itemStack.setItemMeta(meta);
         return this;
     }
 
-    public ItemStackBuilder grow() {
+    public ItemStackBuilder glow() {
         ItemMeta itemMeta = Objects.requireNonNull(itemStack.getItemMeta());
         itemMeta.addEnchant(new Glowing(), 1, true);
         itemStack.setItemMeta(itemMeta);

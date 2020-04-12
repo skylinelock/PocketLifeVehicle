@@ -12,7 +12,7 @@ import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.tags.ItemTagType;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.io.IOException;
 import java.util.*;
@@ -89,7 +89,7 @@ public class CarEntities {
     private static void tow(UUID owner, Car car) {
         Model model = car.getModel();
         ItemStack itemStack = ItemStackBuilder.of(model.getItemStack())
-                .tag(PLVehicle.getInstance().createKey("owner"), ItemTagType.STRING, owner.toString())
+                .persistentData(PLVehicle.getInstance().createKey("owner"), PersistentDataType.STRING, owner.toString())
                 .lore("所有者: " + Profiles.getName(owner), "残燃料: " + Formats.truncateToOneDecimalPlace(car.getStatus().getFuel()))
                 .itemFlags(ItemFlag.values())
                 .build();

@@ -178,45 +178,45 @@ public class ModelSettingContents extends MenuContents {
                 session.setBig(false);
             }));
             if (session.getId() != null && !session.getId().equalsIgnoreCase("id")) {
-                idItem = ItemStackBuilder.of(idItem).lore(session.getId()).grow().build();
+                idItem = ItemStackBuilder.of(idItem).lore(session.getId()).glow().build();
                 updateItemStack(idSlot, idItem);
             }
             if (session.getName() != null && !session.getName().equalsIgnoreCase("name")) {
-                nameItem = ItemStackBuilder.of(nameItem).lore(session.getName()).grow().build();
+                nameItem = ItemStackBuilder.of(nameItem).lore(session.getName()).glow().build();
                 updateItemStack(nameSlot, nameItem);
             }
             if (session.getLore() != null) {
-                loreItem = ItemStackBuilder.of(loreItem).lore(session.getLore()).grow().build();
+                loreItem = ItemStackBuilder.of(loreItem).lore(session.getLore()).glow().build();
                 updateItemStack(loreSlot, loreItem);
             }
             if (session.getMaxFuel() != 0.0F) {
-                fuelItem = ItemStackBuilder.of(fuelItem).lore(String.valueOf(session.getMaxFuel())).grow().build();
+                fuelItem = ItemStackBuilder.of(fuelItem).lore(String.valueOf(session.getMaxFuel())).glow().build();
                 updateItemStack(fuelSlot, fuelItem);
             }
             if (session.getMaxSpeed() != null) {
-                speedItem = ItemStackBuilder.of(speedItem).lore(session.getMaxSpeed().getLabel()).grow().build();
+                speedItem = ItemStackBuilder.of(speedItem).lore(session.getMaxSpeed().getLabel()).glow().build();
                 updateItemStack(speedSlot, speedItem);
             }
             if (session.getCapacity() != null) {
-                capacityItem = ItemStackBuilder.of(capacityItem).lore(String.valueOf(session.getCapacity().value())).grow().build();
+                capacityItem = ItemStackBuilder.of(capacityItem).lore(String.valueOf(session.getCapacity().value())).glow().build();
                 updateItemStack(capacitySlot, capacityItem);
             }
             if (session.getSteeringLevel() != null) {
-                steeringItem = ItemStackBuilder.of(steeringItem).lore(session.getSteeringLevel().name()).grow().build();
+                steeringItem = ItemStackBuilder.of(steeringItem).lore(session.getSteeringLevel().name()).glow().build();
                 updateItemStack(steeringSlot, steeringItem);
             }
             if (session.isItemValid() && session.getPosition() != null) {
                 int modelId = session.getItemId();
-                itemOptionItem = ItemStackBuilder.of(itemOptionItem).lore(session.getItemType().name(), String.valueOf(modelId), session.getPosition().getLabel()).grow().build();
+                itemOptionItem = ItemStackBuilder.of(itemOptionItem).lore(session.getItemType().name(), String.valueOf(modelId), session.getPosition().getLabel()).glow().build();
                 updateItemStack(itemSlot, itemOptionItem);
             }
             if (session.getCollideHeight() != 0.0F && session.getCollideBaseSide() != 0.0F) {
-                collideItem = ItemStackBuilder.of(collideItem).name(ChatColor.AQUA + "当たり判定").lore(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight())).grow().build();
+                collideItem = ItemStackBuilder.of(collideItem).name(ChatColor.AQUA + "当たり判定").lore(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight())).glow().build();
                 updateItemStack(collideSlot, collideItem);
             }
 
             if (session.getHeight() != 0.0F) {
-                heightItem = ItemStackBuilder.of(heightItem).lore(Float.toString(session.getHeight())).grow().build();
+                heightItem = ItemStackBuilder.of(heightItem).lore(Float.toString(session.getHeight())).glow().build();
                 updateItemStack(heightSlot, heightItem);
             }
             if (session.getSound() != null) {

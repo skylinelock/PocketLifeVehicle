@@ -38,11 +38,11 @@ public class ItemOptionContents extends MenuContents {
     public void onFlip(InventoryMenu menu) {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             if (session.isItemValid()) {
-                itemItem = ItemStackBuilder.of(itemItem).grow().lore(session.getItemType().name(), String.valueOf(session.getItemId())).build();
+                itemItem = ItemStackBuilder.of(itemItem).glow().lore(session.getItemType().name(), String.valueOf(session.getItemId())).build();
                 updateItemStack(21, itemItem);
             }
             if (session.getPosition() != null) {
-                positionItem = ItemStackBuilder.of(positionItem).grow().lore(session.getPosition().getLabel()).build();
+                positionItem = ItemStackBuilder.of(positionItem).glow().lore(session.getPosition().getLabel()).build();
                 updateItemStack(23, positionItem);
             }
             menu.update();
