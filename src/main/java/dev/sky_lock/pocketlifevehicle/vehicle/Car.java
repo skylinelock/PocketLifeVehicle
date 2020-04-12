@@ -93,7 +93,7 @@ public class Car {
         if (menu == null) {
             menu = new CarUtilMenu(player, this);
         }
-        menu.open(player, 1);
+        menu.open(player, 0);
     }
 
     public void closeMenu(Player player) {

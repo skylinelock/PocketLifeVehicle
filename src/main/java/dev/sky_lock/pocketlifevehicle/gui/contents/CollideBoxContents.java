@@ -24,13 +24,13 @@ public class CollideBoxContents extends MenuContents {
     public CollideBoxContents(Player player) {
         this.player = player;
         this.addSlot(new Slot(4, backItem, event -> {
-            InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.SETTING.value()));
+            InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.SETTING.ordinal()));
         }));
         this.addSlot(new Slot(20, baseSideItem, event -> {
-            InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BASESIDE.value()));
+            InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BASESIDE.ordinal()));
         }));
         this.addSlot(new Slot(24, heightItem, event -> {
-            InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_HEIGHT.value()));
+            InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_HEIGHT.ordinal()));
         }));
     }
 

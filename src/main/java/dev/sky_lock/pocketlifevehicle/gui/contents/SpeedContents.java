@@ -15,9 +15,9 @@ import org.bukkit.inventory.ItemStack;
  * @author sky_lock
  */
 
-public class SelectSpeedContents extends MenuContents {
+public class SpeedContents extends MenuContents {
 
-    public SelectSpeedContents(Player player) {
+    public SpeedContents(Player player) {
         ItemStack speedSelector = ItemStackBuilder.of(Material.SEA_LANTERN, 1).build();
         addSlot(new Slot(11, ItemStackBuilder.of(speedSelector).name(MaxSpeed.SLOWEST.getLabel()).build(), (event) -> {
             setSpeedAndReturn(player, MaxSpeed.SLOWEST);
@@ -45,7 +45,7 @@ public class SelectSpeedContents extends MenuContents {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             session.setMaxSpeed(maxSpeed);
             InventoryMenu.of(player).ifPresent(menu -> {
-                menu.flip(player, ModelMenuIndex.SETTING.value());
+                menu.flip(player, ModelMenuIndex.SETTING.ordinal());
             });
         });
     }

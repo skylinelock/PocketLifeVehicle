@@ -24,7 +24,7 @@ public class CollideHeightContents extends MenuContents {
                 EditSessions.of(player.getUniqueId()).ifPresent(session -> {
                     session.setCollideHeight(baseSide);
                 });
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.value()));
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.ordinal()));
             }));
         }
     }

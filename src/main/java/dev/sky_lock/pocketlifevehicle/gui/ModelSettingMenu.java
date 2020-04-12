@@ -14,14 +14,21 @@ public class ModelSettingMenu extends InventoryMenu {
         super("モデル設定", InventoryMenu.Type.BIG, player);
         addContents(new EditCarModelContents(player));
         addContents(new ModelSettingContents(player));
-        addContents(new SelectSpeedContents(player));
-        addContents(new SelectCarItemContents(player));
-        addContents(new SelectFuelContents(player));
-        addContents(new SelectCapacityContents(player));
+
+        addContents(new FuelContents(player));
+        addContents(new SpeedContents(player));
+        addContents(new CapacityContents(player));
+        addContents(new SteeringLevelContents(player));
+
+        addContents(new ItemOptionContents(player));
+        addContents(new ItemSelectContents(player));
+        addContents(new ItemPositionContents(player));
+
         addContents(new CollideBoxContents(player));
         addContents(new BaseSideContents(player));
         addContents(new CollideHeightContents(player));
-        addContents(new SelectHeightContents(player));
-        addContents(new SelectPositionContents(player));
+
+        addContents(new HeightContents(player));
+        addContents(new SoundContents(player));
     }
 }

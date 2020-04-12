@@ -15,16 +15,16 @@ import org.bukkit.inventory.ItemStack;
  * @author sky_lock
  */
 
-public class SelectHeightContents extends MenuContents {
+public class HeightContents extends MenuContents {
 
-    public SelectHeightContents(Player player) {
+    public HeightContents(Player player) {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             for (int i = 0; i < 18; i++) {
                 float height = 0.1F * (i + 1);
                 ItemStack item = ItemStackBuilder.of(Material.WHITE_STAINED_GLASS, 1).name(Formats.truncateToOneDecimalPlace(height)).build();
                 addSlot(new Slot(9 * 2 + i, item, event -> {
                     session.setHeight(height);
-                    flipPage(player, ModelMenuIndex.SETTING.value());
+                    flipPage(player, ModelMenuIndex.SETTING.ordinal());
                 }));
             }
         });

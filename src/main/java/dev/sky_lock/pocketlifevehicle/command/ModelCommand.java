@@ -15,6 +15,6 @@ public class ModelCommand implements ICommand, IAdminCommand {
     @Override
     public void execute(CommandSender sender, Command cmd, String[] args) {
        Player player = (Player) sender;
-       new ModelSettingMenu(player).open(player, ModelMenuIndex.MAIN_MENU.value());
+       new ModelSettingMenu(player).open(player, ModelMenuIndex.MAIN_MENU.ordinal());
     }
 }

@@ -3,11 +3,12 @@ package dev.sky_lock.pocketlifevehicle.gui.contents;
 import dev.sky_lock.menu.InventoryMenu;
 import dev.sky_lock.menu.MenuContents;
 import dev.sky_lock.menu.Slot;
+import dev.sky_lock.menu.ToggleSlot;
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.gui.*;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
 import dev.sky_lock.pocketlifevehicle.util.Formats;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.*;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -24,18 +25,39 @@ import java.util.Objects;
 public class ModelSettingContents extends MenuContents {
     private final Player player;
 
-    private ItemStack itemItem = ItemStackBuilder.of(Material.ITEM_FRAME, 1).name("アイテム").build();
-    private ItemStack capacityItem = ItemStackBuilder.of(Material.SADDLE, 1).name("乗車人数").build();
-    private ItemStack fuelItem = ItemStackBuilder.of(Material.COAL_BLOCK, 1).name("燃料上限").build();
+    private final short closeSlot = 4;
+    private final short idSlot = 11;
+    private final short nameSlot = 13;
+    private final short loreSlot = 15;
+    private final short fuelSlot = 20;
+    private final short speedSlot = 22;
+    private final short capacitySlot = 24;
+    private final short steeringSlot = 29;
+    private final short itemSlot = 31;
+    private final short collideSlot = 33;
+    private final short standSlot = 38;
+    private final short heightSlot = 40;
+    private final short soundSlot = 42;
+
+    private final short removeSlot = 46;
+    private final short makeSlot = 49;
+
     private ItemStack idItem = ItemStackBuilder.of(Material.EMERALD, 1).name("ID").build();
     private ItemStack nameItem = ItemStackBuilder.of(Material.NAME_TAG, 1).name("名前").build();
-    private ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("最高速度").build();
     private ItemStack loreItem = ItemStackBuilder.of(Material.OAK_SIGN, 1).name("説明").build();
-    private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name(ChatColor.RESET + "当たり判定").build();
-    private ItemStack heightItem = ItemStackBuilder.of(Material.PRISMARINE_STAIRS, 1).name("座高").build();
-    private ItemStack soundItem = ItemStackBuilder.of(Material.BELL, 1).name("エンジン音").lore(ChatColor.RED + "Coming soon").build();
+
+    private ItemStack fuelItem = ItemStackBuilder.of(Material.COAL_BLOCK, 1).name("燃料上限").build();
+    private ItemStack speedItem = ItemStackBuilder.of(Material.DIAMOND, 1).name("最高速度").build();
+    private ItemStack capacityItem = ItemStackBuilder.of(Material.SADDLE, 1).name("乗車人数").build();
     private ItemStack steeringItem = ItemStackBuilder.of(Material.LEAD, 1).name("ステアリング").lore(ChatColor.RED + "Coming soon").build();
-    private ItemStack positionItem = ItemStackBuilder.of(Material.SCUTE, 1).name("アイテム位置").build();
+
+    private ItemStack itemOptionItem = ItemStackBuilder.of(Material.ITEM_FRAME, 1).name("アイテム").build();
+
+    private ItemStack collideItem = ItemStackBuilder.of(Material.BEACON, 1).name(ChatColor.RESET + "当たり判定").build();
+    private ItemStack standSmallItem = ItemStackBuilder.of(Material.ARMOR_STAND, 1).name("大きさ").lore("小さい").build();
+    private ItemStack standBigItem = ItemStackBuilder.of(Material.ARMOR_STAND, 1).name("大きさ").lore("大きい").build();
+    private ItemStack heightItem = ItemStackBuilder.of(Material.IRON_HORSE_ARMOR, 1).name("座高").build();
+    private ItemStack soundItem = ItemStackBuilder.of(Material.BELL, 1).name("エンジン音").lore(ChatColor.RED + "Coming soon").build();
 
     private ItemStack updateItem = ItemStackBuilder.of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "更新する").build();
     private ItemStack removeItem = ItemStackBuilder.of(Material.BARRIER, 1).name(ChatColor.RED + "削除する").build();
@@ -44,57 +66,53 @@ public class ModelSettingContents extends MenuContents {
     public ModelSettingContents(Player player) {
         this.player = player;
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
-            this.addSlot(new Slot(4, ItemStackBuilder.of(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build(), event -> {
+            this.addSlot(new Slot(closeSlot, ItemStackBuilder.of(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build(), event -> {
                 InventoryMenu.of(player).ifPresent(menu -> menu.close(player));
                 EditSessions.destroy(player.getUniqueId());
             }));
 
-            this.addSlot(new Slot(13, nameItem, event -> {
+            this.addSlot(new Slot(nameSlot, nameItem, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> {
                     StringEditor.open(player, StringEditor.Type.NAME, (ModelSettingMenu) menu);
                 });
             }));
 
-            this.addSlot(new Slot(15, speedItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> {
-                    menu.flip(player, ModelMenuIndex.SPEED.value());
-                });
-            }));
-
-            this.addSlot(new Slot(20, loreItem, event -> {
+            this.addSlot(new Slot(loreSlot, loreItem, event -> {
                 new LoreEditor(player).open();
             }));
 
-            this.addSlot(new Slot(22, itemItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.CAR_ITEM.value()));
+            this.addSlot(new Slot(fuelSlot, fuelItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.FUEL.ordinal()));
             }));
 
-            this.addSlot(new Slot(24, capacityItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.CAPACITY.value()));
+            this.addSlot(new Slot(speedSlot, speedItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> {
+                    menu.flip(player, ModelMenuIndex.SPEED.ordinal());
+                });
             }));
 
-            this.addSlot(new Slot(29, fuelItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.FUEL.value()));
+            this.addSlot(new Slot(capacitySlot, capacityItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.CAPACITY.ordinal()));
             }));
 
-            this.addSlot(new Slot(31, collideItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.value()));
-            }));
-
-            this.addSlot(new Slot(33, heightItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.HEIGHT.value()));
-            }));
-
-            this.addSlot(new Slot(38, soundItem, event -> {
+            this.addSlot(new Slot(steeringSlot, steeringItem, event -> {
 
             }));
 
-            this.addSlot(new Slot(40, steeringItem, event -> {
-
+            this.addSlot(new Slot(itemSlot, itemOptionItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.ITEM_OPTION.ordinal()));
             }));
 
-            this.addSlot(new Slot(42, positionItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.ITEM_POSITION.value()));
+            this.addSlot(new Slot(collideSlot, collideItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.ordinal()));
+            }));
+
+            this.addSlot(new Slot(heightSlot, heightItem, event -> {
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.HEIGHT.ordinal()));
+            }));
+
+            this.addSlot(new Slot(soundSlot, soundItem, event -> {
+
             }));
         });
     }
@@ -103,8 +121,8 @@ public class ModelSettingContents extends MenuContents {
     public void onFlip(InventoryMenu menu) {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             if (session.isJustEditing()) {
-                this.removeSlot(46);
-                this.addSlot(new Slot(46, removeItem, event -> {
+                this.removeSlot(removeSlot);
+                this.addSlot(new Slot(removeSlot, removeItem, event -> {
                     String id = session.getId();
                     if (id == null || id.equals("")) {
                         return;
@@ -114,8 +132,8 @@ public class ModelSettingContents extends MenuContents {
                     EditSessions.destroy(player.getUniqueId());
                     menu.close(player);
                 }));
-                this.removeSlot(49);
-                this.addSlot(new Slot(49, updateItem, event -> {
+                this.removeSlot(makeSlot);
+                this.addSlot(new Slot(makeSlot, updateItem, event -> {
                     ModelList.remove(session.getId());
                     ModelList.add(session.generate());
                     player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + session.getId() + "を更新しました");
@@ -123,14 +141,14 @@ public class ModelSettingContents extends MenuContents {
                     menu.close(player);
                 }));
             } else {
-                this.removeSlot(11);
-                this.addSlot(new Slot(11, idItem, event -> {
+                this.removeSlot(idSlot);
+                this.addSlot(new Slot(idSlot, idItem, event -> {
                     InventoryMenu.of(player).ifPresent(m -> {
                         StringEditor.open(player, StringEditor.Type.ID, (ModelSettingMenu) menu);
                     });
                 }));
-                this.removeSlot(49);
-                this.addSlot(new Slot(49, createItem, event -> {
+                this.removeSlot(makeSlot);
+                this.addSlot(new Slot(makeSlot, createItem, event -> {
                     ItemStack clicked = Objects.requireNonNull(event.getCurrentItem());
 
                     if (!session.verifyCompleted()) {
@@ -154,46 +172,57 @@ public class ModelSettingContents extends MenuContents {
                     player.closeInventory();
                 }));
             }
-            if (session.getItemType() != null && session.getItemId() != 0) {
-                int modelId = session.getItemId();
-                itemItem = ItemStackBuilder.of(itemItem).lore(session.getItemType().name(), String.valueOf(modelId)).grow().build();
-                updateItemStack(22, itemItem);
-            }
-            if (session.getCapacity() != null) {
-                capacityItem = ItemStackBuilder.of(capacityItem).lore(String.valueOf(session.getCapacity().value())).grow().build();
-                updateItemStack(24, capacityItem);
-            }
-            if (session.getMaxFuel() != 0.0F) {
-                fuelItem = ItemStackBuilder.of(fuelItem).lore(String.valueOf(session.getMaxFuel())).grow().build();
-                updateItemStack(29, fuelItem);
-            }
+            this.removeSlot(standSlot);
+            this.addSlot(new ToggleSlot(standSlot, !session.isBig(), standSmallItem, standBigItem, event -> {
+                session.setBig(true);
+            }, event -> {
+                session.setBig(false);
+            }));
             if (session.getId() != null && !session.getId().equalsIgnoreCase("id")) {
                 idItem = ItemStackBuilder.of(idItem).lore(session.getId()).grow().build();
-                updateItemStack(11, idItem);
+                updateItemStack(idSlot, idItem);
             }
             if (session.getName() != null && !session.getName().equalsIgnoreCase("name")) {
                 nameItem = ItemStackBuilder.of(nameItem).lore(session.getName()).grow().build();
-                updateItemStack(13, nameItem);
-            }
-            if (session.getMaxSpeed() != null) {
-                speedItem = ItemStackBuilder.of(speedItem).lore(session.getMaxSpeed().getLabel()).grow().build();
-                updateItemStack(15, speedItem);
+                updateItemStack(nameSlot, nameItem);
             }
             if (session.getLore() != null) {
                 loreItem = ItemStackBuilder.of(loreItem).lore(session.getLore()).grow().build();
-                updateItemStack(20, loreItem);
+                updateItemStack(loreSlot, loreItem);
+            }
+            if (session.getMaxFuel() != 0.0F) {
+                fuelItem = ItemStackBuilder.of(fuelItem).lore(String.valueOf(session.getMaxFuel())).grow().build();
+                updateItemStack(fuelSlot, fuelItem);
+            }
+            if (session.getMaxSpeed() != null) {
+                speedItem = ItemStackBuilder.of(speedItem).lore(session.getMaxSpeed().getLabel()).grow().build();
+                updateItemStack(speedSlot, speedItem);
+            }
+            if (session.getCapacity() != null) {
+                capacityItem = ItemStackBuilder.of(capacityItem).lore(String.valueOf(session.getCapacity().value())).grow().build();
+                updateItemStack(capacitySlot, capacityItem);
+            }
+            if (session.getSteeringLevel() != null) {
+                steeringItem = ItemStackBuilder.of(steeringItem).lore(session.getSteeringLevel().name()).grow().build();
+                updateItemStack(steeringSlot, steeringItem);
+            }
+            if (session.isItemValid() && session.getPosition() != null) {
+                int modelId = session.getItemId();
+                itemOptionItem = ItemStackBuilder.of(itemOptionItem).lore(session.getItemType().name(), String.valueOf(modelId), session.getPosition().getLabel()).grow().build();
+                updateItemStack(itemSlot, itemOptionItem);
             }
             if (session.getCollideHeight() != 0.0F && session.getCollideBaseSide() != 0.0F) {
                 collideItem = ItemStackBuilder.of(collideItem).lore(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight())).grow().build();
-                updateItemStack(31, collideItem);
+                updateItemStack(collideSlot, collideItem);
             }
+
             if (session.getHeight() != 0.0F) {
                 heightItem = ItemStackBuilder.of(heightItem).lore(Formats.truncateToOneDecimalPlace(session.getHeight())).grow().build();
-                updateItemStack(33, heightItem);
+                updateItemStack(heightSlot, heightItem);
             }
-            if (session.getPosition() != null) {
-                positionItem = ItemStackBuilder.of(positionItem).lore(session.getPosition().getLabel()).grow().build();
-                updateItemStack(42, positionItem);
+            if (session.getSound() != null) {
+                soundItem = ItemStackBuilder.of(soundItem).lore(session.getSound().name()).build();
+                updateItemStack(soundSlot, soundItem);
             }
 
             menu.update();

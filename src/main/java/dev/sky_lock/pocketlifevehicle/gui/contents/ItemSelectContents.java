@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
  * @author sky_lock
  */
 
-public class SelectCarItemContents extends MenuContents {
+public class ItemSelectContents extends MenuContents {
 
-    public SelectCarItemContents(Player player) {
+    public ItemSelectContents(Player player) {
         short idOffset = 1000;
         short k = 1;
         for (int i = 0; i < 6; i++) {
@@ -28,7 +28,7 @@ public class SelectCarItemContents extends MenuContents {
                         session.setItemType(PLVehicle.CAR_ITEM);
                         session.setItemID(id);
                     });
-                    flipPage(player, ModelMenuIndex.SETTING.value());
+                    flipPage(player, ModelMenuIndex.ITEM_OPTION.ordinal());
                 }));
                 k++;
             }

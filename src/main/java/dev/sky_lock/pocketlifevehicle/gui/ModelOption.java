@@ -165,6 +165,10 @@ public class ModelOption {
         return sound;
     }
 
+    public boolean isItemValid() {
+        return itemType != null && itemId != 0;
+    }
+
     public Model generate() {
         return ModelBuilder.of(id)
                 .name(name)

@@ -165,7 +165,7 @@ public abstract class InventoryMenu implements InventoryHolder {
      * @return メニューコンテンツ
      */
     public Optional<MenuContents> getContentsAt(int page) {
-        return Optional.ofNullable(this.contents.get(page - 1));
+        return Optional.ofNullable(this.contents.get(page));
     }
 
     void click(InventoryClickEvent event) {

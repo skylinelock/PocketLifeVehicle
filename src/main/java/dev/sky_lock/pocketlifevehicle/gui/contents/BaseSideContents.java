@@ -24,7 +24,7 @@ public class BaseSideContents extends MenuContents {
                 EditSessions.of(player.getUniqueId()).ifPresent(session -> {
                     session.setCollideBaseSide(baseSide);
                 });
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.value()));
+                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.ordinal()));
             }));
         }
     }

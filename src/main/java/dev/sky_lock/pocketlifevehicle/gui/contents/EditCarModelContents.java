@@ -47,14 +47,16 @@ public class EditCarModelContents extends MenuContents {
             }
             desc.add(ChatColor.DARK_AQUA + "説明: " + ChatColor.AQUA + lore);
             Spec spec = model.getSpec();
-            desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + spec.getMaxSpeed().getLabel());
             desc.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + spec.getMaxFuel());
+            desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + spec.getMaxSpeed().getLabel());
             desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + spec.getCapacity().value());
             ItemOption itemOption = model.getItemOption();
             CollideBox box = model.getCollideBox();
-            desc.add(ChatColor.DARK_AQUA + "当たり判定: " + ChatColor.AQUA + box.getBaseSide() + "×" + box.getHeight());
-            desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + Formats.truncateToOneDecimalPlace(model.getHeight()));
             desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + itemOption.getPosition().getLabel());
+            desc.add(ChatColor.DARK_AQUA + "当たり判定: " + ChatColor.AQUA + box.getBaseSide() + "×" + box.getHeight());
+            String size = model.isBig() ? "大きい" : "小さい";
+            desc.add(ChatColor.DARK_AQUA + "大きさ: " + ChatColor.AQUA + size);
+            desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + Formats.truncateToOneDecimalPlace(model.getHeight()));
             ItemStack item = ItemStackBuilder.of(model.getItemStack()).name(name).lore(desc).build();
             super.addSlot(new Slot(modelSlot, item, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> {
@@ -79,7 +81,7 @@ public class EditCarModelContents extends MenuContents {
                         session.setBig(model.isBig());
                         session.setHeight(model.getHeight());
                         session.setSound(model.getSound());
-                        menu.flip(player, ModelMenuIndex.SETTING.value());
+                        menu.flip(player, ModelMenuIndex.SETTING.ordinal());
                     });
                 });
             }));
@@ -89,7 +91,7 @@ public class EditCarModelContents extends MenuContents {
             InventoryMenu.of(player).ifPresent(menu -> {
                 EditSessions.of(player.getUniqueId()).ifPresent(session -> {
                     session.setJustEditing(false);
-                    menu.flip(player, ModelMenuIndex.SETTING.value());
+                    menu.flip(player, ModelMenuIndex.SETTING.ordinal());
                 });
             });
         }));

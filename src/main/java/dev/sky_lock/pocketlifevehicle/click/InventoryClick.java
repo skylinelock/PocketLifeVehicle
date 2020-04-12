@@ -41,7 +41,7 @@ public class InventoryClick {
                     session.setName(name);
                 }
                 Player player = (Player) event.getWhoClicked();
-                StringEditor.get(player).getMenu().open(player, ModelMenuIndex.SETTING.value());
+                StringEditor.get(player).getMenu().open(player, ModelMenuIndex.SETTING.ordinal());
                 StringEditor.close(player);
             });
 

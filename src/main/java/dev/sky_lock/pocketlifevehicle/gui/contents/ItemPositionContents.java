@@ -15,9 +15,9 @@ import org.bukkit.inventory.ItemStack;
  * @author sky_lock
  */
 
-public class SelectPositionContents extends MenuContents {
+public class ItemPositionContents extends MenuContents {
 
-    public SelectPositionContents(Player player) {
+    public ItemPositionContents(Player player) {
         ItemStack positionSelector = ItemStackBuilder.of(Material.ARMOR_STAND, 1).build();
         addSlot(new Slot(11, ItemStackBuilder.of(positionSelector).name(ItemPosition.HEAD.getLabel()).build(), (event) -> {
             setPositionAndReturn(player, ItemPosition.HEAD);
@@ -45,7 +45,7 @@ public class SelectPositionContents extends MenuContents {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             session.setItemPosition(position);
             InventoryMenu.of(player).ifPresent(menu -> {
-                menu.flip(player, ModelMenuIndex.SETTING.value());
+                menu.flip(player, ModelMenuIndex.ITEM_OPTION.ordinal());
             });
         });
     }

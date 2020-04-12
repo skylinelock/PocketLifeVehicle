@@ -27,7 +27,7 @@ public class LoreEditor extends SignEditor {
                 @Override
                 public void run() {
                     InventoryMenu inventoryMenu = (InventoryMenu) player.getOpenInventory().getTopInventory().getHolder();
-                    inventoryMenu.open(player, ModelMenuIndex.SETTING.value());
+                    inventoryMenu.open(player, ModelMenuIndex.SETTING.ordinal());
                 }
             }.runTaskLater(PLVehicle.getInstance(), 1L);
         });

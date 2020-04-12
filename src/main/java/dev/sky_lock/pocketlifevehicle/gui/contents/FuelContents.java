@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
  * @author sky_lock
  */
 
-public class SelectFuelContents extends MenuContents {
+public class FuelContents extends MenuContents {
 
-    public SelectFuelContents(Player player) {
+    public FuelContents(Player player) {
         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
             int index = 1;
             for (int i = 0; i < 6; i++) {
@@ -29,7 +29,7 @@ public class SelectFuelContents extends MenuContents {
                     ItemStack iron = ItemStackBuilder.of(Material.IRON_BLOCK, 1).name(fuel + "").build();
                     addSlot(new Slot(slot, iron, event -> {
                         session.setMaxFuel(fuel);
-                        flipPage(player, ModelMenuIndex.SETTING.value());
+                        flipPage(player, ModelMenuIndex.SETTING.ordinal());
                     }));
                     index += 1;
                 }
