@@ -15,12 +15,12 @@ import java.util.Set;
  * @author sky_lock
  */
 
-public class CarEntityStoreFile {
+public class EntityStoreFile {
     private static final Type TYPETOKEN = new TypeToken<Set<CarEntity>>() {}.getType();
     private final Path filePath;
 
-    public CarEntityStoreFile(Path dirPath) {
-        this.filePath = Paths.get(dirPath.toAbsolutePath().toString(), "carentities.json");
+    public EntityStoreFile(Path dirPath) {
+        this.filePath = Paths.get(dirPath.toAbsolutePath().toString(), "entities.json");
     }
 
     public void save(Set<CarEntity> cars) throws IOException {

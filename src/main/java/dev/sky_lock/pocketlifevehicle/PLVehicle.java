@@ -6,7 +6,7 @@ import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler;
 import dev.sky_lock.pocketlifevehicle.config.PluginConfig;
 import dev.sky_lock.pocketlifevehicle.item.Glowing;
-import dev.sky_lock.pocketlifevehicle.json.CarEntityStoreFile;
+import dev.sky_lock.pocketlifevehicle.json.EntityStoreFile;
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener;
 import dev.sky_lock.pocketlifevehicle.listener.EventListener;
 import org.bukkit.ChatColor;
@@ -22,7 +22,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class PLVehicle extends JavaPlugin {
 
     private static PLVehicle instance;
-    private final CarEntityStoreFile carStoreFile = new CarEntityStoreFile(getDataFolder().toPath());
+    private final EntityStoreFile entityStoreFile = new EntityStoreFile(getDataFolder().toPath());
     public static final Material CAR_ITEM = Material.IRON_NUGGET;
 
     private PluginConfig pluginConfig;
@@ -57,8 +57,8 @@ public class PLVehicle extends JavaPlugin {
         pluginManager.registerEvents(new InventoryMenuListener(this), this);
     }
 
-    public CarEntityStoreFile getCarStoreFile() {
-        return carStoreFile;
+    public EntityStoreFile getEntityStoreFile() {
+        return entityStoreFile;
     }
 
     public static PLVehicle getInstance() {

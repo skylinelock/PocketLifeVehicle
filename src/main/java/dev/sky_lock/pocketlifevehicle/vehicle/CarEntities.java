@@ -123,7 +123,7 @@ public class CarEntities {
 
     public static void spawnAll() {
         try {
-            PLVehicle.getInstance().getCarStoreFile().load().forEach(carEntity -> {
+            PLVehicle.getInstance().getEntityStoreFile().load().forEach(carEntity -> {
                 ModelList.of(carEntity.getModelId()).ifPresent(model -> {
                     CarEntities.spawn(carEntity.getOwner(), model, carEntity.getLocation(), carEntity.getFuel());
                 });
@@ -135,7 +135,7 @@ public class CarEntities {
 
     public static void saveAll() {
         try {
-            PLVehicle.getInstance().getCarStoreFile().save(CarEntities.getCarEntities());
+            PLVehicle.getInstance().getEntityStoreFile().save(CarEntities.getCarEntities());
             CarEntities.killAll();
         } catch (IOException ex) {
             logger.warning("CarEntityの保存に失敗しました");
