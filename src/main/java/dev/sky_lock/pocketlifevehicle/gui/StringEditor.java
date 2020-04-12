@@ -94,7 +94,8 @@ public class StringEditor extends ContainerAnvil {
 
     public enum Type {
         ID("ID"),
-        NAME("名前");
+        NAME("名前"),
+        HEIGHT("座高");
 
         private final String name;
 

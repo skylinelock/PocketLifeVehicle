@@ -18,6 +18,5 @@ public enum ModelMenuIndex {
     COLLIDE_BOX,
     COLLIDE_BASESIDE,
     COLLIDE_HEIGHT,
-    HEIGHT,
     SOUND
 }

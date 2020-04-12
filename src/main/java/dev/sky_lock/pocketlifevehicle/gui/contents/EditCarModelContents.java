@@ -6,7 +6,6 @@ import dev.sky_lock.menu.Slot;
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions;
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
-import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.vehicle.model.*;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -56,7 +55,7 @@ public class EditCarModelContents extends MenuContents {
             desc.add(ChatColor.DARK_AQUA + "当たり判定: " + ChatColor.AQUA + box.getBaseSide() + "×" + box.getHeight());
             String size = model.isBig() ? "大きい" : "小さい";
             desc.add(ChatColor.DARK_AQUA + "大きさ: " + ChatColor.AQUA + size);
-            desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + Formats.truncateToOneDecimalPlace(model.getHeight()));
+            desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + model.getHeight());
             ItemStack item = ItemStackBuilder.of(model.getItemStack()).name(name).lore(desc).build();
             super.addSlot(new Slot(modelSlot, item, event -> {
                 InventoryMenu.of(player).ifPresent(menu -> {

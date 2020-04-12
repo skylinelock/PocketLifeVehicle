@@ -7,7 +7,6 @@ import dev.sky_lock.menu.ToggleSlot;
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.gui.*;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
-import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -108,7 +107,7 @@ public class ModelSettingContents extends MenuContents {
             }));
 
             this.addSlot(new Slot(heightSlot, heightItem, event -> {
-                InventoryMenu.of(player).ifPresent(menu -> menu.flip(player, ModelMenuIndex.HEIGHT.ordinal()));
+                InventoryMenu.of(player).ifPresent(menu -> StringEditor.open(player, StringEditor.Type.HEIGHT, (ModelSettingMenu) menu));
             }));
 
             this.addSlot(new Slot(soundSlot, soundItem, event -> {
@@ -217,7 +216,7 @@ public class ModelSettingContents extends MenuContents {
             }
 
             if (session.getHeight() != 0.0F) {
-                heightItem = ItemStackBuilder.of(heightItem).lore(Formats.truncateToOneDecimalPlace(session.getHeight())).grow().build();
+                heightItem = ItemStackBuilder.of(heightItem).lore(Float.toString(session.getHeight())).grow().build();
                 updateItemStack(heightSlot, heightItem);
             }
             if (session.getSound() != null) {
