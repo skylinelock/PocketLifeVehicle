@@ -212,7 +212,7 @@ public class ModelSettingContents extends MenuContents {
                 updateItemStack(itemSlot, itemOptionItem);
             }
             if (session.getCollideHeight() != 0.0F && session.getCollideBaseSide() != 0.0F) {
-                collideItem = ItemStackBuilder.of(collideItem).lore(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight())).grow().build();
+                collideItem = ItemStackBuilder.of(collideItem).name(ChatColor.AQUA + "当たり判定").lore(String.valueOf(session.getCollideBaseSide()), String.valueOf(session.getCollideHeight())).grow().build();
                 updateItemStack(collideSlot, collideItem);
             }
 
