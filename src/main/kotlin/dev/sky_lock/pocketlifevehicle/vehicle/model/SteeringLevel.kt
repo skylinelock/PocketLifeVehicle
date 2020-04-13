@@ -1,10 +1,10 @@
-package dev.sky_lock.pocketlifevehicle.vehicle.model;
+package dev.sky_lock.pocketlifevehicle.vehicle.model
 
 /**
  * @author sky_lock
  */
 
-public enum SteeringLevel {
+enum class SteeringLevel {
     LOWEST,
     LOW,
     NORMAL,
