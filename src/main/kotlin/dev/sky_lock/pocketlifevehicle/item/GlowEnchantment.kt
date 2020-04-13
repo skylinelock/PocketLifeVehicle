@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack
 /**
  * @author sky_lock
  */
-class Glowing internal constructor() : Enchantment(NamespacedKey.minecraft("glowing")) {
+class GlowEnchantment internal constructor() : Enchantment(NamespacedKey.minecraft("glowing")) {
     override fun canEnchantItem(itemStack: ItemStack): Boolean {
         return false
     }

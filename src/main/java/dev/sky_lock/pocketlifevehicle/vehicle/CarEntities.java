@@ -108,7 +108,7 @@ public class CarEntities {
         return entities.values().stream().filter(car -> car.contains(basis)).findFirst().orElse(null);
     }
 
-    static Set<CarEntity> getCarEntities() {
+    private static Set<CarEntity> getCarEntities() {
         return entities.entrySet().stream().map(entry -> new CarEntity(entry.getKey().toString(), entry.getValue().getModel().getId(), entry.getValue().getLocation(), entry.getValue().getStatus().getFuel())).collect(Collectors.toSet());
     }
 

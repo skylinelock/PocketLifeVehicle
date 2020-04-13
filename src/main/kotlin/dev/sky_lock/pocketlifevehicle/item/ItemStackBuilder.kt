@@ -61,7 +61,7 @@ class ItemStackBuilder private constructor(itemStack: ItemStack) {
 
     fun glow(): ItemStackBuilder {
         val itemMeta = requireNotNull(itemStack.itemMeta)
-        itemMeta.addEnchant(Glowing(), 1, true)
+        itemMeta.addEnchant(GlowEnchantment(), 1, true)
         itemStack.itemMeta = itemMeta
         return this
     }

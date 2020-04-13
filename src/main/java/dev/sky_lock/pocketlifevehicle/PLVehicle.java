@@ -3,7 +3,7 @@ package dev.sky_lock.pocketlifevehicle;
 import dev.sky_lock.menu.InventoryMenuListener;
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler;
 import dev.sky_lock.pocketlifevehicle.config.PluginConfig;
-import dev.sky_lock.pocketlifevehicle.item.Glowing;
+import dev.sky_lock.pocketlifevehicle.item.GlowEnchantment;
 import dev.sky_lock.pocketlifevehicle.json.EntityStoreFile;
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener;
 import dev.sky_lock.pocketlifevehicle.listener.EventListener;
@@ -51,7 +51,7 @@ public class PLVehicle extends JavaPlugin {
         } catch (NoSuchFieldException | IllegalAccessException ex) {
             this.getLogger().warning("Could not register the enchant for growing item");
         }
-        Enchantment.registerEnchantment(new Glowing());
+        Enchantment.registerEnchantment(new GlowEnchantment());
     }
 
     @Override
