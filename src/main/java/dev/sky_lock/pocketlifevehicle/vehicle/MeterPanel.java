@@ -1,7 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle;
 
 import dev.sky_lock.pocketlifevehicle.util.Formats;
-import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -49,6 +48,6 @@ class MeterPanel {
         String blockPerSecond = Formats.truncateToOneDecimalPlace(Math.abs(engine.speedPerSecond()));
         builder.append(blockPerSecond).append(ChatColor.GRAY).append(ChatColor.BOLD).append(" blocks/s");
 
-        ActionBar.sendPacket(player, builder.toString());
+        player.sendActionBar(builder.toString());
     }
 }

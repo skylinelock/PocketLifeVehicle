@@ -1,6 +1,5 @@
 package dev.sky_lock.pocketlifevehicle.vehicle;
 
-import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
 import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -56,7 +55,7 @@ public class SeatArmorStand extends EntityArmorStand {
             return true;
         }
         Player player = (Player) entity.getBukkitEntity();
-        ActionBar.sendPacket(player, "");
+        player.sendActionBar("");
         return true;
     }
 

@@ -62,14 +62,14 @@ class Steering {
     private void raiseMainHand(int entityID) {
         AnimationPacket packet = new AnimationPacket();
         packet.setEntityID(entityID);
-        packet.setAnimation(AnimationPacket.AnimationType.SWING_MAIN_ARM);
+        packet.setAnimationType(AnimationPacket.AnimationType.SWING_MAIN_ARM);
         packet.broadCast();
     }
 
     private void raiseOffhand(int entityID) {
         AnimationPacket packet = new AnimationPacket();
         packet.setEntityID(entityID);
-        packet.setAnimation(AnimationPacket.AnimationType.SWING_OFFHAND);
+        packet.setAnimationType(AnimationPacket.AnimationType.SWING_OFFHAND);
         packet.broadCast();
     }
 }

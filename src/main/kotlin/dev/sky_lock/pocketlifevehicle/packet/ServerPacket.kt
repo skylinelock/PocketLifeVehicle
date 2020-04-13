@@ -1,32 +1,27 @@
-package dev.sky_lock.pocketlifevehicle.packet;
+package dev.sky_lock.pocketlifevehicle.packet
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Level;
+import com.comphenix.protocol.PacketType
+import com.comphenix.protocol.ProtocolLibrary
+import org.bukkit.Bukkit
+import org.bukkit.entity.Player
+import java.lang.reflect.InvocationTargetException
+import java.util.logging.Level
 
 /**
  * @author sky_lock
  */
+open class ServerPacket internal constructor(val type: PacketType)
+    : AbstractPacket(ProtocolLibrary.getProtocolManager().createPacket(type)) {
 
-public class ServerPacket extends AbstractPacket {
-
-    ServerPacket(PacketType type) {
-        super(ProtocolLibrary.getProtocolManager().createPacket(type));
-    }
-
-    public void send(Player player) {
+    fun send(player: Player) {
         try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(player, getPacket());
-        } catch (InvocationTargetException ex) {
-            Bukkit.getLogger().log(Level.WARNING, "Could not send a packet");
+            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet)
+        } catch (ex: InvocationTargetException) {
+            Bukkit.getLogger().log(Level.WARNING, "Could not send a packet")
         }
     }
 
-    public void broadCast() {
-        ProtocolLibrary.getProtocolManager().broadcastServerPacket(getPacket());
+    fun broadCast() {
+        ProtocolLibrary.getProtocolManager().broadcastServerPacket(packet)
     }
 }

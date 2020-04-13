@@ -2,7 +2,6 @@ package dev.sky_lock.pocketlifevehicle.vehicle;
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
-import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
 import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.util.Profiles;
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity;
@@ -32,7 +31,7 @@ public class CarEntities {
             return false;
         }
         if (location.getBlock().getType() != Material.AIR) {
-            ActionBar.sendPacket(Bukkit.getPlayer(player), ChatColor.RED + "ブロックがあるので車を設置できません");
+            Bukkit.getPlayer(player).sendActionBar(ChatColor.RED + "ブロックがあるので車を設置できません");
             return false;
         }
 

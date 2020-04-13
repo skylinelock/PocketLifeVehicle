@@ -1,7 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.click;
 
 import dev.sky_lock.pocketlifevehicle.Permission;
-import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
 import dev.sky_lock.pocketlifevehicle.util.Profiles;
 import dev.sky_lock.pocketlifevehicle.vehicle.Car;
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
@@ -54,6 +53,6 @@ public class CarClick {
     }
 
     private void sendFailureInfo(String message) {
-        ActionBar.sendPacket(player, ChatColor.YELLOW + "" + ChatColor.BOLD + "⚠⚠ " + ChatColor.RED + "" + ChatColor.BOLD + message + ChatColor.YELLOW + "" + ChatColor.BOLD + " ⚠⚠");
+        player.sendActionBar(ChatColor.YELLOW + "" + ChatColor.BOLD + "⚠⚠ " + ChatColor.RED + "" + ChatColor.BOLD + message + ChatColor.YELLOW + "" + ChatColor.BOLD + " ⚠⚠");
     }
 }

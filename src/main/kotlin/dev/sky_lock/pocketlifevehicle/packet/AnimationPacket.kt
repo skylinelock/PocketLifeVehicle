@@ -1,41 +1,20 @@
-package dev.sky_lock.pocketlifevehicle.packet;
+package dev.sky_lock.pocketlifevehicle.packet
 
-import com.comphenix.protocol.PacketType;
+import com.comphenix.protocol.PacketType
 
 /**
  * @author sky_lock
  */
-
-public class AnimationPacket extends ServerPacket {
-
-    public AnimationPacket() {
-        super(PacketType.Play.Server.ANIMATION);
+class AnimationPacket : ServerPacket(PacketType.Play.Server.ANIMATION) {
+    fun setEntityID(value: Int) {
+        packet.integers.write(0, value)
     }
 
-    public void setEntityID(int value) {
-        getPacket().getIntegers().write(0, value);
+    fun setAnimationType(type: AnimationType) {
+        packet.integers.write(1, type.ordinal)
     }
 
-    public void setAnimation(AnimationType type) {
-        getPacket().getIntegers().write(1, type.value());
-    }
-
-    public enum AnimationType {
-        SWING_MAIN_ARM(0),
-        TAKE_DAMAGE(1),
-        LEAVE_BED(2),
-        SWING_OFFHAND(3),
-        CRITICAL_EFFECT(4),
-        MAGIC_CRITICAL_EFFECT(5);
-
-        private final int id;
-
-        AnimationType(int id) {
-            this.id = id;
-        }
-
-        int value() {
-            return id;
-        }
+    enum class AnimationType {
+        SWING_MAIN_ARM, TAKE_DAMAGE, LEAVE_BED, SWING_OFFHAND, CRITICAL_EFFECT, MAGIC_CRITICAL_EFFECT
     }
 }

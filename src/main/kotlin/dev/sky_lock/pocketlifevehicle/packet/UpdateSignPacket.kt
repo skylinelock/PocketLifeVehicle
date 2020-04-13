@@ -1,18 +1,11 @@
-package dev.sky_lock.pocketlifevehicle.packet;
+package dev.sky_lock.pocketlifevehicle.packet
 
-import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketContainer
 
 /**
  * @author sky_lock
  */
-
-public class UpdateSignPacket extends ClientPacket {
-
-    public UpdateSignPacket(PacketContainer packet) {
-        super(packet);
-    }
-
-    public String[] getLines() {
-        return getPacket().getStringArrays().read(0);
-    }
+class UpdateSignPacket(packet: PacketContainer) : ClientPacket(packet) {
+    val lines: Array<String>
+        get() = packet.stringArrays.read(0)
 }

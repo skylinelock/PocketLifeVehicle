@@ -1,14 +1,8 @@
-package dev.sky_lock.pocketlifevehicle.packet;
+package dev.sky_lock.pocketlifevehicle.packet
 
-import com.comphenix.protocol.events.PacketContainer;
+import com.comphenix.protocol.events.PacketContainer
 
 /**
  * @author sky_lock
  */
-
-class ClientPacket extends AbstractPacket {
-
-    ClientPacket(PacketContainer packet) {
-        super(packet);
-    }
-}
+open class ClientPacket(packet: PacketContainer) : AbstractPacket(packet)

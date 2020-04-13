@@ -6,7 +6,6 @@ import dev.sky_lock.pocketlifevehicle.click.CarClick;
 import dev.sky_lock.pocketlifevehicle.click.InventoryClick;
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions;
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor;
-import dev.sky_lock.pocketlifevehicle.packet.ActionBar;
 import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand;
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
@@ -101,11 +100,11 @@ public class EventListener implements Listener {
         Player player = event.getPlayer();
 
         if (!PLVehicle.getInstance().getPluginConfig().getAllowWorlds().contains(event.getPlayer().getWorld())) {
-            ActionBar.sendPacket(player, ChatColor.RED + "このワールドでは車は使用できません");
+            player.sendActionBar(ChatColor.RED + "このワールドでは車は使用できません");
             return;
         }
         if (event.getBlockFace() != BlockFace.UP) {
-            ActionBar.sendPacket(player, ChatColor.RED + "乗り物は地面にのみ設置できます");
+            player.sendActionBar(ChatColor.RED + "乗り物は地面にのみ設置できます");
             return;
         }
         Location whereToSpawn = Objects.requireNonNull(event.getClickedBlock()).getLocation().clone().add(0.5, 1.0, 0.5);
@@ -129,7 +128,7 @@ public class EventListener implements Listener {
             return;
         }
         if (!Permission.CAR_PLACE.obtained(player)) {
-            ActionBar.sendPacket(player, ChatColor.RED + "この車を所有していないので設置できません");
+            player.sendActionBar(ChatColor.RED + "この車を所有していないので設置できません");
             return;
         }
         this.placeCarEntity(player, itemStack, event.getHand(), owner, model, whereToSpawn, Float.parseFloat(fuel));
