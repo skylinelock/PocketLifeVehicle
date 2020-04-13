@@ -6,7 +6,7 @@ import org.bukkit.permissions.Permissible
  * @author sky_lock
  */
  
- enum class Permission(val permission: String) {
+ enum class Permission(private val permission: String) {
     ADMIN_COMMAND("plvehicle.command.admin.use"),
     CAR_CLICK("plvehicle.entity.open-gui"),
     CAR_PLACE("plvehicle.entity.place");

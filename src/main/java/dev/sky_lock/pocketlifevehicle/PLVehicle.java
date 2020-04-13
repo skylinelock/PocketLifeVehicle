@@ -1,19 +1,22 @@
 package dev.sky_lock.pocketlifevehicle;
 
 import dev.sky_lock.menu.InventoryMenuListener;
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler;
 import dev.sky_lock.pocketlifevehicle.config.PluginConfig;
 import dev.sky_lock.pocketlifevehicle.item.Glowing;
 import dev.sky_lock.pocketlifevehicle.json.EntityStoreFile;
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener;
 import dev.sky_lock.pocketlifevehicle.listener.EventListener;
+import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.lang.reflect.Field;
 
 /**
  * @author sky_lock
@@ -40,7 +43,15 @@ public class PLVehicle extends JavaPlugin {
 
         this.registerPluginEvents();
         this.registerEntities();
-        Glowing.register();
+
+        try {
+            Field field = Enchantment.class.getDeclaredField("acceptingNew");
+            field.setAccessible(true);
+            field.set(null, true);
+        } catch (NoSuchFieldException | IllegalAccessException ex) {
+            this.getLogger().warning("Could not register the enchant for growing item");
+        }
+        Enchantment.registerEnchantment(new Glowing());
     }
 
     @Override
