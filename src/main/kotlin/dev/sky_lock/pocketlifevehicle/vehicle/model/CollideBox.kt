@@ -1,44 +1,29 @@
-package dev.sky_lock.pocketlifevehicle.vehicle.model;
+package dev.sky_lock.pocketlifevehicle.vehicle.model
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.SerializableAs;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.SerializableAs
+import java.util.*
 
 /**
  * @author sky_lock
  */
-
 @SerializableAs("CollideBox")
-public class CollideBox implements ConfigurationSerializable {
-    private final float baseSide;
-    private final float height;
+class CollideBox(val baseSide: Float, val height: Float) : ConfigurationSerializable {
 
-    public CollideBox(float baseSide, float height) {
-        this.baseSide = baseSide;
-        this.height = height;
+    override fun serialize(): Map<String, Any> {
+        val map: MutableMap<String, Any> = HashMap()
+        map["baseside"] = baseSide
+        map["height"] = height
+        return map
     }
 
-    public float getBaseSide() {
-        return baseSide;
+    companion object {
+        @JvmStatic
+        fun deserialize(map: Map<String, Any>): CollideBox {
+            val baseSide = (map["baseside"] as Double).toFloat()
+            val height = (map["height"] as Double).toFloat()
+            return CollideBox(baseSide, height)
+        }
     }
 
-    public float getHeight() {
-        return height;
-    }
-
-    public static CollideBox deserialize(Map<String, Object> map) {
-        float baseSide = (float) (double) map.get("baseside");
-        float height = (float) (double) map.get("height");
-        return new CollideBox(baseSide, height);
-    }
-
-    @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("baseside", baseSide);
-        map.put("height", height);
-        return map;
-    }
 }

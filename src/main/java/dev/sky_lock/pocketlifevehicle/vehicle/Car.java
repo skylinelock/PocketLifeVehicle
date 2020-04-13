@@ -1,9 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.vehicle;
 
 import dev.sky_lock.pocketlifevehicle.gui.CarUtilMenu;
+import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket;
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
 import net.minecraft.server.v1_14_R1.World;
-import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;

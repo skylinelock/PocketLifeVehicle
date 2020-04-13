@@ -1,62 +1,37 @@
-package dev.sky_lock.pocketlifevehicle.vehicle.model;
+package dev.sky_lock.pocketlifevehicle.vehicle.model
 
-import org.bukkit.Material;
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.SerializableAs;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.bukkit.Material
+import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.SerializableAs
+import java.util.*
 
 /**
  * @author sky_lock
  */
-
 @SerializableAs("ItemOption")
-public class ItemOption implements ConfigurationSerializable {
+class ItemOption(val type: Material, val id: Int) : ConfigurationSerializable {
+    var position = ItemPosition.HEAD
 
-    private final Material type;
-    private final int id;
-    private ItemPosition position = ItemPosition.HEAD;
-
-    public ItemOption(Material type, int id) {
-        this.type = type;
-        this.id = id;
+    constructor(type: Material, id: Int, position: ItemPosition) : this(type, id) {
+        this.position = position
     }
 
-    public ItemOption(Material type, int id, ItemPosition position) {
-        this(type, id);
-        setPosition(position);
+    override fun serialize(): Map<String, Any> {
+        val map: MutableMap<String, Any> = HashMap()
+        map["type"] = type.name
+        map["id"] = id
+        map["position"] = position.toString()
+        return map
     }
 
-    public Material getType() {
-        return type;
+    companion object {
+        @JvmStatic
+        fun deserialize(map: Map<String, Any>): ItemOption {
+            val type = Material.valueOf((map["type"] as String))
+            val id = map["id"].toString().toInt()
+            val position = ItemPosition.valueOf(map["position"].toString())
+            return ItemOption(type, id, position)
+        }
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setPosition(ItemPosition position) {
-        this.position = position;
-    }
-
-    public ItemPosition getPosition() {
-        return position;
-    }
-
-    public static ItemOption deserialize(Map<String, Object> map) {
-        Material type = Material.valueOf((String) map.get("type"));
-        int id = Integer.parseInt(String.valueOf(map.get("id")));
-        ItemPosition position = ItemPosition.valueOf(String.valueOf(map.get("position")));
-        return new ItemOption(type, id, position);
-    }
-
-    @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("type", type.name());
-        map.put("id", id);
-        map.put("position", position.toString());
-        return map;
-    }
 }

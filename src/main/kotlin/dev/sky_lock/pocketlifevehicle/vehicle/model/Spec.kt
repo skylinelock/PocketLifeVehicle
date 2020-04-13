@@ -1,61 +1,34 @@
-package dev.sky_lock.pocketlifevehicle.vehicle.model;
+package dev.sky_lock.pocketlifevehicle.vehicle.model
 
-import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.SerializableAs;
-
-import java.util.HashMap;
-import java.util.Map;
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity.Companion.valueOf
+import org.bukkit.configuration.serialization.ConfigurationSerializable
+import org.bukkit.configuration.serialization.SerializableAs
+import java.util.*
 
 /**
  * @author sky_lock
  */
-
 @SerializableAs("Spec")
-public class Spec implements ConfigurationSerializable {
-    private final float maxFuel;
-    private final MaxSpeed maxSpeed;
-    private final Capacity capacity;
-    private final SteeringLevel steeringLevel;
+class Spec(val maxFuel: Float, val maxSpeed: MaxSpeed, val capacity: Capacity, val steeringLevel: SteeringLevel) : ConfigurationSerializable {
 
-    public Spec(float maxFuel, MaxSpeed maxSpeed, Capacity capacity, SteeringLevel steeringLevel) {
-        this.maxFuel = maxFuel;
-        this.maxSpeed = maxSpeed;
-        this.capacity = capacity;
-        this.steeringLevel = steeringLevel;
+    override fun serialize(): Map<String, Any> {
+        val map: MutableMap<String, Any> = HashMap()
+        map["maxfuel"] = maxFuel
+        map["maxspeed"] = maxSpeed.ordinal
+        map["capacity"] = capacity.value()
+        map["steering"] = steeringLevel.toString()
+        return map
     }
 
-    public float getMaxFuel() {
-        return maxFuel;
+    companion object {
+        @JvmStatic
+        fun deserialize(map: Map<String, Any>): Spec {
+            val maxFuel = (map["maxfuel"] as Double).toFloat()
+            val speed = MaxSpeed.values()[map["maxspeed"] as Int]
+            val capacity = valueOf(map["capacity"] as Int)
+            val steeringLevel = SteeringLevel.valueOf(map["steering"].toString())
+            return Spec(maxFuel, speed, capacity, steeringLevel)
+        }
     }
 
-    public MaxSpeed getMaxSpeed() {
-        return maxSpeed;
-    }
-
-    public Capacity getCapacity() {
-        return capacity;
-    }
-
-    public SteeringLevel getSteeringLevel() {
-        return steeringLevel;
-    }
-
-    public static Spec deserialize(Map<String, Object> map) {
-        float maxFuel = (float) ((double) map.get("maxfuel"));
-        MaxSpeed speed = MaxSpeed.values()[(int) map.get("maxspeed")];
-        Capacity capacity = Capacity.from((int) map.get("capacity"));
-        SteeringLevel steeringLevel = SteeringLevel.valueOf(String.valueOf(map.get("steering")));
-        return new Spec(maxFuel, speed, capacity, steeringLevel);
-    }
-
-    @Override
-    public Map<String, Object> serialize() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("maxfuel", maxFuel);
-        map.put("maxspeed", maxSpeed.ordinal());
-        map.put("capacity", capacity.value());
-        map.put("steering", steeringLevel.toString());
-
-        return map;
-    }
 }
