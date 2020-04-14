@@ -1,35 +1,35 @@
-package dev.sky_lock.pocketlifevehicle.command;
+package dev.sky_lock.pocketlifevehicle.command
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle;
-import dev.sky_lock.pocketlifevehicle.vehicle.Storage;
-import org.bukkit.ChatColor;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
+import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.vehicle.Storage
+import org.bukkit.ChatColor
+import org.bukkit.command.Command
+import org.bukkit.command.CommandSender
 
 /**
  * @author sky_lock
  */
-
-public class ReloadCommand implements ICommand, IAdminCommand, IConsoleCommand {
-
-    @Override
-    public void execute(CommandSender sender, Command cmd, String[] args) {
-        if (args.length < 2) {
-            sender.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "引数が足りません");
-            return;
+class ReloadCommand : ICommand, IAdminCommand, IConsoleCommand {
+    override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
+        if (args.size < 2) {
+            sender.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "引数が足りません")
+            return
         }
-        String flag = args[1];
-
-        if (flag.equalsIgnoreCase("from")) {
-            Storage.MODEL.reloadConfig();
-            PLVehicle.getInstance().getPluginConfig().reloadFromDisk();
-            sender.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "ディスクからデータを読み込みました");
-        } else if (flag.equalsIgnoreCase("to")) {
-            PLVehicle.getInstance().getPluginConfig().saveToFile();
-            Storage.MODEL.saveToFile();
-            sender.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "ディスクへデータを保存しました");
-        } else {
-            sender.sendMessage(PLVehicle.PREFIX + "/vehicle reload [from/to]");
+        val flag = args[1]
+        when {
+            flag.equals("from", ignoreCase = true) -> {
+                Storage.MODEL.reloadConfig()
+                PLVehicle.getInstance().pluginConfig.reloadFromDisk()
+                sender.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "ディスクからデータを読み込みました")
+            }
+            flag.equals("to", ignoreCase = true) -> {
+                PLVehicle.getInstance().pluginConfig.saveToFile()
+                Storage.MODEL.saveToFile()
+                sender.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "ディスクへデータを保存しました")
+            }
+            else -> {
+                sender.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "/vehicle reload [from/to]")
+            }
         }
     }
 }

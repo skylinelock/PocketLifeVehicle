@@ -44,9 +44,7 @@ public class EditCarModelContents extends MenuContents {
                 if (modelSlot > 44) {
                     return Unit.INSTANCE;
                 }
-                String name = ChatColor.YELLOW + model.getName();
                 List<String> desc = new ArrayList<>();
-                desc.add(ChatColor.DARK_AQUA + "ID: " + ChatColor.AQUA + model.getId());
                 desc.add(ChatColor.DARK_AQUA + "名前: " + ChatColor.AQUA + model.getName());
                 //TODO: [] -> ""
                 List<String> lore = model.getLore();
@@ -65,7 +63,7 @@ public class EditCarModelContents extends MenuContents {
                 String size = model.isBig() ? "大きい" : "小さい";
                 desc.add(ChatColor.DARK_AQUA + "大きさ: " + ChatColor.AQUA + size);
                 desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + model.getHeight());
-                ItemStack item = ItemStackBuilder.of(model.getItemStack()).name(name).lore(desc).build();
+                ItemStack item = ItemStackBuilder.of(model.getItemStack()).name(ChatColor.YELLOW + model.getId()).lore(desc).build();
                 addSlot(new Slot(modelSlot, item, event -> {
                     InventoryMenu.of(player).ifPresent(menu -> {
                         EditSessions.of(player.getUniqueId()).ifPresent(session -> {
