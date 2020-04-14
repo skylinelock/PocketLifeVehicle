@@ -9,9 +9,9 @@ import dev.sky_lock.pocketlifevehicle.gui.StringEditor;
 import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand;
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
+import dev.sky_lock.pocketlifevehicle.vehicle.Storage;
 import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand;
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -89,7 +89,7 @@ public class EventListener implements Listener {
         if (itemStack == null) {
             return;
         }
-        Model model = ModelList.of(itemStack);
+        Model model = Storage.MODEL.findByItemStack(itemStack);
         if (model == null) {
             return;
         }

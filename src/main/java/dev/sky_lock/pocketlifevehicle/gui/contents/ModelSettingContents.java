@@ -7,7 +7,7 @@ import dev.sky_lock.menu.ToggleSlot;
 import dev.sky_lock.pocketlifevehicle.PLVehicle;
 import dev.sky_lock.pocketlifevehicle.gui.*;
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
+import dev.sky_lock.pocketlifevehicle.vehicle.Storage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -126,15 +126,15 @@ public class ModelSettingContents extends MenuContents {
                     if (id == null || id.equals("")) {
                         return;
                     }
-                    ModelList.remove(id);
+                    Storage.MODEL.unregister(id);
                     player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + id + "を削除しました");
                     EditSessions.destroy(player.getUniqueId());
                     menu.close(player);
                 }));
                 this.removeSlot(makeSlot);
                 this.addSlot(new Slot(makeSlot, updateItem, event -> {
-                    ModelList.remove(session.getId());
-                    ModelList.add(session.generate());
+                    Storage.MODEL.unregister(session.getId());
+                    Storage.MODEL.register(session.generate());
                     player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + session.getId() + "を更新しました");
                     EditSessions.destroy(player.getUniqueId());
                     menu.close(player);
@@ -158,14 +158,14 @@ public class ModelSettingContents extends MenuContents {
                         return;
                     }
 
-                    if (ModelList.exists(session.getId())) {
+                    if (Storage.MODEL.hasRegistered(session.getId())) {
                         ItemMeta itemMeta = Objects.requireNonNull(clicked.getItemMeta());
                         itemMeta.setLore(Collections.singletonList(ChatColor.RED + "既に存在するIDです"));
                         clicked.setItemMeta(itemMeta);
                         event.setCurrentItem(clicked);
                         return;
                     }
-                    ModelList.add(session.generate());
+                    Storage.MODEL.register(session.generate());
                     player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "新しい車種を追加しました");
                     EditSessions.destroy(player.getUniqueId());
                     player.closeInventory();

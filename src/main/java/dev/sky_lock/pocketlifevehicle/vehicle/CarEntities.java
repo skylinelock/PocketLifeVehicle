@@ -6,7 +6,6 @@ import dev.sky_lock.pocketlifevehicle.util.Formats;
 import dev.sky_lock.pocketlifevehicle.util.Profiles;
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity;
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
 import org.bukkit.*;
 import org.bukkit.entity.Item;
 import org.bukkit.inventory.ItemFlag;
@@ -123,9 +122,10 @@ public class CarEntities {
     public static void spawnAll() {
         try {
             PLVehicle.getInstance().getEntityStoreFile().load().forEach(carEntity -> {
-                ModelList.of(carEntity.getModelId()).ifPresent(model -> {
+                Model model = Storage.MODEL.findById(carEntity.getModelId());
+                if (model != null) {
                     CarEntities.spawn(carEntity.getOwner(), model, carEntity.getLocation(), carEntity.getFuel());
-                });
+                }
             });
         } catch (IOException ex) {
             logger.warning("CarEntityの読み込みに失敗しました");

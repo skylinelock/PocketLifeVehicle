@@ -8,7 +8,7 @@ import dev.sky_lock.pocketlifevehicle.json.EntityStoreFile;
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener;
 import dev.sky_lock.pocketlifevehicle.listener.EventListener;
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities;
-import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelList;
+import dev.sky_lock.pocketlifevehicle.vehicle.Storage;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -57,7 +57,7 @@ public class PLVehicle extends JavaPlugin {
     @Override
     public void onDisable() {
         CarEntities.saveAll();
-        ModelList.saveConfig();
+        Storage.MODEL.saveToFile();
         pluginConfig.saveToFile();
     }
 
