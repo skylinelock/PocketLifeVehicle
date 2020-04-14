@@ -7,7 +7,7 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 class Storage {
     companion object {
         @JvmField
-        val ENTITY = EntityMap()
+        val ENTITY = EntityStorage()
         @JvmField
         val MODEL = ModelStorage()
     }

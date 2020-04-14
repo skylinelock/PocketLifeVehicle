@@ -26,22 +26,22 @@ class SpawnCommand : ICommand, IAdminCommand {
             return
         }
         if (!PLVehicle.getInstance().pluginConfig.allowWorlds.contains(target.world)) {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "対象のプレイヤーがいるワールドは車の使用が許可されていません")
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "対象のプレイヤーがいるワールドは乗り物の使用が許可されていません")
             return
         }
         val id = args[2]
         val model = Storage.MODEL.findById(id)
         if (model == null) {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "車種が見つかりませんでした")
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "モデルが見つかりませんでした")
             return
         }
         CarEntities.kill(target.uniqueId)
         val success = CarEntities.spawn(target.uniqueId, model, target.location, model.spec.maxFuel)
         if (success) {
             player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + name + " に " + id + " を渡しました")
-            target.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "車を受け取りました")
+            target.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "乗り物を受け取りました")
         } else {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "車を設置できませんでした")
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "乗り物を設置できませんでした")
         }
     }
 }

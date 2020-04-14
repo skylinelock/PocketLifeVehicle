@@ -24,11 +24,11 @@ class GiveCommand : ICommand, IAdminCommand {
         val id = args[2]
         val model = Storage.MODEL.findById(id)
         if (model == null) {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "車種が見つかりませんでした")
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "モデルが見つかりませんでした")
             return
         }
         player.inventory.addItem(model.itemStack)
         player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + name + "に" + id + "を与えました")
-        target.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "車を受け取りました")
+        target.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "乗り物を受け取りました")
     }
 }

@@ -18,7 +18,7 @@ class ModelStorage {
     }
 
     fun findById(id: String): Model? {
-        return models.first { model -> this.checkIdEquality(model, id) }
+        return models.find { model -> this.checkIdEquality(model, id) }
     }
 
     fun hasRegistered(id: String): Boolean {
@@ -50,13 +50,13 @@ class ModelStorage {
         val name = meta.displayName
         val itemId = meta.customModelData
 
-        return models.first {model ->
+        return models.find {model ->
             val modelName = model.name
             val itemOption = model.itemOption
             val modelItemId = itemOption.id
             val modelItemType = itemOption.type
 
-            return@first itemStack.type == modelItemType && name == modelName && itemId == modelItemId
+            return@find itemStack.type == modelItemType && name == modelName && itemId == modelItemId
         }
     }
 
