@@ -42,6 +42,11 @@ class ModelStorage {
         models.forEach(action)
     }
 
+    //TODO
+    fun size(): Int {
+        return models.size
+    }
+
     fun findByItemStack(itemStack: ItemStack): Model? {
         if (itemStack.type == Material.AIR || !itemStack.hasItemMeta()) {
             return null

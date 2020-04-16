@@ -19,11 +19,11 @@ class ReloadCommand : ICommand, IAdminCommand, IConsoleCommand {
         when {
             flag.equals("from", ignoreCase = true) -> {
                 Storage.MODEL.reloadConfig()
-                PLVehicle.getInstance().pluginConfig.reloadFromDisk()
+                PLVehicle.instance.pluginConfiguration.reload()
                 sender.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "ディスクからデータを読み込みました")
             }
             flag.equals("to", ignoreCase = true) -> {
-                PLVehicle.getInstance().pluginConfig.saveToFile()
+                PLVehicle.instance.pluginConfiguration.save()
                 Storage.MODEL.saveToFile()
                 sender.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "ディスクへデータを保存しました")
             }

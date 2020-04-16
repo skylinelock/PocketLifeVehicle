@@ -12,7 +12,7 @@ import java.util.logging.Level
  * @author sky_lock
  */
 internal object BukkitConfiguration {
-    private val logger = PLVehicle.getInstance().logger
+    private val logger = PLVehicle.instance.logger
 
     fun load(path: Path): YamlConfiguration? {
         var config: YamlConfiguration? = null

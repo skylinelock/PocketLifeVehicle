@@ -23,7 +23,6 @@ class PlayerSkull private constructor(private val player: OfflinePlayer, private
     }
 
     companion object {
-        @JvmStatic
         fun of(owner: UUID, amount: Int): PlayerSkull {
             return PlayerSkull(Bukkit.getOfflinePlayer(owner), amount)
         }

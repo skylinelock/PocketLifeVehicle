@@ -13,7 +13,6 @@ enum class Capacity(private val value: Int) {
     }
 
     companion object {
-        @JvmStatic
         fun valueOf(value: Int): Capacity {
             return Arrays.stream(values()).filter { capacity: Capacity -> capacity.value() == value }.findFirst().orElse(null)
         }

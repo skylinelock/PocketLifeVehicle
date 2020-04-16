@@ -71,13 +71,11 @@ class ItemStackBuilder private constructor(itemStack: ItemStack) {
     }
 
     companion object {
-        @JvmStatic
         fun of(type: Material, amount: Int): ItemStackBuilder {
             require(type != Material.AIR) { "Material cannot be Material.AIR" }
             return ItemStackBuilder(ItemStack(type, amount))
         }
 
-        @JvmStatic
         fun of(itemStack: ItemStack): ItemStackBuilder {
             require(itemStack.type != Material.AIR) { "Material cannot be Material.AIR" }
             return ItemStackBuilder(itemStack)
