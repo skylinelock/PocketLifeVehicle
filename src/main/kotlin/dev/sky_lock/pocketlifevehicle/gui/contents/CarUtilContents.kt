@@ -77,12 +77,8 @@ class CarUtilContents(private val car: Car) : MenuContents() {
         val carInfo: MutableList<String> = ArrayList()
         carInfo.add(ChatColor.GREEN.toString() + "名前     : " + ChatColor.RESET + car.model.name)
         carInfo.add(ChatColor.GREEN.toString() + "最大燃料 : " + ChatColor.RESET + car.model.spec.maxFuel)
-        carInfo.add(ChatColor.GREEN.toString() + "最高速度 : " + ChatColor.RESET + car.model.spec.maxSpeed)
+        carInfo.add(ChatColor.GREEN.toString() + "最高速度 : " + ChatColor.RESET + car.model.spec.maxSpeed.label)
         carInfo.add(ChatColor.GREEN.toString() + "説明 :")
-        if (car.model.lore == null) {
-            carInfo.add("- " + ChatColor.RESET + "なし")
-            return carInfo
-        }
         car.model.lore.forEach(java.util.function.Consumer { lore: String -> carInfo.add("- " + ChatColor.RESET + lore) })
         return carInfo
     }
