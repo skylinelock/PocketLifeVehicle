@@ -5,7 +5,6 @@ import dev.sky_lock.pocketlifevehicle.vehicle.model.CollideBox
 import dev.sky_lock.pocketlifevehicle.vehicle.model.ItemOption
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Spec
-import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.nio.file.Path

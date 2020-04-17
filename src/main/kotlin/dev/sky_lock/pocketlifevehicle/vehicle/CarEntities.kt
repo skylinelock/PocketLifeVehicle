@@ -50,7 +50,8 @@ object CarEntities {
     }
 
     fun spawn(car: Car): Boolean {
-        return getOwner(car).map { owner: UUID -> spawn(owner, car.model, car.location, car.status.fuel) }.orElse(false)
+        val owner = getOwner(car) ?: return false
+        return spawn(owner, car.model, car.location, car.status.fuel)
     }
 
     fun kill(owner: UUID) {
@@ -72,11 +73,12 @@ object CarEntities {
     }
 
     fun tow(car: Car) {
-        getOwner(car).ifPresent { owner: UUID -> tow(owner, car) }
+        getOwner(car)?.let { owner -> tow(owner, car) }
     }
 
     fun tow(owner: UUID) {
-        Optional.ofNullable(entities[owner]).ifPresent { car: Car -> tow(owner, car) }
+        val car = entities[owner] ?: return
+        tow(owner, car)
     }
 
     private fun tow(owner: UUID, car: Car) {
@@ -108,8 +110,8 @@ object CarEntities {
         return entities[player]
     }
 
-    fun getOwner(car: Car): Optional<UUID> {
-        return entities.entries.stream().filter { entry: Map.Entry<UUID, Car> -> entry.value == car }.findFirst().map { entry -> entry.key }
+    fun getOwner(car: Car): UUID? {
+        return entities.entries.find { entry: Map.Entry<UUID, Car> -> entry.value == car }?.key
     }
 
     fun spawnAll() {

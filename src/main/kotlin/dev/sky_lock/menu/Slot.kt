@@ -9,6 +9,8 @@ import org.bukkit.util.Consumer
  */
 open class Slot(private val index: Int, private var itemStack: ItemStack, private val todo: Consumer<InventoryClickEvent>) {
 
+    constructor(index: Int, itemStack: ItemStack) : this(index, itemStack, Consumer { })
+
     /**
      * インベントリでのスロットナンバーを返します。
      *

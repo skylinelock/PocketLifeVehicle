@@ -8,7 +8,6 @@ import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getOwner
 import org.bukkit.ChatColor
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
 import org.bukkit.entity.Player
-import java.util.*
 
 /**
  * @author sky_lock
@@ -19,24 +18,24 @@ class CarClick(private val player: Player, private val seat: CraftArmorStand) {
         if (seat.passengers.isNotEmpty()) {
             return
         }
-        getOwner(car!!).ifPresent { owner: UUID ->
+        getOwner(car!!)?.let { owner ->
             val clicked = player.uniqueId
             val ownerName = getName(owner)
             if (player.isSneaking) {
                 if (clicked != owner && !Permission.CAR_CLICK.obtained(player)) {
                     sendFailureInfo("この乗り物は $ownerName が所有しています")
-                    return@ifPresent
+                    return@let
                 }
                 car.openMenu(player)
-                return@ifPresent
+                return@let
             }
             if (clicked == owner) {
                 seat.addPassenger(player)
-                return@ifPresent
+                return@let
             }
             if (car.status.isLocked) {
                 sendFailureInfo("この乗り物には鍵が掛かっています")
-                return@ifPresent
+                return@let
             }
             seat.addPassenger(player)
         }

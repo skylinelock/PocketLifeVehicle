@@ -10,7 +10,6 @@ import org.bukkit.ChatColor
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.*
 import java.util.function.Consumer
 
 /**
@@ -33,10 +32,10 @@ class BurnExplosionTask {
                 }
                 if (count == 0) {
                     car.explode()
-                    getOwner(car).ifPresent { ownerUuid: UUID ->
-                        val owner = Bukkit.getPlayer(ownerUuid) ?: return@ifPresent
+                    getOwner(car)?.let { ownerUuid ->
+                        val owner = Bukkit.getPlayer(ownerUuid) ?: return@let
                         if (car.passengers.stream().anyMatch { player: Player -> player.uniqueId == ownerUuid }) {
-                            return@ifPresent
+                            return@let
                         }
                         owner.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "所有する車が" + car.passengers[0].name + "の運転によって破壊されました")
                     }

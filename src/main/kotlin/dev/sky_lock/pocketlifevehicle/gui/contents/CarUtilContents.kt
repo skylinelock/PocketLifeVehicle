@@ -86,11 +86,19 @@ class CarUtilContents(private val car: Car) : MenuContents() {
     init {
         val closeItem = of(Material.ENDER_PEARL, 1).name(ChatColor.RED.toString() + "閉じる").build()
         val towItem = of(Material.MINECART, 1).name(colorizeTitle("レッカー移動")).lore(colorizeInfoAsList("アイテム化して持ち運べるようにします")).build()
-        val ownerSlot = getOwner(car).map { owner: UUID? ->
-            val playerSkull = of(owner!!, 1).toItemStack()
+
+        val owner = getOwner(car)
+        val ownerSlot: Slot?
+
+        ownerSlot = if (owner == null) {
+            val unknownSkull = of(Material.PLAYER_HEAD, 1).name("unknown").build()
+            Slot(20, unknownSkull)
+        } else {
+            val playerSkull = of(owner, 1).toItemStack()
             val ownerSkull = of(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(getName(owner)!!)).build()
-            Slot(20, ownerSkull, org.bukkit.util.Consumer { event: InventoryClickEvent? -> })
-        }.orElse(null)
+            Slot(20, ownerSkull, org.bukkit.util.Consumer { })
+        }
+
         val carInfoBook = of(Material.BOOK, 1).name(colorizeTitle("車両情報")).lore(carInfoLore()).build()
         val closeSlot = Slot(4, closeItem, org.bukkit.util.Consumer { event: InventoryClickEvent ->
             val menu = event.inventory.holder as CarUtilMenu?
@@ -103,8 +111,8 @@ class CarUtilContents(private val car: Car) : MenuContents() {
         val wield = of(Material.LIME_DYE, 1).name(ChatColor.RED.toString() + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build()
         val notWield = of(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN.toString() + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build()
         val status = car.status
-        val wieldHandSlot: Slot = ToggleSlot(13, status.isWieldHand, wield, notWield, org.bukkit.util.Consumer { event: InventoryClickEvent? -> status.isWieldHand = false }, org.bukkit.util.Consumer { event: InventoryClickEvent? -> status.isWieldHand = true })
-        val carInfoSlot = Slot(24, carInfoBook, org.bukkit.util.Consumer { event: InventoryClickEvent? -> })
+        val wieldHandSlot: Slot = ToggleSlot(13, status.isWieldHand, wield, notWield, Consumer { status.isWieldHand = false }, Consumer { status.isWieldHand = true })
+        val carInfoSlot = Slot(24, carInfoBook, org.bukkit.util.Consumer { })
         val keyClose = of(Material.BARRIER, 1).name(ChatColor.RED.toString() + "" + ChatColor.BOLD + "鍵を閉める").build()
         val keyOpen = of(Material.STRUCTURE_VOID, 1).name(ChatColor.AQUA.toString() + "" + ChatColor.BOLD + "鍵を開ける").build()
         val keySlot: Slot = ToggleSlot(15, status.isLocked, keyOpen, keyClose, org.bukkit.util.Consumer { event: InventoryClickEvent ->

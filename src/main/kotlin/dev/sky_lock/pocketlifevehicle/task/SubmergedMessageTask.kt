@@ -8,7 +8,6 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.*
 import java.util.function.Consumer
 
 /**
@@ -40,9 +39,9 @@ class SubmergedMessageTask {
                     count--
                     return
                 }
-                getOwner(car).ifPresent { ownerUuid: UUID ->
+                getOwner(car)?.let { ownerUuid ->
                     if (car.passengers.stream().anyMatch { player: Player -> player.uniqueId == ownerUuid }) {
-                        return@ifPresent
+                        return@let
                     }
                     val ownPlayer = Bukkit.getPlayer(ownerUuid)
                     ownPlayer?.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "所有する車が" + car.passengers[0].name + "の運転によって破壊されました")
