@@ -106,16 +106,19 @@ class EventListener : Listener {
         val owner = UUID.fromString(ownerUUID)
         val lore = Objects.requireNonNull(meta.lore)
         val rawFuel = lore!![1]
-        val fuel = removeBlanks(rawFuel).split(":".toRegex()).toTypedArray()[1]
+        var fuel = removeBlanks(rawFuel).split(":".toRegex()).toTypedArray()[1].toFloat()
+        if (fuel > model.spec.maxFuel) {
+            fuel = model.spec.maxFuel
+        }
         if (player.uniqueId == owner) {
-            placeCarEntity(player, itemStack, event.hand, owner, model, whereToSpawn, fuel.toFloat())
+            placeCarEntity(player, itemStack, event.hand, owner, model, whereToSpawn, fuel)
             return
         }
         if (!Permission.CAR_PLACE.obtained(player)) {
             player.sendActionBar(ChatColor.RED.toString() + "この車を所有していないので設置できません")
             return
         }
-        placeCarEntity(player, itemStack, event.hand, owner, model, whereToSpawn, fuel.toFloat())
+        placeCarEntity(player, itemStack, event.hand, owner, model, whereToSpawn, fuel)
     }
 
     private fun placeCarEntity(whoPlaced: Player, carItem: ItemStack, hand: EquipmentSlot?, owner: UUID, model: Model, location: Location, fuel: Float) {
