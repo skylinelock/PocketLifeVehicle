@@ -66,25 +66,17 @@ class CarArmorStand : EntityArmorStand {
 
     //足音がなるかどうか
     override fun isSilent(): Boolean {
-        return isCarArmorStand
+        return true
     }
 
     //水に入った時
     override fun az() {
-        if (!isCarArmorStand) {
-            super.au()
-            return
-        }
         super.au()
         SubmergedMessageTask().run(car!!)
         car!!.soundTask.stop()
     }
 
     override fun burn(i: Float) {
-        if (!isCarArmorStand) {
-            super.burn(i)
-            return
-        }
         super.burn(i)
         if (!car!!.isBeginExplode) {
             BurnExplosionTask().run(car!!)
@@ -125,8 +117,6 @@ class CarArmorStand : EntityArmorStand {
 //        return CraftCar(Bukkit.getServer() as CraftServer, this)
 //    }
 
-    private val isCarArmorStand: Boolean
-        get() = car!!.model != null && car!!.status != null
 
 /*    inner class CraftCar internal constructor(server: CraftServer, entity: EntityArmorStand) : CraftArmorStand(server, entity) {
         override fun getHandle(): CarArmorStand {

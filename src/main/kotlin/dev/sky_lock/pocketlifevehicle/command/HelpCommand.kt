@@ -20,12 +20,12 @@ class HelpCommand : ICommand {
             sender.sendPrefixedPluginMessage("/vehicle model - モデルエディタを開きます")
             sender.sendPrefixedPluginMessage("/vehicle reload - ファイルからモデル情報を読み書きします")
             sender.sendPrefixedPluginMessage("/vehicle debug - デバッグ用コマンド")
-            sender.sendPrefixedPluginMessage("------------------------------------")
+            sender.sendPrefixedPluginMessage("-----------------------------------")
             return
         }
         sender.sendPrefixedPluginMessage("/vehicle search - モデルの現在地を表示します")
         sender.sendPrefixedPluginMessage("/vehicle towaway - 乗り物をアイテム化します")
-        sender.sendPrefixedPluginMessage("------------------------------------")
+        sender.sendPrefixedPluginMessage("-----------------------------------")
 
     }
 }
