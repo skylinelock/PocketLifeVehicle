@@ -22,7 +22,7 @@ object CarEntities {
 
     fun spawn(player: UUID, model: Model, location: Location, fuel: Float): Boolean {
         if (location.block.type != Material.AIR) {
-            Bukkit.getPlayer(player)!!.sendActionBar(ChatColor.RED.toString() + "ブロックがあるので車を設置できません")
+            Bukkit.getPlayer(player)!!.sendActionBar(ChatColor.RED.toString() + "ブロックがあるので乗り物を設置できません")
             return false
         }
         var car: Car? = null

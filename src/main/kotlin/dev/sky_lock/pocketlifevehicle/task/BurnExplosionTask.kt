@@ -39,7 +39,7 @@ class BurnExplosionTask {
                         if (car.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
                             return@let
                         }
-                        owner.sendPrefixedPluginMessage(ChatColor.RED + "所有する車が" + car.passengers[0].name + "の運転によって破壊されました")
+                        owner.sendPrefixedPluginMessage(ChatColor.RED + "乗り物が" + car.passengers[0].name + "の運転によって破壊されました")
                     }
                     car.passengers.forEach(Consumer { player: Player ->
                         warning.stop(player)

@@ -5,6 +5,7 @@ import dev.sky_lock.pocketlifevehicle.util.Profiles.getName
 import dev.sky_lock.pocketlifevehicle.vehicle.Car
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getCar
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getOwner
+import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
 import org.bukkit.ChatColor
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
 import org.bukkit.entity.Player
@@ -13,7 +14,7 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 class CarClick(private val player: Player, private val seat: CraftArmorStand) {
-    private val car: Car? = getCar(seat.handle as dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand)
+    private val car: Car? = getCar(seat.handle as SeatArmorStand)
     fun accept() {
         if (seat.passengers.isNotEmpty()) {
             return

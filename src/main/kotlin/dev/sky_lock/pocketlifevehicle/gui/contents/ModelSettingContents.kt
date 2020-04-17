@@ -129,7 +129,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                         return@Consumer
                     }
                     Storage.MODEL.register(session.generate())
-                    player.sendPrefixedPluginMessage(ChatColor.GREEN + "新しい車種を追加しました")
+                    player.sendPrefixedPluginMessage(ChatColor.GREEN + "新しいモデルを追加しました")
                     destroy(player.uniqueId)
                     player.closeInventory()
                 }))

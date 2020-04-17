@@ -46,7 +46,7 @@ class SubmergedMessageTask {
                         return@let
                     }
                     val ownPlayer = Bukkit.getPlayer(ownerUuid)
-                    ownPlayer?.sendPrefixedPluginMessage(ChatColor.RED + "所有する車が" + car.passengers[0].name + "の運転によって破壊されました")
+                    ownPlayer?.sendPrefixedPluginMessage(ChatColor.RED + "乗り物が" + car.passengers[0].name + "の運転によって破壊されました")
                 }
                 kill(car)
                 car.passengers.forEach(Consumer { player: Player? -> warning.stop(player!!) })

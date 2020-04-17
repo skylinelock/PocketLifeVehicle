@@ -18,10 +18,10 @@ class AllowWorldCommand : ICommand, IAdminCommand {
         val worldName = player.world.name
         if (config.getAllowWorlds().contains(player.world)) {
             config.removeAllowWorld(worldName)
-            player.sendPrefixedPluginMessage(ChatColor.GREEN + "このワールドを車が使用できないようにしました")
+            player.sendPrefixedPluginMessage(ChatColor.GREEN + "このワールドでの乗り物の使用をできないようにしました")
             return
         }
         config.addAllowWorld(worldName)
-        player.sendPrefixedPluginMessage(ChatColor.GREEN + "このワールドを車が使用できるようにしました")
+        player.sendPrefixedPluginMessage(ChatColor.GREEN + "このワールドでの乗り物の使用を許可しました")
     }
 }
