@@ -2,6 +2,7 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.config.ModelConfiguration
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -42,11 +43,6 @@ class ModelStorage {
         models.forEach(action)
     }
 
-    //TODO
-    fun size(): Int {
-        return models.size
-    }
-
     fun findByItemStack(itemStack: ItemStack): Model? {
         if (itemStack.type == Material.AIR || !itemStack.hasItemMeta()) {
             return null
@@ -68,6 +64,7 @@ class ModelStorage {
     fun saveToFile() {
         config.saveToFile()
     }
+
     fun reloadConfig() {
         models.clear()
         models.addAll(config.loadModels())

@@ -34,9 +34,10 @@ class Model internal constructor(val id: String, val name: String,
     }
 
     companion object {
+        @JvmStatic
         fun deserialize(map: Map<String, Any>): Model {
-            val id = map["id"] as String
-            val name = map["name"] as String
+            val id = map["id"].toString()
+            val name = map["name"].toString()
             val lore: List<String>
             val mapObj = map["lore"]
             lore = if (mapObj == null) {
@@ -51,7 +52,7 @@ class Model internal constructor(val id: String, val name: String,
             val spec = map["spec"] as Spec
             val itemOption = map["item"] as ItemOption
             val collideBox = map["collidebox"] as CollideBox
-            val isBig = java.lang.Boolean.parseBoolean(map["big"].toString())
+            val isBig = map["big"].toString().toBoolean()
             val height = (map["height"] as Double).toFloat()
             val sound = Sound.valueOf(map["sound"].toString())
             return ModelBuilder.of(id)

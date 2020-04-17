@@ -9,7 +9,6 @@ import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.nio.file.Path
-import java.util.logging.Level
 
 /**
  * @author sky_lock

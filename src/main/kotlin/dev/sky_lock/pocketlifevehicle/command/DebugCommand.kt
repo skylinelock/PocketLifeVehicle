@@ -10,9 +10,5 @@ import org.bukkit.command.CommandSender
  */
 class DebugCommand : ICommand, IAdminCommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
-         Storage.MODEL.forEach { model -> {
-             Bukkit.broadcastMessage(model.id)
-         } }
-        Bukkit.broadcastMessage(Storage.MODEL.size().toString())
     }
 }
