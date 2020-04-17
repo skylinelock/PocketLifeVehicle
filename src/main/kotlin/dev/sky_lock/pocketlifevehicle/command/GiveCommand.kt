@@ -1,6 +1,5 @@
 package dev.sky_lock.pocketlifevehicle.command
 
-import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extensions.plus
 import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
@@ -30,11 +29,7 @@ class GiveCommand : ICommand, IAdminCommand {
             return
         }
         target.inventory.addItem(model.itemStack)
+        target.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物を受け取りました")
         player.sendPrefixedPluginMessage(ChatColor.GREEN + name + "に" + id + "を与えました")
-        if (Permission.ADMIN_COMMAND.obtained(target)) {
-            target.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物を受け取りました")
-        } else {
-            target.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物を受け取りました")
-        }
     }
 }

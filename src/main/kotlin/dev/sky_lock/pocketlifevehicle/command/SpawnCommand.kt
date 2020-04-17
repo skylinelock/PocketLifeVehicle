@@ -1,7 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
-import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extensions.plus
 import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities
@@ -42,11 +41,7 @@ class SpawnCommand : ICommand, IAdminCommand {
         val success = CarEntities.spawn(target.uniqueId, model, target.location, model.spec.maxFuel)
         if (success) {
             player.sendPrefixedPluginMessage(ChatColor.GREEN + name + " に " + id + " を渡しました")
-            if (Permission.ADMIN_COMMAND.obtained(target)) {
-                target.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物を受け取りました")
-            } else {
-                target.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物を受け取りました")
-            }
+            target.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物を受け取りました")
         } else {
             player.sendPrefixedPluginMessage(ChatColor.RED + "乗り物を設置できませんでした")
         }
