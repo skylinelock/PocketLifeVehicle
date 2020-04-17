@@ -2,7 +2,6 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.config.ModelConfiguration
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 
@@ -11,8 +10,8 @@ import org.bukkit.inventory.ItemStack
  */
 
 class ModelStorage {
-    private val config = ModelConfiguration();
-    private val models = config.loadModels();
+    private val config = ModelConfiguration()
+    private val models = config.loadModels()
 
     private fun checkIdEquality(model: Model, id: String): Boolean {
         return model.id.equals(id, ignoreCase = true)
@@ -48,16 +47,14 @@ class ModelStorage {
             return null
         }
         val meta = itemStack.itemMeta
-        val name = meta.displayName
         val itemId = meta.customModelData
 
         return models.find {model ->
-            val modelName = model.name
             val itemOption = model.itemOption
             val modelItemId = itemOption.id
             val modelItemType = itemOption.type
 
-            return@find itemStack.type == modelItemType && name == modelName && itemId == modelItemId
+            return@find itemStack.type == modelItemType && itemId == modelItemId
         }
     }
 
