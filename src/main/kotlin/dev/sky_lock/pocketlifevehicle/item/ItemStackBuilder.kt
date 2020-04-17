@@ -55,7 +55,7 @@ class ItemStackBuilder private constructor(itemStack: ItemStack) {
         val meta = requireNotNull(itemStack.itemMeta)
         val container = meta.persistentDataContainer
         container.set(key, type, obj)
-        itemStack.itemMeta = meta;
+        itemStack.itemMeta = meta
         return this
     }
 

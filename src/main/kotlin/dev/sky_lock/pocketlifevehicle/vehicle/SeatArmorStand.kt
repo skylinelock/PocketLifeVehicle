@@ -1,9 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import net.minecraft.server.v1_14_R1.*
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
-import java.util.*
 
 /**
  * @author sky_lock
@@ -46,7 +44,7 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
             synchronize()
             return
         }
-        if (!car!!.driver.isPresent) {
+        if (car!!.driver == null) {
             synchronize()
             return
         }
@@ -75,7 +73,7 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
     }
 
     private val isCarSheet: Boolean
-        private get() = position != null && control != null
+        get() = position != null && control != null
 
 //    override fun getBukkitEntity(): CraftEntity {
 //        return CraftSeat(Bukkit.getServer() as CraftServer, this)
@@ -85,14 +83,14 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
         return super.getId()
     }
 
-    val passenger: Optional<Player>
+    val passenger: Player?
         get() {
-            if (passengers.isEmpty()) {
-                return Optional.empty()
+            val passenger = passengers[0] ?: return null
+            return if (passenger is EntityHuman) {
+                passenger.bukkitEntity as Player
+            } else {
+                null
             }
-            return if (passengers[0] !is EntityHuman) {
-                Optional.empty()
-            } else Optional.of(passengers[0].bukkitEntity as CraftPlayer)
         }
 //
 //    inner class CraftSeat internal constructor(server: CraftServer, entity: EntityArmorStand) : CraftArmorStand(server, entity) {

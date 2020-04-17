@@ -34,7 +34,7 @@ class BurnExplosionTask {
                     car.explode()
                     getOwner(car)?.let { ownerUuid ->
                         val owner = Bukkit.getPlayer(ownerUuid) ?: return@let
-                        if (car.passengers.stream().anyMatch { player: Player -> player.uniqueId == ownerUuid }) {
+                        if (car.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
                             return@let
                         }
                         owner.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "所有する車が" + car.passengers[0].name + "の運転によって破壊されました")

@@ -7,7 +7,6 @@ import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.entity.ArmorStand
-import org.bukkit.entity.Player
 import org.bukkit.util.EulerAngle
 
 /**
@@ -16,7 +15,7 @@ import org.bukkit.util.EulerAngle
 class CarArmorStand : EntityArmorStand {
     private var car: Car? = null
 
-    constructor(entitytypes: EntityTypes<out EntityArmorStand>, world: World) : super(entitytypes, world) {}
+    constructor(entityTypes: EntityTypes<out EntityArmorStand>, world: World) : super(entityTypes, world)
     constructor(world: World, x: Double, y: Double, z: Double) : super(world, x, y, z) {
         val nbt = NBTTagCompound()
         nbt.setBoolean("NoBasePlate", true)
@@ -51,6 +50,7 @@ class CarArmorStand : EntityArmorStand {
     //        float heightScale = collideBox.getHeight() / size.height;
     //        return this.getEntityType().j().a(widthScale, heightScale);
     //    }
+
     val location: Location
         get() = bukkitEntity.location
 
@@ -93,12 +93,12 @@ class CarArmorStand : EntityArmorStand {
     }
 
     override fun e(vec3d: Vec3D) {
-        if (car!!.passengers.isEmpty() || !car!!.driver.isPresent || this.isInWater || inLava) {
+        if (car!!.passengers.isEmpty() || car!!.driver == null || this.isInWater || inLava) {
             car!!.engine.stop()
             super.e(vec3d)
             return
         }
-        car!!.driver.ifPresent { driver: Player ->
+        car!!.driver.let { driver ->
             val player = (driver as CraftPlayer).handle
             val sideIn = player.bb
             val forwardIn = player.bd

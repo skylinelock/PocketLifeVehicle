@@ -1,6 +1,5 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.model
 
-import java.util.*
 
 /**
  * @author sky_lock
@@ -14,7 +13,7 @@ enum class Capacity(private val value: Int) {
 
     companion object {
         fun valueOf(value: Int): Capacity {
-            return Arrays.stream(values()).filter { capacity: Capacity -> capacity.value() == value }.findFirst().orElse(null)
+            return values().find { capacity: Capacity -> capacity.value() == value } ?: ONE_SEAT
         }
     }
 

@@ -22,7 +22,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Consumer
 import java.util.*
-import java.util.stream.Collectors
+import kotlin.math.abs
 import kotlin.math.roundToInt
 
 /**
@@ -58,7 +58,7 @@ class CarUtilContents(private val car: Car) : MenuContents() {
     }
 
     private fun refuelInfo(fuel: Float): List<String> {
-        return ImmutableList.of(ChatColor.GRAY.toString() + "残燃料 : " + truncateToOneDecimalPlace(Math.abs(fuel)), ChatColor.GRAY.toString() + "石炭ブロックを持って右クリック", ChatColor.GRAY.toString() + "すると燃料を補充できます")
+        return ImmutableList.of(ChatColor.GRAY.toString() + "残燃料 : " + truncateToOneDecimalPlace(abs(fuel)), ChatColor.GRAY.toString() + "石炭ブロックを持って右クリック", ChatColor.GRAY.toString() + "すると燃料を補充できます")
     }
 
     private fun colorizeTitle(title: String): String {
@@ -66,11 +66,11 @@ class CarUtilContents(private val car: Car) : MenuContents() {
     }
 
     private fun colorizeInfoAsList(vararg lore: String): List<String> {
-        return Arrays.stream(lore).map { l: String -> ChatColor.GRAY.toString() + l }.collect(Collectors.toList())
+        return lore.map { l: String -> ChatColor.GRAY.toString() + l }
     }
 
     private fun colorizeContentAsLIst(vararg lore: String): List<String> {
-        return Arrays.stream(lore).map { l: String -> ChatColor.AQUA.toString() + l }.collect(Collectors.toList())
+        return lore.map { l: String -> ChatColor.AQUA.toString() + l }
     }
 
     private fun carInfoLore(): List<String> {

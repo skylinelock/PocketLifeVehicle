@@ -10,11 +10,8 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabExecutor
-import org.bukkit.entity.HumanEntity
 import org.bukkit.entity.Player
 import java.util.*
-import java.util.stream.Collectors
-import java.util.stream.Stream
 
 /**
  * @author sky_lock
@@ -50,22 +47,22 @@ class CommandHandler : CommandExecutor, TabExecutor {
         return true
     }
 
-    override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<String>): List<String>? {
+    override fun onTabComplete(sender: CommandSender, command: Command, label: String, args: Array<String>): List<String> {
         val tabCompletes: MutableList<String> = ArrayList()
         if (args.size < 2) {
             val input = args[0]
             if (Permission.ADMIN_COMMAND.obtained(sender)) {
-                tabCompletes.addAll(Stream.of("give", "spawn", "model", "debug", "reload", "allowworld").filter { str: String -> str.startsWith(input) }.collect(Collectors.toList()))
+                tabCompletes.addAll(listOf("give", "spawn", "model", "debug", "reload", "allowworld").filter { str -> str.startsWith(input) })
             }
-            tabCompletes.addAll(Stream.of("towaway", "search").filter { str: String -> str.startsWith(input) }.collect(Collectors.toList()))
+            tabCompletes.addAll(listOf("towaway", "search").filter { str -> str.startsWith(input) })
         } else if (args.size == 2) {
             val input = args[1]
             when (args[0].toLowerCase()) {
-                "give" -> tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map { obj: HumanEntity -> obj.name }.collect(Collectors.toList()))
-                "spawn" -> tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map { obj: HumanEntity -> obj.name }.collect(Collectors.toList()))
-                "reload" -> tabCompletes.addAll(Stream.of("from", "to").filter { str: String -> str.startsWith(input) }.collect(Collectors.toList()))
+                "give" -> tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
+                "spawn" -> tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
+                "reload" -> tabCompletes.addAll(listOf("from", "to").filter { str -> str.startsWith(input) })
                 "search", "towaway" -> if (Permission.ADMIN_COMMAND.obtained(sender)) {
-                    tabCompletes.addAll(Bukkit.getOnlinePlayers().stream().map { obj: HumanEntity -> obj.name }.collect(Collectors.toList()))
+                    tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
                 }
             }
         } else if (args.size == 3) {

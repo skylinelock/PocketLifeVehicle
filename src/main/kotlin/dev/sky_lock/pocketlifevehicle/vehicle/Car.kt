@@ -10,7 +10,6 @@ import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import java.util.*
 import java.util.function.Consumer
-import java.util.stream.Collectors
 
 /**
  * @author sky_lock
@@ -73,10 +72,10 @@ open class Car internal constructor(val model: Model) {
     }
 
     val passengers: List<Player>
-        get() = seats.stream().filter { seat: SeatArmorStand -> !seat.passengers.isEmpty() }.map { seat: SeatArmorStand -> seat.passengers[0].bukkitEntity as CraftPlayer }.collect(Collectors.toList())
+        get() = seats.filter { seat -> seat.passengers.isNotEmpty() }.map { seat: SeatArmorStand -> seat.passengers[0].bukkitEntity as CraftPlayer }
 
-    val driver: Optional<Player>
-        get() = seats.stream().filter { seat: SeatArmorStand -> seat.isDriverSheet && !seat.passengers.isEmpty() }.findFirst().map { seat: SeatArmorStand -> seat.passenger.orElse(null) }
+    val driver: Player?
+        get() = seats.find { seat -> seat.isDriverSheet && seat.passengers.isNotEmpty() }?.passenger
 
     fun kill() {
         center!!.killEntity()

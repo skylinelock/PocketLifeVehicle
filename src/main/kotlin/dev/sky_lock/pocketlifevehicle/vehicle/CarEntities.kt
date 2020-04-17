@@ -12,7 +12,6 @@ import org.bukkit.persistence.PersistentDataType
 import java.io.IOException
 import java.util.*
 import java.util.function.Consumer
-import java.util.stream.Collectors
 
 /**
  * @author sky_lock
@@ -96,15 +95,15 @@ object CarEntities {
     }
 
     fun getCar(seat: SeatArmorStand): Car? {
-        return entities.values.stream().filter { car: Car -> car.contains(seat) }.findFirst().orElse(null)
+        return entities.values.find { car: Car -> car.contains(seat) }
     }
 
     fun getCar(basis: CarArmorStand): Car? {
-        return entities.values.stream().filter { car: Car -> car.contains(basis) }.findFirst().orElse(null)
+        return entities.values.find { car: Car -> car.contains(basis) }
     }
 
     private val carEntities: Set<CarEntity>
-        get() = entities.entries.stream().map { entry: Map.Entry<UUID, Car> -> CarEntity(entry.key.toString(), entry.value.model.id, entry.value.location, entry.value.status.fuel) }.collect(Collectors.toSet())
+        get() = entities.entries.map { entry -> CarEntity(entry.key.toString(), entry.value.model.id, entry.value.location, entry.value.status.fuel) }.toSet()
 
     fun of(player: UUID): Car? {
         return entities[player]

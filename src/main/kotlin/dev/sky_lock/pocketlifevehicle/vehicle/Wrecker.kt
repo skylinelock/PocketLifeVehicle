@@ -6,6 +6,7 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 
 class Wrecker {
 
+    //TODO
     // just killing it
     fun scrap() {
     }

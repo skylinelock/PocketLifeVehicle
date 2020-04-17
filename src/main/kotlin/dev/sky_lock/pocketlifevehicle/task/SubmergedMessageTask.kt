@@ -40,7 +40,7 @@ class SubmergedMessageTask {
                     return
                 }
                 getOwner(car)?.let { ownerUuid ->
-                    if (car.passengers.stream().anyMatch { player: Player -> player.uniqueId == ownerUuid }) {
+                    if (car.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
                         return@let
                     }
                     val ownPlayer = Bukkit.getPlayer(ownerUuid)
