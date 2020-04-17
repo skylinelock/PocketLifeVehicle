@@ -27,7 +27,7 @@ class GiveCommand : ICommand, IAdminCommand {
             player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "モデルが見つかりませんでした")
             return
         }
-        player.inventory.addItem(model.itemStack)
+        target.inventory.addItem(model.itemStack)
         player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + name + "に" + id + "を与えました")
         target.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "乗り物を受け取りました")
     }

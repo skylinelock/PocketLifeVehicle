@@ -20,7 +20,7 @@ class SearchCommand : ICommand {
         if (!Permission.ADMIN_COMMAND.obtained(player) || args.size < 2) {
             val location = getCarLocation(player.uniqueId)
             if (location == null) {
-                player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "車を所有していません")
+                player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "乗り物の現在地を取得できませんでした")
             } else {
                 sendLocation(player, location)
             }
@@ -34,7 +34,7 @@ class SearchCommand : ICommand {
         }
         val location = getCarLocation(targetUUID)
         if (location == null) {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "指定したプレイヤーは車を所有していません")
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "プレイヤーの乗り物の現在地を取得できませんでした")
         } else {
             sendLocation(player, location)
         }

@@ -19,9 +19,9 @@ class TowawayCommand : ICommand {
         val player = sender as Player
         if (!Permission.ADMIN_COMMAND.obtained(sender) || args.size < 2) {
             if (towaway(player.uniqueId)) {
-                player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "所有する車をアイテム化しました")
+                player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "乗り物をアイテム化しました")
             } else {
-                player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "車を所有していません")
+                player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "乗り物をアイテム化できませんでした")
             }
             return
         }
@@ -32,14 +32,13 @@ class TowawayCommand : ICommand {
             return
         }
         if (towaway(targetUUID)) {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Player: " + name + " の車をアイテム化しました")
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Player: " + name + " の乗り物をアイテム化しました")
         } else {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "Player: " + name + " は車を所持していません")
+            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "Player: " + name + " の乗り物をアイテム化できませんでした")
         }
     }
 
     private fun towaway(uuid: UUID): Boolean {
-        val carEntity = of(uuid) ?: return false
         tow(uuid)
         return true
     }
