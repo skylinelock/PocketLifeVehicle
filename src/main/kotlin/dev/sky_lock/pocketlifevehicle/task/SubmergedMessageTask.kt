@@ -1,6 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.task
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.extensions.plus
+import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Car
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getOwner
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.kill
@@ -44,7 +46,7 @@ class SubmergedMessageTask {
                         return@let
                     }
                     val ownPlayer = Bukkit.getPlayer(ownerUuid)
-                    ownPlayer?.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "所有する車が" + car.passengers[0].name + "の運転によって破壊されました")
+                    ownPlayer?.sendPrefixedPluginMessage(ChatColor.RED + "所有する車が" + car.passengers[0].name + "の運転によって破壊されました")
                 }
                 kill(car)
                 car.passengers.forEach(Consumer { player: Player? -> warning.stop(player!!) })

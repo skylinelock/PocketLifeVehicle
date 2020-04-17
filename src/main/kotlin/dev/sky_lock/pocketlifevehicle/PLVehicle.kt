@@ -22,7 +22,6 @@ class PLVehicle : JavaPlugin() {
 
     companion object {
         lateinit var instance: PLVehicle
-        val PREFIX = ChatColor.DARK_GRAY.toString() + "[" + ChatColor.DARK_GREEN.toString() + "PLVehicle" + ChatColor.DARK_GRAY.toString() + "] " + ChatColor.RESET.toString()
     }
 
     lateinit var pluginConfiguration: PluginConfiguration
@@ -86,5 +85,4 @@ class PLVehicle : JavaPlugin() {
     fun createKey(key: String): NamespacedKey {
         return NamespacedKey(this, key)
     }
-
 }

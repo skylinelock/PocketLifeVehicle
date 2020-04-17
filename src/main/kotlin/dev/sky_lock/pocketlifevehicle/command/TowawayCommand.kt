@@ -1,9 +1,10 @@
 package dev.sky_lock.pocketlifevehicle.command
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
 import dev.sky_lock.pocketlifevehicle.Permission
+import dev.sky_lock.pocketlifevehicle.extensions.plus
+import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.util.Profiles
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.of
+import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.tow
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -17,28 +18,29 @@ import java.util.*
 class TowawayCommand : ICommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         val player = sender as Player
-        if (!Permission.ADMIN_COMMAND.obtained(sender) || args.size < 2) {
+        if (!Permission.ADMIN_COMMAND.obtained(sender)) {
             if (towaway(player.uniqueId)) {
-                player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "乗り物をアイテム化しました")
+                player.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物をアイテム化しました")
             } else {
-                player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "乗り物をアイテム化できませんでした")
+                player.sendPrefixedPluginMessage(ChatColor.RED + "乗り物をアイテム化できませんでした")
             }
             return
         }
         val name = args[1]
         val targetUUID = Profiles.fetchUUID(name)
         if (targetUUID == null) {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "プレイヤーが見つかりませんでした")
+            player.sendPrefixedPluginMessage(ChatColor.GREEN + "プレイヤーが見つかりませんでした")
             return
         }
         if (towaway(targetUUID)) {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Player: " + name + " の乗り物をアイテム化しました")
+            player.sendPrefixedPluginMessage(ChatColor.GREEN + name + " の乗り物をアイテム化しました")
         } else {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "Player: " + name + " の乗り物をアイテム化できませんでした")
+            player.sendPrefixedPluginMessage(ChatColor.RED + name + " の乗り物をアイテム化できませんでした")
         }
     }
 
     private fun towaway(uuid: UUID): Boolean {
+        CarEntities.of(uuid) ?: return false
         tow(uuid)
         return true
     }

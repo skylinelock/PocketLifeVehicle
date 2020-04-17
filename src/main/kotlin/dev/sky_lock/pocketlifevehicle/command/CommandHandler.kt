@@ -1,7 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.command
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
 import dev.sky_lock.pocketlifevehicle.Permission
+import dev.sky_lock.pocketlifevehicle.extensions.plus
+import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.Bukkit
@@ -32,13 +33,13 @@ class CommandHandler : CommandExecutor, TabExecutor {
             }
             if (cmd is IAdminCommand) {
                 if (!Permission.ADMIN_COMMAND.obtained(sender)) {
-                    sender.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "このコマンドを実行するための権限がありません")
+                    sender.sendPrefixedPluginMessage(ChatColor.RED + "このコマンドを実行するための権限がありません")
                     return true
                 }
             }
             if (cmd !is IConsoleCommand) {
                 if (sender !is Player) {
-                    sender.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "このコマンドはプレイヤーのみ実行できます")
+                    sender.sendPrefixedPluginMessage(ChatColor.RED + "このコマンドはプレイヤーのみ実行できます")
                     return true
                 }
             }
@@ -55,7 +56,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
                 tabCompletes.addAll(listOf("give", "spawn", "model", "debug", "reload", "allowworld").filter { str -> str.startsWith(input) })
             }
             tabCompletes.addAll(listOf("towaway", "search").filter { str -> str.startsWith(input) })
-        } else if (args.size == 2) {
+        } else if (args.size == 2 && Permission.ADMIN_COMMAND.obtained(sender)) {
             val input = args[1]
             when (args[0].toLowerCase()) {
                 "give" -> tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
@@ -65,7 +66,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
                     tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
                 }
             }
-        } else if (args.size == 3) {
+        } else if (args.size == 3 && Permission.ADMIN_COMMAND.obtained(sender)) {
             val input = args[2]
             if (args[0].equals("give", ignoreCase = true) || args[0].equals("spawn", ignoreCase = true)) {
                 Storage.MODEL.forEach { model: Model ->

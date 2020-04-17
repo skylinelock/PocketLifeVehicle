@@ -1,7 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.command
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
 import dev.sky_lock.pocketlifevehicle.Permission
+import dev.sky_lock.pocketlifevehicle.extensions.plus
+import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.util.Profiles
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.of
 import org.bukkit.ChatColor
@@ -20,23 +21,23 @@ class SearchCommand : ICommand {
         if (!Permission.ADMIN_COMMAND.obtained(player) || args.size < 2) {
             val location = getCarLocation(player.uniqueId)
             if (location == null) {
-                player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "乗り物の現在地を取得できませんでした")
+                player.sendPrefixedPluginMessage(ChatColor.RED + "乗り物の現在地を取得できませんでした")
             } else {
-                sendLocation(player, location)
+                player.sendPrefixedPluginMessage(ChatColor.GREEN + getLocationString(location))
             }
             return
         }
         val name = args[1]
         val targetUUID = Profiles.fetchUUID(name)
         if (targetUUID == null) {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "プレイヤーが見つかりませんでした")
+            player.sendPrefixedPluginMessage(ChatColor.RED + "プレイヤーが見つかりませんでした")
             return
         }
         val location = getCarLocation(targetUUID)
         if (location == null) {
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.RED + "プレイヤーの乗り物の現在地を取得できませんでした")
+            player.sendPrefixedPluginMessage(ChatColor.RED + "プレイヤーの乗り物の現在地を取得できませんでした")
         } else {
-            sendLocation(player, location)
+            player.sendPrefixedPluginMessage(ChatColor.GREEN + getLocationString(location))
         }
     }
 
@@ -45,12 +46,7 @@ class SearchCommand : ICommand {
         return car.location
     }
 
-    private fun sendLocation(player: Player, loc: Location) {
-        player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "-------------------------------------------")
-        player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "World : " + loc.world.name)
-        player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "X : " + loc.blockX)
-        player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Y : " + loc.blockY)
-        player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "Z : " + loc.blockZ)
-        player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "-------------------------------------------")
+    private fun getLocationString(loc: Location): String {
+        return "World: " + loc.world.name + ", x: " + loc.blockX.toString() + ", y: " + loc.blockY.toString() + ", z: " + loc.blockZ.toString()
     }
 }

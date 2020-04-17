@@ -1,6 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.extensions.plus
+import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -16,10 +18,10 @@ class AllowWorldCommand : ICommand, IAdminCommand {
         val worldName = player.world.name
         if (config.getAllowWorlds().contains(player.world)) {
             config.removeAllowWorld(worldName)
-            player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "このワールドを車が使用できないようにしました")
+            player.sendPrefixedPluginMessage(ChatColor.GREEN + "このワールドを車が使用できないようにしました")
             return
         }
         config.addAllowWorld(worldName)
-        player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "このワールドを車が使用できるようにしました")
+        player.sendPrefixedPluginMessage(ChatColor.GREEN + "このワールドを車が使用できるようにしました")
     }
 }

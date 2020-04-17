@@ -5,7 +5,8 @@ import dev.sky_lock.menu.InventoryMenu.Companion.of
 import dev.sky_lock.menu.MenuContents
 import dev.sky_lock.menu.Slot
 import dev.sky_lock.menu.ToggleSlot
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.extensions.plus
+import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.destroy
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.LoreEditor
@@ -95,7 +96,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                         return@Consumer
                     }
                     Storage.MODEL.unregister(id)
-                    player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + id + "を削除しました")
+                    player.sendPrefixedPluginMessage(ChatColor.GREEN + id + "を削除しました")
                     destroy(player.uniqueId)
                     menu.close(player)
                 }))
@@ -103,7 +104,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                 addSlot(Slot(makeSlot.toInt(), updateItem, Consumer { event: InventoryClickEvent? ->
                     Storage.MODEL.unregister(session.id!!)
                     Storage.MODEL.register(session.generate())
-                    player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + session.id + "を更新しました")
+                    player.sendPrefixedPluginMessage(ChatColor.GREEN + session.id!! + "を更新しました")
                     destroy(player.uniqueId)
                     menu.close(player)
                 }))
@@ -128,7 +129,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                         return@Consumer
                     }
                     Storage.MODEL.register(session.generate())
-                    player.sendMessage(PLVehicle.PREFIX + ChatColor.GREEN + "新しい車種を追加しました")
+                    player.sendPrefixedPluginMessage(ChatColor.GREEN + "新しい車種を追加しました")
                     destroy(player.uniqueId)
                     player.closeInventory()
                 }))
