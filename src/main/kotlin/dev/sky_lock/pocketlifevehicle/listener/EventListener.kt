@@ -46,11 +46,7 @@ class EventListener : Listener {
             return
         }
         val armorStand = event.rightClicked as CraftArmorStand
-        if (armorStand.handle is CarArmorStand) {
-            event.isCancelled = true
-            return
-        }
-        if (armorStand.handle !is SeatArmorStand) {
+        if (armorStand.handle !is CarArmorStand && armorStand.handle !is SeatArmorStand) {
             return
         }
         event.isCancelled = true

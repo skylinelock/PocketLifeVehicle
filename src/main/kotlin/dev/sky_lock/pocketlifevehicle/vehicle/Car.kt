@@ -72,7 +72,17 @@ open class Car internal constructor(val model: Model) {
     }
 
     val passengers: List<Player>
-        get() = seats.filter { seat -> seat.passengers.isNotEmpty() }.map { seat: SeatArmorStand -> seat.passengers[0].bukkitEntity as CraftPlayer }
+        get() = seats.filter { seat -> seat.passengers.isNotEmpty() }.map { seat -> seat.passengers[0].bukkitEntity as CraftPlayer }
+
+    fun addPassenger(player: Player) {
+        val driverSeat = seats.find { seat -> seat.isDriverSheet && seat.passengers.isEmpty() }
+        if (driverSeat == null) {
+            val passengerSeat = seats.find { seat -> seat.passengers.isEmpty() } ?: return
+            passengerSeat.bukkitEntity.addPassenger(player)
+        } else {
+            driverSeat.bukkitEntity.addPassenger(player)
+        }
+    }
 
     val driver: Player?
         get() = seats.find { seat -> seat.isDriverSheet && seat.passengers.isNotEmpty() }?.passenger

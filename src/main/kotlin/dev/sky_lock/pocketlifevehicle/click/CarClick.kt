@@ -3,6 +3,7 @@ package dev.sky_lock.pocketlifevehicle.click
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.util.Profiles.getName
 import dev.sky_lock.pocketlifevehicle.vehicle.Car
+import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getCar
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getOwner
 import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
@@ -13,33 +14,65 @@ import org.bukkit.entity.Player
 /**
  * @author sky_lock
  */
-class CarClick(private val player: Player, private val seat: CraftArmorStand) {
-    private val car: Car? = getCar(seat.handle as SeatArmorStand)
+class CarClick(private val player: Player, private val armorStand: CraftArmorStand) {
     fun accept() {
-        if (seat.passengers.isNotEmpty()) {
-            return
-        }
-        getOwner(car!!)?.let { owner ->
-            val clicked = player.uniqueId
+        val handle = armorStand.handle
+        val clicked = player.uniqueId
+        val car: Car
+        if (handle is SeatArmorStand) {
+            if (armorStand.passengers.isNotEmpty()) {
+                return
+            }
+            car = getCar(handle) ?: return
+            val owner = getOwner(car) ?: return
             val ownerName = getName(owner)
+
             if (player.isSneaking) {
                 if (clicked != owner && !Permission.CAR_CLICK.obtained(player)) {
                     sendFailureInfo("この乗り物は $ownerName が所有しています")
-                    return@let
+                    return
                 }
                 car.openMenu(player)
-                return@let
+                return
             }
+
             if (clicked == owner) {
-                seat.addPassenger(player)
-                return@let
+                armorStand.addPassenger(player)
+                return
             }
             if (car.status.isLocked) {
                 sendFailureInfo("この乗り物には鍵が掛かっています")
-                return@let
+                return
             }
-            seat.addPassenger(player)
+            armorStand.addPassenger(player)
+        } else if (handle is CarArmorStand) {
+            car = getCar(handle) ?: return
+            val owner = getOwner(car) ?: return
+            val ownerName = getName(owner)
+
+            if (player.isSneaking) {
+                if (clicked != owner && !Permission.CAR_CLICK.obtained(player)) {
+                    sendFailureInfo("この乗り物は $ownerName が所有しています")
+                    return
+                }
+                car.openMenu(player)
+                return
+            }
+            if (car.passengers.size >= car.model.spec.capacity.value()) {
+                sendFailureInfo("この乗り物は満員です")
+                return
+            }
+            if (clicked == owner) {
+                car.addPassenger(player)
+                return
+            }
+            if (car.status.isLocked) {
+                sendFailureInfo("この乗り物には鍵が掛かっています")
+                return
+            }
+            car.addPassenger(player)
         }
+
     }
 
     private fun sendFailureInfo(message: String) {
