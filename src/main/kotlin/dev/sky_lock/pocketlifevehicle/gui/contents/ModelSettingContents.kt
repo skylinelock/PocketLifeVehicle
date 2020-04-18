@@ -5,8 +5,8 @@ import dev.sky_lock.menu.InventoryMenu.Companion.of
 import dev.sky_lock.menu.MenuContents
 import dev.sky_lock.menu.Slot
 import dev.sky_lock.menu.ToggleSlot
-import dev.sky_lock.pocketlifevehicle.extensions.plus
-import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.plus
+import dev.sky_lock.pocketlifevehicle.extension.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.destroy
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.LoreEditor

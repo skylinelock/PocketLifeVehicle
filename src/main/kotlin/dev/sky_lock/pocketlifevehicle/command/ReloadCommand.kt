@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
-import dev.sky_lock.pocketlifevehicle.extensions.plus
-import dev.sky_lock.pocketlifevehicle.extensions.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.plus
+import dev.sky_lock.pocketlifevehicle.extension.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import org.bukkit.ChatColor
 import org.bukkit.command.Command

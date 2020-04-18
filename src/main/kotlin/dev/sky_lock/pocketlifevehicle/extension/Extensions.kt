@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.extensions
+package dev.sky_lock.pocketlifevehicle.extension
 
 import dev.sky_lock.pocketlifevehicle.Permission
 import org.bukkit.ChatColor

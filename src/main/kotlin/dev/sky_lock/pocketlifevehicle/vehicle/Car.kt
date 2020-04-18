@@ -26,6 +26,13 @@ open class Car internal constructor(val model: Model) {
     val meterPanel: MeterPanel
     var isBeginExplode = false
 
+    init {
+        engine = Engine(status, model)
+        steering = Steering(status)
+        meterPanel = MeterPanel(status, model, engine)
+        soundTask = CarSoundTask(model, status)
+    }
+
     fun addSeat(seat: SeatArmorStand) {
         seats.add(seat)
     }
@@ -100,12 +107,5 @@ open class Car internal constructor(val model: Model) {
         explosion.setRadius(5f)
         explosion.broadCast()
         location.world?.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f)
-    }
-
-    init {
-        engine = Engine(status, model)
-        steering = Steering(status)
-        meterPanel = MeterPanel(status, model, engine)
-        soundTask = CarSoundTask(model, status)
     }
 }
