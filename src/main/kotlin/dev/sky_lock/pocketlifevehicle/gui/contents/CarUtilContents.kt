@@ -1,12 +1,11 @@
 package dev.sky_lock.pocketlifevehicle.gui.contents
 
-import com.google.common.collect.ImmutableList
 import dev.sky_lock.menu.InventoryMenu
 import dev.sky_lock.menu.InventoryMenu.Companion.of
 import dev.sky_lock.menu.MenuContents
 import dev.sky_lock.menu.Slot
 import dev.sky_lock.menu.ToggleSlot
-import dev.sky_lock.pocketlifevehicle.extension.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.CarUtilMenu
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder
@@ -39,8 +38,8 @@ class CarUtilContents(private val car: Car) : MenuContents() {
     }
 
     private fun setFuelGage(menu: InventoryMenu) {
-        val filled = ItemStackBuilder(Material.GREEN_STAINED_GLASS_PANE, 1).name(ChatColor.GREEN.toString() + "補充済み").build()
-        val unFilled = ItemStackBuilder(Material.RED_STAINED_GLASS_PANE, 1).name(ChatColor.RED.toString() + "未補充").build()
+        val filled = ItemStackBuilder(Material.GREEN_STAINED_GLASS_PANE, 1).name(ChatColor.GREEN + "補充済み").build()
+        val unfilled = ItemStackBuilder(Material.RED_STAINED_GLASS_PANE, 1).name(ChatColor.RED + "未補充").build()
         val fuel = car.status.fuel
         val maxFuel = car.model.spec.maxFuel
         val rate = fuel / maxFuel
@@ -51,38 +50,34 @@ class CarUtilContents(private val car: Car) : MenuContents() {
                 menu.inventory.setItem(36 + j, filled)
                 menu.inventory.setItem(45 + j, filled)
             } else {
-                menu.inventory.setItem(27 + j, unFilled)
-                menu.inventory.setItem(36 + j, unFilled)
-                menu.inventory.setItem(45 + j, unFilled)
+                menu.inventory.setItem(27 + j, unfilled)
+                menu.inventory.setItem(36 + j, unfilled)
+                menu.inventory.setItem(45 + j, unfilled)
             }
         }
     }
 
     private fun refuelInfo(fuel: Float): List<String> {
-        return ImmutableList.of(ChatColor.GRAY.toString() + "残燃料 : " + truncateToOneDecimalPlace(abs(fuel)), ChatColor.GRAY.toString() + "石炭ブロックを持って右クリック", ChatColor.GRAY.toString() + "すると燃料を補充できます")
+        return listOf(ChatColor.GRAY + "残燃料 : " + truncateToOneDecimalPlace(abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます")
     }
 
     private fun colorizeTitle(title: String): String {
-        return ChatColor.GOLD.toString() + "" + ChatColor.BOLD + title
-    }
-
-    private fun colorizeInfoAsList(vararg lore: String): List<String> {
-        return lore.map { l: String -> ChatColor.GRAY.toString() + l }
+        return ChatColor.GOLD + ChatColor.BOLD + title
     }
 
     private fun carInfoLore(): List<String> {
         val carInfo: MutableList<String> = ArrayList()
-        carInfo.add(ChatColor.GREEN.toString() + "名前     : " + ChatColor.RESET + car.model.name)
-        carInfo.add(ChatColor.GREEN.toString() + "最大燃料 : " + ChatColor.RESET + car.model.spec.maxFuel)
-        carInfo.add(ChatColor.GREEN.toString() + "最高速度 : " + ChatColor.RESET + car.model.spec.maxSpeed.label)
-        carInfo.add(ChatColor.GREEN.toString() + "説明 :")
+        carInfo.add(ChatColor.GREEN + "名前     : " + ChatColor.RESET + car.model.name)
+        carInfo.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + car.model.spec.maxFuel)
+        carInfo.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + car.model.spec.maxSpeed.label)
+        carInfo.add(ChatColor.GREEN + "説明 :")
         car.model.lore.forEach(java.util.function.Consumer { lore: String -> carInfo.add("- " + ChatColor.RESET + lore) })
         return carInfo
     }
 
     init {
-        val closeItem = ItemStackBuilder(Material.ENDER_PEARL, 1).name(ChatColor.RED.toString() + "閉じる").build()
-        val towItem = ItemStackBuilder(Material.MINECART, 1).name(colorizeTitle("レッカー移動")).lore(colorizeInfoAsList("アイテム化して持ち運べるようにします")).build()
+        val closeItem = ItemStackBuilder(Material.ENDER_PEARL, 1).name(ChatColor.RED + "閉じる").build()
+        val towItem = ItemStackBuilder(Material.MINECART, 1).name(colorizeTitle("レッカー移動")).lore(ChatColor.GRAY + "アイテム化して持ち運べるようにします").build()
 
         val owner = getOwner(car)
         val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).name(colorizeTitle("所有者")).lore(ChatColor.AQUA + getName(owner)).build()
@@ -97,13 +92,13 @@ class CarUtilContents(private val car: Car) : MenuContents() {
             tow(car)
             car.closeMenu((event.whoClicked as Player))
         })
-        val wield = ItemStackBuilder(Material.LIME_DYE, 1).name(ChatColor.RED.toString() + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build()
-        val notWield = ItemStackBuilder(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN.toString() + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build()
+        val wield = ItemStackBuilder(Material.LIME_DYE, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build()
+        val notWield = ItemStackBuilder(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build()
         val status = car.status
         val wieldHandSlot: Slot = ToggleSlot(13, status.isWieldHand, wield, notWield, Consumer { status.isWieldHand = false }, Consumer { status.isWieldHand = true })
         val carInfoSlot = Slot(24, carInfoBook, org.bukkit.util.Consumer { })
-        val keyClose = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED.toString() + "" + ChatColor.BOLD + "鍵を閉める").build()
-        val keyOpen = ItemStackBuilder(Material.STRUCTURE_VOID, 1).name(ChatColor.AQUA.toString() + "" + ChatColor.BOLD + "鍵を開ける").build()
+        val keyClose = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "鍵を閉める").build()
+        val keyOpen = ItemStackBuilder(Material.STRUCTURE_VOID, 1).name(ChatColor.AQUA + "" + ChatColor.BOLD + "鍵を開ける").build()
         val keySlot: Slot = ToggleSlot(15, status.isLocked, keyOpen, keyClose, org.bukkit.util.Consumer { event: InventoryClickEvent ->
             status.isLocked = false
             val player = event.whoClicked as Player

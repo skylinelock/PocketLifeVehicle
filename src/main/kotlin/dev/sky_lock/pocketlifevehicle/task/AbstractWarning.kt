@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.task
 
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
 
@@ -18,6 +19,6 @@ internal open class AbstractWarning {
     }
 
     companion object {
-        private val WARNING = ChatColor.RED.toString() + "⚠⚠WARNING⚠⚠"
+        private val WARNING = ChatColor.RED + "⚠⚠WARNING⚠⚠"
     }
 }

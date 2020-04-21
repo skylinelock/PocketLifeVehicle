@@ -1,11 +1,12 @@
 package dev.sky_lock.pocketlifevehicle.click
 
-import com.google.common.primitives.Floats
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
 import dev.sky_lock.pocketlifevehicle.util.Formats.colorize
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
@@ -39,9 +40,9 @@ class InventoryClick(private val event: InventoryClickEvent) {
                         session.name = name
                     }
                     StringEditor.Type.HEIGHT -> {
-                        val height = Floats.tryParse(displayName)
+                        val height = displayName.toFloatOrNull()
                         if (height == null) {
-                            meta.lore = listOf(ChatColor.RED.toString() + "有効な数字を入力して下さい")
+                            meta.lore = listOf(ChatColor.RED + "有効な数字を入力して下さい")
                             result.itemMeta = meta
                             return@ifPresent
                         }

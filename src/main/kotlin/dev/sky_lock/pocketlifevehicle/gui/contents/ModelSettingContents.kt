@@ -5,8 +5,8 @@ import dev.sky_lock.menu.InventoryMenu.Companion.of
 import dev.sky_lock.menu.MenuContents
 import dev.sky_lock.menu.Slot
 import dev.sky_lock.menu.ToggleSlot
-import dev.sky_lock.pocketlifevehicle.extension.plus
-import dev.sky_lock.pocketlifevehicle.extension.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.destroy
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.LoreEditor
@@ -53,23 +53,23 @@ class ModelSettingContents(private val player: Player): MenuContents() {
     private var fuelItem = ItemStackBuilder(Material.COAL_BLOCK, 1).name("燃料上限").build()
     private var speedItem = ItemStackBuilder(Material.DIAMOND, 1).name("最高速度").build()
     private var capacityItem = ItemStackBuilder(Material.SADDLE, 1).name("乗車人数").build()
-    private var steeringItem = ItemStackBuilder(Material.LEAD, 1).name("ステアリング").lore(ChatColor.RED.toString() + "Coming soon").build()
+    private var steeringItem = ItemStackBuilder(Material.LEAD, 1).name("ステアリング").lore(ChatColor.RED + "Coming soon").build()
 
     private var itemOptionItem = ItemStackBuilder(Material.ITEM_FRAME, 1).name("アイテム").build()
 
-    private var collideItem = ItemStackBuilder(Material.BEACON, 1).name(ChatColor.RESET.toString() + "当たり判定").build()
+    private var collideItem = ItemStackBuilder(Material.BEACON, 1).name(ChatColor.RESET + "当たり判定").build()
     private val standSmallItem = ItemStackBuilder(Material.ARMOR_STAND, 1).name("大きさ").lore("小さい").build()
     private val standBigItem = ItemStackBuilder(Material.ARMOR_STAND, 1).name("大きさ").lore("大きい").build()
     private var heightItem = ItemStackBuilder(Material.IRON_HORSE_ARMOR, 1).name("座高").build()
-    private var soundItem = ItemStackBuilder(Material.BELL, 1).name("エンジン音").lore(ChatColor.RED.toString() + "Coming soon").build()
+    private var soundItem = ItemStackBuilder(Material.BELL, 1).name("エンジン音").lore(ChatColor.RED + "Coming soon").build()
 
-    private val updateItem = ItemStackBuilder(Material.END_CRYSTAL, 1).name(ChatColor.GREEN.toString() + "更新する").build()
-    private val removeItem = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED.toString() + "削除する").build()
-    private val createItem = ItemStackBuilder(Material.END_CRYSTAL, 1).name(ChatColor.GREEN.toString() + "追加する").build()
+    private val updateItem = ItemStackBuilder(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "更新する").build()
+    private val removeItem = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED + "削除する").build()
+    private val createItem = ItemStackBuilder(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "追加する").build()
     
     init {
         of(player.uniqueId).ifPresent {
-            addSlot(Slot(closeSlot.toInt(), ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "閉じる").build(), Consumer {
+            addSlot(Slot(closeSlot.toInt(), ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build(), Consumer {
                 of(player).ifPresent { menu -> menu.close(player) }
                 destroy(player.uniqueId)
             }))
@@ -123,7 +123,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                     }
                     if (Storage.MODEL.hasRegistered(session.id!!)) {
                         val itemMeta = Objects.requireNonNull(clicked.itemMeta)
-                        itemMeta.lore = listOf(ChatColor.RED.toString() + "既に存在するIDです")
+                        itemMeta.lore = listOf(ChatColor.RED + "既に存在するIDです")
                         clicked.itemMeta = itemMeta
                         event.currentItem = clicked
                         return@Consumer
@@ -170,7 +170,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                 updateItemStack(itemSlot.toInt(), itemOptionItem)
             }
             if (session.collideHeight != 0.0f && session.collideBaseSide != 0.0f) {
-                collideItem = ItemStackBuilder(collideItem).name(ChatColor.AQUA.toString() + "当たり判定").lore(session.collideBaseSide.toString(), session.collideHeight.toString()).glow().build()
+                collideItem = ItemStackBuilder(collideItem).name(ChatColor.AQUA + "当たり判定").lore(session.collideBaseSide.toString(), session.collideHeight.toString()).glow().build()
                 updateItemStack(collideSlot.toInt(), collideItem)
             }
 

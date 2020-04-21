@@ -4,6 +4,7 @@ import dev.sky_lock.menu.InventoryMenu
 import dev.sky_lock.menu.InventoryMenu.Companion.of
 import dev.sky_lock.menu.MenuContents
 import dev.sky_lock.menu.Slot
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
@@ -17,7 +18,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
  * @author sky_lock
  */
 class ItemOptionContents(private val player: Player) : MenuContents() {
-    private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "戻る").build()
+    private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "戻る").build()
     private var itemItem = ItemStackBuilder(Material.MAGMA_CREAM, 1).name("アイテム").build()
     private var positionItem = ItemStackBuilder(Material.SLIME_BALL, 1).name("アイテム位置").build()
     override fun onFlip(menu: InventoryMenu) {
@@ -35,8 +36,8 @@ class ItemOptionContents(private val player: Player) : MenuContents() {
     }
 
     init {
-        addSlot(Slot(4, backItem, org.bukkit.util.Consumer { event: InventoryClickEvent? -> of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.SETTING.ordinal) } }))
-        addSlot(Slot(21, itemItem, org.bukkit.util.Consumer { event: InventoryClickEvent? -> of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_SELECT.ordinal) } }))
-        addSlot(Slot(23, positionItem, org.bukkit.util.Consumer { event: InventoryClickEvent? -> of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_POS.ordinal) } }))
+        addSlot(Slot(4, backItem, org.bukkit.util.Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.SETTING.ordinal) } }))
+        addSlot(Slot(21, itemItem, org.bukkit.util.Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_SELECT.ordinal) } }))
+        addSlot(Slot(23, positionItem, org.bukkit.util.Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_POS.ordinal) } }))
     }
 }

@@ -4,6 +4,7 @@ import dev.sky_lock.pocketlifevehicle.PLVehicle
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.click.CarClick
 import dev.sky_lock.pocketlifevehicle.click.InventoryClick
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
 import dev.sky_lock.pocketlifevehicle.util.Formats.removeBlanks
@@ -82,11 +83,11 @@ class EventListener : Listener {
         val meta = itemStack.itemMeta
         val player = event.player
         if (!PLVehicle.instance.pluginConfiguration.getAllowWorlds().contains(event.player.world)) {
-            player.sendActionBar(ChatColor.RED.toString() + "このワールドでは乗り物は使用できません")
+            player.sendActionBar(ChatColor.RED + "このワールドでは乗り物は使用できません")
             return
         }
         if (event.blockFace != BlockFace.UP) {
-            player.sendActionBar(ChatColor.RED.toString() + "乗り物は地面にのみ設置できます")
+            player.sendActionBar(ChatColor.RED + "乗り物は地面にのみ設置できます")
             return
         }
         val whereToSpawn = Objects.requireNonNull(event.clickedBlock)!!.location.clone().add(0.5, 1.0, 0.5)
@@ -111,7 +112,7 @@ class EventListener : Listener {
             return
         }
         if (!Permission.VEHICLE_PLACE.obtained(player)) {
-            player.sendActionBar(ChatColor.RED.toString() + "乗り物を設置することができませんでした")
+            player.sendActionBar(ChatColor.RED + "乗り物を設置することができませんでした")
             return
         }
         placeCarEntity(player, itemStack, event.hand, owner, model, whereToSpawn, fuel)

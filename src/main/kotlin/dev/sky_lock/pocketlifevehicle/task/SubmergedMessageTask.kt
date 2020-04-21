@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.task
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
-import dev.sky_lock.pocketlifevehicle.extension.plus
-import dev.sky_lock.pocketlifevehicle.extension.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Car
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getOwner
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.kill

@@ -4,6 +4,7 @@ import dev.sky_lock.menu.InventoryMenu
 import dev.sky_lock.menu.InventoryMenu.Companion.of
 import dev.sky_lock.menu.MenuContents
 import dev.sky_lock.menu.Slot
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
@@ -17,7 +18,7 @@ import org.bukkit.inventory.ItemStack
  * @author sky_lock
  */
 class CollideBoxContents(private val player: Player) : MenuContents() {
-    private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "戻る").build()
+    private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "戻る").build()
     private val baseSideItem = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).name("横").build()
     private val heightItem = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).name("高さ").build()
     override fun onFlip(menu: InventoryMenu) {

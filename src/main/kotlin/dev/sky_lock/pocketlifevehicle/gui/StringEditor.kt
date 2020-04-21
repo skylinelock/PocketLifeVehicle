@@ -35,19 +35,32 @@ class StringEditor private constructor(windowId: Int, editorType: Type, playerin
             val containerId = entityPlayer.nextContainerCounter()
             val editor = StringEditor(containerId, editorType, inventory, world)
             editor.menu = menu
-            entityPlayer.playerConnection.sendPacket(PacketPlayOutOpenWindow(containerId, Containers.ANVIL, ChatMessage("文字を編集する")))
+            entityPlayer.playerConnection.sendPacket(PacketPlayOutOpenWindow(containerId, Containers.ANVIL, ChatMessage("数値・文字エディタ")))
             entityPlayer.activeContainer = editor
             entityPlayer.activeContainer.addSlotListener(entityPlayer)
+
             val itemStack = ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1)
             val meta = Objects.requireNonNull(itemStack.itemMeta)
-            meta.setDisplayName(editorType.label)
+            var name = "エラー"
+            EditSessions.of(player.uniqueId).ifPresent{session ->
+                name = when (editorType) {
+                    Type.ID -> {
+                        session.id ?: "ID"
+                    }
+                    Type.NAME -> {
+                        session.name ?: "名前"
+                    }
+                    Type.HEIGHT -> {
+                        if (session.height == 0f) "1.0" else session.height.toString()
+                    }
+                }
+            }
+            meta.setDisplayName(name)
             itemStack.itemMeta = meta
+
             val item = CraftItemStack.asNMSCopy(itemStack)
             val nbt = item.orCreateTag
             nbt.setBoolean("editor-result", true)
-            /*        NBTTagCompound displayNBT = new NBTTagCompound();
-        displayNBT.setString("Name", editor.getEditorType().getName());
-        nbt.set("display", displayNBT);*/
             item.tag = nbt
             editor.bukkitView.topInventory.setItem(0, CraftItemStack.asBukkitCopy(item))
             openingMaps[player.getUniqueId()] = editor

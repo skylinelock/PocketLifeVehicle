@@ -1,6 +1,7 @@
 package dev.sky_lock.menu
 
 import dev.sky_lock.menu.InventoryMenu.Companion.of
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -32,7 +33,7 @@ class InventoryMenuListener(private val plugin: JavaPlugin) : Listener {
             event.isCancelled = true
             return
         }
-        if (!event.click.isRightClick && !event.click.isLeftClick) {
+        if (!(event.click.isRightClick || event.click.isLeftClick)) {
             event.isCancelled = true
             return
         }
@@ -42,7 +43,7 @@ class InventoryMenuListener(private val plugin: JavaPlugin) : Listener {
 
     @EventHandler
     fun onInventoryDrag(event: InventoryDragEvent) {
-        of((event.whoClicked as Player)).ifPresent { menu: InventoryMenu? ->
+        of((event.whoClicked as Player)).ifPresent {
             if (event.inventory == event.view.bottomInventory) {
                 if (event.type == DragType.SINGLE) {
                     return@ifPresent

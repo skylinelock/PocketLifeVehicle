@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.gui
 
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.vehicle.model.*
 import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelBuilder.Companion.of
 import org.bukkit.ChatColor
@@ -61,34 +62,34 @@ class ModelOption {
 
     fun unfilledOptionWarning(): List<String> {
         val lore: MutableList<String> = ArrayList()
-        lore.add(ChatColor.RED.toString() + "設定が完了していません")
-        lore.add(ChatColor.RED.toString() + "必須項目")
+        lore.add(ChatColor.RED + "設定が完了していません")
+        lore.add(ChatColor.RED + "必須項目")
         if (id == null) {
-            lore.add(ChatColor.RED.toString() + "- ID")
+            lore.add(ChatColor.RED + "- ID")
         }
         if (name == null) {
-            lore.add(ChatColor.RED.toString() + "- 名前")
+            lore.add(ChatColor.RED + "- 名前")
         }
         if (maxFuel == 0.0f) {
-            lore.add(ChatColor.RED.toString() + "- 燃料上限")
+            lore.add(ChatColor.RED + "- 燃料上限")
         }
         if (maxSpeed == null) {
-            lore.add(ChatColor.RED.toString() + "- 最高速度")
+            lore.add(ChatColor.RED + "- 最高速度")
         }
         if (capacity == null) {
-            lore.add(ChatColor.RED.toString() + "- 乗車人数")
+            lore.add(ChatColor.RED + "- 乗車人数")
         }
         //        if (steeringLevel == null) {
 //            lore.add(ChatColor.RED + "- ステアリング感度");
 //        }
         if (itemType == null || itemId == 0) {
-            lore.add(ChatColor.RED.toString() + "- アイテム")
+            lore.add(ChatColor.RED + "- アイテム")
         }
         if (position == null) {
-            lore.add(ChatColor.RED.toString() + "- アイテム位置")
+            lore.add(ChatColor.RED + "- アイテム位置")
         }
         if (height == 0.0f) {
-            lore.add(ChatColor.RED.toString() + "- 座高")
+            lore.add(ChatColor.RED + "- 座高")
         }
         //        if (sound == null) {
 //            lore.add(ChatColor.RED + "- サウンド");

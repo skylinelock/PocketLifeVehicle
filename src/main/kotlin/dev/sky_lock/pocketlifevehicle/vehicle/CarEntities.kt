@@ -1,6 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.util.Formats
 import dev.sky_lock.pocketlifevehicle.util.Profiles
@@ -22,7 +23,7 @@ object CarEntities {
 
     fun spawn(player: UUID, model: Model, location: Location, fuel: Float): Boolean {
         if (location.block.type != Material.AIR) {
-            Bukkit.getPlayer(player)!!.sendActionBar(ChatColor.RED.toString() + "ブロックがあるので乗り物を設置できません")
+            Bukkit.getPlayer(player)!!.sendActionBar(ChatColor.RED + "ブロックがあるので乗り物を設置できません")
             return false
         }
         var car: Car? = null

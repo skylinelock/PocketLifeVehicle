@@ -1,6 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.click
 
 import dev.sky_lock.pocketlifevehicle.Permission
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.util.Profiles.getName
 import dev.sky_lock.pocketlifevehicle.vehicle.Car
 import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand
@@ -76,7 +77,7 @@ class CarClick(private val player: Player, private val armorStand: CraftArmorSta
     }
 
     private fun sendFailureInfo(message: String) {
-        player.sendActionBar(ChatColor.YELLOW.toString() + "" + ChatColor.BOLD + "⚠⚠ " + ChatColor.RED + "" + ChatColor.BOLD + message + ChatColor.YELLOW + "" + ChatColor.BOLD + " ⚠⚠")
+        player.sendActionBar(ChatColor.YELLOW + ChatColor.BOLD + "⚠⚠ " + ChatColor.RED + "" + ChatColor.BOLD + message + ChatColor.YELLOW + "" + ChatColor.BOLD + " ⚠⚠")
     }
 
 }
