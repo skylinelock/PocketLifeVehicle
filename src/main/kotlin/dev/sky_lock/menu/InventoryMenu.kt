@@ -177,10 +177,10 @@ abstract class InventoryMenu(title: String,
         @JvmStatic
         fun of(player: Player): Optional<InventoryMenu> {
             val holder = player.openInventory.topInventory.holder
-            if (holder !is InventoryMenu) {
-                return Optional.empty()
+            return if (holder is InventoryMenu) {
+                Optional.of(holder as InventoryMenu)
             } else {
-                return Optional.of(holder as InventoryMenu)
+                Optional.empty()
             }
         }
     }
@@ -193,7 +193,7 @@ abstract class InventoryMenu(title: String,
      * @param player Inventoryを最初に開いたプレイヤー
      */
     init {
-        inventory = Bukkit.createInventory(this, type.size(), title!!)
+        inventory = Bukkit.createInventory(this, type.size(), title)
         contents = ArrayList()
         openingPlayers = HashSet()
         page = 1

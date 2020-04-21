@@ -70,7 +70,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
     init {
         of(player.uniqueId).ifPresent {
             addSlot(Slot(closeSlot.toInt(), ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "閉じる").build(), Consumer {
-                of(player).ifPresent { menu: InventoryMenu -> menu.close(player) }
+                of(player).ifPresent { menu -> menu.close(player) }
                 destroy(player.uniqueId)
             }))
             addSlot(Slot(nameSlot.toInt(), nameItem, Consumer { of(player).ifPresent { menu: InventoryMenu? -> open(player, StringEditor.Type.NAME, menu as ModelSettingMenu) } }))

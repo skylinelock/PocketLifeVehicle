@@ -79,7 +79,7 @@ class EventListener : Listener {
         event.isCancelled = true
         event.setUseInteractedBlock(Event.Result.DENY)
         event.setUseItemInHand(Event.Result.DENY)
-        val meta = Objects.requireNonNull(itemStack.itemMeta)
+        val meta = itemStack.itemMeta
         val player = event.player
         if (!PLVehicle.instance.pluginConfiguration.getAllowWorlds().contains(event.player.world)) {
             player.sendActionBar(ChatColor.RED.toString() + "このワールドでは乗り物は使用できません")
@@ -110,7 +110,7 @@ class EventListener : Listener {
             placeCarEntity(player, itemStack, event.hand, owner, model, whereToSpawn, fuel)
             return
         }
-        if (!Permission.CAR_PLACE.obtained(player)) {
+        if (!Permission.VEHICLE_PLACE.obtained(player)) {
             player.sendActionBar(ChatColor.RED.toString() + "乗り物を設置することができませんでした")
             return
         }

@@ -8,8 +8,8 @@ import org.bukkit.permissions.Permissible
  
  enum class Permission(private val permission: String) {
     ADMIN_COMMAND("plvehicle.command.admin.use"),
-    CAR_CLICK("plvehicle.entity.open-gui"),
-    CAR_PLACE("plvehicle.entity.place");
+    VEHICLE_OPEN_GUI("plvehicle.entity.open-gui"),
+    VEHICLE_PLACE("plvehicle.entity.place");
 
     fun obtained(permissible: Permissible): Boolean {
         return permissible.hasPermission(permission)

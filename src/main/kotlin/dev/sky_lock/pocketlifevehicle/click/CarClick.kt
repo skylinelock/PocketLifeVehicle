@@ -28,7 +28,7 @@ class CarClick(private val player: Player, private val armorStand: CraftArmorSta
             val ownerName = getName(owner)
 
             if (player.isSneaking) {
-                if (clicked != owner && !Permission.CAR_CLICK.obtained(player)) {
+                if (clicked != owner && !Permission.VEHICLE_OPEN_GUI.obtained(player)) {
                     sendFailureInfo("この乗り物は $ownerName が所有しています")
                     return
                 }
@@ -51,7 +51,7 @@ class CarClick(private val player: Player, private val armorStand: CraftArmorSta
             val ownerName = getName(owner)
 
             if (player.isSneaking) {
-                if (clicked != owner && !Permission.CAR_CLICK.obtained(player)) {
+                if (clicked != owner && !Permission.VEHICLE_OPEN_GUI.obtained(player)) {
                     sendFailureInfo("この乗り物は $ownerName が所有しています")
                     return
                 }
