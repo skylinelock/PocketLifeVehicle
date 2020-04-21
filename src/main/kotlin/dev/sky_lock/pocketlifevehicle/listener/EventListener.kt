@@ -5,9 +5,9 @@ import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.click.CarClick
 import dev.sky_lock.pocketlifevehicle.click.InventoryClick
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.kotlin.removeWhiteSpace
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
-import dev.sky_lock.pocketlifevehicle.util.Formats.removeBlanks
 import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.spawn
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.tow
@@ -103,7 +103,7 @@ class EventListener : Listener {
         val owner = UUID.fromString(ownerUUID)
         val lore = Objects.requireNonNull(meta.lore)
         val rawFuel = lore!![1]
-        var fuel = removeBlanks(rawFuel).split(":".toRegex()).toTypedArray()[1].toFloat()
+        var fuel = rawFuel.removeWhiteSpace().split(":".toRegex()).toTypedArray()[1].toFloat()
         if (fuel > model.spec.maxFuel) {
             fuel = model.spec.maxFuel
         }

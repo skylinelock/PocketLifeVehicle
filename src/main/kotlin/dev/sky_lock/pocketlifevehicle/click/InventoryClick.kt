@@ -5,7 +5,6 @@ import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
-import dev.sky_lock.pocketlifevehicle.util.Formats.colorize
 import org.bukkit.ChatColor
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
@@ -35,7 +34,7 @@ class InventoryClick(private val event: InventoryClickEvent) {
                         session.id = displayName
                     }
                     StringEditor.Type.NAME -> {
-                        val name = colorize(displayName)
+                        val name = ChatColor.translateAlternateColorCodes('&', displayName)
                         session.name = name
                     }
                     StringEditor.Type.HEIGHT -> {

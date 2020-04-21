@@ -2,8 +2,8 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
-import dev.sky_lock.pocketlifevehicle.util.Formats
 import dev.sky_lock.pocketlifevehicle.util.Profiles
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
@@ -85,7 +85,7 @@ object CarEntities {
         val model = car.model
         val itemStack = ItemStackBuilder(model.itemStack)
                 .persistentData(PLVehicle.instance.createKey("owner"), PersistentDataType.STRING, owner.toString())
-                .lore("所有者: " + Profiles.getName(owner), "残燃料: " + Formats.truncateToOneDecimalPlace(car.status.fuel))
+                .lore("所有者: " + Profiles.getName(owner), "残燃料: " + car.status.fuel.truncateToOneDecimalPlace())
                 .itemFlags(*ItemFlag.values())
                 .build()
         val location = car.location

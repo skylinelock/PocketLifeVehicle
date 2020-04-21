@@ -6,10 +6,10 @@ import dev.sky_lock.menu.MenuContents
 import dev.sky_lock.menu.Slot
 import dev.sky_lock.menu.ToggleSlot
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.gui.CarUtilMenu
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder
-import dev.sky_lock.pocketlifevehicle.util.Formats.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.util.Profiles.getName
 import dev.sky_lock.pocketlifevehicle.vehicle.Car
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getOwner
@@ -58,7 +58,7 @@ class CarUtilContents(private val car: Car) : MenuContents() {
     }
 
     private fun refuelInfo(fuel: Float): List<String> {
-        return listOf(ChatColor.GRAY + "残燃料 : " + truncateToOneDecimalPlace(abs(fuel)), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます")
+        return listOf(ChatColor.GRAY + "残燃料 : " + abs(fuel).truncateToOneDecimalPlace(), ChatColor.GRAY + "石炭ブロックを持って右クリック", ChatColor.GRAY + "すると燃料を補充できます")
     }
 
     private fun colorizeTitle(title: String): String {

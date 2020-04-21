@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
-import dev.sky_lock.pocketlifevehicle.util.Formats
+import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player
@@ -33,7 +33,7 @@ class MeterPanel(private val status: CarStatus, private val model: Model, privat
         }
         builder.append("   ")
         builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD)
-        val blockPerSecond = Formats.truncateToOneDecimalPlace(abs(engine.speedPerSecond()))
+        val blockPerSecond = abs(engine.speedPerSecond()).truncateToOneDecimalPlace()
         builder.append(blockPerSecond).append(ChatColor.GRAY).append(ChatColor.BOLD).append(" blocks/s")
         player.sendActionBar(builder.toString())
     }
