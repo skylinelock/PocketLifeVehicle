@@ -17,8 +17,9 @@ class LoreEditor(player: Player) : SignEditor(PLVehicle.instance, player, Consum
     EditSessions.of(player.uniqueId).ifPresent { session: ModelOption -> session.lore = lore }
     object : BukkitRunnable() {
         override fun run() {
-            val inventoryMenu = player.openInventory.topInventory.holder as InventoryMenu?
-            inventoryMenu!!.open(player, ModelMenuIndex.SETTING.ordinal)
+            InventoryMenu.of(player).ifPresent { menu ->
+                menu.open(player, ModelMenuIndex.SETTING.ordinal)
+            }
         }
     }.runTaskLater(PLVehicle.instance, 1L)
 }) 

@@ -47,6 +47,9 @@ class ModelStorage {
             return null
         }
         val meta = itemStack.itemMeta
+        if (!meta.hasCustomModelData()) {
+            return null
+        }
         val itemId = meta.customModelData
 
         return models.find {model ->
