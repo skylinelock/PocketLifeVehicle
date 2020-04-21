@@ -3,6 +3,7 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 import dev.sky_lock.pocketlifevehicle.task.BurnExplosionTask
 import dev.sky_lock.pocketlifevehicle.task.SubmergedMessageTask
 import net.minecraft.server.v1_14_R1.*
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
@@ -37,18 +38,20 @@ class CarArmorStand : EntityArmorStand {
         val model = car.model
         armorstand.setItem(model.itemOption.position.slot, model.itemStack)
         armorstand.isSmall = !model.isBig
+        this.updateSize()
         car.soundTask.start()
     }
 
-    //TODO: 当たり判定
-    //    @Override
-    //    public EntitySize a(EntityPose entitypose) {
-    //        EntitySize size = this.getEntityType().j();
-    //        CollideBox collideBox = this.car.getModel().getCollideBox();
-    //        float widthScale = collideBox.getBaseSide() / size.width;
-    //        float heightScale = collideBox.getHeight() / size.height;
-    //        return this.getEntityType().j().a(widthScale, heightScale);
-    //    }
+    override fun a(entityPose: EntityPose): EntitySize {
+        if (car == null) {
+            return super.a(entityPose)
+        }
+        val size = this.entityType.k()
+        val collideBox = car!!.model.collideBox
+        val widthScale = collideBox.baseSide / size.width
+        val heightScale = collideBox.height / size.height
+        return entityType.k().a(widthScale, heightScale)
+    }
 
     val location: Location
         get() = bukkitEntity.location
