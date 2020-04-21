@@ -38,7 +38,6 @@ abstract class InventoryMenu(title: String,
      * @return ページ
      */
     private var page: Int
-        private set
 
     /**
      * メニューコンテンツを追加します。

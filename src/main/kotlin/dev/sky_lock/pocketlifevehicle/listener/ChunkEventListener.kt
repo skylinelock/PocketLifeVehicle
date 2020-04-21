@@ -33,7 +33,7 @@ class ChunkEventListener : Listener {
     fun onChunkLoad(event: ChunkLoadEvent) {
         cars.removeAll { car ->
             if (!isSameChunk(car.location.chunk, event.chunk)) {
-                return@removeAll false;
+                return@removeAll false
             }
             return@removeAll CarEntities.spawn(car)
         }

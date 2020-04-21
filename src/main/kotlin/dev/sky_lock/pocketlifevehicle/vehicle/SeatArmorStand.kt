@@ -79,10 +79,6 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
 //        return CraftSeat(Bukkit.getServer() as CraftServer, this)
 //    }
 
-    override fun getId(): Int {
-        return super.getId()
-    }
-
     val passenger: Player?
         get() {
             val passenger = passengers[0] ?: return null
