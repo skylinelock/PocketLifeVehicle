@@ -14,7 +14,7 @@ import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelSettingMenu
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor.Companion.open
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder.Companion.of
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -46,30 +46,30 @@ class ModelSettingContents(private val player: Player): MenuContents() {
     private val removeSlot: Short = 46
     private val makeSlot: Short = 49
     
-    private var idItem = of(Material.EMERALD, 1).name("ID").build()
-    private var nameItem = of(Material.NAME_TAG, 1).name("名前").build()
-    private var loreItem = of(Material.OAK_SIGN, 1).name("説明").build()
+    private var idItem = ItemStackBuilder(Material.EMERALD, 1).name("ID").build()
+    private var nameItem = ItemStackBuilder(Material.NAME_TAG, 1).name("名前").build()
+    private var loreItem = ItemStackBuilder(Material.OAK_SIGN, 1).name("説明").build()
     
-    private var fuelItem = of(Material.COAL_BLOCK, 1).name("燃料上限").build()
-    private var speedItem = of(Material.DIAMOND, 1).name("最高速度").build()
-    private var capacityItem = of(Material.SADDLE, 1).name("乗車人数").build()
-    private var steeringItem = of(Material.LEAD, 1).name("ステアリング").lore(ChatColor.RED.toString() + "Coming soon").build()
+    private var fuelItem = ItemStackBuilder(Material.COAL_BLOCK, 1).name("燃料上限").build()
+    private var speedItem = ItemStackBuilder(Material.DIAMOND, 1).name("最高速度").build()
+    private var capacityItem = ItemStackBuilder(Material.SADDLE, 1).name("乗車人数").build()
+    private var steeringItem = ItemStackBuilder(Material.LEAD, 1).name("ステアリング").lore(ChatColor.RED.toString() + "Coming soon").build()
 
-    private var itemOptionItem = of(Material.ITEM_FRAME, 1).name("アイテム").build()
+    private var itemOptionItem = ItemStackBuilder(Material.ITEM_FRAME, 1).name("アイテム").build()
 
-    private var collideItem = of(Material.BEACON, 1).name(ChatColor.RESET.toString() + "当たり判定").build()
-    private val standSmallItem = of(Material.ARMOR_STAND, 1).name("大きさ").lore("小さい").build()
-    private val standBigItem = of(Material.ARMOR_STAND, 1).name("大きさ").lore("大きい").build()
-    private var heightItem = of(Material.IRON_HORSE_ARMOR, 1).name("座高").build()
-    private var soundItem = of(Material.BELL, 1).name("エンジン音").lore(ChatColor.RED.toString() + "Coming soon").build()
+    private var collideItem = ItemStackBuilder(Material.BEACON, 1).name(ChatColor.RESET.toString() + "当たり判定").build()
+    private val standSmallItem = ItemStackBuilder(Material.ARMOR_STAND, 1).name("大きさ").lore("小さい").build()
+    private val standBigItem = ItemStackBuilder(Material.ARMOR_STAND, 1).name("大きさ").lore("大きい").build()
+    private var heightItem = ItemStackBuilder(Material.IRON_HORSE_ARMOR, 1).name("座高").build()
+    private var soundItem = ItemStackBuilder(Material.BELL, 1).name("エンジン音").lore(ChatColor.RED.toString() + "Coming soon").build()
 
-    private val updateItem = of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN.toString() + "更新する").build()
-    private val removeItem = of(Material.BARRIER, 1).name(ChatColor.RED.toString() + "削除する").build()
-    private val createItem = of(Material.END_CRYSTAL, 1).name(ChatColor.GREEN.toString() + "追加する").build()
+    private val updateItem = ItemStackBuilder(Material.END_CRYSTAL, 1).name(ChatColor.GREEN.toString() + "更新する").build()
+    private val removeItem = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED.toString() + "削除する").build()
+    private val createItem = ItemStackBuilder(Material.END_CRYSTAL, 1).name(ChatColor.GREEN.toString() + "追加する").build()
     
     init {
         of(player.uniqueId).ifPresent {
-            addSlot(Slot(closeSlot.toInt(), of(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "閉じる").build(), Consumer {
+            addSlot(Slot(closeSlot.toInt(), ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "閉じる").build(), Consumer {
                 of(player).ifPresent { menu: InventoryMenu -> menu.close(player) }
                 destroy(player.uniqueId)
             }))
@@ -137,49 +137,49 @@ class ModelSettingContents(private val player: Player): MenuContents() {
             removeSlot(standSlot.toInt())
             addSlot(ToggleSlot(standSlot.toInt(), !session.isBig, standSmallItem, standBigItem, Consumer { event: InventoryClickEvent? -> session.isBig = true }, Consumer { event: InventoryClickEvent? -> session.isBig = false }))
             if (session.id != null && !session.id.equals("id", ignoreCase = true)) {
-                idItem = of(idItem).lore(session.id!!).glow().build()
+                idItem = ItemStackBuilder(idItem).lore(session.id!!).glow().build()
                 updateItemStack(idSlot.toInt(), idItem)
             }
             if (session.name != null && !session.name.equals("name", ignoreCase = true)) {
-                nameItem = of(nameItem).lore(session.name!!).glow().build()
+                nameItem = ItemStackBuilder(nameItem).lore(session.name!!).glow().build()
                 updateItemStack(nameSlot.toInt(), nameItem)
             }
             if (session.lore != null) {
-                loreItem = of(loreItem).lore(session.lore!!).glow().build()
+                loreItem = ItemStackBuilder(loreItem).lore(session.lore!!).glow().build()
                 updateItemStack(loreSlot.toInt(), loreItem)
             }
             if (session.maxFuel != 0.0f) {
-                fuelItem = of(fuelItem).lore(session.maxFuel.toString()).glow().build()
+                fuelItem = ItemStackBuilder(fuelItem).lore(session.maxFuel.toString()).glow().build()
                 updateItemStack(fuelSlot.toInt(), fuelItem)
             }
             if (session.maxSpeed != null) {
-                speedItem = of(speedItem).lore(session.maxSpeed!!.label).glow().build()
+                speedItem = ItemStackBuilder(speedItem).lore(session.maxSpeed!!.label).glow().build()
                 updateItemStack(speedSlot.toInt(), speedItem)
             }
             if (session.capacity != null) {
-                capacityItem = of(capacityItem).lore(session.capacity!!.value().toString()).glow().build()
+                capacityItem = ItemStackBuilder(capacityItem).lore(session.capacity!!.value().toString()).glow().build()
                 updateItemStack(capacitySlot.toInt(), capacityItem)
             }
             if (session.steeringLevel != null) {
-                steeringItem = of(steeringItem).lore(session.steeringLevel!!.name).glow().build()
+                steeringItem = ItemStackBuilder(steeringItem).lore(session.steeringLevel!!.name).glow().build()
                 updateItemStack(steeringSlot.toInt(), steeringItem)
             }
             if (session.isItemValid && session.position != null) {
                 val modelId = session.itemId
-                itemOptionItem = of(itemOptionItem).lore(session.itemType!!.name, modelId.toString(), session.position!!.label).glow().build()
+                itemOptionItem = ItemStackBuilder(itemOptionItem).lore(session.itemType!!.name, modelId.toString(), session.position!!.label).glow().build()
                 updateItemStack(itemSlot.toInt(), itemOptionItem)
             }
             if (session.collideHeight != 0.0f && session.collideBaseSide != 0.0f) {
-                collideItem = of(collideItem).name(ChatColor.AQUA.toString() + "当たり判定").lore(session.collideBaseSide.toString(), session.collideHeight.toString()).glow().build()
+                collideItem = ItemStackBuilder(collideItem).name(ChatColor.AQUA.toString() + "当たり判定").lore(session.collideBaseSide.toString(), session.collideHeight.toString()).glow().build()
                 updateItemStack(collideSlot.toInt(), collideItem)
             }
 
             if (session.height != 0.0f) {
-                heightItem = of(heightItem).lore(session.height.toString()).glow().build()
+                heightItem = ItemStackBuilder(heightItem).lore(session.height.toString()).glow().build()
                 updateItemStack(heightSlot.toInt(), heightItem)
             }
             if (session.sound != null) {
-                soundItem = of(soundItem).lore(session.sound!!.name).build()
+                soundItem = ItemStackBuilder(soundItem).lore(session.sound!!.name).build()
                 updateItemStack(soundSlot.toInt(), soundItem)
             }
 

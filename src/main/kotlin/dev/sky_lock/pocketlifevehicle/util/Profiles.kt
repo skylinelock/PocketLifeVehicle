@@ -49,7 +49,10 @@ object Profiles {
         return UUID.fromString(uuidStr)
     }
 
-    fun getName(uuid: UUID): String? {
-        return Bukkit.getOfflinePlayer(uuid).name
+    fun getName(uuid: UUID?): String {
+        if (uuid == null) {
+            return "unknown"
+        }
+        return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
     }
 }

@@ -4,17 +4,20 @@ import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 
 /**
  * @author sky_lock
  */
-class ItemStackBuilder private constructor(itemStack: ItemStack) {
-    private val itemStack: ItemStack = itemStack.clone()
+open class ItemStackBuilder internal constructor(itemStack: ItemStack) {
+    private  val itemStack: ItemStack = itemStack.clone()
+    internal val itemMeta: ItemMeta = itemStack.itemMeta
+
+    constructor(type: Material, amount: Int) : this(ItemStack(type, amount))
+
     fun customModelData(id: Int): ItemStackBuilder {
-        val meta = requireNotNull(itemStack.itemMeta)
-        meta.setCustomModelData(id)
-        itemStack.itemMeta = meta
+        itemMeta.setCustomModelData(id)
         return this
     }
 
@@ -24,62 +27,39 @@ class ItemStackBuilder private constructor(itemStack: ItemStack) {
     }
 
     fun lore(lore: List<String>): ItemStackBuilder {
-        val meta = requireNotNull(itemStack.itemMeta)
-        meta.lore = lore
-        itemStack.itemMeta = meta
+        itemMeta.lore = lore
         return this
     }
 
     fun name(name: String): ItemStackBuilder {
-        val meta = requireNotNull(itemStack.itemMeta)
-        meta.setDisplayName(name)
-        itemStack.itemMeta = meta
+        itemMeta.setDisplayName(name)
         return this
     }
 
     fun unbreakable(unbreakable: Boolean): ItemStackBuilder {
-        val meta = requireNotNull(itemStack.itemMeta)
-        meta.isUnbreakable = unbreakable
-        itemStack.itemMeta = meta
+        itemMeta.isUnbreakable = unbreakable
         return this
     }
 
     fun itemFlags(vararg flags: ItemFlag): ItemStackBuilder {
-        val meta = requireNotNull(itemStack.itemMeta)
-        meta.addItemFlags(*flags)
-        itemStack.itemMeta = meta
+        itemMeta.addItemFlags(*flags)
         return this
     }
 
     fun <T, Z> persistentData(key: NamespacedKey, type: PersistentDataType<T, Z>, obj: Z): ItemStackBuilder {
-        val meta = requireNotNull(itemStack.itemMeta)
-        val container = meta.persistentDataContainer
+        val container = itemMeta.persistentDataContainer
         container.set(key, type, obj)
-        itemStack.itemMeta = meta
         return this
     }
 
     fun glow(): ItemStackBuilder {
-        val itemMeta = requireNotNull(itemStack.itemMeta)
         itemMeta.addEnchant(GlowEnchantment(), 1, true)
-        itemStack.itemMeta = itemMeta
         return this
     }
 
     fun build(): ItemStack {
+        itemStack.itemMeta = itemMeta
         return itemStack
-    }
-
-    companion object {
-        fun of(type: Material, amount: Int): ItemStackBuilder {
-            require(type != Material.AIR) { "Material cannot be Material.AIR" }
-            return ItemStackBuilder(ItemStack(type, amount))
-        }
-
-        fun of(itemStack: ItemStack): ItemStackBuilder {
-            require(itemStack.type != Material.AIR) { "Material cannot be Material.AIR" }
-            return ItemStackBuilder(itemStack)
-        }
     }
 
 }

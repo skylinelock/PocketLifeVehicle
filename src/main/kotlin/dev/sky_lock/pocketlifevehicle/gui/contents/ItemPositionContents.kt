@@ -7,7 +7,7 @@ import dev.sky_lock.menu.Slot
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder.Companion.of
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.model.ItemPosition
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -26,11 +26,11 @@ class ItemPositionContents(player: Player) : MenuContents() {
     }
 
     init {
-        val positionSelector = of(Material.ARMOR_STAND, 1).build()
-        addSlot(Slot(11, of(positionSelector).name(ItemPosition.HEAD.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.HEAD) }))
-        addSlot(Slot(13, of(positionSelector).name(ItemPosition.HAND.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.HAND) }))
-        addSlot(Slot(15, of(positionSelector).name(ItemPosition.CHEST.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.CHEST) }))
-        addSlot(Slot(29, of(positionSelector).name(ItemPosition.FEET.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.FEET) }))
-        addSlot(Slot(31, of(positionSelector).name(ItemPosition.LEGS.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.LEGS) }))
+        val positionSelector = ItemStackBuilder(Material.ARMOR_STAND, 1).build()
+        addSlot(Slot(11, ItemStackBuilder(positionSelector).name(ItemPosition.HEAD.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.HEAD) }))
+        addSlot(Slot(13, ItemStackBuilder(positionSelector).name(ItemPosition.HAND.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.HAND) }))
+        addSlot(Slot(15, ItemStackBuilder(positionSelector).name(ItemPosition.CHEST.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.CHEST) }))
+        addSlot(Slot(29, ItemStackBuilder(positionSelector).name(ItemPosition.FEET.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.FEET) }))
+        addSlot(Slot(31, ItemStackBuilder(positionSelector).name(ItemPosition.LEGS.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setPositionAndReturn(player, ItemPosition.LEGS) }))
     }
 }

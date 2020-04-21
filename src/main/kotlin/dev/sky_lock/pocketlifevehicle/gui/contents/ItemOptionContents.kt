@@ -7,7 +7,7 @@ import dev.sky_lock.menu.Slot
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder.Companion.of
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -17,17 +17,17 @@ import org.bukkit.event.inventory.InventoryClickEvent
  * @author sky_lock
  */
 class ItemOptionContents(private val player: Player) : MenuContents() {
-    private val backItem = of(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "戻る").build()
-    private var itemItem = of(Material.MAGMA_CREAM, 1).name("アイテム").build()
-    private var positionItem = of(Material.SLIME_BALL, 1).name("アイテム位置").build()
+    private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "戻る").build()
+    private var itemItem = ItemStackBuilder(Material.MAGMA_CREAM, 1).name("アイテム").build()
+    private var positionItem = ItemStackBuilder(Material.SLIME_BALL, 1).name("アイテム位置").build()
     override fun onFlip(menu: InventoryMenu) {
         of(player.uniqueId).ifPresent { session: ModelOption ->
             if (session.isItemValid) {
-                itemItem = of(itemItem).glow().lore(session.itemType!!.name, session.itemId.toString()).build()
+                itemItem = ItemStackBuilder(itemItem).glow().lore(session.itemType!!.name, session.itemId.toString()).build()
                 updateItemStack(21, itemItem)
             }
             if (session.position != null) {
-                positionItem = of(positionItem).glow().lore(session.position!!.label).build()
+                positionItem = ItemStackBuilder(positionItem).glow().lore(session.position!!.label).build()
                 updateItemStack(23, positionItem)
             }
             menu.update()

@@ -1,7 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.model
 
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder.Companion.of
-import dev.sky_lock.pocketlifevehicle.util.TypeChecks
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.SerializableAs
 import org.bukkit.inventory.ItemFlag
@@ -17,7 +16,7 @@ class Model internal constructor(val id: String, val name: String,
                                  val collideBox: CollideBox, val isBig: Boolean, val height: Float, val sound: Sound) : ConfigurationSerializable {
 
     val itemStack: ItemStack
-        get() = of(itemOption.type, 1).name(name).customModelData(itemOption.id).unbreakable(true).itemFlags(*ItemFlag.values()).build()
+        get() = ItemStackBuilder(itemOption.type, 1).name(name).customModelData(itemOption.id).unbreakable(true).itemFlags(*ItemFlag.values()).build()
 
     override fun serialize(): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
@@ -38,17 +37,7 @@ class Model internal constructor(val id: String, val name: String,
         fun deserialize(map: Map<String, Any>): Model {
             val id = map["id"].toString()
             val name = map["name"].toString()
-            val lore: List<String>
-            val mapObj = map["lore"]
-            lore = if (mapObj == null) {
-                emptyList<String>()
-            } else {
-                try {
-                    TypeChecks.checkListTypeDynamically(mapObj, String::class.java)
-                } catch (ex: ClassCastException) {
-                    emptyList<String>()
-                }
-            }
+            val lore = (map["lore"] as List<*>).filterIsInstance<String>()
             val spec = map["spec"] as Spec
             val itemOption = map["item"] as ItemOption
             val collideBox = map["collidebox"] as CollideBox

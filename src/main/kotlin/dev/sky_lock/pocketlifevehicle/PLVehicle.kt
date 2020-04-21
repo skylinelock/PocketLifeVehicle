@@ -9,7 +9,6 @@ import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
 import dev.sky_lock.pocketlifevehicle.listener.EventListener
 import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
-import org.bukkit.ChatColor
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.plugin.java.JavaPlugin

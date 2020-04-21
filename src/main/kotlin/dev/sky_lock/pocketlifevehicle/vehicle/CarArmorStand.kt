@@ -37,7 +37,6 @@ class CarArmorStand : EntityArmorStand {
         val model = car.model
         armorstand.setItem(model.itemOption.position.slot, model.itemStack)
         armorstand.isSmall = !model.isBig
-        // armorstand.setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
         car.soundTask.start()
     }
 

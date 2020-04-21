@@ -8,7 +8,7 @@ import dev.sky_lock.pocketlifevehicle.gui.EditSessions.newSession
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder.Companion.of
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -20,12 +20,12 @@ import java.util.*
  * @author sky_lock
  */
 class EditCarModelContents(player: Player) : MenuContents() {
-    private val carItem = of(Material.CHEST_MINECART, 1).name(ChatColor.GREEN.toString() + "車種を追加する").build()
+    private val carItem = ItemStackBuilder(Material.CHEST_MINECART, 1).name(ChatColor.GREEN.toString() + "車種を追加する").build()
     override fun onFlip(menu: InventoryMenu) {}
 
     init {
         newSession(player.uniqueId)
-        super.addSlot(Slot(4, of(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "閉じる").build(), org.bukkit.util.Consumer { event: InventoryClickEvent -> of(player).ifPresent { menu: InventoryMenu -> menu.close((event.whoClicked as Player)) } }))
+        super.addSlot(Slot(4, ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED.toString() + "閉じる").build(), org.bukkit.util.Consumer { event: InventoryClickEvent -> of(player).ifPresent { menu: InventoryMenu -> menu.close((event.whoClicked as Player)) } }))
         var modelSlot = 9
         Storage.MODEL.forEach { model ->
             if (modelSlot > 44) {
@@ -50,7 +50,7 @@ class EditCarModelContents(player: Player) : MenuContents() {
             val size = if (model.isBig) "大きい" else "小さい"
             desc.add(ChatColor.DARK_AQUA.toString() + "大きさ: " + ChatColor.AQUA + size)
             desc.add(ChatColor.DARK_AQUA.toString() + "座高: " + ChatColor.AQUA + model.height)
-            val item = of(model.itemStack).name(ChatColor.YELLOW.toString() + model.id).lore(desc).build()
+            val item = ItemStackBuilder(model.itemStack).name(ChatColor.YELLOW.toString() + model.id).lore(desc).build()
             addSlot(Slot(modelSlot, item, org.bukkit.util.Consumer {
                 of(player).ifPresent { menu: InventoryMenu ->
                     of(player.uniqueId).ifPresent { session: ModelOption ->

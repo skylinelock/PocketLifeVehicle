@@ -6,9 +6,10 @@ import dev.sky_lock.menu.InventoryMenu.Companion.of
 import dev.sky_lock.menu.MenuContents
 import dev.sky_lock.menu.Slot
 import dev.sky_lock.menu.ToggleSlot
+import dev.sky_lock.pocketlifevehicle.extension.plus
 import dev.sky_lock.pocketlifevehicle.gui.CarUtilMenu
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder.Companion.of
-import dev.sky_lock.pocketlifevehicle.item.PlayerSkull.Companion.of
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder
 import dev.sky_lock.pocketlifevehicle.util.Formats.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.util.Profiles.getName
 import dev.sky_lock.pocketlifevehicle.vehicle.Car
@@ -31,15 +32,15 @@ import kotlin.math.roundToInt
 class CarUtilContents(private val car: Car) : MenuContents() {
     private var refuelHopper: ItemStack
     override fun onFlip(menu: InventoryMenu) {
-        refuelHopper = of(refuelHopper).lore(refuelInfo(car.status.fuel)).build()
+        refuelHopper = ItemStackBuilder(refuelHopper).lore(refuelInfo(car.status.fuel)).build()
         updateItemStack(22, refuelHopper)
         menu.update()
         setFuelGage(menu)
     }
 
     private fun setFuelGage(menu: InventoryMenu) {
-        val filled = of(Material.GREEN_STAINED_GLASS_PANE, 1).name(ChatColor.GREEN.toString() + "補充済み").build()
-        val unFilled = of(Material.RED_STAINED_GLASS_PANE, 1).name(ChatColor.RED.toString() + "未補充").build()
+        val filled = ItemStackBuilder(Material.GREEN_STAINED_GLASS_PANE, 1).name(ChatColor.GREEN.toString() + "補充済み").build()
+        val unFilled = ItemStackBuilder(Material.RED_STAINED_GLASS_PANE, 1).name(ChatColor.RED.toString() + "未補充").build()
         val fuel = car.status.fuel
         val maxFuel = car.model.spec.maxFuel
         val rate = fuel / maxFuel
@@ -69,10 +70,6 @@ class CarUtilContents(private val car: Car) : MenuContents() {
         return lore.map { l: String -> ChatColor.GRAY.toString() + l }
     }
 
-    private fun colorizeContentAsLIst(vararg lore: String): List<String> {
-        return lore.map { l: String -> ChatColor.AQUA.toString() + l }
-    }
-
     private fun carInfoLore(): List<String> {
         val carInfo: MutableList<String> = ArrayList()
         carInfo.add(ChatColor.GREEN.toString() + "名前     : " + ChatColor.RESET + car.model.name)
@@ -84,22 +81,14 @@ class CarUtilContents(private val car: Car) : MenuContents() {
     }
 
     init {
-        val closeItem = of(Material.ENDER_PEARL, 1).name(ChatColor.RED.toString() + "閉じる").build()
-        val towItem = of(Material.MINECART, 1).name(colorizeTitle("レッカー移動")).lore(colorizeInfoAsList("アイテム化して持ち運べるようにします")).build()
+        val closeItem = ItemStackBuilder(Material.ENDER_PEARL, 1).name(ChatColor.RED.toString() + "閉じる").build()
+        val towItem = ItemStackBuilder(Material.MINECART, 1).name(colorizeTitle("レッカー移動")).lore(colorizeInfoAsList("アイテム化して持ち運べるようにします")).build()
 
         val owner = getOwner(car)
-        val ownerSlot: Slot?
+        val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).name(colorizeTitle("所有者")).lore(ChatColor.AQUA + getName(owner)).build()
+        val ownerSlot = Slot(20, ownerSkull, org.bukkit.util.Consumer { })
 
-        ownerSlot = if (owner == null) {
-            val unknownSkull = of(Material.PLAYER_HEAD, 1).name("unknown").build()
-            Slot(20, unknownSkull)
-        } else {
-            val playerSkull = of(owner, 1).toItemStack()
-            val ownerSkull = of(playerSkull).name(colorizeTitle("所有者")).lore(colorizeContentAsLIst(getName(owner)!!)).build()
-            Slot(20, ownerSkull, org.bukkit.util.Consumer { })
-        }
-
-        val carInfoBook = of(Material.BOOK, 1).name(colorizeTitle("車両情報")).lore(carInfoLore()).build()
+        val carInfoBook = ItemStackBuilder(Material.BOOK, 1).name(colorizeTitle("車両情報")).lore(carInfoLore()).build()
         val closeSlot = Slot(4, closeItem, org.bukkit.util.Consumer { event: InventoryClickEvent ->
             val menu = event.inventory.holder as CarUtilMenu?
             menu!!.close((event.whoClicked as Player))
@@ -108,13 +97,13 @@ class CarUtilContents(private val car: Car) : MenuContents() {
             tow(car)
             car.closeMenu((event.whoClicked as Player))
         })
-        val wield = of(Material.LIME_DYE, 1).name(ChatColor.RED.toString() + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build()
-        val notWield = of(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN.toString() + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build()
+        val wield = ItemStackBuilder(Material.LIME_DYE, 1).name(ChatColor.RED.toString() + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build()
+        val notWield = ItemStackBuilder(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN.toString() + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build()
         val status = car.status
         val wieldHandSlot: Slot = ToggleSlot(13, status.isWieldHand, wield, notWield, Consumer { status.isWieldHand = false }, Consumer { status.isWieldHand = true })
         val carInfoSlot = Slot(24, carInfoBook, org.bukkit.util.Consumer { })
-        val keyClose = of(Material.BARRIER, 1).name(ChatColor.RED.toString() + "" + ChatColor.BOLD + "鍵を閉める").build()
-        val keyOpen = of(Material.STRUCTURE_VOID, 1).name(ChatColor.AQUA.toString() + "" + ChatColor.BOLD + "鍵を開ける").build()
+        val keyClose = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED.toString() + "" + ChatColor.BOLD + "鍵を閉める").build()
+        val keyOpen = ItemStackBuilder(Material.STRUCTURE_VOID, 1).name(ChatColor.AQUA.toString() + "" + ChatColor.BOLD + "鍵を開ける").build()
         val keySlot: Slot = ToggleSlot(15, status.isLocked, keyOpen, keyClose, org.bukkit.util.Consumer { event: InventoryClickEvent ->
             status.isLocked = false
             val player = event.whoClicked as Player
@@ -124,7 +113,7 @@ class CarUtilContents(private val car: Car) : MenuContents() {
             val player = event.whoClicked as Player
             player.playSound(player.location, Sound.BLOCK_IRON_DOOR_CLOSE, 1.0f, 1.4f)
         })
-        refuelHopper = of(Material.HOPPER, 1).name(colorizeTitle("給油口")).lore(refuelInfo(status.fuel)).build()
+        refuelHopper = ItemStackBuilder(Material.HOPPER, 1).name(colorizeTitle("給油口")).lore(refuelInfo(status.fuel)).build()
         val fuelSlot = Slot(22, refuelHopper, Consumer { event: InventoryClickEvent ->
             val cursor = event.cursor ?: return@Consumer
             if (cursor.type != Material.COAL_BLOCK) {
@@ -135,7 +124,7 @@ class CarUtilContents(private val car: Car) : MenuContents() {
                 cursor.amount = cursor.amount - 1
                 val player = event.whoClicked as Player
                 player.playSound(player.location, Sound.BLOCK_BREWING_STAND_BREW, 1.0f, 0.6f)
-                updateItemStack(22, of(refuelHopper).lore(refuelInfo(status.fuel)).build())
+                updateItemStack(22, ItemStackBuilder(refuelHopper).lore(refuelInfo(status.fuel)).build())
                 of(player).ifPresent { menu: InventoryMenu ->
                     menu.update()
                     setFuelGage(menu)

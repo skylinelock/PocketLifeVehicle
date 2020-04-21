@@ -7,7 +7,7 @@ import dev.sky_lock.menu.Slot
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder.Companion.of
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -27,7 +27,7 @@ class ItemSelectContents(player: Player) : MenuContents() {
         for (i in 0..5) {
             for (j in 0..8) {
                 val id = idOffset + k
-                val item = of(VEHICLE_ITEM, 1).customModelData(id).build()
+                val item = ItemStackBuilder(VEHICLE_ITEM, 1).customModelData(id).build()
                 addSlot(Slot(i * 9 + j, item, org.bukkit.util.Consumer {
                     of(player.uniqueId).ifPresent { session: ModelOption ->
                         session.itemType = VEHICLE_ITEM

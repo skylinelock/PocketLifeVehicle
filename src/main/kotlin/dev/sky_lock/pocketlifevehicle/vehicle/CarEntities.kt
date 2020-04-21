@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder.Companion.of
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.util.Formats
 import dev.sky_lock.pocketlifevehicle.util.Profiles
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
@@ -82,7 +82,7 @@ object CarEntities {
 
     private fun tow(owner: UUID, car: Car) {
         val model = car.model
-        val itemStack = of(model.itemStack)
+        val itemStack = ItemStackBuilder(model.itemStack)
                 .persistentData(PLVehicle.instance.createKey("owner"), PersistentDataType.STRING, owner.toString())
                 .lore("所有者: " + Profiles.getName(owner), "残燃料: " + Formats.truncateToOneDecimalPlace(car.status.fuel))
                 .itemFlags(*ItemFlag.values())

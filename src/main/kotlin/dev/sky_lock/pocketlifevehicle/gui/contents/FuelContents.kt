@@ -7,7 +7,7 @@ import dev.sky_lock.menu.Slot
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder.Companion.of
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.util.Consumer
@@ -31,7 +31,7 @@ class FuelContents(player: Player) : MenuContents() {
                     }
                     val slot = 9 * i + j
                     val fuel = index * 25
-                    val iron = of(Material.IRON_BLOCK, 1).name(fuel.toString()).build()
+                    val iron = ItemStackBuilder(Material.IRON_BLOCK, 1).name(fuel.toString()).build()
                     addSlot(Slot(slot, iron, Consumer {
                         session.maxFuel = fuel.toFloat()
                         flipPage(player, ModelMenuIndex.SETTING.ordinal)
