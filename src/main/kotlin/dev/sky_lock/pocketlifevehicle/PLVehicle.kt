@@ -35,9 +35,28 @@ class PLVehicle : JavaPlugin() {
         val commandHandler = CommandHandler()
         getCommand("vehicle")?.setExecutor(commandHandler)
 
-        registerPluginEvents()
-        registerEntities()
+        this.registerEventListener()
+        this.registerGlowEnchantment()
 
+        VehicleEntities.spawnAll()
+
+        Metrics(this, 7271)
+    }
+
+    override fun onDisable() {
+        VehicleEntities.saveAll()
+        Storage.MODEL.saveToFile()
+        pluginConfiguration.save()
+    }
+
+    private fun registerEventListener() {
+        val pluginManager = server.pluginManager
+        pluginManager.registerEvents(EventListener(), this)
+        pluginManager.registerEvents(ChunkEventListener(), this)
+        pluginManager.registerEvents(InventoryMenuListener(this), this)
+    }
+
+    private fun registerGlowEnchantment() {
         try {
             val field = Enchantment::class.java.getDeclaredField("acceptingNew")
             field.isAccessible = true
@@ -48,43 +67,7 @@ class PLVehicle : JavaPlugin() {
             logger.warning("Could not register the enchant for growing item")
         }
         Enchantment.registerEnchantment(GlowEnchantment())
-
-        VehicleEntities.spawnAll()
-
-        Metrics(this, 7271)
     }
-
-    override fun onDisable() {
-        super.onDisable()
-        VehicleEntities.saveAll()
-        Storage.MODEL.saveToFile()
-        pluginConfiguration.save()
-    }
-
-    private fun registerPluginEvents() {
-        val pluginManager = server.pluginManager
-        pluginManager.registerEvents(EventListener(), this)
-        pluginManager.registerEvents(ChunkEventListener(), this)
-        pluginManager.registerEvents(InventoryMenuListener(this), this)
-    }
-
-    private fun registerEntities() {
-/*        registerEntity("car_armor_stand", (type, world) -> new CarArmorStand(type, world));
-        registerEntity("seat_armor_stand", SeatArmorStand::new);*/
-        logger.info("Car entities were successfully registered!")
-    }
-
-/*    private <T extends Entity> void registerEntity(String id, EntityTypes.b<T> constructor) {
-        Map<Object, Type<?>> types = (Map<Object, Type<?>>) DataConverterRegistry.a().getSchema(DataFixUtils.makeKey(1631)).findChoiceType(DataConverterTypes.n).types();
-        types.put("minecraft:" + id, types.get("minecraft:armor_stand"));
-        try {
-            Method method = EntityTypes.class.getMethod("a", EntityTypes.b.class, EnumCreatureType.class);
-            method.setAccessible(true);
-            method.invoke(id, EntityTypes.a.a(constructor, EnumCreatureType.MISC).a(0.5F, 1.975F));
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ex) {
-            this.getLogger().warning("Could not register custom entities");
-        }
-    }*/
 
     fun createKey(key: String): NamespacedKey {
         return NamespacedKey(this, key)
