@@ -4,7 +4,7 @@ import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.util.Profiles
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.of
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.of
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.command.Command

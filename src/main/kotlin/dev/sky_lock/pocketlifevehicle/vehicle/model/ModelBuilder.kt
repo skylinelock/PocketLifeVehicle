@@ -1,5 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.model
 
+import java.lang.IllegalStateException
+
 /**
  * @author sky_lock
  */
@@ -54,7 +56,7 @@ class ModelBuilder(private val id: String) {
 
     fun build(): Model {
         if (name == null || spec == null || itemOption == null || collideBox == null || sound == null) {
-            throw NullPointerException()
+            throw IllegalStateException()
         }
         return Model(id, name!!, lore!!, spec!!, itemOption!!, collideBox!!, isBig, height, sound!!)
     }

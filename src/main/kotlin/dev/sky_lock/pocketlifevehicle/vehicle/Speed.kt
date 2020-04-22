@@ -15,19 +15,19 @@ internal class Speed {
         get() = exactSpeed < BigDecimal.ZERO
 
     fun accelerate() {
-        exactSpeed = exactSpeed.add(acceleration)
+        exactSpeed += acceleration
     }
 
     fun frictionalDecelerate() {
-        exactSpeed = exactSpeed.subtract(acceleration)
+        exactSpeed -= acceleration
     }
 
     fun decelerate() {
-        exactSpeed = exactSpeed.subtract(acceleration.add(frictionalDeceleration))
+        exactSpeed -= acceleration + frictionalDeceleration
     }
 
     fun decrease() {
-        exactSpeed = exactSpeed.multiply(magnification)
+        exactSpeed *= magnification
     }
 
     fun approximate(): Float {

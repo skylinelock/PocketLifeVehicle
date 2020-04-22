@@ -3,7 +3,7 @@ package dev.sky_lock.pocketlifevehicle.json
 import com.google.gson.reflect.TypeToken
 import dev.sky_lock.pocketlifevehicle.json.GsonUtil.load
 import dev.sky_lock.pocketlifevehicle.json.GsonUtil.save
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntity
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntity
 import java.io.IOException
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -16,21 +16,21 @@ class EntityStoreFile(dirPath: Path) {
     private val filePath: Path
 
     @Throws(IOException::class)
-    fun save(cars: Set<CarEntity>) {
-        save(filePath, cars, TYPETOKEN)
+    fun save(vehicles: Set<VehicleEntity>) {
+        save(filePath, vehicles, TYPETOKEN)
     }
 
     @Throws(IOException::class)
-    fun load(): Set<CarEntity> {
-        var carEntities = load<Set<CarEntity>>(filePath, TYPETOKEN)
-        if (carEntities == null) {
-            carEntities = HashSet()
+    fun load(): Set<VehicleEntity> {
+        var entities = load<Set<VehicleEntity>>(filePath, TYPETOKEN)
+        if (entities == null) {
+            entities = HashSet()
         }
-        return carEntities
+        return entities
     }
 
     companion object {
-        private val TYPETOKEN = object : TypeToken<Set<CarEntity>>() {}.type
+        private val TYPETOKEN = object : TypeToken<Set<VehicleEntity>>() {}.type
     }
 
     init {

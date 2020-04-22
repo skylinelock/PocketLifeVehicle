@@ -14,13 +14,13 @@ import java.util.function.Consumer
 /**
  * @author sky_lock
  */
-open class Car internal constructor(val model: Model) {
+open class Vehicle internal constructor(val model: Model) {
     val seats: MutableList<SeatArmorStand> = ArrayList()
-    var center: CarArmorStand? = null
+    var center: ModelArmorStand? = null
         private set
     private var menu: CarUtilMenu? = null
     val status: CarStatus = CarStatus()
-    val soundTask: CarSoundTask
+    val engineSound: EngineSound
     val engine: Engine
     val steering: Steering
     val meterPanel: MeterPanel
@@ -30,7 +30,7 @@ open class Car internal constructor(val model: Model) {
         engine = Engine(status, model)
         steering = Steering(status)
         meterPanel = MeterPanel(status, model, engine)
-        soundTask = CarSoundTask(model, status)
+        engineSound = EngineSound(model, status)
     }
 
     fun addSeat(seat: SeatArmorStand) {
@@ -59,7 +59,7 @@ open class Car internal constructor(val model: Model) {
     }
 
     open fun spawn(location: Location) {
-        center = CarArmorStand((location.world as CraftWorld).handle, location.x, location.y, location.z)
+        center = ModelArmorStand((location.world as CraftWorld).handle, location.x, location.y, location.z)
         status.location = location
         center!!.assemble(this)
         status.yaw = location.yaw
@@ -74,7 +74,7 @@ open class Car internal constructor(val model: Model) {
         return seats.contains(seat)
     }
 
-    operator fun contains(basis: CarArmorStand): Boolean {
+    operator fun contains(basis: ModelArmorStand): Boolean {
         return center == basis
     }
 

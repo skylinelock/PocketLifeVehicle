@@ -12,8 +12,8 @@ import org.bukkit.util.EulerAngle
 /**
  * @author sky_lock
  */
-class CarArmorStand : EntityArmorStand {
-    private var car: Car? = null
+class ModelArmorStand : EntityArmorStand {
+    private var vehicle: Vehicle? = null
 
     constructor(entityTypes: EntityTypes<out EntityArmorStand>, world: World) : super(entityTypes, world)
     constructor(world: World, x: Double, y: Double, z: Double) : super(world, x, y, z) {
@@ -30,23 +30,23 @@ class CarArmorStand : EntityArmorStand {
         K = 1.0f
     }
 
-    fun assemble(car: Car) {
-        this.car = car
+    fun assemble(vehicle: Vehicle) {
+        this.vehicle = vehicle
         val armorstand: ArmorStand = bukkitEntity as CraftArmorStand
         armorstand.rightArmPose = EulerAngle.ZERO
-        val model = car.model
+        val model = vehicle.model
         armorstand.setItem(model.itemOption.position.slot, model.itemStack)
         armorstand.isSmall = !model.isBig
         this.updateSize()
-        car.soundTask.start()
+        vehicle.engineSound.start()
     }
 
     override fun a(entityPose: EntityPose): EntitySize {
-        if (car == null) {
+        if (vehicle == null) {
             return super.a(entityPose)
         }
         val size = this.entityType.k()
-        val collideBox = car!!.model.collideBox
+        val collideBox = vehicle!!.model.collideBox
         val widthScale = collideBox.baseSide / size.width
         val heightScale = collideBox.height / size.height
         return entityType.k().a(widthScale, heightScale)
@@ -56,7 +56,7 @@ class CarArmorStand : EntityArmorStand {
         get() = bukkitEntity.location
 
     override fun killEntity() {
-        car!!.soundTask.stop()
+        vehicle!!.engineSound.stop()
         super.killEntity()
     }
 
@@ -73,45 +73,45 @@ class CarArmorStand : EntityArmorStand {
     //水に入った時
     override fun az() {
         super.au()
-        SubmergedMessageTask().run(car!!)
-        car!!.soundTask.stop()
+        SubmergedMessageTask().run(vehicle!!)
+        vehicle!!.engineSound.stop()
     }
 
     override fun burn(i: Float) {
         super.burn(i)
-        if (!car!!.isBeginExplode) {
-            BurnExplosionTask().run(car!!)
-            car!!.isBeginExplode = true
+        if (!vehicle!!.isBeginExplode) {
+            BurnExplosionTask().run(vehicle!!)
+            vehicle!!.isBeginExplode = true
         }
     }
 
     override fun e(vec3d: Vec3D) {
-        if (car!!.passengers.isEmpty() || car!!.driver == null || this.isInWater || inLava) {
-            car!!.engine.stop()
+        if (vehicle!!.passengers.isEmpty() || vehicle!!.driver == null || this.isInWater || inLava) {
+            vehicle!!.engine.stop()
             super.e(vec3d)
             return
         }
-        car!!.driver.let { driver ->
+        vehicle!!.driver.let { driver ->
             val player = (driver as CraftPlayer).handle
             val sideIn = player.bb
             val forwardIn = player.bd
             if (sideIn < 0.0f) {
-                car!!.steering.right(driver)
+                vehicle!!.steering.right(driver)
             } else if (sideIn > 0.0f) {
-                car!!.steering.left(driver)
+                vehicle!!.steering.left(driver)
             }
-            car!!.engine.update(forwardIn)
-            car!!.engine.consumeFuel(sideIn)
+            vehicle!!.engine.update(forwardIn)
+            vehicle!!.engine.consumeFuel(sideIn)
         }
         fallDistance = 0.0f
-        yaw = car!!.status.yaw
+        yaw = vehicle!!.status.yaw
         lastYaw = yaw
         pitch = 0.0f
         setYawPitch(yaw, pitch)
         // this.aQ = this.yaw;
-        this.o(car!!.engine.currentSpeed)
+        this.o(vehicle!!.engine.currentSpeed)
         super.e(vec3d.e(Vec3D(0.0, 1.0, 3.0)))
-        car!!.status.location = location
+        vehicle!!.status.location = location
     }
 
 //    override fun getBukkitEntity(): CraftEntity {

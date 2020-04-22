@@ -8,9 +8,9 @@ import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.removeWhiteSpace
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
-import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.spawn
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.tow
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.spawn
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.tow
 import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
@@ -47,7 +47,7 @@ class EventListener : Listener {
             return
         }
         val armorStand = event.rightClicked as CraftArmorStand
-        if (armorStand.handle !is CarArmorStand && armorStand.handle !is SeatArmorStand) {
+        if (armorStand.handle !is ModelArmorStand && armorStand.handle !is SeatArmorStand) {
             return
         }
         event.isCancelled = true

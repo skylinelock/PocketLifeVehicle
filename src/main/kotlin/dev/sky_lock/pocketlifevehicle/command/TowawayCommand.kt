@@ -4,8 +4,8 @@ import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.util.Profiles
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.tow
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.tow
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -40,7 +40,7 @@ class TowawayCommand : ICommand {
     }
 
     private fun towaway(uuid: UUID): Boolean {
-        CarEntities.of(uuid) ?: return false
+        VehicleEntities.of(uuid) ?: return false
         tow(uuid)
         return true
     }

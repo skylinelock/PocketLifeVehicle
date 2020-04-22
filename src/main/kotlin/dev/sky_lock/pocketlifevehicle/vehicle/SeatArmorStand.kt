@@ -7,16 +7,16 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmorStand(world, x, y, z) {
-    private var car: Car? = null
+    private var vehicle: Vehicle? = null
     private var position: SeatPosition? = null
     private var control: SeatPositionControl? = null
-    fun assemble(car: Car, position: SeatPosition) {
-        this.car = car
+    fun assemble(vehicle: Vehicle, position: SeatPosition) {
+        this.vehicle = vehicle
         this.position = position
         control = SeatPositionControl()
-        val center = car.location
+        val center = vehicle.location
         val loc = control!!.calculate(center, position)
-        setLocation(loc.x, center.y - 1.675 + car.model.height, loc.z, center.yaw, center.pitch)
+        setLocation(loc.x, center.y - 1.675 + vehicle.model.height, loc.z, center.yaw, center.pitch)
     }
 
     //降りた時
@@ -44,7 +44,7 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
             synchronize()
             return
         }
-        if (car!!.driver == null) {
+        if (vehicle!!.driver == null) {
             synchronize()
             return
         }
@@ -53,7 +53,7 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
             synchronize()
             return
         }
-        car!!.meterPanel.display(((passenger as EntityHuman).bukkitEntity as Player))
+        vehicle!!.meterPanel.display(((passenger as EntityHuman).bukkitEntity as Player))
         synchronize()
     }
 
@@ -61,14 +61,14 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
         get() = position === SeatPosition.ONE_DRIVER || position === SeatPosition.TWO_DRIVER || position === SeatPosition.FOUR_DRIVER
 
     private fun synchronize() {
-        val loc = control!!.calculate(car!!.location, position!!)
+        val loc = control!!.calculate(vehicle!!.location, position!!)
         locX = loc.x
-        locY = car!!.location.y - 1.675 + car!!.model.height
+        locY = vehicle!!.location.y - 1.675 + vehicle!!.model.height
         locZ = loc.z
         setPosition(locX, locY, locZ)
-        yaw = car!!.location.yaw
+        yaw = vehicle!!.location.yaw
         lastYaw = yaw
-        pitch = car!!.location.pitch
+        pitch = vehicle!!.location.pitch
         setYawPitch(yaw, pitch)
     }
 

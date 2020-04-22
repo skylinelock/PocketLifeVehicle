@@ -9,7 +9,7 @@ import org.bukkit.scheduler.BukkitTask
 /**
  * @author sky_lock
  */
-class CarSoundTask(private val model: Model, private val status: CarStatus) {
+class EngineSound(private val model: Model, private val status: CarStatus) {
     private var task: BukkitTask? = null
     fun start() {
         task = Bukkit.getScheduler().runTaskTimerAsynchronously(PLVehicle.instance, Runnable {

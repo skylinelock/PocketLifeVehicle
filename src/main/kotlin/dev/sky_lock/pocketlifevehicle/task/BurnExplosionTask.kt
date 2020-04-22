@@ -3,9 +3,9 @@ package dev.sky_lock.pocketlifevehicle.task
 import dev.sky_lock.pocketlifevehicle.PLVehicle
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.Car
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getOwner
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.kill
+import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.getOwner
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.kill
 import net.minecraft.server.v1_14_R1.EntityPlayer
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -18,39 +18,39 @@ import java.util.function.Consumer
  * @author sky_lock
  */
 class BurnExplosionTask {
-    fun run(car: Car) {
+    fun run(vehicle: Vehicle) {
         object : BukkitRunnable() {
             var count = PLVehicle.instance.pluginConfiguration.getWarningCount()
             var warning = BurnExplosionWarning()
             override fun run() {
-                if (car.passengers.isEmpty()) {
+                if (vehicle.passengers.isEmpty()) {
                     if (count == 0) {
-                        car.explode()
-                        kill(car)
+                        vehicle.explode()
+                        kill(vehicle)
                         cancel()
                     }
                     count--
                     return
                 }
                 if (count == 0) {
-                    car.explode()
-                    getOwner(car)?.let { ownerUuid ->
+                    vehicle.explode()
+                    getOwner(vehicle)?.let { ownerUuid ->
                         val owner = Bukkit.getPlayer(ownerUuid) ?: return@let
-                        if (car.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
+                        if (vehicle.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
                             return@let
                         }
-                        owner.sendPrefixedPluginMessage(ChatColor.RED + "乗り物が" + car.passengers[0].name + "の運転によって破壊されました")
+                        owner.sendPrefixedPluginMessage(ChatColor.RED + "乗り物が" + vehicle.passengers[0].name + "の運転によって破壊されました")
                     }
-                    car.passengers.forEach(Consumer { player: Player ->
+                    vehicle.passengers.forEach(Consumer { player: Player ->
                         warning.stop(player)
                         ((player as CraftPlayer).handle as EntityPlayer).killEntity()
                     })
-                    kill(car)
+                    kill(vehicle)
                     cancel()
                     return
                 }
                 warning.count = count
-                car.passengers.forEach(Consumer { player: Player -> warning.send(player) })
+                vehicle.passengers.forEach(Consumer { player: Player -> warning.send(player) })
                 count--
             }
         }.runTaskTimer(PLVehicle.instance, 5L, 20L)

@@ -7,7 +7,7 @@ import dev.sky_lock.pocketlifevehicle.item.GlowEnchantment
 import dev.sky_lock.pocketlifevehicle.json.EntityStoreFile
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
 import dev.sky_lock.pocketlifevehicle.listener.EventListener
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
@@ -32,7 +32,7 @@ class PLVehicle : JavaPlugin() {
         pluginConfiguration = PluginConfiguration()
         val commandHandler = CommandHandler()
         getCommand("vehicle")?.setExecutor(commandHandler)
-        CarEntities.spawnAll()
+        VehicleEntities.spawnAll()
 
         registerPluginEvents()
         registerEntities()
@@ -51,7 +51,7 @@ class PLVehicle : JavaPlugin() {
 
     override fun onDisable() {
         super.onDisable()
-        CarEntities.saveAll()
+        VehicleEntities.saveAll()
         Storage.MODEL.saveToFile()
         pluginConfiguration.save()
     }

@@ -17,109 +17,109 @@ import java.util.function.Consumer
 /**
  * @author sky_lock
  */
-object CarEntities {
+object VehicleEntities {
     private val logger = PLVehicle.instance.logger
-    private val entities: MutableMap<UUID, Car> = HashMap()
+    private val ENTITIES: MutableMap<UUID, Vehicle> = HashMap()
 
     fun spawn(player: UUID, model: Model, location: Location, fuel: Float): Boolean {
         if (location.block.type != Material.AIR) {
             Bukkit.getPlayer(player)!!.sendActionBar(ChatColor.RED + "ブロックがあるので乗り物を設置できません")
             return false
         }
-        var car: Car? = null
+        var vehicle: Vehicle? = null
         val capacity = model.spec.capacity
         when {
             capacity === Capacity.ONE_SEAT -> {
-                car = OneSeatCar(model)
+                vehicle = OneSeatVehicle(model)
             }
             capacity === Capacity.TWO_SEATS -> {
-                car = TwoSeatsCar(model)
+                vehicle = TwoSeatsVehicle(model)
             }
             capacity === Capacity.FOR_SEATS -> {
-                car = FourSeatsCar(model)
+                vehicle = FourSeatsVehicle(model)
             }
         }
-        if (car == null) {
+        if (vehicle == null) {
             return false
         }
-        car.status.fuel = fuel
-        car.spawn(location)
+        vehicle.status.fuel = fuel
+        vehicle.spawn(location)
         kill(player)
-        entities[player] = car
+        ENTITIES[player] = vehicle
         return true
     }
 
-    fun spawn(car: Car): Boolean {
-        val owner = getOwner(car) ?: return false
-        return spawn(owner, car.model, car.location, car.status.fuel)
+    fun spawn(vehicle: Vehicle): Boolean {
+        val owner = getOwner(vehicle) ?: return false
+        return spawn(owner, vehicle.model, vehicle.location, vehicle.status.fuel)
     }
 
     fun kill(owner: UUID) {
-        if (entities.containsKey(owner)) {
-            val car = entities.remove(owner)
+        if (ENTITIES.containsKey(owner)) {
+            val car = ENTITIES.remove(owner)
             car!!.kill()
         }
     }
 
-    fun kill(car: Car) {
-        if (entities.containsValue(car)) {
-            entities.values.remove(car)
-            car.kill()
+    fun kill(vehicle: Vehicle) {
+        if (ENTITIES.containsValue(vehicle)) {
+            ENTITIES.values.remove(vehicle)
+            vehicle.kill()
         }
     }
 
     private fun killAll() {
-        entities.values.forEach(Consumer { obj: Car -> obj.kill() })
+        ENTITIES.values.forEach(Consumer { obj: Vehicle -> obj.kill() })
     }
 
-    fun tow(car: Car) {
-        getOwner(car)?.let { owner -> tow(owner, car) }
+    fun tow(vehicle: Vehicle) {
+        getOwner(vehicle)?.let { owner -> tow(owner, vehicle) }
     }
 
     fun tow(owner: UUID) {
-        val car = entities[owner] ?: return
+        val car = ENTITIES[owner] ?: return
         tow(owner, car)
     }
 
-    private fun tow(owner: UUID, car: Car) {
-        val model = car.model
+    private fun tow(owner: UUID, vehicle: Vehicle) {
+        val model = vehicle.model
         val itemStack = ItemStackBuilder(model.itemStack)
                 .persistentData(PLVehicle.instance.createKey("owner"), PersistentDataType.STRING, owner.toString())
-                .lore("所有者: " + Profiles.getName(owner), "残燃料: " + car.status.fuel.truncateToOneDecimalPlace())
+                .lore("所有者: " + Profiles.getName(owner), "残燃料: " + vehicle.status.fuel.truncateToOneDecimalPlace())
                 .itemFlags(*ItemFlag.values())
                 .build()
-        val location = car.location
-        location.world.dropItem(car.location, itemStack)
+        val location = vehicle.location
+        location.world.dropItem(vehicle.location, itemStack)
         // item.setMetadata("mocar-fuel", new FixedMetadataValue(PLVehicle.getInstance(), car.getStatus().getFuel()));
         location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1f, 0.2f)
         kill(owner)
     }
 
-    fun getCar(seat: SeatArmorStand): Car? {
-        return entities.values.find { car: Car -> car.contains(seat) }
+    fun getCar(seat: SeatArmorStand): Vehicle? {
+        return ENTITIES.values.find { vehicle: Vehicle -> vehicle.contains(seat) }
     }
 
-    fun getCar(basis: CarArmorStand): Car? {
-        return entities.values.find { car: Car -> car.contains(basis) }
+    fun getCar(basis: ModelArmorStand): Vehicle? {
+        return ENTITIES.values.find { vehicle: Vehicle -> vehicle.contains(basis) }
     }
 
-    private val carEntities: Set<CarEntity>
-        get() = entities.entries.map { entry -> CarEntity(entry.key.toString(), entry.value.model.id, entry.value.location, entry.value.status.fuel) }.toSet()
+    private val vehicleEntities: Set<VehicleEntity>
+        get() = ENTITIES.entries.map { entry -> VehicleEntity(entry.key.toString(), entry.value.model.id, entry.value.location, entry.value.status.fuel) }.toSet()
 
-    fun of(player: UUID): Car? {
-        return entities[player]
+    fun of(player: UUID): Vehicle? {
+        return ENTITIES[player]
     }
 
-    fun getOwner(car: Car): UUID? {
-        return entities.entries.find { entry: Map.Entry<UUID, Car> -> entry.value == car }?.key
+    fun getOwner(vehicle: Vehicle): UUID? {
+        return ENTITIES.entries.find { entry: Map.Entry<UUID, Vehicle> -> entry.value == vehicle }?.key
     }
 
     fun spawnAll() {
         try {
-            PLVehicle.instance.entityStoreFile.load().forEach(Consumer { carEntity: CarEntity ->
-                val model = Storage.MODEL.findById(carEntity.modelId)
+            PLVehicle.instance.entityStoreFile.load().forEach(Consumer { vehicleEntity: VehicleEntity ->
+                val model = Storage.MODEL.findById(vehicleEntity.modelId)
                 if (model != null) {
-                    spawn(carEntity.owner, model, carEntity.location, carEntity.fuel)
+                    spawn(vehicleEntity.owner, model, vehicleEntity.location, vehicleEntity.fuel)
                 }
             })
         } catch (ex: IOException) {
@@ -129,7 +129,7 @@ object CarEntities {
 
     fun saveAll() {
         try {
-            PLVehicle.instance.entityStoreFile.save(carEntities)
+            PLVehicle.instance.entityStoreFile.save(vehicleEntities)
             killAll()
         } catch (ex: IOException) {
             logger.warning("CarEntityの保存に失敗しました")

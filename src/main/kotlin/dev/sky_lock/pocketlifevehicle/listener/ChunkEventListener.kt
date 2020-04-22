@@ -1,9 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
-import dev.sky_lock.pocketlifevehicle.vehicle.Car
-import dev.sky_lock.pocketlifevehicle.vehicle.CarArmorStand
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities.getCar
+import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.getCar
 import org.bukkit.Chunk
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity
 import org.bukkit.event.EventHandler
@@ -16,26 +16,26 @@ import java.util.*
  * @author sky_lock
  */
 class ChunkEventListener : Listener {
-    private val cars: MutableList<Car> = ArrayList()
+    private val vehicles: MutableList<Vehicle> = ArrayList()
 
     @EventHandler
     fun onChunkUnload(event: ChunkUnloadEvent) {
         event.chunk.entities
-                .filter { entity -> (entity as CraftEntity).handle is CarArmorStand }
+                .filter { entity -> (entity as CraftEntity).handle is ModelArmorStand }
                 .forEach { entity ->
-                    val car = getCar((entity as CraftEntity).handle as CarArmorStand)
+                    val car = getCar((entity as CraftEntity).handle as ModelArmorStand)
                     car!!.kill()
-                    cars.add(car)
+                    vehicles.add(car)
                 }
     }
 
     @EventHandler
     fun onChunkLoad(event: ChunkLoadEvent) {
-        cars.removeAll { car ->
+        vehicles.removeAll { car ->
             if (!isSameChunk(car.location.chunk, event.chunk)) {
                 return@removeAll false
             }
-            return@removeAll CarEntities.spawn(car)
+            return@removeAll VehicleEntities.spawn(car)
         }
     }
 

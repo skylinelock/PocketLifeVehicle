@@ -3,7 +3,7 @@ package dev.sky_lock.pocketlifevehicle.command
 import dev.sky_lock.pocketlifevehicle.PLVehicle
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.CarEntities
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -37,8 +37,8 @@ class SpawnCommand : ICommand, IAdminCommand {
             player.sendPrefixedPluginMessage(ChatColor.RED + "モデルが見つかりませんでした")
             return
         }
-        CarEntities.kill(target.uniqueId)
-        val success = CarEntities.spawn(target.uniqueId, model, target.location, model.spec.maxFuel)
+        VehicleEntities.kill(target.uniqueId)
+        val success = VehicleEntities.spawn(target.uniqueId, model, target.location, model.spec.maxFuel)
         if (success) {
             player.sendPrefixedPluginMessage(ChatColor.GREEN + name + " に " + id + " を渡しました")
             target.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物を受け取りました")
