@@ -6,7 +6,6 @@ import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.removeWhiteSpace
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
-import dev.sky_lock.pocketlifevehicle.util.Profiles
 import dev.sky_lock.pocketlifevehicle.vehicle.*
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.ChatColor
@@ -124,7 +123,7 @@ class PlayerEventListener: Listener {
             }
             vehicle = VehicleEntities.getCar(handle) ?: return
             val owner = VehicleEntities.getOwner(vehicle) ?: return
-            val ownerName = Profiles.getName(owner)
+            val ownerName = VehicleEntities.getOwnerName(vehicle)
 
             if (player.isSneaking) {
                 if (clicked != owner && !Permission.VEHICLE_OPEN_GUI.obtained(player)) {
@@ -147,7 +146,7 @@ class PlayerEventListener: Listener {
         } else if (handle is ModelArmorStand) {
             vehicle = VehicleEntities.getCar(handle) ?: return
             val owner = VehicleEntities.getOwner(vehicle) ?: return
-            val ownerName = Profiles.getName(owner)
+            val ownerName = VehicleEntities.getOwnerName(vehicle)
 
             if (player.isSneaking) {
                 if (clicked != owner && !Permission.VEHICLE_OPEN_GUI.obtained(player)) {

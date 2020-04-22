@@ -10,9 +10,9 @@ import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.gui.CarUtilMenu
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder
-import dev.sky_lock.pocketlifevehicle.util.Profiles.getName
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.getOwner
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.getOwnerName
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.tow
 import org.bukkit.ChatColor
 import org.bukkit.Material
@@ -80,7 +80,7 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
         val towItem = ItemStackBuilder(Material.MINECART, 1).name(colorizeTitle("レッカー移動")).lore(ChatColor.GRAY + "アイテム化して持ち運べるようにします").build()
 
         val owner = getOwner(vehicle)
-        val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).name(colorizeTitle("所有者")).lore(ChatColor.AQUA + getName(owner)).build()
+        val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).name(colorizeTitle("所有者")).lore(ChatColor.AQUA + getOwnerName(vehicle)).build()
         val ownerSlot = Slot(20, ownerSkull, org.bukkit.util.Consumer { })
 
         val carInfoBook = ItemStackBuilder(Material.BOOK, 1).name(colorizeTitle("車両情報")).lore(carInfoLore()).build()

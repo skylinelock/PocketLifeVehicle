@@ -4,7 +4,6 @@ import dev.sky_lock.pocketlifevehicle.PLVehicle
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
-import dev.sky_lock.pocketlifevehicle.util.Profiles
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.*
@@ -85,7 +84,7 @@ object VehicleEntities {
         val model = vehicle.model
         val itemStack = ItemStackBuilder(model.itemStack)
                 .persistentData(PLVehicle.instance.createKey("owner"), PersistentDataType.STRING, owner.toString())
-                .lore("所有者: " + Profiles.getName(owner), "残燃料: " + vehicle.status.fuel.truncateToOneDecimalPlace())
+                .lore("所有者: " + getOwnerName(vehicle), "残燃料: " + vehicle.status.fuel.truncateToOneDecimalPlace())
                 .itemFlags(*ItemFlag.values())
                 .build()
         val location = vehicle.location
@@ -112,6 +111,11 @@ object VehicleEntities {
 
     fun getOwner(vehicle: Vehicle): UUID? {
         return ENTITIES.entries.find { entry: Map.Entry<UUID, Vehicle> -> entry.value == vehicle }?.key
+    }
+
+    fun getOwnerName(vehicle: Vehicle): String {
+        val uuid = getOwner(vehicle) ?: return "unknown"
+        return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
     }
 
     fun spawnAll() {

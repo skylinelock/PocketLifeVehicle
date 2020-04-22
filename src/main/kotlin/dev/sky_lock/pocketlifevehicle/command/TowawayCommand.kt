@@ -3,9 +3,9 @@ package dev.sky_lock.pocketlifevehicle.command
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
-import dev.sky_lock.pocketlifevehicle.util.Profiles
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.tow
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -27,7 +27,7 @@ class TowawayCommand : ICommand {
             return
         }
         val name = args[1]
-        val targetUUID = Profiles.fetchUUID(name)
+        val targetUUID = Bukkit.getPlayerUniqueId(name)
         if (targetUUID == null) {
             player.sendPrefixedPluginMessage(ChatColor.GREEN + "プレイヤーが見つかりませんでした")
             return
