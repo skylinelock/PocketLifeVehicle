@@ -6,7 +6,8 @@ import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
 import dev.sky_lock.pocketlifevehicle.item.GlowEnchantment
 import dev.sky_lock.pocketlifevehicle.json.EntityStoreFile
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
-import dev.sky_lock.pocketlifevehicle.listener.EventListener
+import dev.sky_lock.pocketlifevehicle.listener.InventoryEventListener
+import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import org.bstats.bukkit.Metrics
@@ -51,9 +52,10 @@ class PLVehicle : JavaPlugin() {
 
     private fun registerEventListener() {
         val pluginManager = server.pluginManager
-        pluginManager.registerEvents(EventListener(), this)
-        pluginManager.registerEvents(ChunkEventListener(), this)
         pluginManager.registerEvents(InventoryMenuListener(this), this)
+        pluginManager.registerEvents(ChunkEventListener(), this)
+        pluginManager.registerEvents(PlayerEventListener(), this)
+        pluginManager.registerEvents(InventoryEventListener(), this)
     }
 
     private fun registerGlowEnchantment() {

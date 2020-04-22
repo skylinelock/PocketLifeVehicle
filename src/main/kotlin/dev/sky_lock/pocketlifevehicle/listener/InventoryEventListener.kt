@@ -1,22 +1,29 @@
-package dev.sky_lock.pocketlifevehicle.click
+package dev.sky_lock.pocketlifevehicle.listener
 
+import dev.sky_lock.pocketlifevehicle.PLVehicle
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftItemStack
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryType
 
 /**
  * @author sky_lock
  */
-class InventoryClick(private val event: InventoryClickEvent) {
-    fun accept() {
+class InventoryEventListener : Listener {
+
+    @EventHandler
+    fun onInventoryClick(event: InventoryClickEvent) {
         val itemStack = CraftItemStack.asNMSCopy(event.currentItem)
         if (event.slotType == InventoryType.SlotType.OUTSIDE) {
             return
@@ -62,4 +69,14 @@ class InventoryClick(private val event: InventoryClickEvent) {
         event.isCancelled = true
     }
 
+    @EventHandler
+    fun onInventoryClose(event: InventoryCloseEvent) {
+        val player = event.player as Player
+        StringEditor.close(player)
+        Bukkit.getScheduler().runTaskLater(PLVehicle.instance, Runnable {
+            if (player.openInventory.topInventory.type == InventoryType.CRAFTING) {
+                EditSessions.destroy(player.uniqueId)
+            }
+        }, 1L)
+    }
 }
