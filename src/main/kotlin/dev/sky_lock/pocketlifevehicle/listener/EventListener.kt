@@ -20,6 +20,7 @@ import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.block.BlockFace
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
@@ -35,6 +36,7 @@ import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
+import org.spigotmc.event.entity.EntityDismountEvent
 import java.util.*
 
 /**
@@ -116,6 +118,17 @@ class EventListener : Listener {
             return
         }
         placeCarEntity(player, itemStack, event.hand, owner, model, whereToSpawn, fuel)
+    }
+
+    @EventHandler
+    fun onPlayerDismount(event: EntityDismountEvent) {
+        val dismounted = event.dismounted as CraftEntity
+        val entity = event.entity
+        if (dismounted.handle !is SeatArmorStand || entity !is Player) {
+            return
+        }
+        // sendActionBar("") doesn't work thanks to paper-api
+        entity.sendActionBar(" ")
     }
 
     private fun placeCarEntity(whoPlaced: Player, carItem: ItemStack, hand: EquipmentSlot?, owner: UUID, model: Model, location: Location, fuel: Float) {

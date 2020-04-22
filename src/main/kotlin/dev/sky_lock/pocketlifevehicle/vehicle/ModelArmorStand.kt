@@ -27,7 +27,7 @@ class ModelArmorStand : EntityArmorStand {
         nbt.setBoolean("Small", true)
         this.a(nbt)
         //乗れるブロックの高さ
-        K = 1.0f
+        this.K = 1.0f
     }
 
     fun assemble(vehicle: Vehicle) {

@@ -1,6 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import net.minecraft.server.v1_14_R1.*
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 
 /**
@@ -10,6 +11,19 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
     private var vehicle: Vehicle? = null
     private var position: SeatPosition? = null
     private var control: SeatPositionControl? = null
+
+    init {
+        val nbt = NBTTagCompound()
+        nbt.setBoolean("NoBasePlate", true)
+        nbt.setBoolean("Invulnerable", true)
+        nbt.setBoolean("PersistenceRequired", true)
+        nbt.setBoolean("NoGravity", false)
+        nbt.setBoolean("Invisible", true)
+        nbt.setBoolean("Marker", false)
+        this.a(nbt)
+        // this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
+    }
+
     fun assemble(vehicle: Vehicle, position: SeatPosition) {
         this.vehicle = vehicle
         this.position = position
@@ -17,21 +31,6 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
         val center = vehicle.location
         val loc = control!!.calculate(center, position)
         setLocation(loc.x, center.y - 1.675 + vehicle.model.height, loc.z, center.yaw, center.pitch)
-    }
-
-    //降りた時
-    override fun removePassenger(entity: Entity): Boolean {
-        if (!isCarSheet) {
-            super.removePassenger(entity)
-            return true
-        }
-        super.removePassenger(entity)
-        if (entity.bukkitEntity !is Player) {
-            return true
-        }
-        val player = entity.bukkitEntity as Player
-        player.sendActionBar("")
-        return true
     }
 
     //足音がなるかどうか
@@ -94,16 +93,4 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
 //            return super.getHandle() as SeatArmorStand
 //        }
 //    }
-
-    init {
-        val nbt = NBTTagCompound()
-        nbt.setBoolean("NoBasePlate", true)
-        nbt.setBoolean("Invulnerable", true)
-        nbt.setBoolean("PersistenceRequired", true)
-        nbt.setBoolean("NoGravity", false)
-        nbt.setBoolean("Invisible", true)
-        nbt.setBoolean("Marker", false)
-        this.a(nbt)
-        // this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
-    }
 }
