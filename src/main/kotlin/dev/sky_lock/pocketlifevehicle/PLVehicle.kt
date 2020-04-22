@@ -8,8 +8,8 @@ import dev.sky_lock.pocketlifevehicle.json.EntityStoreFile
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
 import dev.sky_lock.pocketlifevehicle.listener.InventoryEventListener
 import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import org.bstats.bukkit.Metrics
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment

@@ -47,7 +47,8 @@ class EditCarModelContents(player: Player) : MenuContents() {
             val itemOption = model.itemOption
             val box = model.collideBox
             desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + itemOption.position.label)
-            desc.add(ChatColor.DARK_AQUA + "当たり判定: " + ChatColor.AQUA + box.baseSide + "×" + box.height)
+            desc.add(ChatColor.DARK_AQUA + "当たり判定(高さ): " + ChatColor.AQUA + box.height)
+            desc.add(ChatColor.DARK_AQUA + "当たり判定(底辺): " + ChatColor.AQUA + box.baseSide)
             val size = if (model.isBig) "大きい" else "小さい"
             desc.add(ChatColor.DARK_AQUA + "大きさ: " + ChatColor.AQUA + size)
             desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + model.height)

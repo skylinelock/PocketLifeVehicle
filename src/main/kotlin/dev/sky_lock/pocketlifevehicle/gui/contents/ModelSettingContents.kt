@@ -170,7 +170,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                 updateItemStack(itemSlot.toInt(), itemOptionItem)
             }
             if (session.collideHeight != 0.0f && session.collideBaseSide != 0.0f) {
-                collideItem = ItemStackBuilder(collideItem).name(ChatColor.AQUA + "当たり判定").lore(session.collideBaseSide.toString(), session.collideHeight.toString()).glow().build()
+                collideItem = ItemStackBuilder(collideItem).name(ChatColor.AQUA + "当たり判定").lore("高さ: " + session.collideHeight.toString(), "底辺: " + session.collideBaseSide.toString()).glow().build()
                 updateItemStack(collideSlot.toInt(), collideItem)
             }
 

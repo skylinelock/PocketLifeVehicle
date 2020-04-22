@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack
  */
 class CollideBoxContents(private val player: Player) : MenuContents() {
     private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "戻る").build()
-    private val baseSideItem = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).name("横").build()
+    private val baseSideItem = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).name("底辺").build()
     private val heightItem = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).name("高さ").build()
     override fun onFlip(menu: InventoryMenu) {
         of(player.uniqueId).ifPresent { session: ModelOption ->
