@@ -9,6 +9,7 @@ import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
 import dev.sky_lock.pocketlifevehicle.listener.EventListener
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
+import org.bstats.bukkit.Metrics
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.plugin.java.JavaPlugin
@@ -27,12 +28,12 @@ class PLVehicle : JavaPlugin() {
     val entityStoreFile: EntityStoreFile = EntityStoreFile(dataFolder.toPath())
 
     override fun onEnable() {
-        super.onEnable()
         instance = this
+
         pluginConfiguration = PluginConfiguration()
+
         val commandHandler = CommandHandler()
         getCommand("vehicle")?.setExecutor(commandHandler)
-        VehicleEntities.spawnAll()
 
         registerPluginEvents()
         registerEntities()
@@ -47,6 +48,10 @@ class PLVehicle : JavaPlugin() {
             logger.warning("Could not register the enchant for growing item")
         }
         Enchantment.registerEnchantment(GlowEnchantment())
+
+        VehicleEntities.spawnAll()
+
+        Metrics(this, 7271)
     }
 
     override fun onDisable() {
