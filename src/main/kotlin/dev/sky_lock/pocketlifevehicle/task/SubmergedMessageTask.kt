@@ -19,7 +19,7 @@ class SubmergedMessageTask {
     fun run(vehicle: Vehicle) {
         val warning = SubmergedWarning()
         object : BukkitRunnable() {
-            var count = PLVehicle.instance.pluginConfiguration.getWarningCount()
+            var count = PLVehicle.instance.pluginConfiguration.warningCount()
             override fun run() {
                 if (vehicle.passengers.isEmpty()) {
                     if (count == 0) {

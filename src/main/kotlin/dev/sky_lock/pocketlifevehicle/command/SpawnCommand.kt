@@ -27,7 +27,7 @@ class SpawnCommand : ICommand, IAdminCommand {
             player.sendPrefixedPluginMessage(ChatColor.RED + "プレイヤーが見つかりませんでした")
             return
         }
-        if (!PLVehicle.instance.pluginConfiguration.getAllowWorlds().contains(target.world)) {
+        if (!PLVehicle.instance.pluginConfiguration.isWorldVehicleCanPlaced(target.world)) {
             player.sendPrefixedPluginMessage(ChatColor.RED + "対象のプレイヤーがいるワールドは乗り物の使用が許可されていません")
             return
         }

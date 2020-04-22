@@ -13,6 +13,7 @@ class HelpCommand : ICommand {
         sender.sendPrefixedPluginMessage("-----------コマンドヘルプ-------------")
         sender.sendPrefixedPluginMessage("/vehicle - 利用可能なコマンドを表示します")
         if (Permission.ADMIN_COMMAND.obtained(sender)) {
+            sender.sendPrefixedPluginMessage("/vehicle world [add|remove|list] - ワールドで乗り物が使用できるかどうかを設定します")
             sender.sendPrefixedPluginMessage("/vehicle give [target] [modelId] - モデルアイテムをプレイヤーにインベントリーに追加します")
             sender.sendPrefixedPluginMessage("/vehicle spawn [target] [modelId] - モデルをプレイヤーの位置にスポーンさせます")
             sender.sendPrefixedPluginMessage("/vehicle search [target] - 乗り物の現在地を表示します")

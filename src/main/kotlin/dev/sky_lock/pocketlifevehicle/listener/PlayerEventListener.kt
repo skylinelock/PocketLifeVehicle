@@ -66,7 +66,7 @@ class PlayerEventListener: Listener {
         event.setUseItemInHand(Event.Result.DENY)
         val meta = itemStack.itemMeta
         val player = event.player
-        if (!PLVehicle.instance.pluginConfiguration.getAllowWorlds().contains(event.player.world)) {
+        if (!PLVehicle.instance.pluginConfiguration.isWorldVehicleCanPlaced(event.player.world)) {
             player.sendActionBar(ChatColor.RED + "このワールドでは乗り物は使用できません")
             return
         }

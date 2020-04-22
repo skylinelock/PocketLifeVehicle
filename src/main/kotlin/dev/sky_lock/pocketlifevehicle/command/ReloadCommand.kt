@@ -30,7 +30,7 @@ class ReloadCommand : ICommand, IAdminCommand, IConsoleCommand {
                 sender.sendPrefixedPluginMessage(ChatColor.GREEN + "ディスクへデータを保存しました")
             }
             else -> {
-                sender.sendPrefixedPluginMessage(ChatColor.RED + "/vehicle reload [from/to]")
+                sender.sendPrefixedPluginMessage("/vehicle reload [from/to]")
             }
         }
     }

@@ -13,7 +13,7 @@ import java.util.*
  * @author sky_lock
  */
 class EntityStoreFile(dirPath: Path) {
-    private val filePath: Path
+    private val filePath = Paths.get(dirPath.toAbsolutePath().toString(), "entities.json")
 
     @Throws(IOException::class)
     fun save(vehicles: Set<VehicleEntity>) {
@@ -33,7 +33,4 @@ class EntityStoreFile(dirPath: Path) {
         private val TYPETOKEN = object : TypeToken<Set<VehicleEntity>>() {}.type
     }
 
-    init {
-        filePath = Paths.get(dirPath.toAbsolutePath().toString(), "entities.json")
-    }
 }

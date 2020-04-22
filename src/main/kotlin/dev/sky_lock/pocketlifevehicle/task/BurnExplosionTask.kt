@@ -20,7 +20,7 @@ import java.util.function.Consumer
 class BurnExplosionTask {
     fun run(vehicle: Vehicle) {
         object : BukkitRunnable() {
-            var count = PLVehicle.instance.pluginConfiguration.getWarningCount()
+            var count = PLVehicle.instance.pluginConfiguration.warningCount()
             var warning = BurnExplosionWarning()
             override fun run() {
                 if (vehicle.passengers.isEmpty()) {

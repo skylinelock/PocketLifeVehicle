@@ -1,52 +1,52 @@
 package dev.sky_lock.pocketlifevehicle.config
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
-import org.bukkit.Bukkit
 import org.bukkit.World
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.configuration.file.FileConfiguration
 import java.io.File
 import java.io.IOException
+import java.util.*
 
 /**
  * @author sky_lock
  */
 
 class PluginConfiguration {
+
+    companion object {
+        const val WORLDS_KEY = "allowed-world"
+        const val COUNT_KEY = "warning-count"
+    }
     private val plugin = PLVehicle.instance
     private val config: FileConfiguration = plugin.config
 
     init {
+
         plugin.saveDefaultConfig()
         config.options().copyDefaults(true)
     }
 
-    fun getAllowWorlds(): List<World?>  {
-        val worlds: MutableList<World?> = ArrayList()
-        config.getStringList("allow-worlds").filter { name ->
-            Bukkit.getWorlds().any { world -> world.name.equals(name, ignoreCase = true) }
-        }.map { name -> Bukkit.getWorld(name) }.toCollection(worlds)
-        return worlds
+    private fun allowedWorlds(): List<UUID>  {
+        return config.getStringList(WORLDS_KEY).map{str -> UUID.fromString(str)}.toMutableList()
     }
 
-    fun getWarningCount(): Int {
-        val count = config.getInt("warning-count")
+    fun warningCount(): Int {
+        val count = config.getInt(COUNT_KEY)
         if (count < 1) {
             return 5
         }
         return count
     }
 
-    fun addAllowWorld(name: String) {
-        val allowWorlds = config.getStringList("allow-worlds")
-        allowWorlds.add(name)
-        config.set("allow-worlds", allowWorlds)
+    fun isWorldVehicleCanPlaced(world: World): Boolean {
+        return this.allowedWorlds().contains(world.uid)
     }
 
-    fun removeAllowWorld(name: String) {
-        val allowWorlds = config.getStringList("allow-worlds")
-        allowWorlds.remove(name)
-        config.set("allow-worlds", allowWorlds)
+    fun setWorldVehicleCanPlaced(uuid: UUID, canBePlaced: Boolean) {
+        val allowedWorlds = this.allowedWorlds().toMutableList()
+        if (canBePlaced) allowedWorlds.add(uuid) else allowedWorlds.remove(uuid)
+        config.set(WORLDS_KEY, allowedWorlds.map { uid -> uid.toString() })
     }
 
     fun save() {
