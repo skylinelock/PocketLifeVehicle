@@ -18,7 +18,7 @@ import java.util.*
 class TowawayCommand : ICommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         val player = sender as Player
-        if (!Permission.ADMIN_COMMAND.obtained(sender)) {
+        if (args.size < 2 || !Permission.ADMIN_COMMAND.obtained(sender)) {
             if (towaway(player.uniqueId)) {
                 player.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物をアイテム化しました")
             } else {
