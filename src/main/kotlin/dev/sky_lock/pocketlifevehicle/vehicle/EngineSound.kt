@@ -1,38 +1,37 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.PLVehicle
-import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.Bukkit
+import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.scheduler.BukkitTask
 
 /**
  * @author sky_lock
  */
-class EngineSound(private val model: Model, private val status: CarStatus) {
+class EngineSound(var location: Location) {
     private var task: BukkitTask? = null
+    var isCancelled: Boolean = false
+    var pitch: Float = 0.0f
+
     fun start() {
         task = Bukkit.getScheduler().runTaskTimerAsynchronously(PLVehicle.instance, Runnable {
-            val location = status.location
-            if (location == null) {
+            if (this.isCancelled) {
                 this.stop()
-                return@Runnable
             }
             val world = location.world
             world.playSound(location, Sound.ENTITY_PIG_HURT, 0.05f, 0.7f)
             world.playSound(location, Sound.ENTITY_MINECART_RIDING, 0.05f, 0.8f)
             world.playSound(location, Sound.ENTITY_PLAYER_BURP, 0.05f, 0.8f)
-            val enginePitch = status.speed.approximate() / model.spec.maxSpeed.max
-            world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.05f, enginePitch)
+            world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.05f, this.pitch)
         }, 0L, 2L)
     }
 
-    fun stop() {
-        if (task == null) {
-            return
-        }
-        if (!task!!.isCancelled) {
-            task!!.cancel()
+    private fun stop() {
+        task?.let {
+            if (!it.isCancelled) {
+                it.cancel()
+            }
         }
     }
 

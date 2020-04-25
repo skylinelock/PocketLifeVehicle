@@ -56,7 +56,7 @@ class ModelArmorStand : EntityArmorStand {
         get() = bukkitEntity.location
 
     override fun killEntity() {
-        vehicle!!.engineSound.stop()
+        vehicle!!.engineSound.isCancelled = true
         super.killEntity()
     }
 
@@ -74,7 +74,7 @@ class ModelArmorStand : EntityArmorStand {
     override fun az() {
         super.au()
         SubmergedMessageTask().run(vehicle!!)
-        vehicle!!.engineSound.stop()
+        vehicle!!.engineSound.isCancelled = true
     }
 
     override fun burn(i: Float) {
@@ -86,32 +86,41 @@ class ModelArmorStand : EntityArmorStand {
     }
 
     override fun e(vec3d: Vec3D) {
-        if (vehicle!!.passengers.isEmpty() || vehicle!!.driver == null || this.isInWater || inLava) {
-            vehicle!!.engine.stop()
+        if (vehicle == null) {
             super.e(vec3d)
             return
         }
-        vehicle!!.driver.let { driver ->
+        val vehicle = vehicle!!
+        if (vehicle.isUndrivable || vehicle.passengers.isEmpty() ||
+                vehicle.driver == null || this.isInWater || inLava) {
+            vehicle.engine.stop()
+            super.e(vec3d)
+            return
+        }
+        vehicle.driver.let { driver ->
             val player = (driver as CraftPlayer).handle
             val sideIn = player.bb
             val forwardIn = player.bd
             if (sideIn < 0.0f) {
-                vehicle!!.steering.right(driver)
+                vehicle.steering.right(driver)
             } else if (sideIn > 0.0f) {
-                vehicle!!.steering.left(driver)
+                vehicle.steering.left(driver)
             }
-            vehicle!!.engine.update(forwardIn)
-            vehicle!!.engine.consumeFuel(sideIn)
+            vehicle.engine.update(forwardIn)
+            vehicle.engine.consumeFuel(sideIn)
         }
         fallDistance = 0.0f
-        yaw = vehicle!!.status.yaw
+        yaw = vehicle.status.yaw
         lastYaw = yaw
         pitch = 0.0f
         setYawPitch(yaw, pitch)
         // this.aQ = this.yaw;
-        this.o(vehicle!!.engine.currentSpeed)
+        this.o(vehicle.engine.currentSpeed)
         super.e(vec3d.e(Vec3D(0.0, 1.0, 3.0)))
-        vehicle!!.status.location = location
+        vehicle.status.location = location
+
+        vehicle.engineSound.location = this.location
+        vehicle.engineSound.pitch = vehicle.status.speed.approximate() / vehicle.model.spec.maxSpeed.max
     }
 
 //    override fun getBukkitEntity(): CraftEntity {

@@ -16,7 +16,7 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 class CapacityContents(player: Player) : MenuContents() {
-    override fun onFlip(inventoryMenu: InventoryMenu) {}
+    override fun onFlip(menu: InventoryMenu) {}
     private fun flipPage(player: Player, page: Int) {
         of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, page) }
     }

@@ -7,6 +7,6 @@ import org.bukkit.entity.Player
 /**
  * @author sky_lock
  */
-class SoundContents(player: Player?) : MenuContents() {
+class SoundContents(player: Player) : MenuContents() {
     override fun onFlip(menu: InventoryMenu) {}
 }

@@ -16,6 +16,7 @@ import dev.sky_lock.pocketlifevehicle.gui.StringEditor
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor.Companion.open
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -90,18 +91,19 @@ class ModelSettingContents(private val player: Player): MenuContents() {
         of(player.uniqueId).ifPresent { session ->
             if (session.isJustEditing) {
                 removeSlot(removeSlot.toInt())
-                addSlot(Slot(removeSlot.toInt(), removeItem, Consumer { event: InventoryClickEvent? ->
+                addSlot(Slot(removeSlot.toInt(), removeItem, Consumer {
                     val id = session.id
                     if (id == null || id == "") {
                         return@Consumer
                     }
                     Storage.MODEL.unregister(id)
+                    VehicleEntities.scrapAll(id)
                     player.sendPrefixedPluginMessage(ChatColor.GREEN + id + "を削除しました")
                     destroy(player.uniqueId)
                     menu.close(player)
                 }))
                 removeSlot(makeSlot.toInt())
-                addSlot(Slot(makeSlot.toInt(), updateItem, Consumer { event: InventoryClickEvent? ->
+                addSlot(Slot(makeSlot.toInt(), updateItem, Consumer {
                     Storage.MODEL.unregister(session.id!!)
                     Storage.MODEL.register(session.generate())
                     player.sendPrefixedPluginMessage(ChatColor.GREEN + session.id!! + "を更新しました")
@@ -110,7 +112,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                 }))
             } else {
                 removeSlot(idSlot.toInt())
-                addSlot(Slot(idSlot.toInt(), idItem, Consumer { event: InventoryClickEvent? -> of(player).ifPresent { m: InventoryMenu? -> open(player, StringEditor.Type.ID, menu as ModelSettingMenu) } }))
+                addSlot(Slot(idSlot.toInt(), idItem, Consumer { of(player).ifPresent { open(player, StringEditor.Type.ID, menu as ModelSettingMenu) } }))
                 removeSlot(makeSlot.toInt())
                 addSlot(Slot(makeSlot.toInt(), createItem, Consumer { event: InventoryClickEvent ->
                     val clicked = Objects.requireNonNull(event.currentItem)!!
@@ -135,7 +137,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                 }))
             }
             removeSlot(standSlot.toInt())
-            addSlot(ToggleSlot(standSlot.toInt(), !session.isBig, standSmallItem, standBigItem, Consumer { event: InventoryClickEvent? -> session.isBig = true }, Consumer { event: InventoryClickEvent? -> session.isBig = false }))
+            addSlot(ToggleSlot(standSlot.toInt(), !session.isBig, standSmallItem, standBigItem, Consumer { session.isBig = true }, Consumer { session.isBig = false }))
             if (session.id != null && !session.id.equals("id", ignoreCase = true)) {
                 idItem = ItemStackBuilder(idItem).lore(session.id!!).glow().build()
                 updateItemStack(idSlot.toInt(), idItem)

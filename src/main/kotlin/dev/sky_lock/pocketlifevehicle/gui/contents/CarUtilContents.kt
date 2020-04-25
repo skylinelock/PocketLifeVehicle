@@ -33,6 +33,11 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
     override fun onFlip(menu: InventoryMenu) {
         refuelHopper = ItemStackBuilder(refuelHopper).lore(refuelInfo(vehicle.status.fuel)).build()
         updateItemStack(22, refuelHopper)
+
+        val carInfoBook = ItemStackBuilder(Material.BOOK, 1).name(colorizeTitle("車両情報")).lore(carInfoLore()).build()
+        this.removeSlot(24)
+        this.addSlot(Slot(24, carInfoBook, org.bukkit.util.Consumer { }))
+
         menu.update()
         setFuelGage(menu)
     }
@@ -71,7 +76,12 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
         carInfo.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + vehicle.model.spec.maxFuel)
         carInfo.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + vehicle.model.spec.maxSpeed.label)
         carInfo.add(ChatColor.GREEN + "説明 :")
-        vehicle.model.lore.forEach(java.util.function.Consumer { lore: String -> carInfo.add("- " + ChatColor.RESET + lore) })
+        vehicle.model.lore.forEach { lore -> carInfo.add("- " + ChatColor.RESET + lore) }
+        if (vehicle.isUndrivable) {
+            carInfo.add(ChatColor.GREEN + "状態 : " + ChatColor.RED + "廃車")
+        } else {
+            carInfo.add(ChatColor.GREEN + "状態 : " + ChatColor.YELLOW + "運転可能")
+        }
         return carInfo
     }
 
@@ -83,7 +93,6 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
         val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).name(colorizeTitle("所有者")).lore(ChatColor.AQUA + getOwnerName(vehicle)).build()
         val ownerSlot = Slot(20, ownerSkull, org.bukkit.util.Consumer { })
 
-        val carInfoBook = ItemStackBuilder(Material.BOOK, 1).name(colorizeTitle("車両情報")).lore(carInfoLore()).build()
         val closeSlot = Slot(4, closeItem, org.bukkit.util.Consumer { event: InventoryClickEvent ->
             val menu = event.inventory.holder as CarUtilMenu?
             menu!!.close((event.whoClicked as Player))
@@ -96,7 +105,6 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
         val notWield = ItemStackBuilder(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build()
         val status = vehicle.status
         val wieldHandSlot: Slot = ToggleSlot(13, status.isWieldHand, wield, notWield, Consumer { status.isWieldHand = false }, Consumer { status.isWieldHand = true })
-        val carInfoSlot = Slot(24, carInfoBook, org.bukkit.util.Consumer { })
         val keyClose = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "鍵を閉める").build()
         val keyOpen = ItemStackBuilder(Material.STRUCTURE_VOID, 1).name(ChatColor.AQUA + "" + ChatColor.BOLD + "鍵を開ける").build()
         val keySlot: Slot = ToggleSlot(15, status.isLocked, keyOpen, keyClose, org.bukkit.util.Consumer { event: InventoryClickEvent ->
@@ -126,6 +134,6 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
                 }
             }
         })
-        super.addSlot(ownerSlot, closeSlot, wieldHandSlot, towSlot, carInfoSlot, keySlot, fuelSlot)
+        super.addSlot(ownerSlot, closeSlot, wieldHandSlot, towSlot, keySlot, fuelSlot)
     }
 }

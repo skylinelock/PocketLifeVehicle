@@ -15,7 +15,7 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 class CollideHeightContents(player: Player) : MenuContents() {
-    override fun onFlip(inventoryMenu: InventoryMenu) {}
+    override fun onFlip(menu: InventoryMenu) {}
 
     init {
         for (i in 1..9) {

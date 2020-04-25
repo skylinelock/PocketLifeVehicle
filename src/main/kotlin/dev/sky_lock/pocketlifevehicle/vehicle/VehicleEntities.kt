@@ -10,15 +10,12 @@ import org.bukkit.*
 import org.bukkit.entity.ArmorStand
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.persistence.PersistentDataType
-import java.io.IOException
 import java.util.*
-import java.util.function.Consumer
 
 /**
  * @author sky_lock
  */
 object VehicleEntities {
-    private val logger = PLVehicle.instance.logger
     private val ENTITIES: MutableMap<UUID, Vehicle> = HashMap()
 
     fun spawn(player: UUID, model: Model, location: Location, fuel: Float): Boolean {
@@ -57,19 +54,15 @@ object VehicleEntities {
     fun kill(owner: UUID) {
         if (ENTITIES.containsKey(owner)) {
             val car = ENTITIES.remove(owner)
-            car!!.scrap()
+            car!!.remove()
         }
     }
 
     fun kill(vehicle: Vehicle) {
         if (ENTITIES.containsValue(vehicle)) {
             ENTITIES.values.remove(vehicle)
-            vehicle.scrap()
+            vehicle.remove()
         }
-    }
-
-    private fun killAll() {
-        ENTITIES.values.forEach(Consumer { obj: Vehicle -> obj.scrap() })
     }
 
     fun tow(vehicle: Vehicle) {
@@ -99,9 +92,6 @@ object VehicleEntities {
         return ENTITIES.entries.find { entry -> entry.value.consistsOf(armorStand) }?.value
     }
 
-    private val vehicleEntities: Set<VehicleEntity>
-        get() = ENTITIES.entries.map { entry -> VehicleEntity(entry.key.toString(), entry.value.model.id, entry.value.location, entry.value.status.fuel) }.toSet()
-
     fun of(player: UUID): Vehicle? {
         return ENTITIES[player]
     }
@@ -115,25 +105,8 @@ object VehicleEntities {
         return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
     }
 
-    fun spawnAll() {
-        try {
-            PLVehicle.instance.entityStoreFile.load().forEach(Consumer { vehicleEntity: VehicleEntity ->
-                val model = Storage.MODEL.findById(vehicleEntity.modelId)
-                if (model != null) {
-                    spawn(vehicleEntity.owner, model, vehicleEntity.location, vehicleEntity.fuel)
-                }
-            })
-        } catch (ex: IOException) {
-            logger.warning("CarEntityの読み込みに失敗しました")
-        }
-    }
-
-    fun saveAll() {
-        try {
-            PLVehicle.instance.entityStoreFile.save(vehicleEntities)
-            killAll()
-        } catch (ex: IOException) {
-            logger.warning("CarEntityの保存に失敗しました")
-        }
+    fun scrapAll(modelId: String) {
+        ENTITIES.values.filter { vehicle -> vehicle.model.id == modelId }
+                .forEach { vehicle -> vehicle.isUndrivable = true}
     }
 }

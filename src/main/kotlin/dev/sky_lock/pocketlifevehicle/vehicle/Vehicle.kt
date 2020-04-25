@@ -11,7 +11,6 @@ import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Player
 import java.util.*
-import java.util.function.Consumer
 
 /**
  * @author sky_lock
@@ -22,17 +21,17 @@ open class Vehicle internal constructor(val model: Model) {
         private set
     private var menu: CarUtilMenu? = null
     val status: CarStatus = CarStatus()
-    val engineSound: EngineSound
+    internal lateinit var engineSound: EngineSound
     val engine: Engine
     val steering: Steering
     val meterPanel: MeterPanel
     var isBeginExplode = false
+    var isUndrivable = false
 
     init {
         engine = Engine(status, model)
         steering = Steering(status)
         meterPanel = MeterPanel(status, model, engine)
-        engineSound = EngineSound(model, status)
     }
 
     fun addSeat(seat: SeatArmorStand) {
@@ -63,6 +62,8 @@ open class Vehicle internal constructor(val model: Model) {
     open fun spawn(location: Location) {
         center = ModelArmorStand((location.world as CraftWorld).handle, location.x, location.y, location.z)
         status.location = location
+        // EngineSound初期化してからassemble
+        this.engineSound = EngineSound(location)
         center!!.assemble(this)
         status.yaw = location.yaw
         val world = center!!.world
@@ -76,7 +77,7 @@ open class Vehicle internal constructor(val model: Model) {
         val handle = (armorStand as CraftArmorStand).handle
         if (handle is SeatArmorStand) {
             return seats.contains(handle)
-        } else if (handle is ModelArmorStand){
+        } else if (handle is ModelArmorStand) {
             return center == handle
         }
         return false
@@ -106,9 +107,9 @@ open class Vehicle internal constructor(val model: Model) {
     val driver: Player?
         get() = seats.find { seat -> seat.isDriverSheet && seat.passengers.isNotEmpty() }?.passenger
 
-    fun scrap() {
+    fun remove() {
         center!!.killEntity()
-        seats.forEach(Consumer { obj: SeatArmorStand -> obj.killEntity() })
+        seats.forEach { obj: SeatArmorStand -> obj.killEntity() }
     }
 
     fun explode() {

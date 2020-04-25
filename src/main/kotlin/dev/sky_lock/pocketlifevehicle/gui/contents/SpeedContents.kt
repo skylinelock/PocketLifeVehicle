@@ -17,7 +17,7 @@ import org.bukkit.event.inventory.InventoryClickEvent
  * @author sky_lock
  */
 class SpeedContents(player: Player) : MenuContents() {
-    override fun onFlip(inventoryMenu: InventoryMenu) {}
+    override fun onFlip(menu: InventoryMenu) {}
     private fun setSpeedAndReturn(player: Player, maxSpeed: MaxSpeed) {
         of(player.uniqueId).ifPresent { session: ModelOption ->
             session.maxSpeed = maxSpeed
@@ -27,10 +27,10 @@ class SpeedContents(player: Player) : MenuContents() {
 
     init {
         val speedSelector = ItemStackBuilder(Material.SEA_LANTERN, 1).build()
-        addSlot(Slot(11, ItemStackBuilder(speedSelector).name(MaxSpeed.SLOWEST.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setSpeedAndReturn(player, MaxSpeed.SLOWEST) }))
-        addSlot(Slot(13, ItemStackBuilder(speedSelector).name(MaxSpeed.SLOW.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setSpeedAndReturn(player, MaxSpeed.SLOW) }))
-        addSlot(Slot(15, ItemStackBuilder(speedSelector).name(MaxSpeed.NORMAL.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setSpeedAndReturn(player, MaxSpeed.NORMAL) }))
-        addSlot(Slot(29, ItemStackBuilder(speedSelector).name(MaxSpeed.FAST.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setSpeedAndReturn(player, MaxSpeed.FAST) }))
-        addSlot(Slot(31, ItemStackBuilder(speedSelector).name(MaxSpeed.FASTEST.label).build(), org.bukkit.util.Consumer { event: InventoryClickEvent? -> setSpeedAndReturn(player, MaxSpeed.FASTEST) }))
+        addSlot(Slot(11, ItemStackBuilder(speedSelector).name(MaxSpeed.SLOWEST.label).build(), org.bukkit.util.Consumer { setSpeedAndReturn(player, MaxSpeed.SLOWEST) }))
+        addSlot(Slot(13, ItemStackBuilder(speedSelector).name(MaxSpeed.SLOW.label).build(), org.bukkit.util.Consumer { setSpeedAndReturn(player, MaxSpeed.SLOW) }))
+        addSlot(Slot(15, ItemStackBuilder(speedSelector).name(MaxSpeed.NORMAL.label).build(), org.bukkit.util.Consumer { setSpeedAndReturn(player, MaxSpeed.NORMAL) }))
+        addSlot(Slot(29, ItemStackBuilder(speedSelector).name(MaxSpeed.FAST.label).build(), org.bukkit.util.Consumer { setSpeedAndReturn(player, MaxSpeed.FAST) }))
+        addSlot(Slot(31, ItemStackBuilder(speedSelector).name(MaxSpeed.FASTEST.label).build(), org.bukkit.util.Consumer { setSpeedAndReturn(player, MaxSpeed.FASTEST) }))
     }
 }

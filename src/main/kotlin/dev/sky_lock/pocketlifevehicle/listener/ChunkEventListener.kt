@@ -25,7 +25,7 @@ class ChunkEventListener : Listener {
                         return@forEach
                     }
                     val car = getVehicle(entity) ?: return@forEach
-                    car.scrap()
+                    car.remove()
                     vehicles.add(car)
                 }
     }
