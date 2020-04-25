@@ -6,7 +6,9 @@ import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
+import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Player
 import java.util.*
 import java.util.function.Consumer
@@ -70,6 +72,16 @@ open class Vehicle internal constructor(val model: Model) {
     val isInWater: Boolean
         get() = center!!.isInWater
 
+    fun consistsOf(armorStand: ArmorStand): Boolean {
+        val handle = (armorStand as CraftArmorStand).handle
+        if (handle is SeatArmorStand) {
+            return seats.contains(handle)
+        } else if (handle is ModelArmorStand){
+            return center == handle
+        }
+        return false
+    }
+
     operator fun contains(seat: SeatArmorStand): Boolean {
         return seats.contains(seat)
     }
@@ -94,7 +106,7 @@ open class Vehicle internal constructor(val model: Model) {
     val driver: Player?
         get() = seats.find { seat -> seat.isDriverSheet && seat.passengers.isNotEmpty() }?.passenger
 
-    fun kill() {
+    fun scrap() {
         center!!.killEntity()
         seats.forEach(Consumer { obj: SeatArmorStand -> obj.killEntity() })
     }

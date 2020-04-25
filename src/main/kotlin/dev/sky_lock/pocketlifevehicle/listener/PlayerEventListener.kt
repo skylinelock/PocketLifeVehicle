@@ -60,12 +60,15 @@ class PlayerEventListener: Listener {
             return
         }
         val itemStack = event.item ?: return
+        if (!itemStack.hasItemMeta()) {
+            return;
+        }
+        val meta = itemStack.itemMeta
+        val player = event.player
         val model = Storage.MODEL.findByItemStack(itemStack) ?: return
         event.isCancelled = true
         event.setUseInteractedBlock(Event.Result.DENY)
         event.setUseItemInHand(Event.Result.DENY)
-        val meta = itemStack.itemMeta
-        val player = event.player
         if (!PLVehicle.instance.pluginConfiguration.isWorldVehicleCanPlaced(event.player.world)) {
             player.sendActionBar(ChatColor.RED + "このワールドでは乗り物は使用できません")
             return
@@ -74,66 +77,66 @@ class PlayerEventListener: Listener {
             player.sendActionBar(ChatColor.RED + "乗り物は地面にのみ設置できます")
             return
         }
-        val whereToSpawn = Objects.requireNonNull(event.clickedBlock)!!.location.clone().add(0.5, 1.0, 0.5)
-        if (!meta.hasLore()) {
-            placeCarEntity(player, itemStack, event.hand, player.uniqueId, model, player.location, model.spec.maxFuel)
+        val block = event.clickedBlock ?: return
+        val whereToSpawn = block.location.clone().add(0.5, 1.0, 0.5)
+        val hand = event.hand ?: return // This should be null when event.action == Action.PHYSICAL
+        val ownerUid = meta.persistentDataContainer.get(PLVehicle.instance.createKey("owner"), PersistentDataType.STRING)
+        if (ownerUid == null) {
+            placeCarEntity(player, itemStack, hand, player.uniqueId, model, player.location, model.spec.maxFuel)
             return
         }
-        val ownerUUID = meta.persistentDataContainer.get(PLVehicle.instance.createKey("owner"), PersistentDataType.STRING)
-        if (ownerUUID == null) {
-            placeCarEntity(player, itemStack, event.hand, player.uniqueId, model, player.location, model.spec.maxFuel)
+        val owner = UUID.fromString(ownerUid)
+        val lore = meta.lore
+        if (lore == null) {
+            placeCarEntity(player, itemStack, hand, player.uniqueId, model, player.location, model.spec.maxFuel)
             return
         }
-        val owner = UUID.fromString(ownerUUID)
-        val lore = Objects.requireNonNull(meta.lore)
-        val rawFuel = lore!![1]
+        val rawFuel = lore[1]
         var fuel = rawFuel.removeWhiteSpace().split(":".toRegex()).toTypedArray()[1].toFloat()
         if (fuel > model.spec.maxFuel) {
             fuel = model.spec.maxFuel
         }
         if (player.uniqueId == owner) {
-            placeCarEntity(player, itemStack, event.hand, owner, model, whereToSpawn, fuel)
+            placeCarEntity(player, itemStack, hand, owner, model, whereToSpawn, fuel)
             return
         }
         if (!Permission.VEHICLE_PLACE.obtained(player)) {
             player.sendActionBar(ChatColor.RED + "乗り物を設置することができませんでした")
             return
         }
-        placeCarEntity(player, itemStack, event.hand, owner, model, whereToSpawn, fuel)
+        placeCarEntity(player, itemStack, hand, owner, model, whereToSpawn, fuel)
     }
 
     @EventHandler
-    fun onPlayerInteract(event: PlayerInteractAtEntityEvent) {
+    fun onPlayerInteractAtEntity(event: PlayerInteractAtEntityEvent) {
         if (event.rightClicked.type != EntityType.ARMOR_STAND) {
             return
         }
         val armorStand = event.rightClicked as CraftArmorStand
-        if (armorStand.handle !is ModelArmorStand && armorStand.handle !is SeatArmorStand) {
-            return
-        }
-        event.isCancelled = true
         val player = event.player
 
         val handle = armorStand.handle
         val clicked = player.uniqueId
-        val vehicle: Vehicle
+        val vehicle = VehicleEntities.getVehicle(armorStand) ?: return
+        val owner = VehicleEntities.getOwner(vehicle) ?: return
+
+        val ownerName = VehicleEntities.getOwnerName(vehicle)
+
+        event.isCancelled = true
+
+        if (player.isSneaking) {
+            if (clicked != owner && !Permission.VEHICLE_OPEN_GUI.obtained(player)) {
+                sendRefusedReason(player, "この乗り物は $ownerName が所有しています")
+                return
+            }
+            vehicle.openMenu(player)
+            return
+        }
+
         if (handle is SeatArmorStand) {
             if (armorStand.passengers.isNotEmpty()) {
                 return
             }
-            vehicle = VehicleEntities.getCar(handle) ?: return
-            val owner = VehicleEntities.getOwner(vehicle) ?: return
-            val ownerName = VehicleEntities.getOwnerName(vehicle)
-
-            if (player.isSneaking) {
-                if (clicked != owner && !Permission.VEHICLE_OPEN_GUI.obtained(player)) {
-                    sendRefusedReason(player, "この乗り物は $ownerName が所有しています")
-                    return
-                }
-                vehicle.openMenu(player)
-                return
-            }
-
             if (clicked == owner) {
                 armorStand.addPassenger(player)
                 return
@@ -144,18 +147,6 @@ class PlayerEventListener: Listener {
             }
             armorStand.addPassenger(player)
         } else if (handle is ModelArmorStand) {
-            vehicle = VehicleEntities.getCar(handle) ?: return
-            val owner = VehicleEntities.getOwner(vehicle) ?: return
-            val ownerName = VehicleEntities.getOwnerName(vehicle)
-
-            if (player.isSneaking) {
-                if (clicked != owner && !Permission.VEHICLE_OPEN_GUI.obtained(player)) {
-                    sendRefusedReason(player, "この乗り物は $ownerName が所有しています")
-                    return
-                }
-                vehicle.openMenu(player)
-                return
-            }
             if (vehicle.passengers.size >= vehicle.model.spec.capacity.value()) {
                 sendRefusedReason(player, "この乗り物は満員です")
                 return
@@ -172,7 +163,7 @@ class PlayerEventListener: Listener {
         }
     }
 
-    private fun placeCarEntity(whoPlaced: Player, carItem: ItemStack, hand: EquipmentSlot?, owner: UUID, model: Model, location: Location, fuel: Float) {
+    private fun placeCarEntity(whoPlaced: Player, carItem: ItemStack, hand: EquipmentSlot, owner: UUID, model: Model, location: Location, fuel: Float) {
         VehicleEntities.tow(owner)
         if (VehicleEntities.spawn(owner, model, location, fuel)) {
             location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.0f)

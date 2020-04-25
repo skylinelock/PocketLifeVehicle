@@ -1,11 +1,10 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
-import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.getCar
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.getVehicle
 import org.bukkit.Chunk
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity
+import org.bukkit.entity.ArmorStand
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.world.ChunkLoadEvent
@@ -21,10 +20,12 @@ class ChunkEventListener : Listener {
     @EventHandler
     fun onChunkUnload(event: ChunkUnloadEvent) {
         event.chunk.entities
-                .filter { entity -> (entity as CraftEntity).handle is ModelArmorStand }
                 .forEach { entity ->
-                    val car = getCar((entity as CraftEntity).handle as ModelArmorStand)
-                    car!!.kill()
+                    if (entity !is ArmorStand) {
+                        return@forEach
+                    }
+                    val car = getVehicle(entity) ?: return@forEach
+                    car.scrap()
                     vehicles.add(car)
                 }
     }

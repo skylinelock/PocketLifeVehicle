@@ -54,7 +54,7 @@
                             </sourceDirs>
                         </configuration>
                     </execution>
-                    <execution>
+                    <!-- <execution>
                         <id>kotlin-test-compile</id>
                         <goals>
                             <goal>test-compile</goal>
@@ -64,7 +64,7 @@
                                 <sourceDir>${project.basedir}/src/test/kotlin</sourceDir>
                             </sourceDirs>
                         </configuration>
-                    </execution>
+                    </execution> -->
                 </executions>
             </plugin>
             <plugin>

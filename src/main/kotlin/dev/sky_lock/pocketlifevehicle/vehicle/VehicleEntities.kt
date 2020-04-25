@@ -7,6 +7,7 @@ import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.*
+import org.bukkit.entity.ArmorStand
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.persistence.PersistentDataType
 import java.io.IOException
@@ -56,19 +57,19 @@ object VehicleEntities {
     fun kill(owner: UUID) {
         if (ENTITIES.containsKey(owner)) {
             val car = ENTITIES.remove(owner)
-            car!!.kill()
+            car!!.scrap()
         }
     }
 
     fun kill(vehicle: Vehicle) {
         if (ENTITIES.containsValue(vehicle)) {
             ENTITIES.values.remove(vehicle)
-            vehicle.kill()
+            vehicle.scrap()
         }
     }
 
     private fun killAll() {
-        ENTITIES.values.forEach(Consumer { obj: Vehicle -> obj.kill() })
+        ENTITIES.values.forEach(Consumer { obj: Vehicle -> obj.scrap() })
     }
 
     fun tow(vehicle: Vehicle) {
@@ -94,12 +95,8 @@ object VehicleEntities {
         kill(owner)
     }
 
-    fun getCar(seat: SeatArmorStand): Vehicle? {
-        return ENTITIES.values.find { vehicle: Vehicle -> vehicle.contains(seat) }
-    }
-
-    fun getCar(basis: ModelArmorStand): Vehicle? {
-        return ENTITIES.values.find { vehicle: Vehicle -> vehicle.contains(basis) }
+    fun getVehicle(armorStand: ArmorStand): Vehicle? {
+        return ENTITIES.entries.find { entry -> entry.value.consistsOf(armorStand) }?.value
     }
 
     private val vehicleEntities: Set<VehicleEntity>
