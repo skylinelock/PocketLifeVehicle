@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.command
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import org.bukkit.Bukkit
@@ -15,7 +15,7 @@ import org.bukkit.entity.Player
 class WorldCommand : ICommand, IAdminCommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         val player = sender as Player
-        val config = PLVehicle.instance.pluginConfiguration
+        val config = VehiclePlugin.instance.pluginConfiguration
 
         if (args.size < 2 || args[1].equals("list", ignoreCase = true)) {
             Bukkit.getWorlds().forEach{world ->

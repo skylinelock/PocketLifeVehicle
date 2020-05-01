@@ -2,6 +2,7 @@ name: ${project.name}
 main: ${bukkit.plugin.main}
 version: ${project.version}
 author: ${bukkit.plugin.author}
+softdepend: [PocketLifeCore]
 depend: [ProtocolLib]
 api-version: 1.14
 

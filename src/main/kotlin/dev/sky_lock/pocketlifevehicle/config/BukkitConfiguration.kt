@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.config
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.IOException
 import java.nio.charset.StandardCharsets
@@ -12,7 +12,7 @@ import java.util.logging.Level
  * @author sky_lock
  */
 internal object BukkitConfiguration {
-    private val logger = PLVehicle.instance.logger
+    private val logger = VehiclePlugin.instance.logger
 
     fun load(path: Path): YamlConfiguration? {
         var config: YamlConfiguration? = null

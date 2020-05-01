@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.task
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
@@ -19,7 +19,7 @@ class SubmergedMessageTask {
     fun run(vehicle: Vehicle) {
         val warning = SubmergedWarning()
         object : BukkitRunnable() {
-            var count = PLVehicle.instance.pluginConfiguration.warningCount()
+            var count = VehiclePlugin.instance.pluginConfiguration.warningCount()
             override fun run() {
                 if (vehicle.passengers.isEmpty()) {
                     if (count == 0) {
@@ -52,6 +52,6 @@ class SubmergedMessageTask {
                 vehicle.passengers.forEach(Consumer { player: Player? -> warning.stop(player!!) })
                 cancel()
             }
-        }.runTaskTimer(PLVehicle.instance, 5L, 20L)
+        }.runTaskTimer(VehiclePlugin.instance, 5L, 20L)
     }
 }

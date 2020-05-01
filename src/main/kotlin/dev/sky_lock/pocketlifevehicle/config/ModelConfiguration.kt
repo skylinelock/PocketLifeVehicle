@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.config
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.vehicle.model.CollideBox
 import dev.sky_lock.pocketlifevehicle.vehicle.model.ItemOption
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
@@ -22,7 +22,7 @@ class ModelConfiguration {
         ConfigurationSerialization.registerClass(Spec::class.java)
         ConfigurationSerialization.registerClass(ItemOption::class.java)
         ConfigurationSerialization.registerClass(CollideBox::class.java)
-        this.path = PLVehicle.instance.dataFolder.toPath().resolve("vehicles.yml")
+        this.path = VehiclePlugin.instance.dataFolder.toPath().resolve("vehicles.yml")
     }
 
     fun loadModels(): MutableSet<Model> {

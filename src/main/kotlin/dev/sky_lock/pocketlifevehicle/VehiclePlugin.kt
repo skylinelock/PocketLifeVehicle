@@ -17,10 +17,10 @@ import org.bukkit.plugin.java.JavaPlugin
  * @author sky_lock
  */
 
-class PLVehicle : JavaPlugin() {
+class VehiclePlugin : JavaPlugin() {
 
     companion object {
-        lateinit var instance: PLVehicle
+        lateinit var instance: VehiclePlugin
     }
 
     lateinit var pluginConfiguration: PluginConfiguration

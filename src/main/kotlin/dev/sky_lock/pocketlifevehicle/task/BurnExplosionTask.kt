@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.task
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
@@ -20,7 +20,7 @@ import java.util.function.Consumer
 class BurnExplosionTask {
     fun run(vehicle: Vehicle) {
         object : BukkitRunnable() {
-            var count = PLVehicle.instance.pluginConfiguration.warningCount()
+            var count = VehiclePlugin.instance.pluginConfiguration.warningCount()
             var warning = BurnExplosionWarning()
             override fun run() {
                 if (vehicle.passengers.isEmpty()) {
@@ -53,6 +53,6 @@ class BurnExplosionTask {
                 vehicle.passengers.forEach(Consumer { player: Player -> warning.send(player) })
                 count--
             }
-        }.runTaskTimer(PLVehicle.instance, 5L, 20L)
+        }.runTaskTimer(VehiclePlugin.instance, 5L, 20L)
     }
 }

@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Sound
@@ -15,7 +15,7 @@ class EngineSound(var location: Location) {
     var pitch: Float = 0.0f
 
     fun start() {
-        task = Bukkit.getScheduler().runTaskTimerAsynchronously(PLVehicle.instance, Runnable {
+        task = Bukkit.getScheduler().runTaskTimerAsynchronously(VehiclePlugin.instance, Runnable {
             if (this.isCancelled) {
                 this.stop()
             }

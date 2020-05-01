@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.config
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import org.bukkit.World
 import org.bukkit.configuration.InvalidConfigurationException
 import org.bukkit.configuration.file.FileConfiguration
@@ -18,7 +18,7 @@ class PluginConfiguration {
         const val WORLDS_KEY = "allowed-world"
         const val COUNT_KEY = "warning-count"
     }
-    private val plugin = PLVehicle.instance
+    private val plugin = VehiclePlugin.instance
     private val config: FileConfiguration = plugin.config
 
     init {

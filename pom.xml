@@ -20,7 +20,7 @@
 
     <properties>
         <kotlin.version>1.3.72</kotlin.version>
-        <bukkit.plugin.main>dev.sky_lock.pocketlifevehicle.PLVehicle</bukkit.plugin.main>
+        <bukkit.plugin.main>dev.sky_lock.pocketlifevehicle.VehiclePlugin</bukkit.plugin.main>
         <bukkit.plugin.author>sky_lock</bukkit.plugin.author>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

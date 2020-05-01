@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
@@ -77,7 +77,7 @@ object VehicleEntities {
     private fun tow(owner: UUID, vehicle: Vehicle) {
         val model = vehicle.model
         val itemStack = ItemStackBuilder(model.itemStack)
-                .persistentData(PLVehicle.instance.createKey("owner"), PersistentDataType.STRING, owner.toString())
+                .persistentData(VehiclePlugin.instance.createKey("owner"), PersistentDataType.STRING, owner.toString())
                 .lore("所有者: " + getOwnerName(vehicle), "残燃料: " + vehicle.status.fuel.truncateToOneDecimalPlace())
                 .itemFlags(*ItemFlag.values())
                 .build()

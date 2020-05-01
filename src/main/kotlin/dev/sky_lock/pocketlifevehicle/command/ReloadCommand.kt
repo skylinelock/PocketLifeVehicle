@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.command
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
@@ -21,11 +21,11 @@ class ReloadCommand : ICommand, IAdminCommand, IConsoleCommand {
         when {
             flag.equals("from", ignoreCase = true) -> {
                 Storage.MODEL.reloadConfig()
-                PLVehicle.instance.pluginConfiguration.reload()
+                VehiclePlugin.instance.pluginConfiguration.reload()
                 sender.sendPrefixedPluginMessage(ChatColor.GREEN + "ディスクからデータを読み込みました")
             }
             flag.equals("to", ignoreCase = true) -> {
-                PLVehicle.instance.pluginConfiguration.save()
+                VehiclePlugin.instance.pluginConfiguration.save()
                 Storage.MODEL.saveToFile()
                 sender.sendPrefixedPluginMessage(ChatColor.GREEN + "ディスクへデータを保存しました")
             }

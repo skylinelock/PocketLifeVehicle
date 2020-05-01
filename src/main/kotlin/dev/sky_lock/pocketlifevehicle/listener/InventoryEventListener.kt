@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
@@ -73,7 +73,7 @@ class InventoryEventListener : Listener {
     fun onInventoryClose(event: InventoryCloseEvent) {
         val player = event.player as Player
         StringEditor.close(player)
-        Bukkit.getScheduler().runTaskLater(PLVehicle.instance, Runnable {
+        Bukkit.getScheduler().runTaskLater(VehiclePlugin.instance, Runnable {
             if (player.openInventory.topInventory.type == InventoryType.CRAFTING) {
                 EditSessions.destroy(player.uniqueId)
             }

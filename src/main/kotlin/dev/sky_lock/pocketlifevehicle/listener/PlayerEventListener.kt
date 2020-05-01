@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
-import dev.sky_lock.pocketlifevehicle.PLVehicle
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.removeWhiteSpace
@@ -11,7 +11,6 @@ import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Sound
@@ -73,7 +72,7 @@ class PlayerEventListener: Listener {
         event.isCancelled = true
         event.setUseInteractedBlock(Event.Result.DENY)
         event.setUseItemInHand(Event.Result.DENY)
-        if (!PLVehicle.instance.pluginConfiguration.isWorldVehicleCanPlaced(event.player.world)) {
+        if (!VehiclePlugin.instance.pluginConfiguration.isWorldVehicleCanPlaced(event.player.world)) {
             player.sendActionBar(ChatColor.RED + "このワールドでは乗り物は使用できません")
             return
         }
@@ -84,7 +83,7 @@ class PlayerEventListener: Listener {
         val block = event.clickedBlock ?: return
         val whereToSpawn = block.location.clone().add(0.5, 1.0, 0.5)
         val hand = event.hand ?: return // This should be null when event.action == Action.PHYSICAL
-        val ownerUid = meta.persistentDataContainer.get(PLVehicle.instance.createKey("owner"), PersistentDataType.STRING)
+        val ownerUid = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("owner"), PersistentDataType.STRING)
         if (ownerUid == null) {
             placeCarEntity(player, itemStack, hand, player.uniqueId, model, player.location, model.spec.maxFuel)
             return
