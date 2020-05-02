@@ -10,7 +10,7 @@ import org.bukkit.persistence.PersistentDataType
 /**
  * @author sky_lock
  */
-open class ItemStackBuilder internal constructor(itemStack: ItemStack) {
+open class ItemStackBuilder constructor(itemStack: ItemStack) {
     private  val itemStack: ItemStack = itemStack.clone()
     internal val itemMeta: ItemMeta = itemStack.itemMeta
 
@@ -53,13 +53,18 @@ open class ItemStackBuilder internal constructor(itemStack: ItemStack) {
     }
 
     fun glow(): ItemStackBuilder {
-        itemMeta.addEnchant(GlowEnchantment(), 1, true)
+        itemMeta.addEnchant(GLOW_ENCHANT, 1, true)
         return this
     }
 
     fun build(): ItemStack {
         itemStack.itemMeta = itemMeta
         return itemStack
+    }
+
+    companion object {
+        // 初回時にItemStackBuilderが参照される時にエンチャントを登録する
+        val GLOW_ENCHANT = GlowEnchantment()
     }
 
 }

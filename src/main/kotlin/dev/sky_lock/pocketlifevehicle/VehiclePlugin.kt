@@ -11,7 +11,6 @@ import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
 import org.bstats.bukkit.Metrics
 import org.bukkit.NamespacedKey
-import org.bukkit.enchantments.Enchantment
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
@@ -34,8 +33,7 @@ class VehiclePlugin : JavaPlugin() {
         val commandHandler = CommandHandler()
         getCommand("vehicle")?.setExecutor(commandHandler)
 
-        this.registerEventListener()
-        this.registerGlowEnchantment()
+        this.registerEventListeners()
 
         VehicleAPI.registerImpl(VehicleAPIImpl())
 
@@ -47,25 +45,12 @@ class VehiclePlugin : JavaPlugin() {
         pluginConfiguration.save()
     }
 
-    private fun registerEventListener() {
+    private fun registerEventListeners() {
         val pluginManager = server.pluginManager
         pluginManager.registerEvents(InventoryMenuListener(this), this)
         pluginManager.registerEvents(ChunkEventListener(), this)
         pluginManager.registerEvents(PlayerEventListener(), this)
         pluginManager.registerEvents(InventoryEventListener(), this)
-    }
-
-    private fun registerGlowEnchantment() {
-        try {
-            val field = Enchantment::class.java.getDeclaredField("acceptingNew")
-            field.isAccessible = true
-            field.set(null, true)
-        } catch (ex: NoSuchFileException) {
-            logger.warning("Could not register the enchant for growing item")
-        } catch (ex: IllegalAccessException) {
-            logger.warning("Could not register the enchant for growing item")
-        }
-        Enchantment.registerEnchantment(GlowEnchantment())
     }
 
     fun createKey(key: String): NamespacedKey {
