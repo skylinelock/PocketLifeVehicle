@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle
 
+import com.life.pocket.VehicleAPI
 import dev.sky_lock.menu.InventoryMenuListener
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
@@ -35,6 +36,8 @@ class VehiclePlugin : JavaPlugin() {
 
         this.registerEventListener()
         this.registerGlowEnchantment()
+
+        VehicleAPI.registerImpl(VehicleAPIImpl())
 
         Metrics(this, 7271)
     }

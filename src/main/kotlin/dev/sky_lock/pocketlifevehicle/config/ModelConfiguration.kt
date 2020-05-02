@@ -27,12 +27,12 @@ class ModelConfiguration {
 
     fun loadModels(): MutableSet<Model> {
         config = BukkitConfiguration.load(path) ?: return HashSet()
-        val carList = config.getList("cars")?.filterIsInstance<Model>() ?: return HashSet()
+        val carList = config.getList("vehicles")?.filterIsInstance<Model>() ?: return HashSet()
         return carList.toMutableSet()
     }
 
     fun writeModels(models: Set<Model>) {
-        config["cars"] = models.toList()
+        config["vehicles"] = models.toList()
         config[""]
     }
 

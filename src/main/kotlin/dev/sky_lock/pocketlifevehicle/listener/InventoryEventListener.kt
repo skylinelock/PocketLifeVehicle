@@ -16,6 +16,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryType
+import org.bukkit.persistence.PersistentDataType
 
 /**
  * @author sky_lock
@@ -24,11 +25,11 @@ class InventoryEventListener : Listener {
 
     @EventHandler
     fun onInventoryClick(event: InventoryClickEvent) {
-        val itemStack = CraftItemStack.asNMSCopy(event.currentItem)
         if (event.slotType == InventoryType.SlotType.OUTSIDE) {
             return
         }
-        if (itemStack.hasTag() && itemStack.tag!!.hasKey("editor-result")) {
+        val nmsItemStack = CraftItemStack.asNMSCopy(event.currentItem)
+        if (nmsItemStack.hasTag() && nmsItemStack.tag!!.hasKey("editor-result")) {
             event.result = Event.Result.DENY
             event.isCancelled = true
             val result = event.currentItem
