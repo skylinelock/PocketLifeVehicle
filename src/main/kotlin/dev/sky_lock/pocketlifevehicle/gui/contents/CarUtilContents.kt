@@ -87,7 +87,7 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
 
     init {
         val closeItem = ItemStackBuilder(Material.ENDER_PEARL, 1).name(ChatColor.RED + "閉じる").build()
-        val towItem = ItemStackBuilder(Material.MINECART, 1).name(colorizeTitle("レッカー移動")).lore(ChatColor.GRAY + "アイテム化して持ち運べるようにします").build()
+        val towItem = ItemStackBuilder(Material.MINECART, 1).name(colorizeTitle("回収する")).lore(ChatColor.GRAY + "アイテム化して持ち運べるようにします").build()
 
         val owner = getOwner(vehicle)
         val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).name(colorizeTitle("所有者")).lore(ChatColor.AQUA + getOwnerName(vehicle)).build()

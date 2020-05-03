@@ -26,6 +26,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
@@ -52,16 +53,18 @@ class PlayerEventListener: Listener {
     }
 
     @EventHandler
-    fun onPlayerQuit(event: PlayerQuitEvent) {
-        // TODO: ここほんとゴミ
-        val uuid = event.player.uniqueId
-        val vehicle = VehicleEntities.of(uuid)
-        if (vehicle != null) {
-            val entry = ParkingViolation(Date(), uuid, vehicle.model.id, vehicle.status.fuel)
-            this.plugin.parkingViolationList.registerNewEntry(entry)
-            vehicle.remove()
+    fun onPlayerJoin(event: PlayerJoinEvent) {
+        val player = event.player
+        if (plugin.parkingViolationList.findEntry(player) != null) {
+            event.player.sendMessage(ChatColor.BOLD + ChatColor.RED + "駐車違反登録されています。乗り物を利用するにはスマホから駐車違反料を払う必要があります。")
         }
+    }
 
+    // プレイヤーが自主的にログアウトした時のみ呼ばれる
+    @EventHandler
+    fun onPlayerQuit(event: PlayerQuitEvent) {
+        val uuid = event.player.uniqueId
+        VehicleEntities.registerIllegalParking(uuid)
         StringEditor.close(event.player)
         EditSessions.destroy(event.player.uniqueId)
     }

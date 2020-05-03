@@ -15,7 +15,7 @@ import java.util.*
 /**
  * @author sky_lock
  */
-class TowawayCommand : ICommand {
+class PopCommand : ICommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         val player = sender as Player
         if (args.size < 2 || !Permission.ADMIN_COMMAND.obtained(sender)) {

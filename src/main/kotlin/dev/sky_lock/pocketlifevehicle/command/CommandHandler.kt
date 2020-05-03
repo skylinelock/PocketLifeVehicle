@@ -24,7 +24,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
             when (args[0].toLowerCase()) {
                 "give" -> cmd = GiveCommand()
                 "spawn" -> cmd = SpawnCommand()
-                "towaway" -> cmd = TowawayCommand()
+                "pop" -> cmd = PopCommand()
                 "model" -> cmd = ModelCommand()
                 "debug" -> cmd = DebugCommand()
                 "search" -> cmd = SearchCommand()
@@ -55,14 +55,14 @@ class CommandHandler : CommandExecutor, TabExecutor {
             if (Permission.ADMIN_COMMAND.obtained(sender)) {
                 tabCompletes.addAll(listOf("give", "spawn", "model", "debug", "reload", "world").filter { str -> str.startsWith(input) })
             }
-            tabCompletes.addAll(listOf("towaway", "search").filter { str -> str.startsWith(input) })
+            tabCompletes.addAll(listOf("pop", "search").filter { str -> str.startsWith(input) })
         } else if (args.size == 2 && Permission.ADMIN_COMMAND.obtained(sender)) {
             val input = args[1]
             when (args[0].toLowerCase()) {
                 "give" -> tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
                 "spawn" -> tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
                 "reload" -> tabCompletes.addAll(listOf("from", "to").filter { str -> str.startsWith(input) })
-                "search", "towaway" -> if (Permission.ADMIN_COMMAND.obtained(sender)) {
+                "search", "pop" -> if (Permission.ADMIN_COMMAND.obtained(sender)) {
                     tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
                 }
                 "world" -> tabCompletes.addAll(listOf("add", "remove", "list").filter { str -> str.startsWith(input) })

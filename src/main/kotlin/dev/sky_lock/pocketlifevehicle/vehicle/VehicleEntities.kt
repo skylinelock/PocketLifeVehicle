@@ -4,6 +4,7 @@ import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.json.ParkingViolation
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.*
@@ -108,6 +109,23 @@ object VehicleEntities {
     fun scrapAll(modelId: String) {
         ENTITIES.values.filter { vehicle -> vehicle.model.id == modelId }
                 .forEach { vehicle -> vehicle.isUndrivable = true}
+    }
+
+    fun registerIllegalParking(uuid: UUID) {
+        val vehicle = of(uuid) ?: return
+        val entry = ParkingViolation(Date(), uuid, vehicle.model.id, vehicle.status.fuel)
+        VehiclePlugin.instance.parkingViolationList.registerNewEntry(entry)
+        kill(uuid)
+    }
+
+    fun registerAllIllegalParkings() {
+        ENTITIES.entries.removeIf {entry ->
+            val vehicle = entry.value
+            val parkingEntry = ParkingViolation(Date(), entry.key, vehicle.model.id, vehicle.status.fuel)
+            VehiclePlugin.instance.parkingViolationList.registerNewEntry(parkingEntry)
+            vehicle.remove()
+            return@removeIf true
+        }
     }
 
     fun respawn(player: Player): Boolean {
