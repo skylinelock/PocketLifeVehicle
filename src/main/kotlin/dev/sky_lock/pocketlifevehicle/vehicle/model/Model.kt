@@ -11,7 +11,7 @@ import java.util.*
  * @author sky_lock
  */
 @SerializableAs("Model")
-class Model internal constructor(val id: String, val name: String,
+class Model constructor(val id: String, val name: String,
                                  val lore: List<String>, val spec: Spec, val itemOption: ItemOption,
                                  val collideBox: CollideBox, val isBig: Boolean, val height: Float, val sound: Sound) : ConfigurationSerializable {
 

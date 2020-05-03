@@ -86,10 +86,4 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
                 null
             }
         }
-//
-//    inner class CraftSeat internal constructor(server: CraftServer, entity: EntityArmorStand) : CraftArmorStand(server, entity) {
-//        override fun getHandle(): SeatArmorStand {
-//            return super.getHandle() as SeatArmorStand
-//        }
-//    }
 }

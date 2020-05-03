@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 /**
  * @author sky_lock
  */
-internal class BurnExplosionWarning : AbstractWarning() {
+class BurnExplosionWarning : AbstractWarning() {
     fun send(player: Player) {
         super.send(player, ChatColor.GOLD + "乗り物は" + count + "秒後に爆発します")
     }

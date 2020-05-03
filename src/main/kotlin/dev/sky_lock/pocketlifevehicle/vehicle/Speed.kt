@@ -5,7 +5,7 @@ import java.math.BigDecimal
 /**
  * @author sky_lock
  */
-internal class Speed {
+class Speed {
     private var exactSpeed = BigDecimal.ZERO
 
     val isPositive: Boolean

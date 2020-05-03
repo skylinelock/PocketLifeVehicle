@@ -11,7 +11,7 @@ import java.util.logging.Level
 /**
  * @author sky_lock
  */
-internal object BukkitConfiguration {
+object BukkitConfiguration {
     private val logger = VehiclePlugin.instance.logger
 
     fun load(path: Path): YamlConfiguration? {

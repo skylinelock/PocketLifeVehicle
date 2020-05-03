@@ -5,7 +5,7 @@ import org.bukkit.Location
 /**
  * @author sky_lock
  */
-internal class SeatPositionControl {
+class SeatPositionControl {
     fun calculate(location: Location, position: SeatPosition): Location {
         val vector = location.direction
         when (position) {

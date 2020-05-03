@@ -7,7 +7,7 @@ import java.util.function.Consumer
 /**
  * @author sky_lock
  */
-internal class FourSeatsVehicle(model: Model?) : Vehicle(model!!) {
+class FourSeatsVehicle(model: Model?) : Vehicle(model!!) {
     override fun spawn(location: Location) {
         super.spawn(location)
         val driver = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)

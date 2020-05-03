@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 /**
  * @author sky_lock
  */
-internal open class AbstractWarning {
+open class AbstractWarning {
     var count = 0
 
     fun send(player: Player, subTitle: String) {

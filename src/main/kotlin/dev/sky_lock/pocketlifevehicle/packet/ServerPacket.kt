@@ -10,7 +10,7 @@ import java.util.logging.Level
 /**
  * @author sky_lock
  */
-open class ServerPacket internal constructor(val type: PacketType)
+open class ServerPacket constructor(val type: PacketType)
     : AbstractPacket(ProtocolLibrary.getProtocolManager().createPacket(type)) {
 
     fun send(player: Player) {

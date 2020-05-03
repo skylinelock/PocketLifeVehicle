@@ -11,8 +11,8 @@ import org.bukkit.persistence.PersistentDataType
  * @author sky_lock
  */
 open class ItemStackBuilder constructor(itemStack: ItemStack) {
-    private  val itemStack: ItemStack = itemStack.clone()
-    internal val itemMeta: ItemMeta = itemStack.itemMeta
+    private var itemStack: ItemStack = itemStack.clone()
+    protected var itemMeta: ItemMeta = itemStack.itemMeta
 
     constructor(type: Material, amount: Int) : this(ItemStack(type, amount))
 
@@ -64,7 +64,7 @@ open class ItemStackBuilder constructor(itemStack: ItemStack) {
 
     companion object {
         // 初回時にItemStackBuilderが参照される時にエンチャントを登録する
-        val GLOW_ENCHANT = GlowEnchantment()
+        val GLOW_ENCHANT = EnchantGlow()
     }
 
 }

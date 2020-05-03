@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 /**
  * @author sky_lock
  */
-internal class SubmergedWarning : AbstractWarning() {
+class SubmergedWarning : AbstractWarning() {
     fun send(player: Player) {
         super.send(player, ChatColor.GOLD + "乗り物は" + super.count + "秒後に水没します")
     }

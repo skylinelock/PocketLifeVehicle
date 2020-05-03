@@ -4,7 +4,6 @@ import com.life.pocket.VehicleAPI
 import dev.sky_lock.menu.InventoryMenuListener
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
-import dev.sky_lock.pocketlifevehicle.item.GlowEnchantment
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
 import dev.sky_lock.pocketlifevehicle.listener.InventoryEventListener
 import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
@@ -30,8 +29,7 @@ class VehiclePlugin : JavaPlugin() {
 
         pluginConfiguration = PluginConfiguration()
 
-        val commandHandler = CommandHandler()
-        getCommand("vehicle")?.setExecutor(commandHandler)
+        getCommand("vehicle")?.setExecutor(CommandHandler())
 
         this.registerEventListeners()
 

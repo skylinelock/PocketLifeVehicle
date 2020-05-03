@@ -15,13 +15,13 @@ import java.util.*
 /**
  * @author sky_lock
  */
-open class Vehicle internal constructor(val model: Model) {
+open class Vehicle constructor(val model: Model) {
     val seats: MutableList<SeatArmorStand> = ArrayList()
     var center: ModelArmorStand? = null
         private set
     private var menu: CarUtilMenu? = null
     val status: CarStatus = CarStatus()
-    internal lateinit var engineSound: EngineSound
+    lateinit var engineSound: EngineSound
     val engine: Engine
     val steering: Steering
     val meterPanel: MeterPanel

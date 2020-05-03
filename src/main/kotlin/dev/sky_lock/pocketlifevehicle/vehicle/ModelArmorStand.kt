@@ -122,15 +122,4 @@ class ModelArmorStand : EntityArmorStand {
         vehicle.engineSound.location = this.location
         vehicle.engineSound.pitch = vehicle.status.speed.approximate() / vehicle.model.spec.maxSpeed.max
     }
-
-//    override fun getBukkitEntity(): CraftEntity {
-//        return CraftCar(Bukkit.getServer() as CraftServer, this)
-//    }
-
-
-/*    inner class CraftCar internal constructor(server: CraftServer, entity: EntityArmorStand) : CraftArmorStand(server, entity) {
-        override fun getHandle(): CarArmorStand {
-            return super.getHandle() as CarArmorStand
-        }
-    }*/
 }
