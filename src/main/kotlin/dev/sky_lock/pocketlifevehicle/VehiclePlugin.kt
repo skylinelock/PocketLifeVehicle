@@ -4,6 +4,7 @@ import com.life.pocket.VehicleAPI
 import dev.sky_lock.menu.InventoryMenuListener
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
+import dev.sky_lock.pocketlifevehicle.json.ParkingViolationList
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
 import dev.sky_lock.pocketlifevehicle.listener.InventoryEventListener
 import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
@@ -23,11 +24,14 @@ class VehiclePlugin : JavaPlugin() {
     }
 
     lateinit var pluginConfiguration: PluginConfiguration
+    lateinit var parkingViolationList: ParkingViolationList
 
     override fun onEnable() {
         instance = this
 
-        pluginConfiguration = PluginConfiguration()
+        this.pluginConfiguration = PluginConfiguration()
+        this.parkingViolationList = ParkingViolationList()
+        this.parkingViolationList.load()
 
         getCommand("vehicle")?.setExecutor(CommandHandler())
 
@@ -41,6 +45,7 @@ class VehiclePlugin : JavaPlugin() {
     override fun onDisable() {
         Storage.MODEL.saveToFile()
         pluginConfiguration.save()
+        parkingViolationList.save()
     }
 
     private fun registerEventListeners() {

@@ -33,7 +33,7 @@ object GsonUtil {
      * @throws RuntimeException
     </T> */
     @Throws(IOException::class)
-    fun <T> load(filePath: Path, type: Type?): T? {
+    fun <T> load(filePath: Path, type: Type): T? {
         checkFile(filePath)
         JsonReader(Files.newBufferedReader(filePath, StandardCharsets.UTF_8)).use { reader ->
             return if (!reader.hasNext()) {
@@ -52,7 +52,7 @@ object GsonUtil {
      * @throws RuntimeException
     </T> */
     @Throws(IOException::class)
-    fun <T> save(filePath: Path, obj: T, type: Type?) {
+    fun <T> save(filePath: Path, obj: T, type: Type) {
         checkFile(filePath)
         JsonWriter(Files.newBufferedWriter(filePath)).use { writer ->
             writer.setIndent("   ")

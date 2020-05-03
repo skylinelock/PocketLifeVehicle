@@ -1,7 +1,8 @@
 package dev.sky_lock.pocketlifevehicle
 
 import com.life.pocket.VehicleAPI
-import org.bukkit.Bukkit
+import dev.sky_lock.pocketlifevehicle.vehicle.Storage
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
 import org.bukkit.entity.Player
 
 /**
@@ -10,13 +11,13 @@ import org.bukkit.entity.Player
 
 class VehicleAPIImpl: VehicleAPI {
 
+    val plugin = VehiclePlugin.instance
+
     override fun respawn(player: Player): Boolean {
-        Bukkit.broadcastMessage("respawn")
-        return true
+        return VehicleEntities.respawn(player)
     }
 
     override fun restore(player: Player): Boolean {
-        Bukkit.broadcastMessage("restore")
-        return true
+        return VehicleEntities.restore(player)
     }
 }
