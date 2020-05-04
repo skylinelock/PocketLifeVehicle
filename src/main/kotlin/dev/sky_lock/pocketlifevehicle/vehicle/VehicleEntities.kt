@@ -108,7 +108,7 @@ object VehicleEntities {
 
     fun scrapAll(modelId: String) {
         ENTITIES.values.filter { vehicle -> vehicle.model.id == modelId }
-                .forEach { vehicle -> vehicle.isUndrivable = true}
+                .forEach { vehicle -> vehicle.isUndrivable = true }
     }
 
     fun registerIllegalParking(uuid: UUID) {
@@ -119,7 +119,7 @@ object VehicleEntities {
     }
 
     fun registerAllIllegalParkings() {
-        ENTITIES.entries.removeIf {entry ->
+        ENTITIES.entries.removeIf { entry ->
             val vehicle = entry.value
             val parkingEntry = ParkingViolation(Date(), entry.key, vehicle.model.id, vehicle.status.fuel)
             VehiclePlugin.instance.parkingViolationList.registerNewEntry(parkingEntry)
@@ -137,7 +137,11 @@ object VehicleEntities {
     fun restore(player: Player): Boolean {
         val plugin = VehiclePlugin.instance
         val entry = plugin.parkingViolationList.findEntry(player) ?: return false
-        val model = Storage.MODEL.findById(entry.modelId) ?: return false
+        val model = Storage.MODEL.findById(entry.modelId)
+        if (model == null) {
+            plugin.parkingViolationList.removeEntry(player)
+            return false
+        }
         placeEntity(entry.ownerUuid, model, player.location, entry.fuel)
         plugin.parkingViolationList.removeEntry(player)
         return true

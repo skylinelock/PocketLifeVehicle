@@ -28,7 +28,7 @@ class SearchCommand : ICommand {
                 player.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物は現在(" + getLocationString(location) + ")にあります")
                 return
             }
-            player.sendPrefixedPluginMessage(ChatColor.GREEN + getLocationString(location))
+            player.sendPrefixedPluginMessage(ChatColor.RED + "別ワールドにある乗り物の現在地は取得できません")
             return
         }
         val name = args[1]
