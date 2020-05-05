@@ -60,17 +60,17 @@ class ModelArmorStand : EntityArmorStand {
         super.killEntity()
     }
 
-    //ツタ、はしご、足場ブロックを登れなくする
+    // ツタ、はしご、足場ブロックを登れなくする
     override fun isClimbing(): Boolean {
         return false
     }
 
-    //足音がなるかどうか
+    // 足音がなるかどうか
     override fun isSilent(): Boolean {
         return true
     }
 
-    //水に入った時
+    // 水に入った時
     override fun az() {
         super.au()
         SubmergedMessageTask().run(vehicle!!)
@@ -85,6 +85,7 @@ class ModelArmorStand : EntityArmorStand {
         }
     }
 
+    // 毎tick呼ばれる
     override fun e(vec3d: Vec3D) {
         if (vehicle == null) {
             super.e(vec3d)
@@ -94,6 +95,7 @@ class ModelArmorStand : EntityArmorStand {
         if (vehicle.isUndrivable || vehicle.passengers.isEmpty() ||
                 vehicle.driver == null || this.isInWater || inLava) {
             vehicle.engine.stop()
+            vehicle.engineSound.pitch = 0.0f
             super.e(vec3d)
             return
         }
