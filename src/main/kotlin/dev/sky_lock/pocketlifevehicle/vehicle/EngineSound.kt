@@ -20,10 +20,10 @@ class EngineSound(var location: Location) {
                 this.stop()
             }
             val world = location.world
-            world.playSound(location, Sound.ENTITY_PIG_HURT, 0.05f, 0.7f)
-            world.playSound(location, Sound.ENTITY_MINECART_RIDING, 0.05f, 0.8f)
-            world.playSound(location, Sound.ENTITY_PLAYER_BURP, 0.05f, 0.8f)
-            world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.05f, this.pitch)
+            world.playSound(location, Sound.ENTITY_PIG_HURT, 0.03f, 0.7f)
+            world.playSound(location, Sound.ENTITY_MINECART_RIDING, 0.03f, 0.8f)
+            world.playSound(location, Sound.ENTITY_PLAYER_BURP, 0.03f, 0.8f)
+            world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.03f, this.pitch)
         }, 0L, 2L)
     }
 

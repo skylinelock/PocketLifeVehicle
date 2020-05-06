@@ -105,8 +105,9 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
         val notWield = ItemStackBuilder(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build()
         val status = vehicle.status
         val wieldHandSlot: Slot = ToggleSlot(13, status.isWieldHand, wield, notWield, Consumer { status.isWieldHand = false }, Consumer { status.isWieldHand = true })
-        val keyClose = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "鍵を閉める").build()
-        val keyOpen = ItemStackBuilder(Material.STRUCTURE_VOID, 1).name(ChatColor.AQUA + "" + ChatColor.BOLD + "鍵を開ける").build()
+        val keyDesc = listOf(ChatColor.GRAY + "他プレイヤーが乗り物に乗れるかどうか" , ChatColor.GRAY + "を設定することができます")
+        val keyClose = ItemStackBuilder(Material.STRUCTURE_VOID, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "鍵を閉める").lore(keyDesc).build()
+        val keyOpen = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.AQUA + "" + ChatColor.BOLD + "鍵を開ける").lore(keyDesc).build()
         val keySlot: Slot = ToggleSlot(15, status.isLocked, keyOpen, keyClose, org.bukkit.util.Consumer { event: InventoryClickEvent ->
             status.isLocked = false
             val player = event.whoClicked as Player
