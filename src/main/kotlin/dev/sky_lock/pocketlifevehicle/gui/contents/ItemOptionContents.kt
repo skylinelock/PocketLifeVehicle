@@ -35,8 +35,8 @@ class ItemOptionContents(private val player: Player) : MenuContents() {
     }
 
     init {
-        addSlot(Slot(4, backItem, org.bukkit.util.Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.SETTING.ordinal) } }))
-        addSlot(Slot(21, itemItem, org.bukkit.util.Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_SELECT.ordinal) } }))
-        addSlot(Slot(23, positionItem, org.bukkit.util.Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_POS.ordinal) } }))
+        addSlot(Slot(4, backItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.SETTING.ordinal) } })
+        addSlot(Slot(21, itemItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_SELECT.ordinal) } })
+        addSlot(Slot(23, positionItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_POS.ordinal) } })
     }
 }

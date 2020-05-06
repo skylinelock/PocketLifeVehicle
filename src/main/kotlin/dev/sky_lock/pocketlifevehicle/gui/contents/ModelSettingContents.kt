@@ -21,7 +21,6 @@ import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.util.Consumer
 import java.util.*
 
 /**
@@ -70,20 +69,20 @@ class ModelSettingContents(private val player: Player): MenuContents() {
     
     init {
         of(player.uniqueId).ifPresent {
-            addSlot(Slot(closeSlot.toInt(), ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build(), Consumer {
+            addSlot(Slot(closeSlot.toInt(), ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build()) {
                 of(player).ifPresent { menu -> menu.close(player) }
                 destroy(player.uniqueId)
-            }))
-            addSlot(Slot(nameSlot.toInt(), nameItem, Consumer { of(player).ifPresent { menu: InventoryMenu? -> open(player, StringEditor.Type.NAME, menu as ModelSettingMenu) } }))
-            addSlot(Slot(loreSlot.toInt(), loreItem, Consumer { LoreEditor(player).open() }))
-            addSlot(Slot(fuelSlot.toInt(), fuelItem, Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.FUEL.ordinal) } }))
-            addSlot(Slot(speedSlot.toInt(), speedItem, Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.SPEED.ordinal) } }))
-            addSlot(Slot(capacitySlot.toInt(), capacityItem, Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.CAPACITY.ordinal) } }))
-            addSlot(Slot(steeringSlot.toInt(), steeringItem, Consumer { }))
-            addSlot(Slot(itemSlot.toInt(), itemOptionItem, Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_OPTION.ordinal) } }))
-            addSlot(Slot(collideSlot.toInt(), collideItem, Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.ordinal) } }))
-            addSlot(Slot(heightSlot.toInt(), heightItem, Consumer { of(player).ifPresent { menu: InventoryMenu? -> open(player, StringEditor.Type.HEIGHT, menu as ModelSettingMenu) } }))
-            addSlot(Slot(soundSlot.toInt(), soundItem, Consumer { }))
+            })
+            addSlot(Slot(nameSlot.toInt(), nameItem) { of(player).ifPresent { menu: InventoryMenu? -> open(player, StringEditor.Type.NAME, menu as ModelSettingMenu) } })
+            addSlot(Slot(loreSlot.toInt(), loreItem) { LoreEditor(player).open() })
+            addSlot(Slot(fuelSlot.toInt(), fuelItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.FUEL.ordinal) } })
+            addSlot(Slot(speedSlot.toInt(), speedItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.SPEED.ordinal) } })
+            addSlot(Slot(capacitySlot.toInt(), capacityItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.CAPACITY.ordinal) } })
+            addSlot(Slot(steeringSlot.toInt(), steeringItem))
+            addSlot(Slot(itemSlot.toInt(), itemOptionItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.ITEM_OPTION.ordinal) } })
+            addSlot(Slot(collideSlot.toInt(), collideItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.ordinal) } })
+            addSlot(Slot(heightSlot.toInt(), heightItem) { of(player).ifPresent { menu: InventoryMenu? -> open(player, StringEditor.Type.HEIGHT, menu as ModelSettingMenu) } })
+            addSlot(Slot(soundSlot.toInt(), soundItem))
         }
     }
 
@@ -91,53 +90,53 @@ class ModelSettingContents(private val player: Player): MenuContents() {
         of(player.uniqueId).ifPresent { session ->
             if (session.isJustEditing) {
                 removeSlot(removeSlot.toInt())
-                addSlot(Slot(removeSlot.toInt(), removeItem, Consumer {
+                addSlot(Slot(removeSlot.toInt(), removeItem) onClick@{
                     val id = session.id
                     if (id == null || id == "") {
-                        return@Consumer
+                        return@onClick
                     }
                     Storage.MODEL.unregister(id)
                     VehicleEntities.scrapAll(id)
                     player.sendPrefixedPluginMessage(ChatColor.GREEN + id + "を削除しました")
                     destroy(player.uniqueId)
                     menu.close(player)
-                }))
+                })
                 removeSlot(makeSlot.toInt())
-                addSlot(Slot(makeSlot.toInt(), updateItem, Consumer {
+                addSlot(Slot(makeSlot.toInt(), updateItem) {
                     Storage.MODEL.unregister(session.id!!)
                     Storage.MODEL.register(session.generate())
                     player.sendPrefixedPluginMessage(ChatColor.GREEN + session.id!! + "を更新しました")
                     destroy(player.uniqueId)
                     menu.close(player)
-                }))
+                })
             } else {
                 removeSlot(idSlot.toInt())
-                addSlot(Slot(idSlot.toInt(), idItem, Consumer { of(player).ifPresent { open(player, StringEditor.Type.ID, menu as ModelSettingMenu) } }))
+                addSlot(Slot(idSlot.toInt(), idItem) { of(player).ifPresent { open(player, StringEditor.Type.ID, menu as ModelSettingMenu) } })
                 removeSlot(makeSlot.toInt())
-                addSlot(Slot(makeSlot.toInt(), createItem, Consumer { event: InventoryClickEvent ->
+                addSlot(Slot(makeSlot.toInt(), createItem) onClick@{ event: InventoryClickEvent ->
                     val clicked = Objects.requireNonNull(event.currentItem)!!
                     if (!session.verifyCompleted()) {
                         val itemMeta = Objects.requireNonNull(clicked.itemMeta)
                         itemMeta.lore = session.unfilledOptionWarning()
                         clicked.itemMeta = itemMeta
                         event.currentItem = clicked
-                        return@Consumer
+                        return@onClick
                     }
                     if (Storage.MODEL.hasRegistered(session.id!!)) {
                         val itemMeta = Objects.requireNonNull(clicked.itemMeta)
                         itemMeta.lore = listOf(ChatColor.RED + "既に存在するIDです")
                         clicked.itemMeta = itemMeta
                         event.currentItem = clicked
-                        return@Consumer
+                        return@onClick
                     }
                     Storage.MODEL.register(session.generate())
                     player.sendPrefixedPluginMessage(ChatColor.GREEN + "新しいモデルを追加しました")
                     destroy(player.uniqueId)
                     player.closeInventory()
-                }))
+                })
             }
             removeSlot(standSlot.toInt())
-            addSlot(ToggleSlot(standSlot.toInt(), !session.isBig, standSmallItem, standBigItem, Consumer { session.isBig = true }, Consumer { session.isBig = false }))
+            addSlot(ToggleSlot(standSlot.toInt(), !session.isBig, standSmallItem, standBigItem,  { session.isBig = true },  { session.isBig = false }))
             if (session.id != null && !session.id.equals("id", ignoreCase = true)) {
                 idItem = ItemStackBuilder(idItem).lore(session.id!!).glow().build()
                 updateItemStack(idSlot.toInt(), idItem)

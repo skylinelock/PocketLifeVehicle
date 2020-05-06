@@ -23,18 +23,18 @@ class CapacityContents(player: Player) : MenuContents() {
 
     init {
         of(player.uniqueId).ifPresent { session: ModelOption ->
-            addSlot(Slot(20, ItemStackBuilder(Material.OAK_PLANKS, 1).name("1").build(), org.bukkit.util.Consumer {
+            addSlot(Slot(20, ItemStackBuilder(Material.OAK_PLANKS, 1).name("1").build()) {
                 session.capacity = Capacity.ONE_SEAT
                 flipPage(player, ModelMenuIndex.SETTING.ordinal)
-            }))
-            addSlot(Slot(22, ItemStackBuilder(Material.SPRUCE_PLANKS, 1).name("2").build(), org.bukkit.util.Consumer {
+            })
+            addSlot(Slot(22, ItemStackBuilder(Material.SPRUCE_PLANKS, 1).name("2").build()) {
                 session.capacity = Capacity.TWO_SEATS
                 flipPage(player, ModelMenuIndex.SETTING.ordinal)
-            }))
-            addSlot(Slot(24, ItemStackBuilder(Material.BIRCH_PLANKS, 1).name("4").build(), org.bukkit.util.Consumer {
+            })
+            addSlot(Slot(24, ItemStackBuilder(Material.BIRCH_PLANKS, 1).name("4").build()) {
                 session.capacity = Capacity.FOR_SEATS
                 flipPage(player, ModelMenuIndex.SETTING.ordinal)
-            }))
+            })
         }
     }
 }

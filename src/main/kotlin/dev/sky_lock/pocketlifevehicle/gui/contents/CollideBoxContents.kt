@@ -36,8 +36,8 @@ class CollideBoxContents(private val player: Player) : MenuContents() {
     }
 
     init {
-        addSlot(Slot(4, backItem, org.bukkit.util.Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.SETTING.ordinal) } }))
-        addSlot(Slot(20, baseSideItem, org.bukkit.util.Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.COLLIDE_BASESIDE.ordinal) } }))
-        addSlot(Slot(24, heightItem, org.bukkit.util.Consumer { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.COLLIDE_HEIGHT.ordinal) } }))
+        addSlot(Slot(4, backItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.SETTING.ordinal) } })
+        addSlot(Slot(20, baseSideItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.COLLIDE_BASESIDE.ordinal) } })
+        addSlot(Slot(24, heightItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.COLLIDE_HEIGHT.ordinal) } })
     }
 }

@@ -20,7 +20,6 @@ import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
-import org.bukkit.util.Consumer
 import java.util.*
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -36,7 +35,7 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
 
         val carInfoBook = ItemStackBuilder(Material.BOOK, 1).name(colorizeTitle("車両情報")).lore(carInfoLore()).build()
         this.removeSlot(24)
-        this.addSlot(Slot(24, carInfoBook, org.bukkit.util.Consumer { }))
+        this.addSlot(Slot(24, carInfoBook))
 
         menu.update()
         setFuelGage(menu)
@@ -91,37 +90,37 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
 
         val owner = getOwner(vehicle)
         val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).name(colorizeTitle("所有者")).lore(ChatColor.AQUA + getOwnerName(vehicle)).build()
-        val ownerSlot = Slot(20, ownerSkull, org.bukkit.util.Consumer { })
+        val ownerSlot = Slot(20, ownerSkull)
 
-        val closeSlot = Slot(4, closeItem, org.bukkit.util.Consumer { event: InventoryClickEvent ->
+        val closeSlot = Slot(4, closeItem) { event: InventoryClickEvent ->
             val menu = event.inventory.holder as CarUtilMenu?
             menu!!.close((event.whoClicked as Player))
-        })
-        val towSlot = Slot(11, towItem, org.bukkit.util.Consumer { event: InventoryClickEvent ->
+        }
+        val towSlot = Slot(11, towItem) { event: InventoryClickEvent ->
             tow(vehicle)
             vehicle.closeMenu((event.whoClicked as Player))
-        })
+        }
         val wield = ItemStackBuilder(Material.LIME_DYE, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build()
         val notWield = ItemStackBuilder(Material.MAGENTA_DYE, 1).name(ChatColor.GREEN + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build()
         val status = vehicle.status
-        val wieldHandSlot: Slot = ToggleSlot(13, status.isWieldHand, wield, notWield, Consumer { status.isWieldHand = false }, Consumer { status.isWieldHand = true })
+        val wieldHandSlot: Slot = ToggleSlot(13, status.isWieldHand, wield, notWield, { status.isWieldHand = false }, { status.isWieldHand = true })
         val keyDesc = listOf(ChatColor.GRAY + "他プレイヤーが乗り物に乗れるかどうか" , ChatColor.GRAY + "を設定することができます")
         val keyClose = ItemStackBuilder(Material.STRUCTURE_VOID, 1).name(ChatColor.RED + "" + ChatColor.BOLD + "鍵を閉める").lore(keyDesc).build()
         val keyOpen = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.AQUA + "" + ChatColor.BOLD + "鍵を開ける").lore(keyDesc).build()
-        val keySlot: Slot = ToggleSlot(15, status.isLocked, keyOpen, keyClose, org.bukkit.util.Consumer { event: InventoryClickEvent ->
+        val keySlot: Slot = ToggleSlot(15, status.isLocked, keyOpen, keyClose, { event: InventoryClickEvent ->
             status.isLocked = false
             val player = event.whoClicked as Player
             player.playSound(player.location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.4f)
-        }, org.bukkit.util.Consumer { event: InventoryClickEvent ->
+        }, { event: InventoryClickEvent ->
             status.isLocked = true
             val player = event.whoClicked as Player
             player.playSound(player.location, Sound.BLOCK_IRON_DOOR_CLOSE, 1.0f, 1.4f)
         })
         refuelHopper = ItemStackBuilder(Material.HOPPER, 1).name(colorizeTitle("給油口")).lore(refuelInfo(status.fuel)).build()
-        val fuelSlot = Slot(22, refuelHopper, Consumer { event: InventoryClickEvent ->
-            val cursor = event.cursor ?: return@Consumer
+        val fuelSlot = Slot(22, refuelHopper) onClick@{ event: InventoryClickEvent ->
+            val cursor = event.cursor ?: return@onClick
             if (cursor.type != Material.COAL_BLOCK) {
-                return@Consumer
+                return@onClick
             }
             val success = vehicle.refuel(30f)
             if (success) {
@@ -134,7 +133,7 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
                     setFuelGage(menu)
                 }
             }
-        })
+        }
         super.addSlot(ownerSlot, closeSlot, wieldHandSlot, towSlot, keySlot, fuelSlot)
     }
 }

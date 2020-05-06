@@ -28,13 +28,13 @@ class ItemSelectContents(player: Player) : MenuContents() {
             for (j in 0..8) {
                 val id = idOffset + k
                 val item = ItemStackBuilder(VEHICLE_ITEM, 1).customModelData(id).build()
-                addSlot(Slot(i * 9 + j, item, org.bukkit.util.Consumer {
+                addSlot(Slot(i * 9 + j, item) {
                     of(player.uniqueId).ifPresent { session: ModelOption ->
                         session.itemType = VEHICLE_ITEM
                         session.setItemID(id)
                     }
                     flipPage(player, ModelMenuIndex.ITEM_OPTION.ordinal)
-                }))
+                })
                 k++
             }
         }

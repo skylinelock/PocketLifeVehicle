@@ -26,7 +26,7 @@ class EditCarModelContents(player: Player) : MenuContents() {
 
     init {
         newSession(player.uniqueId)
-        super.addSlot(Slot(4, ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build(), org.bukkit.util.Consumer { event: InventoryClickEvent -> of(player).ifPresent { menu: InventoryMenu -> menu.close((event.whoClicked as Player)) } }))
+        super.addSlot(Slot(4, ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build()) { event: InventoryClickEvent -> of(player).ifPresent { menu: InventoryMenu -> menu.close((event.whoClicked as Player)) } })
         var modelSlot = 9
         Storage.MODEL.forEach { model ->
             if (modelSlot > 44) {
@@ -53,7 +53,7 @@ class EditCarModelContents(player: Player) : MenuContents() {
             desc.add(ChatColor.DARK_AQUA + "大きさ: " + ChatColor.AQUA + size)
             desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + model.height)
             val item = ItemStackBuilder(model.itemStack).name(ChatColor.YELLOW + model.id).lore(desc).build()
-            addSlot(Slot(modelSlot, item, org.bukkit.util.Consumer {
+            addSlot(Slot(modelSlot, item) {
                 of(player).ifPresent { menu: InventoryMenu ->
                     of(player.uniqueId).ifPresent { session: ModelOption ->
                         session.isJustEditing = true
@@ -74,16 +74,16 @@ class EditCarModelContents(player: Player) : MenuContents() {
                         menu.flip(player, ModelMenuIndex.SETTING.ordinal)
                     }
                 }
-            }))
+            })
             modelSlot++
         }
-        super.addSlot(Slot(49, carItem, org.bukkit.util.Consumer {
+        super.addSlot(Slot(49, carItem) {
             of(player).ifPresent { menu: InventoryMenu ->
                 of(player.uniqueId).ifPresent { session: ModelOption ->
                     session.isJustEditing = false
                     menu.flip(player, ModelMenuIndex.SETTING.ordinal)
                 }
             }
-        }))
+        })
     }
 }
