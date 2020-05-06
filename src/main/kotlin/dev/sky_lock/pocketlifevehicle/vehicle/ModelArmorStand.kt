@@ -41,6 +41,38 @@ class ModelArmorStand : EntityArmorStand {
         vehicle.engineSound.start()
     }
 
+    val location: Location
+        get() = bukkitEntity.location
+
+    override fun killEntity() {
+        vehicle!!.engineSound.isCancelled = true
+        super.killEntity()
+    }
+
+    override fun isClimbing(): Boolean {
+        return false
+    }
+
+    override fun isSilent(): Boolean {
+        return true
+    }
+
+    override fun burn(i: Float) {
+        super.burn(i)
+        if (!vehicle!!.isBeginExplode) {
+            BurnExplosionTask().run(vehicle!!)
+            vehicle!!.isBeginExplode = true
+        }
+    }
+
+    // enterWater
+    override fun az() {
+        super.az()
+        SubmergedMessageTask().run(vehicle!!)
+        vehicle!!.engineSound.isCancelled = true
+    }
+
+    // applyPoseToSize
     override fun a(entityPose: EntityPose): EntitySize {
         if (vehicle == null) {
             return super.a(entityPose)
@@ -52,40 +84,7 @@ class ModelArmorStand : EntityArmorStand {
         return entityType.k().a(widthScale, heightScale)
     }
 
-    val location: Location
-        get() = bukkitEntity.location
-
-    override fun killEntity() {
-        vehicle!!.engineSound.isCancelled = true
-        super.killEntity()
-    }
-
-    // ツタ、はしご、足場ブロックを登れなくする
-    override fun isClimbing(): Boolean {
-        return false
-    }
-
-    // 足音がなるかどうか
-    override fun isSilent(): Boolean {
-        return true
-    }
-
-    // 水に入った時
-    override fun az() {
-        super.au()
-        SubmergedMessageTask().run(vehicle!!)
-        vehicle!!.engineSound.isCancelled = true
-    }
-
-    override fun burn(i: Float) {
-        super.burn(i)
-        if (!vehicle!!.isBeginExplode) {
-            BurnExplosionTask().run(vehicle!!)
-            vehicle!!.isBeginExplode = true
-        }
-    }
-
-    // 毎tick呼ばれる
+    // movementTick
     override fun e(vec3d: Vec3D) {
         if (vehicle == null) {
             super.e(vec3d)
@@ -111,16 +110,19 @@ class ModelArmorStand : EntityArmorStand {
             vehicle.engine.update(forwardIn)
             vehicle.engine.consumeFuel(sideIn)
         }
-        fallDistance = 0.0f
-        yaw = vehicle.status.yaw
-        lastYaw = yaw
-        pitch = 0.0f
-        setYawPitch(yaw, pitch)
-        // this.aQ = this.yaw;
+
+        // yawとpitchを設定
+        this.yaw = vehicle.status.yaw
+        this.lastYaw = this.yaw
+        this.pitch = 0.0f
+        this.setYawPitch(yaw, pitch)
+        this.aK = this.yaw;
+        this.aM = this.aK
+
         this.o(vehicle.engine.currentSpeed)
         super.e(vec3d.e(Vec3D(0.0, 1.0, 3.0)))
-        vehicle.status.location = location
 
+        vehicle.status.location = location
         vehicle.engineSound.location = this.location
         vehicle.engineSound.pitch = vehicle.status.speed.approximate() / vehicle.model.spec.maxSpeed.value
     }

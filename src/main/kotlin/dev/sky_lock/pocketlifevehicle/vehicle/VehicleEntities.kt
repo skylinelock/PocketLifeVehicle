@@ -18,7 +18,7 @@ import java.util.*
  * @author sky_lock
  */
 object VehicleEntities {
-    private val ENTITIES: MutableMap<UUID, Vehicle> = HashMap()
+    private val entities: MutableMap<UUID, Vehicle> = HashMap()
 
     fun spawn(player: UUID, model: Model, location: Location, fuel: Float): Boolean {
         if (location.block.type != Material.AIR) {
@@ -44,7 +44,7 @@ object VehicleEntities {
         vehicle.status.fuel = fuel
         vehicle.spawn(location)
         kill(player)
-        ENTITIES[player] = vehicle
+        entities[player] = vehicle
         return true
     }
 
@@ -54,15 +54,15 @@ object VehicleEntities {
     }
 
     fun kill(owner: UUID) {
-        if (ENTITIES.containsKey(owner)) {
-            val car = ENTITIES.remove(owner)
+        if (entities.containsKey(owner)) {
+            val car = entities.remove(owner)
             car!!.remove()
         }
     }
 
     fun kill(vehicle: Vehicle) {
-        if (ENTITIES.containsValue(vehicle)) {
-            ENTITIES.values.remove(vehicle)
+        if (entities.containsValue(vehicle)) {
+            entities.values.remove(vehicle)
             vehicle.remove()
         }
     }
@@ -72,7 +72,7 @@ object VehicleEntities {
     }
 
     fun tow(owner: UUID) {
-        val car = ENTITIES[owner] ?: return
+        val car = entities[owner] ?: return
         tow(owner, car)
     }
 
@@ -90,15 +90,15 @@ object VehicleEntities {
     }
 
     fun getVehicle(armorStand: ArmorStand): Vehicle? {
-        return ENTITIES.entries.find { entry -> entry.value.consistsOf(armorStand) }?.value
+        return entities.entries.find { entry -> entry.value.consistsOf(armorStand) }?.value
     }
 
     fun of(player: UUID): Vehicle? {
-        return ENTITIES[player]
+        return entities[player]
     }
 
     fun getOwner(vehicle: Vehicle): UUID? {
-        return ENTITIES.entries.find { entry: Map.Entry<UUID, Vehicle> -> entry.value == vehicle }?.key
+        return entities.entries.find { entry: Map.Entry<UUID, Vehicle> -> entry.value == vehicle }?.key
     }
 
     fun getOwnerName(vehicle: Vehicle): String {
@@ -107,7 +107,7 @@ object VehicleEntities {
     }
 
     fun scrapAll(modelId: String) {
-        ENTITIES.values.filter { vehicle -> vehicle.model.id == modelId }
+        entities.values.filter { vehicle -> vehicle.model.id == modelId }
                 .forEach { vehicle -> vehicle.isUndrivable = true }
     }
 
@@ -119,7 +119,7 @@ object VehicleEntities {
     }
 
     fun registerAllIllegalParkings() {
-        ENTITIES.entries.removeIf { entry ->
+        entities.entries.removeIf { entry ->
             val vehicle = entry.value
             val parkingEntry = ParkingViolation(Date(), entry.key, vehicle.model.id, vehicle.status.fuel)
             VehiclePlugin.instance.parkingViolationList.registerNewEntry(parkingEntry)
