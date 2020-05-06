@@ -122,6 +122,6 @@ class ModelArmorStand : EntityArmorStand {
         vehicle.status.location = location
 
         vehicle.engineSound.location = this.location
-        vehicle.engineSound.pitch = vehicle.status.speed.approximate() / vehicle.model.spec.maxSpeed.max
+        vehicle.engineSound.pitch = vehicle.status.speed.approximate() / vehicle.model.spec.maxSpeed.value
     }
 }

@@ -46,7 +46,7 @@ class Engine(private val status: CarStatus, private val model: Model) {
             speed.decelerate()
         }
         val maxSpeed = model.spec.maxSpeed
-        if (speed.exact() > maxSpeed.max) {
+        if (speed.exact() > maxSpeed.value) {
             if (status.fuel <= 0.0f) {
                 speed.zeroize()
             }
