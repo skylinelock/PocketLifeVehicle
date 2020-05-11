@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
+import dev.sky_lock.pocketlifevehicle.CustomEntityTypes
 import dev.sky_lock.pocketlifevehicle.task.BurnExplosionTask
 import dev.sky_lock.pocketlifevehicle.task.SubmergedMessageTask
 import net.minecraft.server.v1_14_R1.*
@@ -15,8 +16,12 @@ import org.bukkit.util.EulerAngle
 class ModelArmorStand : EntityArmorStand {
     private var vehicle: Vehicle? = null
 
-    constructor(entityTypes: EntityTypes<out EntityArmorStand>, world: World) : super(entityTypes, world)
-    constructor(world: World, x: Double, y: Double, z: Double) : super(world, x, y, z) {
+    constructor(entityTypes: EntityTypes<out EntityArmorStand>, world: World) : super(entityTypes, world) {
+        this.killEntity()
+    }
+
+    constructor(world: World, x: Double, y: Double, z: Double) : super(EntityTypes.a(CustomEntityTypes.VEHICLE_MODEL.key).get() as EntityTypes<SeatArmorStand>, world) {
+        super.setPosition(x, y, z)
         val nbt = NBTTagCompound()
         nbt.setBoolean("NoBasePlate", true)
         nbt.setBoolean("Invulnerable", true)
@@ -45,7 +50,9 @@ class ModelArmorStand : EntityArmorStand {
         get() = bukkitEntity.location
 
     override fun killEntity() {
-        vehicle!!.engineSound.isCancelled = true
+        if (vehicle != null) {
+            vehicle!!.engineSound.isCancelled = true
+        }
         super.killEntity()
     }
 

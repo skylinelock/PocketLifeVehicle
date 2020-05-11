@@ -27,6 +27,10 @@ class VehiclePlugin : JavaPlugin() {
     lateinit var pluginConfiguration: PluginConfiguration
     lateinit var parkingViolationList: ParkingViolationList
 
+    override fun onLoad() {
+        CustomEntityTypes.registerEntities()
+    }
+
     override fun onEnable() {
         instance = this
 
@@ -46,9 +50,9 @@ class VehiclePlugin : JavaPlugin() {
     override fun onDisable() {
         Storage.MODEL.saveToFile()
         pluginConfiguration.save()
-
         VehicleEntities.registerAllIllegalParkings()
         parkingViolationList.save()
+        CustomEntityTypes.unregisterEntities()
     }
 
     private fun registerEventListeners() {

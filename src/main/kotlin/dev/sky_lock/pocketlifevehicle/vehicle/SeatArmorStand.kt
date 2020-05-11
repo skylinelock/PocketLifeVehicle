@@ -1,17 +1,23 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
+import dev.sky_lock.pocketlifevehicle.CustomEntityTypes
 import net.minecraft.server.v1_14_R1.*
 import org.bukkit.entity.Player
 
 /**
  * @author sky_lock
  */
-class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmorStand(world, x, y, z) {
+class SeatArmorStand : EntityArmorStand {
     private var vehicle: Vehicle? = null
     private var position: SeatPosition? = null
     private var control: SeatPositionControl? = null
 
-    init {
+    constructor(entityTypes: EntityTypes<out EntityArmorStand>, world: World) : super(entityTypes, world) {
+        this.killEntity()
+    }
+
+    constructor(world: World, x: Double, y: Double, z: Double) : super(EntityTypes.a(CustomEntityTypes.VEHICLE_SEAT.key).get() as EntityTypes<SeatArmorStand>, world) {
+        super.setPosition(x, y, z)
         val nbt = NBTTagCompound()
         nbt.setBoolean("NoBasePlate", true)
         nbt.setBoolean("Invulnerable", true)
@@ -20,7 +26,6 @@ class SeatArmorStand(world: World, x: Double, y: Double, z: Double) : EntityArmo
         nbt.setBoolean("Invisible", true)
         nbt.setBoolean("Marker", false)
         this.a(nbt)
-        // this.getBukkitEntity().setMetadata("mocar-as", new FixedMetadataValue(PLVehicle.getInstance(), null));
     }
 
     fun assemble(vehicle: Vehicle, position: SeatPosition) {
