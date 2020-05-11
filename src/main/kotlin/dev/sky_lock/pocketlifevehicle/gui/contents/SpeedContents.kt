@@ -13,7 +13,6 @@ import dev.sky_lock.pocketlifevehicle.vehicle.model.MaxSpeed
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.event.inventory.InventoryClickEvent
 
 /**
  * @author sky_lock

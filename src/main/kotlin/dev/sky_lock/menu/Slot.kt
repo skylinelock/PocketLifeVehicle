@@ -2,7 +2,6 @@ package dev.sky_lock.menu
 
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.ItemStack
-import java.util.function.Consumer
 
 /**
  * @author sky_lock
