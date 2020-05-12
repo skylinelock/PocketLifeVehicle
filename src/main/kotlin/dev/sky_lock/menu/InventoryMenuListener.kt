@@ -1,6 +1,7 @@
 package dev.sky_lock.menu
 
 import dev.sky_lock.menu.InventoryMenu.Companion.of
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -19,12 +20,15 @@ class InventoryMenuListener(private val plugin: JavaPlugin) : Listener {
         if (event.slotType == InventoryType.SlotType.OUTSIDE) {
             return
         }
-        if (event.clickedInventory == event.view.bottomInventory) {
-            if (event.click.isShiftClick) {
-                event.isCancelled = true
-            }
+        if (event.click.isShiftClick) {
+            event.isCancelled = true
             return
         }
+        // クリックしたインベントリーがBottomInventoryか
+        if (event.clickedInventory == event.view.bottomInventory) {
+            return
+        }
+        // クリックしたインベントリーがTopInventoryか
         if (event.inventory != event.clickedInventory) {
             return
         }
