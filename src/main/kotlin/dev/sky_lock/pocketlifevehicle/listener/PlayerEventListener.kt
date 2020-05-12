@@ -27,7 +27,6 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
-import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import org.spigotmc.event.entity.EntityDismountEvent
@@ -97,16 +96,15 @@ class PlayerEventListener: Listener {
         }
         val block = event.clickedBlock ?: return
         val whereToSpawn = block.location.clone().add(0.5, 1.0, 0.5)
-        val hand = event.hand ?: return // This should be null when event.action == Action.PHYSICAL
         val ownerUid = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("owner"), PersistentDataType.STRING)
         if (ownerUid == null) {
-            placeVehicleEntity(player, itemStack, hand, player.uniqueId, model, player.location, model.spec.maxFuel)
+            placeVehicleEntity(player, itemStack, player.uniqueId, model, player.location, model.spec.maxFuel)
             return
         }
         val owner = UUID.fromString(ownerUid)
         val lore = meta.lore
         if (lore == null) {
-            placeVehicleEntity(player, itemStack, hand, player.uniqueId, model, player.location, model.spec.maxFuel)
+            placeVehicleEntity(player, itemStack, player.uniqueId, model, player.location, model.spec.maxFuel)
             return
         }
         val rawFuel = lore[1]
@@ -115,14 +113,14 @@ class PlayerEventListener: Listener {
             fuel = model.spec.maxFuel
         }
         if (player.uniqueId == owner) {
-            placeVehicleEntity(player, itemStack, hand, owner, model, whereToSpawn, fuel)
+            placeVehicleEntity(player, itemStack, owner, model, whereToSpawn, fuel)
             return
         }
         if (!Permission.VEHICLE_PLACE.obtained(player)) {
             player.sendActionBar(ChatColor.RED + "乗り物を設置することができませんでした")
             return
         }
-        placeVehicleEntity(player, itemStack, hand, owner, model, whereToSpawn, fuel)
+        placeVehicleEntity(player, itemStack, owner, model, whereToSpawn, fuel)
     }
 
     @EventHandler
@@ -181,15 +179,11 @@ class PlayerEventListener: Listener {
         }
     }
 
-    private fun placeVehicleEntity(whoPlaced: Player, carItem: ItemStack, hand: EquipmentSlot, owner: UUID, model: Model, location: Location, fuel: Float) {
+    private fun placeVehicleEntity(whoPlaced: Player, vehicleStack: ItemStack, owner: UUID, model: Model, location: Location, fuel: Float) {
         VehicleEntities.tow(owner)
         if (VehicleEntities.spawn(owner, model, location, fuel)) {
             location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.0f)
-            if (hand == EquipmentSlot.OFF_HAND) {
-                whoPlaced.inventory.setItemInOffHand(null)
-            } else {
-                whoPlaced.inventory.remove(carItem)
-            }
+            vehicleStack.subtract()
         }
     }
 
