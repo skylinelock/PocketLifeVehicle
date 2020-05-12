@@ -11,14 +11,12 @@ class Engine(private val status: CarStatus, private val model: Model) {
         private set
 
     fun consumeFuel(sideInput: Float) {
-        if (speed.approximate() == 0.0f) {
-            if (sideInput == 0.0f) {
-                return
-            }
-            if (status.fuel - 0.05f <= 0.0f) {
-                status.fuel = 0.0f
-                return
-            }
+        if (status.fuel - 0.05f <= 0.0f) {
+            status.fuel = 0.0f
+            return
+        }
+        if (speed.approximate() == 0.0f && sideInput == 0.0f) {
+            return
         }
         status.fuel = status.fuel - 0.05f
     }

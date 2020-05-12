@@ -7,7 +7,3 @@ package dev.sky_lock.pocketlifevehicle.extension.kotlin
 fun Float.truncateToOneDecimalPlace(): String {
     return String.format("%.1f", this)
 }
-
-fun String.removeWhiteSpace(): String {
-    return this.replace("\\s".toRegex(), "")
-}
