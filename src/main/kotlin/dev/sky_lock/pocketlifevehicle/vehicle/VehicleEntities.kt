@@ -4,13 +4,13 @@ import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolation
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.*
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemFlag
 import org.bukkit.persistence.PersistentDataType
 import java.util.*
 
@@ -29,8 +29,7 @@ object VehicleEntities {
     }
 
     fun placeEntity(player: UUID, model: Model, location: Location, fuel: Float): Boolean {
-        var vehicle: Vehicle? = null
-        vehicle = when (model.spec.capacity) {
+        val vehicle = when (model.spec.capacity) {
             Capacity.ONE_SEAT -> {
                 OneSeatVehicle(model)
             }
@@ -78,10 +77,14 @@ object VehicleEntities {
 
     private fun tow(owner: UUID, vehicle: Vehicle) {
         val model = vehicle.model
+        val fuel = vehicle.status.fuel
         val itemStack = ItemStackBuilder(model.itemStack)
-                .persistentData(VehiclePlugin.instance.createKey("owner"), PersistentDataType.STRING, owner.toString())
-                .lore("所有者: " + getOwnerName(vehicle), "残燃料: " + vehicle.status.fuel.truncateToOneDecimalPlace())
-                .itemFlags(*ItemFlag.values())
+                .setPersistentData(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE, owner)
+                .setPersistentData(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT, fuel)
+                .addLore(
+                        ChatColor.GREEN + "オーナー: " + ChatColor.YELLOW + getOwnerName(vehicle),
+                        ChatColor.GREEN + "燃料: " + ChatColor.YELLOW + fuel.truncateToOneDecimalPlace()
+                )
                 .build()
         val location = vehicle.location
         location.world.dropItem(vehicle.location, itemStack)

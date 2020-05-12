@@ -46,30 +46,30 @@ class ModelSettingContents(private val player: Player): MenuContents() {
     private val removeSlot: Short = 46
     private val makeSlot: Short = 49
     
-    private var idItem = ItemStackBuilder(Material.EMERALD, 1).name("ID").build()
-    private var nameItem = ItemStackBuilder(Material.NAME_TAG, 1).name("名前").build()
-    private var loreItem = ItemStackBuilder(Material.OAK_SIGN, 1).name("説明").build()
+    private var idItem = ItemStackBuilder(Material.EMERALD, 1).setName("ID").build()
+    private var nameItem = ItemStackBuilder(Material.NAME_TAG, 1).setName("名前").build()
+    private var loreItem = ItemStackBuilder(Material.OAK_SIGN, 1).setName("説明").build()
     
-    private var fuelItem = ItemStackBuilder(Material.COAL_BLOCK, 1).name("燃料上限").build()
-    private var speedItem = ItemStackBuilder(Material.DIAMOND, 1).name("最高速度").build()
-    private var capacityItem = ItemStackBuilder(Material.SADDLE, 1).name("乗車人数").build()
-    private var steeringItem = ItemStackBuilder(Material.LEAD, 1).name("ステアリング").lore(ChatColor.RED + "Coming soon").build()
+    private var fuelItem = ItemStackBuilder(Material.COAL_BLOCK, 1).setName("燃料上限").build()
+    private var speedItem = ItemStackBuilder(Material.DIAMOND, 1).setName("最高速度").build()
+    private var capacityItem = ItemStackBuilder(Material.SADDLE, 1).setName("乗車人数").build()
+    private var steeringItem = ItemStackBuilder(Material.LEAD, 1).setName("ステアリング").setLore(ChatColor.RED + "Coming soon").build()
 
-    private var itemOptionItem = ItemStackBuilder(Material.ITEM_FRAME, 1).name("アイテム").build()
+    private var itemOptionItem = ItemStackBuilder(Material.ITEM_FRAME, 1).setName("アイテム").build()
 
-    private var collideItem = ItemStackBuilder(Material.BEACON, 1).name(ChatColor.RESET + "当たり判定").build()
-    private val standSmallItem = ItemStackBuilder(Material.ARMOR_STAND, 1).name("大きさ").lore("小さい").build()
-    private val standBigItem = ItemStackBuilder(Material.ARMOR_STAND, 1).name("大きさ").lore("大きい").build()
-    private var heightItem = ItemStackBuilder(Material.IRON_HORSE_ARMOR, 1).name("座高").build()
-    private var soundItem = ItemStackBuilder(Material.BELL, 1).name("エンジン音").lore(ChatColor.RED + "Coming soon").build()
+    private var collideItem = ItemStackBuilder(Material.BEACON, 1).setName(ChatColor.RESET + "当たり判定").build()
+    private val standSmallItem = ItemStackBuilder(Material.ARMOR_STAND, 1).setName("大きさ").setLore("小さい").build()
+    private val standBigItem = ItemStackBuilder(Material.ARMOR_STAND, 1).setName("大きさ").setLore("大きい").build()
+    private var heightItem = ItemStackBuilder(Material.IRON_HORSE_ARMOR, 1).setName("座高").build()
+    private var soundItem = ItemStackBuilder(Material.BELL, 1).setName("エンジン音").setLore(ChatColor.RED + "Coming soon").build()
 
-    private val updateItem = ItemStackBuilder(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "更新する").build()
-    private val removeItem = ItemStackBuilder(Material.BARRIER, 1).name(ChatColor.RED + "削除する").build()
-    private val createItem = ItemStackBuilder(Material.END_CRYSTAL, 1).name(ChatColor.GREEN + "追加する").build()
+    private val updateItem = ItemStackBuilder(Material.END_CRYSTAL, 1).setName(ChatColor.GREEN + "更新する").build()
+    private val removeItem = ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.RED + "削除する").build()
+    private val createItem = ItemStackBuilder(Material.END_CRYSTAL, 1).setName(ChatColor.GREEN + "追加する").build()
     
     init {
         of(player.uniqueId).ifPresent {
-            addSlot(Slot(closeSlot.toInt(), ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build()) {
+            addSlot(Slot(closeSlot.toInt(), ItemStackBuilder(Material.ENDER_EYE, 1).setName(ChatColor.RED + "閉じる").build()) {
                 of(player).ifPresent { menu -> menu.close(player) }
                 destroy(player.uniqueId)
             })
@@ -138,49 +138,49 @@ class ModelSettingContents(private val player: Player): MenuContents() {
             removeSlot(standSlot.toInt())
             addSlot(ToggleSlot(standSlot.toInt(), !session.isBig, standSmallItem, standBigItem,  { session.isBig = true },  { session.isBig = false }))
             if (session.id != null && !session.id.equals("id", ignoreCase = true)) {
-                idItem = ItemStackBuilder(idItem).lore(session.id!!).glow().build()
+                idItem = ItemStackBuilder(idItem).setLore(session.id!!).addGlowEffect().build()
                 updateItemStack(idSlot.toInt(), idItem)
             }
             if (session.name != null && !session.name.equals("name", ignoreCase = true)) {
-                nameItem = ItemStackBuilder(nameItem).lore(session.name!!).glow().build()
+                nameItem = ItemStackBuilder(nameItem).setLore(session.name!!).addGlowEffect().build()
                 updateItemStack(nameSlot.toInt(), nameItem)
             }
             if (session.lore != null) {
-                loreItem = ItemStackBuilder(loreItem).lore(session.lore!!).glow().build()
+                loreItem = ItemStackBuilder(loreItem).setLore(session.lore!!).addGlowEffect().build()
                 updateItemStack(loreSlot.toInt(), loreItem)
             }
             if (session.maxFuel != 0.0f) {
-                fuelItem = ItemStackBuilder(fuelItem).lore(session.maxFuel.toString()).glow().build()
+                fuelItem = ItemStackBuilder(fuelItem).setLore(session.maxFuel.toString()).addGlowEffect().build()
                 updateItemStack(fuelSlot.toInt(), fuelItem)
             }
             if (session.maxSpeed != null) {
-                speedItem = ItemStackBuilder(speedItem).lore(session.maxSpeed!!.label).glow().build()
+                speedItem = ItemStackBuilder(speedItem).setLore(session.maxSpeed!!.label).addGlowEffect().build()
                 updateItemStack(speedSlot.toInt(), speedItem)
             }
             if (session.capacity != null) {
-                capacityItem = ItemStackBuilder(capacityItem).lore(session.capacity!!.value().toString()).glow().build()
+                capacityItem = ItemStackBuilder(capacityItem).setLore(session.capacity!!.value().toString()).addGlowEffect().build()
                 updateItemStack(capacitySlot.toInt(), capacityItem)
             }
             if (session.steeringLevel != null) {
-                steeringItem = ItemStackBuilder(steeringItem).lore(session.steeringLevel!!.name).glow().build()
+                steeringItem = ItemStackBuilder(steeringItem).setLore(session.steeringLevel!!.name).addGlowEffect().build()
                 updateItemStack(steeringSlot.toInt(), steeringItem)
             }
             if (session.isItemValid && session.position != null) {
                 val modelId = session.itemId
-                itemOptionItem = ItemStackBuilder(itemOptionItem).lore(session.itemType!!.name, modelId.toString(), session.position!!.label).glow().build()
+                itemOptionItem = ItemStackBuilder(itemOptionItem).setLore(session.itemType!!.name, modelId.toString(), session.position!!.label).addGlowEffect().build()
                 updateItemStack(itemSlot.toInt(), itemOptionItem)
             }
             if (session.collideHeight != 0.0f && session.collideBaseSide != 0.0f) {
-                collideItem = ItemStackBuilder(collideItem).name(ChatColor.AQUA + "当たり判定").lore("高さ: " + session.collideHeight.toString(), "底辺: " + session.collideBaseSide.toString()).glow().build()
+                collideItem = ItemStackBuilder(collideItem).setName(ChatColor.AQUA + "当たり判定").setLore("高さ: " + session.collideHeight.toString(), "底辺: " + session.collideBaseSide.toString()).addGlowEffect().build()
                 updateItemStack(collideSlot.toInt(), collideItem)
             }
 
             if (session.height != 0.0f) {
-                heightItem = ItemStackBuilder(heightItem).lore(session.height.toString()).glow().build()
+                heightItem = ItemStackBuilder(heightItem).setLore(session.height.toString()).addGlowEffect().build()
                 updateItemStack(heightSlot.toInt(), heightItem)
             }
             if (session.sound != null) {
-                soundItem = ItemStackBuilder(soundItem).lore(session.sound!!.name).build()
+                soundItem = ItemStackBuilder(soundItem).setLore(session.sound!!.name).build()
                 updateItemStack(soundSlot.toInt(), soundItem)
             }
 

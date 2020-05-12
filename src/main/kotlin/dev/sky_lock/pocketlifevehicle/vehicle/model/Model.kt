@@ -1,6 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.model
 
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import org.bukkit.ChatColor
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.SerializableAs
 import org.bukkit.inventory.ItemFlag
@@ -12,11 +14,18 @@ import java.util.*
  */
 @SerializableAs("Model")
 class Model constructor(val id: String, val name: String,
-                                 val lore: List<String>, val spec: Spec, val itemOption: ItemOption,
-                                 val collideBox: CollideBox, val isBig: Boolean, val height: Float, val sound: Sound) : ConfigurationSerializable {
+                        val lore: List<String>, val spec: Spec, val itemOption: ItemOption,
+                        val collideBox: CollideBox, val isBig: Boolean, val height: Float, val sound: Sound) : ConfigurationSerializable {
 
     val itemStack: ItemStack
-        get() = ItemStackBuilder(itemOption.type, 1).name(name).customModelData(itemOption.id).unbreakable(true).itemFlags(*ItemFlag.values()).build()
+        get() {
+            return ItemStackBuilder(itemOption.type, 1).setName(name)
+                    .setLore(*lore.map { text -> ChatColor.RESET + text }.toTypedArray())
+                    .setCustomModelData(itemOption.id)
+                    .setUnbreakable(true)
+                    .addItemFlags(*ItemFlag.values())
+                    .build()
+        }
 
     override fun serialize(): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
@@ -56,5 +65,4 @@ class Model constructor(val id: String, val name: String,
                     .build()
         }
     }
-
 }

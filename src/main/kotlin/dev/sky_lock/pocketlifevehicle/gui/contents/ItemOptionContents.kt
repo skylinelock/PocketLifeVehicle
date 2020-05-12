@@ -17,17 +17,17 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 class ItemOptionContents(private val player: Player) : MenuContents() {
-    private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "戻る").build()
-    private var itemItem = ItemStackBuilder(Material.MAGMA_CREAM, 1).name("アイテム").build()
-    private var positionItem = ItemStackBuilder(Material.SLIME_BALL, 1).name("アイテム位置").build()
+    private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).setName(ChatColor.RED + "戻る").build()
+    private var itemItem = ItemStackBuilder(Material.MAGMA_CREAM, 1).setName("アイテム").build()
+    private var positionItem = ItemStackBuilder(Material.SLIME_BALL, 1).setName("アイテム位置").build()
     override fun onFlip(menu: InventoryMenu) {
         of(player.uniqueId).ifPresent { session: ModelOption ->
             if (session.isItemValid) {
-                itemItem = ItemStackBuilder(itemItem).glow().lore(session.itemType!!.name, session.itemId.toString()).build()
+                itemItem = ItemStackBuilder(itemItem).addGlowEffect().setLore(session.itemType!!.name, session.itemId.toString()).build()
                 updateItemStack(21, itemItem)
             }
             if (session.position != null) {
-                positionItem = ItemStackBuilder(positionItem).glow().lore(session.position!!.label).build()
+                positionItem = ItemStackBuilder(positionItem).addGlowEffect().setLore(session.position!!.label).build()
                 updateItemStack(23, positionItem)
             }
             menu.update()

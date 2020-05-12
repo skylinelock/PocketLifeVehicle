@@ -32,10 +32,10 @@ class SpeedContents(player: Player) : MenuContents() {
 
     init {
         val speedSelector = ItemStackBuilder(Material.SEA_LANTERN, 1).build()
-        addSlot(Slot(11, ItemStackBuilder(speedSelector).name(MaxSpeed.SLOWEST.label).lore(getLore(MaxSpeed.SLOWEST)).build()) { setSpeedAndReturn(player, MaxSpeed.SLOWEST) })
-        addSlot(Slot(13, ItemStackBuilder(speedSelector).name(MaxSpeed.SLOW.label).lore(getLore(MaxSpeed.SLOW)).build()) { setSpeedAndReturn(player, MaxSpeed.SLOW) })
-        addSlot(Slot(15, ItemStackBuilder(speedSelector).name(MaxSpeed.NORMAL.label).lore(getLore(MaxSpeed.NORMAL)).build()) { setSpeedAndReturn(player, MaxSpeed.NORMAL) })
-        addSlot(Slot(29, ItemStackBuilder(speedSelector).name(MaxSpeed.FAST.label).lore(getLore(MaxSpeed.FAST)).build()) { setSpeedAndReturn(player, MaxSpeed.FAST) })
-        addSlot(Slot(31, ItemStackBuilder(speedSelector).name(MaxSpeed.FASTEST.label).lore(getLore(MaxSpeed.FASTEST)).build()) { setSpeedAndReturn(player, MaxSpeed.FASTEST) })
+        addSlot(Slot(11, ItemStackBuilder(speedSelector).setName(MaxSpeed.SLOWEST.label).setLore(getLore(MaxSpeed.SLOWEST)).build()) { setSpeedAndReturn(player, MaxSpeed.SLOWEST) })
+        addSlot(Slot(13, ItemStackBuilder(speedSelector).setName(MaxSpeed.SLOW.label).setLore(getLore(MaxSpeed.SLOW)).build()) { setSpeedAndReturn(player, MaxSpeed.SLOW) })
+        addSlot(Slot(15, ItemStackBuilder(speedSelector).setName(MaxSpeed.NORMAL.label).setLore(getLore(MaxSpeed.NORMAL)).build()) { setSpeedAndReturn(player, MaxSpeed.NORMAL) })
+        addSlot(Slot(29, ItemStackBuilder(speedSelector).setName(MaxSpeed.FAST.label).setLore(getLore(MaxSpeed.FAST)).build()) { setSpeedAndReturn(player, MaxSpeed.FAST) })
+        addSlot(Slot(31, ItemStackBuilder(speedSelector).setName(MaxSpeed.FASTEST.label).setLore(getLore(MaxSpeed.FASTEST)).build()) { setSpeedAndReturn(player, MaxSpeed.FASTEST) })
     }
 }

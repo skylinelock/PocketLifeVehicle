@@ -26,10 +26,10 @@ class ItemPositionContents(player: Player) : MenuContents() {
 
     init {
         val positionSelector = ItemStackBuilder(Material.ARMOR_STAND, 1).build()
-        addSlot(Slot(11, ItemStackBuilder(positionSelector).name(ItemPosition.HEAD.label).build()) { setPositionAndReturn(player, ItemPosition.HEAD) })
-        addSlot(Slot(13, ItemStackBuilder(positionSelector).name(ItemPosition.HAND.label).build()) { setPositionAndReturn(player, ItemPosition.HAND) })
-        addSlot(Slot(15, ItemStackBuilder(positionSelector).name(ItemPosition.CHEST.label).build()) { setPositionAndReturn(player, ItemPosition.CHEST) })
-        addSlot(Slot(29, ItemStackBuilder(positionSelector).name(ItemPosition.FEET.label).build()) { setPositionAndReturn(player, ItemPosition.FEET) })
-        addSlot(Slot(31, ItemStackBuilder(positionSelector).name(ItemPosition.LEGS.label).build()) { setPositionAndReturn(player, ItemPosition.LEGS) })
+        addSlot(Slot(11, ItemStackBuilder(positionSelector).setName(ItemPosition.HEAD.label).build()) { setPositionAndReturn(player, ItemPosition.HEAD) })
+        addSlot(Slot(13, ItemStackBuilder(positionSelector).setName(ItemPosition.HAND.label).build()) { setPositionAndReturn(player, ItemPosition.HAND) })
+        addSlot(Slot(15, ItemStackBuilder(positionSelector).setName(ItemPosition.CHEST.label).build()) { setPositionAndReturn(player, ItemPosition.CHEST) })
+        addSlot(Slot(29, ItemStackBuilder(positionSelector).setName(ItemPosition.FEET.label).build()) { setPositionAndReturn(player, ItemPosition.FEET) })
+        addSlot(Slot(31, ItemStackBuilder(positionSelector).setName(ItemPosition.LEGS.label).build()) { setPositionAndReturn(player, ItemPosition.LEGS) })
     }
 }

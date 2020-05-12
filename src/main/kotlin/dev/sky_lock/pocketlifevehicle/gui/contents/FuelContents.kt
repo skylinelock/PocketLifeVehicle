@@ -30,7 +30,7 @@ class FuelContents(player: Player) : MenuContents() {
                     }
                     val slot = 9 * i + j
                     val fuel = index * 25
-                    val iron = ItemStackBuilder(Material.IRON_BLOCK, 1).name(fuel.toString()).build()
+                    val iron = ItemStackBuilder(Material.IRON_BLOCK, 1).setName(fuel.toString()).build()
                     addSlot(Slot(slot, iron) {
                         session.maxFuel = fuel.toFloat()
                         flipPage(player, ModelMenuIndex.SETTING.ordinal)

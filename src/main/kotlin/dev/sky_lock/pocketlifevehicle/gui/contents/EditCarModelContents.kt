@@ -21,12 +21,12 @@ import java.util.*
  * @author sky_lock
  */
 class EditCarModelContents(player: Player) : MenuContents() {
-    private val carItem = ItemStackBuilder(Material.CHEST_MINECART, 1).name(ChatColor.GREEN + "車種を追加する").build()
+    private val carItem = ItemStackBuilder(Material.CHEST_MINECART, 1).setName(ChatColor.GREEN + "車種を追加する").build()
     override fun onFlip(menu: InventoryMenu) {}
 
     init {
         newSession(player.uniqueId)
-        super.addSlot(Slot(4, ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "閉じる").build()) { event: InventoryClickEvent -> of(player).ifPresent { menu: InventoryMenu -> menu.close((event.whoClicked as Player)) } })
+        super.addSlot(Slot(4, ItemStackBuilder(Material.ENDER_EYE, 1).setName(ChatColor.RED + "閉じる").build()) { event: InventoryClickEvent -> of(player).ifPresent { menu: InventoryMenu -> menu.close((event.whoClicked as Player)) } })
         var modelSlot = 9
         Storage.MODEL.forEach { model ->
             if (modelSlot > 44) {
@@ -52,7 +52,7 @@ class EditCarModelContents(player: Player) : MenuContents() {
             val size = if (model.isBig) "大きい" else "小さい"
             desc.add(ChatColor.DARK_AQUA + "大きさ: " + ChatColor.AQUA + size)
             desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + model.height)
-            val item = ItemStackBuilder(model.itemStack).name(ChatColor.YELLOW + model.id).lore(desc).build()
+            val item = ItemStackBuilder(model.itemStack).setName(ChatColor.YELLOW + model.id).setLore(desc).build()
             addSlot(Slot(modelSlot, item) {
                 of(player).ifPresent { menu: InventoryMenu ->
                     of(player.uniqueId).ifPresent { session: ModelOption ->

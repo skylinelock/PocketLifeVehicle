@@ -20,7 +20,7 @@ class BaseSideContents(player: Player) : MenuContents() {
     init {
         for (i in 1..9) {
             val baseSide = i * 0.5f
-            val baseSideItem = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).name(baseSide.toString()).build()
+            val baseSideItem = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName(baseSide.toString()).build()
             addSlot(Slot(17 + i, baseSideItem) {
                 of(player.uniqueId).ifPresent { session: ModelOption -> session.collideBaseSide = baseSide }
                 of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.ordinal) }

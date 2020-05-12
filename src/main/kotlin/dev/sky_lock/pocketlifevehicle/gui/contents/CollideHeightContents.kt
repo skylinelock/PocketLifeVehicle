@@ -20,7 +20,7 @@ class CollideHeightContents(player: Player) : MenuContents() {
     init {
         for (i in 1..9) {
             val collideHeight = i * 0.5f
-            val heightItem = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).name(collideHeight.toString()).build()
+            val heightItem = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).setName(collideHeight.toString()).build()
             addSlot(Slot(17 + i, heightItem) {
                 of(player.uniqueId).ifPresent { session: ModelOption -> session.collideHeight = collideHeight }
                 of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.COLLIDE_BOX.ordinal) }

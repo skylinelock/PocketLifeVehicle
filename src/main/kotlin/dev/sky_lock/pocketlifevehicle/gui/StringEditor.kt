@@ -41,9 +41,9 @@ class StringEditor private constructor(windowId: Int, editorType: Type, playerin
 
             val itemStack = ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1)
             val meta = Objects.requireNonNull(itemStack.itemMeta)
-            var name = "エラー"
+            var text = "エラー"
             EditSessions.of(player.uniqueId).ifPresent{session ->
-                name = when (editorType) {
+                text = when (editorType) {
                     Type.ID -> {
                         session.id ?: "ID"
                     }
@@ -55,7 +55,7 @@ class StringEditor private constructor(windowId: Int, editorType: Type, playerin
                     }
                 }
             }
-            meta.setDisplayName(name)
+            meta.setDisplayName(text)
             itemStack.itemMeta = meta
 
             val item = CraftItemStack.asNMSCopy(itemStack)

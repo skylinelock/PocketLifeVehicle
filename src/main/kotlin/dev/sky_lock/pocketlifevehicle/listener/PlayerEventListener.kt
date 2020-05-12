@@ -3,9 +3,9 @@ package dev.sky_lock.pocketlifevehicle.listener
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.kotlin.removeWhiteSpace
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
+import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.Storage
@@ -74,7 +74,7 @@ class PlayerEventListener: Listener {
         }
         val itemStack = event.item ?: return
         if (!itemStack.hasItemMeta()) {
-            return;
+            return
         }
         val meta = itemStack.itemMeta
         val player = event.player
@@ -86,8 +86,12 @@ class PlayerEventListener: Listener {
             player.sendActionBar(ChatColor.RED + "このワールドでは乗り物は使用できません")
             return
         }
+        if (!Permission.VEHICLE_PLACE.obtained(player)) {
+            player.sendActionBar(ChatColor.RED + "乗り物の設置は許可されていません")
+            return
+        }
         if (this.plugin.parkingViolationList.findEntry(player) != null) {
-            player.sendActionBar(ChatColor.RED + "乗り物に乗るには駐車違反料を支払う必要があります")
+            player.sendActionBar(ChatColor.RED + "乗り物を設置するには駐車違反料を支払う必要があります")
             return
         }
         if (event.blockFace != BlockFace.UP) {
@@ -95,32 +99,21 @@ class PlayerEventListener: Listener {
             return
         }
         val block = event.clickedBlock ?: return
-        val whereToSpawn = block.location.clone().add(0.5, 1.0, 0.5)
-        val ownerUid = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("owner"), PersistentDataType.STRING)
-        if (ownerUid == null) {
+        val where = block.location.clone().add(0.5, 1.0, 0.5)
+        val owner = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
+        var fuel = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
+        if (owner == null || fuel == null) {
             placeVehicleEntity(player, itemStack, player.uniqueId, model, player.location, model.spec.maxFuel)
             return
         }
-        val owner = UUID.fromString(ownerUid)
-        val lore = meta.lore
-        if (lore == null) {
-            placeVehicleEntity(player, itemStack, player.uniqueId, model, player.location, model.spec.maxFuel)
-            return
-        }
-        val rawFuel = lore[1]
-        var fuel = rawFuel.removeWhiteSpace().split(":".toRegex()).toTypedArray()[1].toFloat()
         if (fuel > model.spec.maxFuel) {
             fuel = model.spec.maxFuel
         }
         if (player.uniqueId == owner) {
-            placeVehicleEntity(player, itemStack, owner, model, whereToSpawn, fuel)
+            placeVehicleEntity(player, itemStack, owner, model, where, fuel)
             return
         }
-        if (!Permission.VEHICLE_PLACE.obtained(player)) {
-            player.sendActionBar(ChatColor.RED + "乗り物を設置することができませんでした")
-            return
-        }
-        placeVehicleEntity(player, itemStack, owner, model, whereToSpawn, fuel)
+        placeVehicleEntity(player, itemStack, owner, model, where, fuel)
     }
 
     @EventHandler

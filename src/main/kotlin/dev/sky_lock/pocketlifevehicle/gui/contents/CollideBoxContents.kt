@@ -18,17 +18,17 @@ import org.bukkit.inventory.ItemStack
  * @author sky_lock
  */
 class CollideBoxContents(private val player: Player) : MenuContents() {
-    private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).name(ChatColor.RED + "戻る").build()
-    private val baseSideItem = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).name("底辺").build()
-    private val heightItem = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).name("高さ").build()
+    private val backItem = ItemStackBuilder(Material.ENDER_EYE, 1).setName(ChatColor.RED + "戻る").build()
+    private val baseSideItem = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName("底辺").build()
+    private val heightItem = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).setName("高さ").build()
     override fun onFlip(menu: InventoryMenu) {
         of(player.uniqueId).ifPresent { session: ModelOption ->
             if (session.collideBaseSide != 0.0f) {
-                val growBaseSide: ItemStack = ItemStackBuilder(baseSideItem).glow().lore(session.collideBaseSide.toString()).build()
+                val growBaseSide: ItemStack = ItemStackBuilder(baseSideItem).addGlowEffect().setLore(session.collideBaseSide.toString()).build()
                 updateItemStack(20, growBaseSide)
             }
             if (session.collideHeight != 0.0f) {
-                val growHeight: ItemStack = ItemStackBuilder(heightItem).glow().lore(session.collideHeight.toString()).build()
+                val growHeight: ItemStack = ItemStackBuilder(heightItem).addGlowEffect().setLore(session.collideHeight.toString()).build()
                 updateItemStack(24, growHeight)
             }
             menu.update()
