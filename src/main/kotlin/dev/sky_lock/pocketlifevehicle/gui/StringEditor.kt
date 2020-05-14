@@ -32,12 +32,10 @@ class StringEditor private constructor(windowId: Int, editorType: Type, playerin
             val inventory = (player.inventory as CraftInventoryPlayer).inventory
             val world: World = (player.world as CraftWorld).handle
             val entityPlayer = (player as CraftPlayer).handle
-            val containerId = entityPlayer.nextContainerCounter()
-            val editor = StringEditor(containerId, editorType, inventory, world)
+            val editor = StringEditor(entityPlayer.nextContainerCounter(), editorType, inventory, world)
+            editor.title = ChatMessage("数値・文字エディタ")
             editor.menu = menu
-            entityPlayer.playerConnection.sendPacket(PacketPlayOutOpenWindow(containerId, Containers.ANVIL, ChatMessage("数値・文字エディタ")))
-            entityPlayer.activeContainer = editor
-            entityPlayer.activeContainer.addSlotListener(entityPlayer)
+            player.openInventory(editor.bukkitView)
 
             val itemStack = ItemStack(Material.WHITE_STAINED_GLASS_PANE, 1)
             val meta = Objects.requireNonNull(itemStack.itemMeta)
