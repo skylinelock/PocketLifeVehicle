@@ -56,7 +56,8 @@ class ModelBuilder(private val id: String) {
         if (name == null || spec == null || itemOption == null || collideBox == null || sound == null) {
             throw IllegalStateException()
         }
-        return Model(id, name!!, lore!!, spec!!, itemOption!!, collideBox!!, isBig, height, sound!!)
+        val desc = lore ?: ArrayList()
+        return Model(id, name!!, desc, spec!!, itemOption!!, collideBox!!, isBig, height, sound!!)
     }
 
     companion object {

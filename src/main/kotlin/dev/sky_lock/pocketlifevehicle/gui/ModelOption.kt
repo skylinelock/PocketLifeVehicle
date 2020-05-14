@@ -24,8 +24,8 @@ class ModelOption {
         private set
     var position: ItemPosition? = null
         private set
-    var collideBaseSide = 0f
-    var collideHeight = 0f
+    var collideBaseSide = 0.2f
+    var collideHeight = 0.2f
     var isBig = false
     var height = 0f
     var sound: Sound? = null
@@ -42,16 +42,18 @@ class ModelOption {
         get() = itemType != null && itemId != 0
 
     fun generate(): Model {
-        return of(id!!)
+        var builder: ModelBuilder = of(id!!)
                 .name(name!!)
-                .lore(lore!!)
                 .spec(Spec(maxFuel, maxSpeed!!, capacity!!, SteeringLevel.NORMAL))
                 .item(ItemOption(itemType!!, itemId, position!!))
                 .collideBox(collideBaseSide, collideHeight)
                 .big(isBig)
                 .height(height)
                 .sound(Sound.NONE)
-                .build()
+        if (lore != null) {
+            builder = builder.lore(lore!!)
+        }
+        return builder.build()
     }
 
     fun verifyCompleted(): Boolean {
