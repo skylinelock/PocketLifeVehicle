@@ -10,8 +10,7 @@ import net.minecraft.server.v1_14_R1.*
  * @author sky_lock
  */
 
-enum class CustomEntityTypes
-private constructor(val key: String, private val entityType: EntityTypes<out Entity>, private val builder: EntityTypes.b<*>) {
+enum class CustomEntityTypes(val key: String, private val entityType: EntityTypes<out Entity>, private val builder: EntityTypes.b<*>) {
     VEHICLE_MODEL("vehicle_model", EntityTypes.ARMOR_STAND, EntityTypes.b<ModelArmorStand> { type, world -> ModelArmorStand(type, world) }),
     VEHICLE_SEAT("vehicle_seat", EntityTypes.ARMOR_STAND, EntityTypes.b<SeatArmorStand> { type, world -> SeatArmorStand(type, world) });
 
