@@ -19,7 +19,8 @@ class Model constructor(val id: String, val name: String,
 
     val itemStack: ItemStack
         get() {
-            return ItemStackBuilder(itemOption.type, 1).setName(name)
+            return ItemStackBuilder(itemOption.type, 1)
+                    .setName(name)
                     .setLore(*lore.map { text -> ChatColor.RESET + text }.toTypedArray())
                     .setCustomModelData(itemOption.id)
                     .setUnbreakable(true)
@@ -53,16 +54,17 @@ class Model constructor(val id: String, val name: String,
             val isBig = map["big"].toString().toBoolean()
             val height = (map["height"] as Double).toFloat()
             val sound = Sound.valueOf(map["sound"].toString())
-            return ModelBuilder.of(id)
-                    .name(name)
-                    .lore(lore)
-                    .spec(spec)
-                    .item(itemOption)
-                    .collideBox(collideBox.baseSide, collideBox.height)
-                    .big(isBig)
-                    .height(height)
-                    .sound(sound)
-                    .build()
+            return Model(
+                    id = id,
+                    name = name,
+                    lore = lore,
+                    spec = spec,
+                    itemOption = itemOption,
+                    collideBox = collideBox,
+                    isBig = isBig,
+                    height = height,
+                    sound = sound
+            )
         }
     }
 }

@@ -2,10 +2,8 @@ package dev.sky_lock.pocketlifevehicle.gui
 
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.vehicle.model.*
-import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelBuilder.Companion.of
 import org.bukkit.ChatColor
 import org.bukkit.Material
-import java.util.*
 
 /**
  * @author sky_lock
@@ -42,24 +40,25 @@ class ModelOption {
         get() = itemType != null && itemId != 0
 
     fun generate(): Model {
-        var builder: ModelBuilder = of(id!!)
-                .name(name!!)
-                .spec(Spec(maxFuel, maxSpeed!!, capacity!!, SteeringLevel.NORMAL))
-                .item(ItemOption(itemType!!, itemId, position!!))
-                .collideBox(collideBaseSide, collideHeight)
-                .big(isBig)
-                .height(height)
-                .sound(Sound.NONE)
-        if (lore != null) {
-            builder = builder.lore(lore!!)
-        }
-        return builder.build()
+        val lore = this.lore ?: ArrayList()
+        return Model(
+                id = id!!,
+                name = name!!,
+                lore = lore,
+                spec = Spec(maxFuel, maxSpeed!!, capacity!!, SteeringLevel.NORMAL),
+                itemOption = ItemOption(itemType!!, itemId, position!!),
+                collideBox = CollideBox(collideBaseSide, collideHeight),
+                isBig = isBig,
+                height = height,
+                sound = Sound.NONE
+        )
     }
 
     fun verifyCompleted(): Boolean {
-        return id != null && name != null && maxFuel != 0.0f && maxSpeed != null && capacity != null &&  //steeringLevel != null &&
-                itemType != null && itemId != 0 && position != null && height != 0.0f
-        //sound != null;
+        return id != null && name != null &&
+                maxFuel != 0.0f && maxSpeed != null && capacity != null &&
+                itemType != null && itemId != 0 &&
+                position != null && height != 0.0f
     }
 
     fun unfilledOptionWarning(): List<String> {
