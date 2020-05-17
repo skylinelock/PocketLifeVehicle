@@ -9,7 +9,8 @@ import org.bukkit.inventory.ItemStack
  * @author sky_lock
  */
 
-class ModelStorage {
+object ModelRegistry {
+
     private val config = ModelConfiguration()
     private val models = config.loadModels()
 
@@ -69,5 +70,4 @@ class ModelStorage {
         models.clear()
         models.addAll(config.loadModels())
     }
-
 }

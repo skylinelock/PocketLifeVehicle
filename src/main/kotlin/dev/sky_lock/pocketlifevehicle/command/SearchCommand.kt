@@ -3,7 +3,7 @@ package dev.sky_lock.pocketlifevehicle.command
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.of
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.of
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location

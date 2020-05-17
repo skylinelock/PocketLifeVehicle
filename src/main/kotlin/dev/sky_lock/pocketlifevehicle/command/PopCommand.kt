@@ -3,8 +3,8 @@ package dev.sky_lock.pocketlifevehicle.command
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.tow
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.tow
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -40,7 +40,7 @@ class PopCommand : ICommand {
     }
 
     private fun towaway(uuid: UUID): Boolean {
-        VehicleEntities.of(uuid) ?: return false
+        VehicleManager.of(uuid) ?: return false
         tow(uuid)
         return true
     }

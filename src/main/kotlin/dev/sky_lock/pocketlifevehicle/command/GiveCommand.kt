@@ -2,7 +2,7 @@ package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.Storage
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -23,7 +23,7 @@ class GiveCommand : ICommand, IAdminCommand {
             return
         }
         val id = args[2]
-        val model = Storage.MODEL.findById(id)
+        val model = ModelRegistry.findById(id)
         if (model == null) {
             player.sendPrefixedPluginMessage(ChatColor.RED + "モデルが見つかりませんでした")
             return

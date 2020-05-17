@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.getVehicle
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getVehicle
 import org.bukkit.Chunk
 import org.bukkit.entity.ArmorStand
 import org.bukkit.event.EventHandler
@@ -36,7 +36,7 @@ class ChunkEventListener : Listener {
             if (!isSameChunk(car.location.chunk, event.chunk)) {
                 return@removeAll false
             }
-            return@removeAll VehicleEntities.spawn(car)
+            return@removeAll VehicleManager.spawn(car)
         }
     }
 

@@ -15,8 +15,8 @@ import dev.sky_lock.pocketlifevehicle.gui.ModelSettingMenu
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor.Companion.open
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
-import dev.sky_lock.pocketlifevehicle.vehicle.Storage
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -95,16 +95,16 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                     if (id == null || id == "") {
                         return@onClick
                     }
-                    Storage.MODEL.unregister(id)
-                    VehicleEntities.scrapAll(id)
+                    ModelRegistry.unregister(id)
+                    VehicleManager.scrapAll(id)
                     player.sendPrefixedPluginMessage(ChatColor.GREEN + id + "を削除しました")
                     destroy(player.uniqueId)
                     menu.close(player)
                 })
                 removeSlot(makeSlot.toInt())
                 addSlot(Slot(makeSlot.toInt(), updateItem) {
-                    Storage.MODEL.unregister(session.id!!)
-                    Storage.MODEL.register(session.generate())
+                    ModelRegistry.unregister(session.id!!)
+                    ModelRegistry.register(session.generate())
                     player.sendPrefixedPluginMessage(ChatColor.GREEN + session.id!! + "を更新しました")
                     destroy(player.uniqueId)
                     menu.close(player)
@@ -122,14 +122,14 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                         event.currentItem = clicked
                         return@onClick
                     }
-                    if (Storage.MODEL.hasRegistered(session.id!!)) {
+                    if (ModelRegistry.hasRegistered(session.id!!)) {
                         val itemMeta = Objects.requireNonNull(clicked.itemMeta)
                         itemMeta.lore = listOf(ChatColor.RED + "既に存在するIDです")
                         clicked.itemMeta = itemMeta
                         event.currentItem = clicked
                         return@onClick
                     }
-                    Storage.MODEL.register(session.generate())
+                    ModelRegistry.register(session.generate())
                     player.sendPrefixedPluginMessage(ChatColor.GREEN + "新しいモデルを追加しました")
                     destroy(player.uniqueId)
                     player.closeInventory()

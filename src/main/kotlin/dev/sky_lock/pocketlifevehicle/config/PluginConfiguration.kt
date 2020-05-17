@@ -49,21 +49,21 @@ class PluginConfiguration {
         config.set(WORLDS_KEY, allowedWorlds.map { uid -> uid.toString() })
     }
 
-    fun save() {
-        try {
-            config.save(File(plugin.dataFolder, "config.yml"))
-        } catch (ex: IOException) {
-            plugin.logger.warning("Failed to save configurations")
-        }
-    }
-
-    fun reload() {
+    fun load() {
         try {
             config.load(File(plugin.dataFolder, "config.yml"))
         } catch (ex: IOException) {
             plugin.logger.warning("Failed to load config.yml")
         } catch (ex: InvalidConfigurationException) {
             plugin.logger.warning("Failed to load config.yml")
+        }
+    }
+
+    fun save() {
+        try {
+            config.save(File(plugin.dataFolder, "config.yml"))
+        } catch (ex: IOException) {
+            plugin.logger.warning("Failed to save configurations")
         }
     }
 }

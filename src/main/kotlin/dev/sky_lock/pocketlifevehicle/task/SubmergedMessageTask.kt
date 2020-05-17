@@ -4,8 +4,8 @@ import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.getOwner
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities.kill
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwner
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.kill
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.entity.Player

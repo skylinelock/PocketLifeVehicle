@@ -3,7 +3,7 @@ package dev.sky_lock.pocketlifevehicle.command
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.Storage
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -70,7 +70,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
         } else if (args.size == 3 && Permission.ADMIN_COMMAND.obtained(sender)) {
             val input = args[2]
             if (args[0].equals("give", ignoreCase = true) || args[0].equals("spawn", ignoreCase = true)) {
-                Storage.MODEL.forEach { model: Model ->
+                ModelRegistry.forEach { model: Model ->
                     val id = model.id
                     if (id.startsWith(input)) {
                         tabCompletes.add(id)

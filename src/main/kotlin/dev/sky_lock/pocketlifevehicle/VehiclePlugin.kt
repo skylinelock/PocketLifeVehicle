@@ -8,8 +8,8 @@ import dev.sky_lock.pocketlifevehicle.json.ParkingViolationList
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
 import dev.sky_lock.pocketlifevehicle.listener.InventoryEventListener
 import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
-import dev.sky_lock.pocketlifevehicle.vehicle.Storage
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import org.bstats.bukkit.Metrics
 import org.bukkit.NamespacedKey
 import org.bukkit.plugin.java.JavaPlugin
@@ -48,9 +48,9 @@ class VehiclePlugin : JavaPlugin() {
     }
 
     override fun onDisable() {
-        Storage.MODEL.saveToFile()
+        ModelRegistry.saveToFile()
         pluginConfiguration.save()
-        VehicleEntities.registerAllIllegalParkings()
+        VehicleManager.registerAllIllegalParkings()
         parkingViolationList.save()
         CustomEntityTypes.unregisterEntities()
     }

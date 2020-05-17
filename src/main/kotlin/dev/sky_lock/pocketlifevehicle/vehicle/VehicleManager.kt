@@ -17,7 +17,7 @@ import java.util.*
 /**
  * @author sky_lock
  */
-object VehicleEntities {
+object VehicleManager {
     private val entities: MutableMap<UUID, Vehicle> = HashMap()
 
     fun spawn(player: UUID, model: Model, location: Location, fuel: Float): Boolean {
@@ -140,7 +140,7 @@ object VehicleEntities {
     fun restore(player: Player): Boolean {
         val plugin = VehiclePlugin.instance
         val entry = plugin.parkingViolationList.findEntry(player) ?: return false
-        val model = Storage.MODEL.findById(entry.modelId)
+        val model = ModelRegistry.findById(entry.modelId)
         if (model == null) {
             plugin.parkingViolationList.removeEntry(player)
             return false

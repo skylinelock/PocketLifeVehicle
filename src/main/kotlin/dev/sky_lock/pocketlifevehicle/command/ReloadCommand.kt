@@ -3,7 +3,7 @@ package dev.sky_lock.pocketlifevehicle.command
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.Storage
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
@@ -20,13 +20,13 @@ class ReloadCommand : ICommand, IAdminCommand, IConsoleCommand {
         val flag = args[1]
         when {
             flag.equals("from", ignoreCase = true) -> {
-                Storage.MODEL.reloadConfig()
-                VehiclePlugin.instance.pluginConfiguration.reload()
+                ModelRegistry.reloadConfig()
+                VehiclePlugin.instance.pluginConfiguration.load()
                 sender.sendPrefixedPluginMessage(ChatColor.GREEN + "ディスクからデータを読み込みました")
             }
             flag.equals("to", ignoreCase = true) -> {
                 VehiclePlugin.instance.pluginConfiguration.save()
-                Storage.MODEL.saveToFile()
+                ModelRegistry.saveToFile()
                 sender.sendPrefixedPluginMessage(ChatColor.GREEN + "ディスクへデータを保存しました")
             }
             else -> {

@@ -6,10 +6,7 @@ import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
-import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
-import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
-import dev.sky_lock.pocketlifevehicle.vehicle.Storage
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEntities
+import dev.sky_lock.pocketlifevehicle.vehicle.*
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.ChatColor
 import org.bukkit.Location
@@ -62,7 +59,7 @@ class PlayerEventListener: Listener {
     @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
         val uuid = event.player.uniqueId
-        VehicleEntities.registerIllegalParking(uuid)
+        VehicleManager.registerIllegalParking(uuid)
         StringEditor.close(event.player)
         EditSessions.destroy(event.player.uniqueId)
     }
@@ -78,7 +75,7 @@ class PlayerEventListener: Listener {
         }
         val meta = itemStack.itemMeta
         val player = event.player
-        val model = Storage.MODEL.findByItemStack(itemStack) ?: return
+        val model = ModelRegistry.findByItemStack(itemStack) ?: return
         event.isCancelled = true
         event.setUseInteractedBlock(Event.Result.DENY)
         event.setUseItemInHand(Event.Result.DENY)
@@ -126,10 +123,10 @@ class PlayerEventListener: Listener {
 
         val handle = armorStand.handle
         val clicked = player.uniqueId
-        val vehicle = VehicleEntities.getVehicle(armorStand) ?: return
-        val owner = VehicleEntities.getOwner(vehicle) ?: return
+        val vehicle = VehicleManager.getVehicle(armorStand) ?: return
+        val owner = VehicleManager.getOwner(vehicle) ?: return
 
-        val ownerName = VehicleEntities.getOwnerName(vehicle)
+        val ownerName = VehicleManager.getOwnerName(vehicle)
 
         event.isCancelled = true
 
@@ -173,8 +170,8 @@ class PlayerEventListener: Listener {
     }
 
     private fun placeVehicleEntity(whoPlaced: Player, vehicleStack: ItemStack, owner: UUID, model: Model, location: Location, fuel: Float) {
-        VehicleEntities.tow(owner)
-        if (VehicleEntities.spawn(owner, model, location, fuel)) {
+        VehicleManager.tow(owner)
+        if (VehicleManager.spawn(owner, model, location, fuel)) {
             location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.0f)
             vehicleStack.subtract()
         }

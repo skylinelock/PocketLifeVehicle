@@ -10,7 +10,7 @@ import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelOption
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
-import dev.sky_lock.pocketlifevehicle.vehicle.Storage
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -28,7 +28,7 @@ class EditCarModelContents(player: Player) : MenuContents() {
         newSession(player.uniqueId)
         super.addSlot(Slot(4, ItemStackBuilder(Material.ENDER_EYE, 1).setName(ChatColor.RED + "閉じる").build()) { event: InventoryClickEvent -> of(player).ifPresent { menu: InventoryMenu -> menu.close((event.whoClicked as Player)) } })
         var modelSlot = 9
-        Storage.MODEL.forEach { model ->
+        ModelRegistry.forEach { model ->
             if (modelSlot > 44) {
                 return@forEach
             }
