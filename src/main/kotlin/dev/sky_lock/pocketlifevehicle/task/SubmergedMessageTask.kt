@@ -4,7 +4,7 @@ import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwner
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwnerUid
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.kill
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -41,7 +41,7 @@ class SubmergedMessageTask {
                     count--
                     return
                 }
-                getOwner(vehicle)?.let { ownerUuid ->
+                getOwnerUid(vehicle)?.let { ownerUuid ->
                     if (vehicle.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
                         return@let
                     }

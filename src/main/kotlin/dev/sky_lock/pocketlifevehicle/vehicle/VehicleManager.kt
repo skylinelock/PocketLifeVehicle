@@ -18,17 +18,15 @@ import java.util.*
  * @author sky_lock
  */
 object VehicleManager {
-    private val entities: MutableMap<UUID, Vehicle> = HashMap()
+    private val vehicleMap: MutableMap<UUID, Vehicle> = HashMap()
 
-    fun spawn(player: UUID, model: Model, location: Location, fuel: Float): Boolean {
-        if (location.block.type != Material.AIR) {
-            Bukkit.getPlayer(player)!!.sendActionBar(ChatColor.RED + "ブロックがあるので乗り物を設置できません")
-            return false
-        }
-        return placeEntity(player, model, location, fuel)
+    fun placeEntity(vehicle: Vehicle): Boolean {
+        val playerUid = this.getOwnerUid(vehicle) ?: return false
+        return this.placeEntity(playerUid, vehicle.model, vehicle.location, vehicle.status.fuel)
     }
 
-    fun placeEntity(player: UUID, model: Model, location: Location, fuel: Float): Boolean {
+    // 呼ぶ前に乗り物の設置が許可されているワールドか確認する
+    fun placeEntity(playerUid: UUID, model: Model, location: Location, fuel: Float): Boolean {
         val vehicle = when (model.spec.capacity) {
             Capacity.ONE_SEAT -> {
                 OneSeatVehicle(model)
@@ -42,44 +40,39 @@ object VehicleManager {
         }
         vehicle.status.fuel = fuel
         vehicle.spawn(location)
-        kill(player)
-        entities[player] = vehicle
+        this.kill(playerUid)
+        vehicleMap[playerUid] = vehicle
         return true
     }
 
-    fun spawn(vehicle: Vehicle): Boolean {
-        val owner = getOwner(vehicle) ?: return false
-        return placeEntity(owner, vehicle.model, vehicle.location, vehicle.status.fuel)
-    }
-
-    fun kill(owner: UUID) {
-        if (entities.containsKey(owner)) {
-            val car = entities.remove(owner)
-            car!!.remove()
-        }
-    }
-
-    fun kill(vehicle: Vehicle) {
-        if (entities.containsValue(vehicle)) {
-            entities.values.remove(vehicle)
+    fun kill(playerUid: UUID) {
+        if (vehicleMap.containsKey(playerUid)) {
+            val vehicle = vehicleMap.remove(playerUid) ?: return
             vehicle.remove()
         }
     }
 
-    fun tow(vehicle: Vehicle) {
-        getOwner(vehicle)?.let { owner -> tow(owner, vehicle) }
+    fun kill(vehicle: Vehicle) {
+        if (vehicleMap.containsValue(vehicle)) {
+            vehicleMap.values.remove(vehicle)
+            vehicle.remove()
+        }
     }
 
-    fun tow(owner: UUID) {
-        val car = entities[owner] ?: return
-        tow(owner, car)
+    fun pop(vehicle: Vehicle) {
+        this.getOwnerUid(vehicle)?.let { playerUid -> this.pop(playerUid, vehicle) }
     }
 
-    private fun tow(owner: UUID, vehicle: Vehicle) {
+    fun pop(playerUid: UUID) {
+        val vehicle = vehicleMap[playerUid] ?: return
+        this.pop(playerUid, vehicle)
+    }
+
+    private fun pop(playerUid: UUID, vehicle: Vehicle) {
         val model = vehicle.model
         val fuel = vehicle.status.fuel
         val itemStack = ItemStackBuilder(model.itemStack)
-                .setPersistentData(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE, owner)
+                .setPersistentData(VehiclePlugin.instance.createKey("playerUid"), UUIDTagType.INSTANCE, playerUid)
                 .setPersistentData(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT, fuel)
                 .addLore(
                         ChatColor.GREEN + "オーナー: " + ChatColor.YELLOW + getOwnerName(vehicle),
@@ -89,40 +82,44 @@ object VehicleManager {
         val location = vehicle.location
         location.world.dropItem(vehicle.location, itemStack)
         location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1f, 0.2f)
-        kill(owner)
+        this.kill(playerUid)
     }
 
     fun getVehicle(armorStand: ArmorStand): Vehicle? {
-        return entities.entries.find { entry -> entry.value.consistsOf(armorStand) }?.value
+        return vehicleMap.entries.find { entry -> entry.value.consistsOf(armorStand) }?.value
     }
 
-    fun of(player: UUID): Vehicle? {
-        return entities[player]
+    fun hasVehicle(playerUid: UUID): Boolean {
+        return vehicleMap.containsKey(playerUid)
     }
 
-    fun getOwner(vehicle: Vehicle): UUID? {
-        return entities.entries.find { entry: Map.Entry<UUID, Vehicle> -> entry.value == vehicle }?.key
+    fun getLocation(playerUid: UUID): Location? {
+        return vehicleMap[playerUid]?.location
+    }
+
+    fun getOwnerUid(vehicle: Vehicle): UUID? {
+        return vehicleMap.entries.find { entry: Map.Entry<UUID, Vehicle> -> entry.value == vehicle }?.key
     }
 
     fun getOwnerName(vehicle: Vehicle): String {
-        val uuid = getOwner(vehicle) ?: return "unknown"
+        val uuid = getOwnerUid(vehicle) ?: return "unknown"
         return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
     }
 
     fun scrapAll(modelId: String) {
-        entities.values.filter { vehicle -> vehicle.model.id == modelId }
+        vehicleMap.values.filter { vehicle -> vehicle.model.id == modelId }
                 .forEach { vehicle -> vehicle.isUndrivable = true }
     }
 
-    fun registerIllegalParking(uuid: UUID) {
-        val vehicle = of(uuid) ?: return
-        val entry = ParkingViolation(Date(), uuid, vehicle.model.id, vehicle.status.fuel)
+    fun registerIllegalParking(playerUid: UUID) {
+        val vehicle = vehicleMap[playerUid] ?: return
+        val entry = ParkingViolation(Date(), playerUid, vehicle.model.id, vehicle.status.fuel)
         VehiclePlugin.instance.parkingViolationList.registerNewEntry(entry)
-        kill(uuid)
+        this.kill(playerUid)
     }
 
     fun registerAllIllegalParkings() {
-        entities.entries.removeIf { entry ->
+        vehicleMap.entries.removeIf { entry ->
             val vehicle = entry.value
             val parkingEntry = ParkingViolation(Date(), entry.key, vehicle.model.id, vehicle.status.fuel)
             VehiclePlugin.instance.parkingViolationList.registerNewEntry(parkingEntry)
@@ -131,8 +128,12 @@ object VehicleManager {
         }
     }
 
+    fun verifyPlaceableLocation(location: Location): Boolean {
+        return location.block.type == Material.AIR
+    }
+
     fun respawn(player: Player): Boolean {
-        val vehicle = of(player.uniqueId) ?: return false
+        val vehicle = vehicleMap[player.uniqueId] ?: return false
         kill(player.uniqueId)
         return placeEntity(player.uniqueId, vehicle.model, player.location, vehicle.status.fuel)
     }

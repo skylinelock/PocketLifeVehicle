@@ -6,10 +6,14 @@ import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
-import dev.sky_lock.pocketlifevehicle.vehicle.*
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
+import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.ChatColor
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.block.BlockFace
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
@@ -33,7 +37,7 @@ import java.util.*
  * @author sky_lock
  */
 
-class PlayerEventListener: Listener {
+class PlayerEventListener : Listener {
 
     val plugin = VehiclePlugin.instance
 
@@ -83,10 +87,6 @@ class PlayerEventListener: Listener {
             player.sendActionBar(ChatColor.RED + "このワールドでは乗り物は使用できません")
             return
         }
-        if (!Permission.VEHICLE_PLACE.obtained(player)) {
-            player.sendActionBar(ChatColor.RED + "乗り物の設置は許可されていません")
-            return
-        }
         if (this.plugin.parkingViolationList.findEntry(player) != null) {
             player.sendActionBar(ChatColor.RED + "乗り物を設置するには駐車違反料を支払う必要があります")
             return
@@ -95,22 +95,30 @@ class PlayerEventListener: Listener {
             player.sendActionBar(ChatColor.RED + "乗り物は地面にのみ設置できます")
             return
         }
+        if (!VehicleManager.verifyPlaceableLocation(player.location)) {
+            player.sendActionBar(ChatColor.RED + "ブロックがあるので乗り物を設置できません")
+            return
+        }
         val block = event.clickedBlock ?: return
         val where = block.location.clone().add(0.5, 1.0, 0.5)
         val owner = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
         var fuel = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
         if (owner == null || fuel == null) {
-            placeVehicleEntity(player, itemStack, player.uniqueId, model, player.location, model.spec.maxFuel)
+            placeVehicleEntity(itemStack, player.uniqueId, model, player.location, model.spec.maxFuel)
             return
         }
         if (fuel > model.spec.maxFuel) {
             fuel = model.spec.maxFuel
         }
         if (player.uniqueId == owner) {
-            placeVehicleEntity(player, itemStack, owner, model, where, fuel)
+            placeVehicleEntity(itemStack, owner, model, where, fuel)
             return
         }
-        placeVehicleEntity(player, itemStack, owner, model, where, fuel)
+        if (!Permission.PLACE_OTHER_VEHICLE.obtained(player)) {
+            player.sendActionBar(ChatColor.RED + "この乗り物を所有していません")
+            return
+        }
+        placeVehicleEntity(itemStack, owner, model, where, fuel)
     }
 
     @EventHandler
@@ -124,14 +132,14 @@ class PlayerEventListener: Listener {
         val handle = armorStand.handle
         val clicked = player.uniqueId
         val vehicle = VehicleManager.getVehicle(armorStand) ?: return
-        val owner = VehicleManager.getOwner(vehicle) ?: return
+        val owner = VehicleManager.getOwnerUid(vehicle) ?: return
 
         val ownerName = VehicleManager.getOwnerName(vehicle)
 
         event.isCancelled = true
 
         if (player.isSneaking) {
-            if (clicked != owner && !Permission.VEHICLE_OPEN_GUI.obtained(player)) {
+            if (clicked != owner && !Permission.OPEN_VEHICLE_GUI.obtained(player)) {
                 sendRefusedReason(player, "この乗り物は $ownerName が所有しています")
                 return
             }
@@ -169,12 +177,11 @@ class PlayerEventListener: Listener {
         }
     }
 
-    private fun placeVehicleEntity(whoPlaced: Player, vehicleStack: ItemStack, owner: UUID, model: Model, location: Location, fuel: Float) {
-        VehicleManager.tow(owner)
-        if (VehicleManager.spawn(owner, model, location, fuel)) {
-            location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.0f)
-            vehicleStack.subtract()
-        }
+    private fun placeVehicleEntity(vehicleStack: ItemStack, owner: UUID, model: Model, location: Location, fuel: Float) {
+        VehicleManager.pop(owner)
+        VehicleManager.placeEntity(owner, model, location, fuel)
+        location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.0f)
+        vehicleStack.subtract()
     }
 
     private fun sendRefusedReason(player: Player, message: String) {

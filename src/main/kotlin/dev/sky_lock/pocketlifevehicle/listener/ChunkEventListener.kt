@@ -24,19 +24,19 @@ class ChunkEventListener : Listener {
                     if (entity !is ArmorStand) {
                         return@forEach
                     }
-                    val car = getVehicle(entity) ?: return@forEach
-                    car.remove()
-                    vehicles.add(car)
+                    val vehicle = getVehicle(entity) ?: return@forEach
+                    vehicle.remove()
+                    vehicles.add(vehicle)
                 }
     }
 
     @EventHandler
     fun onChunkLoad(event: ChunkLoadEvent) {
-        vehicles.removeAll { car ->
-            if (!isSameChunk(car.location.chunk, event.chunk)) {
+        vehicles.removeAll { vehicle ->
+            if (!isSameChunk(vehicle.location.chunk, event.chunk)) {
                 return@removeAll false
             }
-            return@removeAll VehicleManager.spawn(car)
+            return@removeAll VehicleManager.placeEntity(vehicle)
         }
     }
 

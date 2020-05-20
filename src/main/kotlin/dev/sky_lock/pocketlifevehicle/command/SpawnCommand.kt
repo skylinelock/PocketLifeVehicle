@@ -37,8 +37,12 @@ class SpawnCommand : ICommand, IAdminCommand {
             player.sendPrefixedPluginMessage(ChatColor.RED + "モデルが見つかりませんでした")
             return
         }
+        if (!VehicleManager.verifyPlaceableLocation(target.location)) {
+            player.sendPrefixedPluginMessage(ChatColor.RED + "対象のプレイヤーの位置に乗り物を設置することができませんでした")
+            return
+        }
         VehicleManager.kill(target.uniqueId)
-        val success = VehicleManager.spawn(target.uniqueId, model, target.location, model.spec.maxFuel)
+        val success = VehicleManager.placeEntity(target.uniqueId, model, target.location, model.spec.maxFuel)
         if (success) {
             player.sendPrefixedPluginMessage(ChatColor.GREEN + name + " に " + id + " を渡しました")
             target.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物を受け取りました")

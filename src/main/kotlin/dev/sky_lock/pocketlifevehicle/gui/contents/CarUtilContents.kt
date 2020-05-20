@@ -11,9 +11,9 @@ import dev.sky_lock.pocketlifevehicle.gui.CarUtilMenu
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwner
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwnerUid
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwnerName
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.tow
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.pop
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -88,7 +88,7 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
         val closeItem = ItemStackBuilder(Material.ENDER_PEARL, 1).setName(ChatColor.RED + "閉じる").build()
         val towItem = ItemStackBuilder(Material.MINECART, 1).setName(colorizeTitle("回収する")).setLore(ChatColor.GRAY + "アイテム化して持ち運べるようにします").build()
 
-        val owner = getOwner(vehicle)
+        val owner = getOwnerUid(vehicle)
         val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).setName(colorizeTitle("所有者")).setLore(ChatColor.AQUA + getOwnerName(vehicle)).build()
         val ownerSlot = Slot(20, ownerSkull)
 
@@ -97,7 +97,7 @@ class CarUtilContents(private val vehicle: Vehicle) : MenuContents() {
             menu!!.close((event.whoClicked as Player))
         }
         val towSlot = Slot(11, towItem) { event: InventoryClickEvent ->
-            tow(vehicle)
+            pop(vehicle)
             vehicle.closeMenu((event.whoClicked as Player))
         }
         val wield = ItemStackBuilder(Material.LIME_DYE, 1).setName(ChatColor.RED + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build()
