@@ -134,6 +134,10 @@ object VehicleManager {
 
     fun respawn(player: Player): Boolean {
         val vehicle = vehicleMap[player.uniqueId] ?: return false
+        val world = player.location.world ?: return false
+        if (!VehiclePlugin.instance.pluginConfiguration.isWorldVehicleCanPlaced(world)) {
+            return false
+        }
         kill(player.uniqueId)
         return placeEntity(player.uniqueId, vehicle.model, player.location, vehicle.status.fuel)
     }
@@ -144,6 +148,10 @@ object VehicleManager {
         val model = ModelRegistry.findById(entry.modelId)
         if (model == null) {
             plugin.parkingViolationList.removeEntry(player)
+            return false
+        }
+        val world = player.location.world ?: return false
+        if (!VehiclePlugin.instance.pluginConfiguration.isWorldVehicleCanPlaced(world)) {
             return false
         }
         placeEntity(entry.ownerUuid, model, player.location, entry.fuel)
