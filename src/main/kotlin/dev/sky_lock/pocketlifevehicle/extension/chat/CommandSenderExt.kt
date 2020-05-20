@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender
  */
 
 fun CommandSender.sendPrefixedPluginMessage(message: String) {
-    val prefix = ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + "PLVehicle" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET
+    val prefix = ChatColor.DARK_GRAY + "[" + ChatColor.GRAY + "Vehicle" + ChatColor.DARK_GRAY + "] " + ChatColor.RESET
     if (Permission.ADMIN_COMMAND.obtained(this)) {
         this.sendMessage(prefix + ChatColor.RESET + message)
     } else {
