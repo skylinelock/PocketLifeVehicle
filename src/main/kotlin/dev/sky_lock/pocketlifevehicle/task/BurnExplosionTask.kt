@@ -12,7 +12,6 @@ import org.bukkit.ChatColor
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.function.Consumer
 
 /**
  * @author sky_lock
@@ -41,16 +40,16 @@ class BurnExplosionTask {
                         }
                         owner.sendPrefixedPluginMessage(ChatColor.RED + "乗り物が" + vehicle.passengers[0].name + "の運転によって破壊されました")
                     }
-                    vehicle.passengers.forEach(Consumer { player: Player ->
+                    vehicle.passengers.forEach { player ->
                         warning.stop(player)
                         ((player as CraftPlayer).handle as EntityPlayer).killEntity()
-                    })
+                    }
                     kill(vehicle)
                     cancel()
                     return
                 }
                 warning.count = count
-                vehicle.passengers.forEach(Consumer { player: Player -> warning.send(player) })
+                vehicle.passengers.forEach { player: Player -> warning.send(player) }
                 count--
             }
         }.runTaskTimer(VehiclePlugin.instance, 5L, 20L)

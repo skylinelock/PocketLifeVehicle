@@ -98,7 +98,7 @@ object VehicleManager {
     }
 
     fun getOwnerUid(vehicle: Vehicle): UUID? {
-        return vehicleMap.entries.find { entry: Map.Entry<UUID, Vehicle> -> entry.value == vehicle }?.key
+        return vehicleMap.entries.find { entry -> entry.value == vehicle }?.key
     }
 
     fun getOwnerName(vehicle: Vehicle): String {

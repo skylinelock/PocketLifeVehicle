@@ -5,12 +5,10 @@ import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwnerUid
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.kill
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.pop
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
-import java.util.function.Consumer
 
 /**
  * @author sky_lock
@@ -23,7 +21,7 @@ class SubmergedMessageTask {
             override fun run() {
                 if (vehicle.passengers.isEmpty()) {
                     if (count == 0) {
-                        kill(vehicle)
+                        pop(vehicle)
                         cancel()
                         return
                     }
@@ -31,25 +29,25 @@ class SubmergedMessageTask {
                     return
                 }
                 if (!vehicle.isInWater) {
-                    vehicle.passengers.forEach(Consumer { player: Player? -> warning.stop(player!!) })
+                    vehicle.passengers.forEach { player -> warning.stop(player) }
                     cancel()
                     return
                 }
                 if (count != 0) {
                     warning.count = count
-                    vehicle.passengers.forEach(Consumer { player: Player -> warning.send(player) })
+                    vehicle.passengers.forEach { player -> warning.send(player) }
                     count--
                     return
                 }
                 getOwnerUid(vehicle)?.let { ownerUuid ->
-                    if (vehicle.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
+                    if (vehicle.passengers.any { player -> player.uniqueId == ownerUuid }) {
                         return@let
                     }
                     val ownPlayer = Bukkit.getPlayer(ownerUuid)
-                    ownPlayer?.sendPrefixedPluginMessage(ChatColor.RED + "乗り物が" + vehicle.passengers[0].name + "の運転によって破壊されました")
+                    ownPlayer?.sendPrefixedPluginMessage(ChatColor.RED + "乗り物が" + vehicle.passengers[0].name + "の運転によって水没しました")
                 }
-                kill(vehicle)
-                vehicle.passengers.forEach(Consumer { player: Player? -> warning.stop(player!!) })
+                pop(vehicle)
+                vehicle.passengers.forEach { player -> warning.stop(player) }
                 cancel()
             }
         }.runTaskTimer(VehiclePlugin.instance, 5L, 20L)
