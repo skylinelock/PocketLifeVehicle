@@ -103,7 +103,7 @@ class PlayerEventListener : Listener {
         val owner = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
         var fuel = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
         if (owner == null || fuel == null) {
-            placeVehicleEntity(itemStack, player.uniqueId, model, player.location, model.spec.maxFuel)
+            placeVehicleEntity(itemStack, player.uniqueId, model, where, model.spec.maxFuel)
             return
         }
         if (fuel > model.spec.maxFuel) {

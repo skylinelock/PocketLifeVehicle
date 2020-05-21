@@ -72,7 +72,7 @@ object VehicleManager {
         val model = vehicle.model
         val fuel = vehicle.status.fuel
         val itemStack = ItemStackBuilder(model.itemStack)
-                .setPersistentData(VehiclePlugin.instance.createKey("playerUid"), UUIDTagType.INSTANCE, playerUid)
+                .setPersistentData(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE, playerUid)
                 .setPersistentData(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT, fuel)
                 .addLore(
                         ChatColor.GREEN + "オーナー: " + ChatColor.YELLOW + getOwnerName(vehicle),
