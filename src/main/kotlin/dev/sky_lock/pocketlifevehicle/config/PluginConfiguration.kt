@@ -22,7 +22,6 @@ class PluginConfiguration {
     private val config: FileConfiguration = plugin.config
 
     init {
-
         plugin.saveDefaultConfig()
         config.options().copyDefaults(true)
     }

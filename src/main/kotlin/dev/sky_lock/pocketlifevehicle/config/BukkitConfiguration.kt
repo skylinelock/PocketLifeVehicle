@@ -15,17 +15,15 @@ object BukkitConfiguration {
     private val logger = VehiclePlugin.instance.logger
 
     fun load(path: Path): YamlConfiguration? {
-        var config: YamlConfiguration? = null
         createPath(path)
         try {
             Files.newBufferedReader(path, StandardCharsets.UTF_8).use {reader ->
-                config = YamlConfiguration.loadConfiguration(reader)
-                config!!.options().copyDefaults(true)
+                return YamlConfiguration.loadConfiguration(reader).options().copyDefaults(true).configuration()
             }
         } catch (ex: IOException) {
             logger.log(Level.WARNING, "Could not load configurations from $path")
         }
-        return config
+        return null
     }
 
     fun save(path: Path, config: YamlConfiguration) {
