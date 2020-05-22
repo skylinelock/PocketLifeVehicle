@@ -60,7 +60,7 @@ open class Vehicle constructor(val model: Model) {
     }
 
     open fun spawn(location: Location) {
-        center = ModelArmorStand((location.world as CraftWorld).handle, location.x, location.y, location.z)
+        center = ModelArmorStand((location.world as CraftWorld).handle, location.x, location.y, location.z, location.yaw)
         status.location = location
         // EngineSound初期化してからassemble
         this.engineSound = EngineSound(location)

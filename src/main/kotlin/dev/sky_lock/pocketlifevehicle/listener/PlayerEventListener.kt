@@ -76,7 +76,7 @@ class PlayerEventListener : Listener {
         if (!itemStack.hasItemMeta()) {
             return
         }
-        val meta = itemStack.itemMeta
+        val dataContainer = itemStack.itemMeta.persistentDataContainer
         val player = event.player
         val model = ModelRegistry.findByItemStack(itemStack) ?: return
         event.isCancelled = true
@@ -100,8 +100,9 @@ class PlayerEventListener : Listener {
         }
         val block = event.clickedBlock ?: return
         val where = block.location.clone().add(0.5, 1.0, 0.5)
-        val owner = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
-        var fuel = meta.persistentDataContainer.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
+        where.yaw = player.location.yaw
+        val owner = dataContainer.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
+        var fuel = dataContainer.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
         if (owner == null || fuel == null) {
             placeVehicleEntity(itemStack, player.uniqueId, model, where, model.spec.maxFuel)
             return

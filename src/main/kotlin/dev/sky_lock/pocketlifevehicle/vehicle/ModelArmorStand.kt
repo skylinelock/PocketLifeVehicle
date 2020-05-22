@@ -20,8 +20,9 @@ class ModelArmorStand : EntityArmorStand {
         this.killEntity()
     }
 
-    constructor(world: World, x: Double, y: Double, z: Double) : super(EntityTypes.a(CustomEntityTypes.VEHICLE_MODEL.key).get() as EntityTypes<SeatArmorStand>, world) {
+    constructor(world: World, x: Double, y: Double, z: Double, yaw: Float) : super(EntityTypes.a(CustomEntityTypes.VEHICLE_MODEL.key).get() as EntityTypes<SeatArmorStand>, world) {
         super.setPosition(x, y, z)
+        super.setYawPitch(yaw, 0.0F)
         val nbt = NBTTagCompound()
         nbt.setBoolean("NoBasePlate", true)
         nbt.setBoolean("Invulnerable", true)
@@ -37,11 +38,11 @@ class ModelArmorStand : EntityArmorStand {
 
     fun assemble(vehicle: Vehicle) {
         this.vehicle = vehicle
-        val armorstand: ArmorStand = bukkitEntity as CraftArmorStand
-        armorstand.rightArmPose = EulerAngle.ZERO
+        val armorStand: ArmorStand = bukkitEntity as CraftArmorStand
+        armorStand.rightArmPose = EulerAngle.ZERO
         val model = vehicle.model
-        armorstand.setItem(model.itemOption.position.slot, model.itemStack)
-        armorstand.isSmall = !model.isBig
+        armorStand.setItem(model.itemOption.position.slot, model.itemStack)
+        armorStand.isSmall = !model.isBig
         this.updateSize()
         vehicle.engineSound.start()
     }
