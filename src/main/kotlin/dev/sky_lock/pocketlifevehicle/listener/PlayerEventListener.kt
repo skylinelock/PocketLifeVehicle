@@ -94,12 +94,12 @@ class PlayerEventListener : Listener {
             player.sendActionBar(ChatColor.RED + "乗り物は地面にのみ設置できます")
             return
         }
-        if (!VehicleManager.verifyPlaceableLocation(player.location)) {
+        val block = event.clickedBlock ?: return
+        val where = block.location.clone().add(0.5, 1.0, 0.5)
+        if (!VehicleManager.verifyPlaceableLocation(where)) {
             player.sendActionBar(ChatColor.RED + "ブロックがあるので乗り物を設置できません")
             return
         }
-        val block = event.clickedBlock ?: return
-        val where = block.location.clone().add(0.5, 1.0, 0.5)
         where.yaw = player.location.yaw
         val owner = dataContainer.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
         var fuel = dataContainer.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
