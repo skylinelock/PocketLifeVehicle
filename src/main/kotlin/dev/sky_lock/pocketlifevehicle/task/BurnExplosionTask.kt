@@ -2,7 +2,7 @@ package dev.sky_lock.pocketlifevehicle.task
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwnerUid
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.kill
@@ -38,7 +38,7 @@ class BurnExplosionTask {
                         if (vehicle.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
                             return@let
                         }
-                        owner.sendPrefixedPluginMessage(ChatColor.RED + "乗り物が" + vehicle.passengers[0].name + "の運転によって破壊されました")
+                        owner.sendVehiclePrefixedMessage(ChatColor.RED + "乗り物が" + vehicle.passengers[0].name + "の運転によって破壊されました")
                     }
                     vehicle.passengers.forEach { player ->
                         warning.stop(player)

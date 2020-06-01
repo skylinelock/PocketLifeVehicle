@@ -2,7 +2,7 @@ package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
@@ -20,9 +20,9 @@ class WorldCommand : ICommand, IAdminCommand {
         if (args.size < 2 || args[1].equals("list", ignoreCase = true)) {
             Bukkit.getWorlds().forEach{world ->
                 if (config.isWorldVehicleCanPlaced(world)) {
-                    player.sendPrefixedPluginMessage(ChatColor.GREEN + "- " + world.name)
+                    player.sendVehiclePrefixedMessage(ChatColor.GREEN + "- " + world.name)
                 } else {
-                    player.sendPrefixedPluginMessage("- " + world.name)
+                    player.sendVehiclePrefixedMessage("- " + world.name)
                 }
             }
             return
@@ -31,14 +31,14 @@ class WorldCommand : ICommand, IAdminCommand {
         when (args[1]) {
             "add" -> {
                 config.setWorldVehicleCanPlaced(uid, true)
-                player.sendPrefixedPluginMessage(ChatColor.GREEN + "このワールドでの乗り物の使用を許可しました")
+                player.sendVehiclePrefixedMessage(ChatColor.GREEN + "このワールドでの乗り物の使用を許可しました")
             }
             "remove" -> {
                 config.setWorldVehicleCanPlaced(uid, false)
-                player.sendPrefixedPluginMessage(ChatColor.GREEN + "このワールドでの乗り物の使用をできないようにしました")
+                player.sendVehiclePrefixedMessage(ChatColor.GREEN + "このワールドでの乗り物の使用をできないようにしました")
             }
             else -> {
-                player.sendPrefixedPluginMessage("/vehicle world [add|remove|list]")
+                player.sendVehiclePrefixedMessage("/vehicle world [add|remove|list]")
             }
         }
     }

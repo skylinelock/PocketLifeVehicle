@@ -2,7 +2,7 @@ package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.Bukkit
@@ -33,13 +33,13 @@ class CommandHandler : CommandExecutor, TabExecutor {
             }
             if (cmd is IAdminCommand) {
                 if (!Permission.ADMIN_COMMAND.obtained(sender)) {
-                    sender.sendPrefixedPluginMessage(ChatColor.RED + "このコマンドを実行するための権限がありません")
+                    sender.sendVehiclePrefixedMessage(ChatColor.RED + "このコマンドを実行するための権限がありません")
                     return true
                 }
             }
             if (cmd !is IConsoleCommand) {
                 if (sender !is Player) {
-                    sender.sendPrefixedPluginMessage(ChatColor.RED + "このコマンドはプレイヤーのみ実行できます")
+                    sender.sendVehiclePrefixedMessage(ChatColor.RED + "このコマンドはプレイヤーのみ実行できます")
                     return true
                 }
             }

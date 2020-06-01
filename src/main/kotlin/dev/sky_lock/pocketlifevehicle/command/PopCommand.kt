@@ -2,7 +2,7 @@ package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -19,23 +19,23 @@ class PopCommand : ICommand {
         if (args.size < 2 || !Permission.ADMIN_COMMAND.obtained(sender)) {
             if (VehicleManager.hasVehicle(player.uniqueId)) {
                 VehicleManager.pop(player.uniqueId)
-                player.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物をアイテム化しました")
+                player.sendVehiclePrefixedMessage(ChatColor.GREEN + "乗り物をアイテム化しました")
             } else {
-                player.sendPrefixedPluginMessage(ChatColor.RED + "乗り物をアイテム化できませんでした")
+                player.sendVehiclePrefixedMessage(ChatColor.RED + "乗り物をアイテム化できませんでした")
             }
             return
         }
         val name = args[1]
         val targetUUID = Bukkit.getPlayerUniqueId(name)
         if (targetUUID == null) {
-            player.sendPrefixedPluginMessage(ChatColor.GREEN + "プレイヤーが見つかりませんでした")
+            player.sendVehiclePrefixedMessage(ChatColor.GREEN + "プレイヤーが見つかりませんでした")
             return
         }
         if (VehicleManager.hasVehicle(targetUUID)) {
             VehicleManager.pop(targetUUID)
-            player.sendPrefixedPluginMessage(ChatColor.GREEN + name + " の乗り物をアイテム化しました")
+            player.sendVehiclePrefixedMessage(ChatColor.GREEN + name + " の乗り物をアイテム化しました")
         } else {
-            player.sendPrefixedPluginMessage(ChatColor.RED + name + " の乗り物をアイテム化できませんでした")
+            player.sendVehiclePrefixedMessage(ChatColor.RED + name + " の乗り物をアイテム化できませんでした")
         }
     }
 }

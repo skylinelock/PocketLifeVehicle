@@ -6,7 +6,7 @@ import dev.sky_lock.menu.MenuContents
 import dev.sky_lock.menu.Slot
 import dev.sky_lock.menu.ToggleSlot
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.destroy
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
 import dev.sky_lock.pocketlifevehicle.gui.LoreEditor
@@ -97,7 +97,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                     }
                     ModelRegistry.unregister(id)
                     VehicleManager.scrapAll(id)
-                    player.sendPrefixedPluginMessage(ChatColor.GREEN + id + "を削除しました")
+                    player.sendVehiclePrefixedMessage(ChatColor.GREEN + id + "を削除しました")
                     destroy(player.uniqueId)
                     menu.close(player)
                 })
@@ -105,7 +105,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                 addSlot(Slot(makeSlot.toInt(), updateItem) {
                     ModelRegistry.unregister(session.id!!)
                     ModelRegistry.register(session.generate())
-                    player.sendPrefixedPluginMessage(ChatColor.GREEN + session.id!! + "を更新しました")
+                    player.sendVehiclePrefixedMessage(ChatColor.GREEN + session.id!! + "を更新しました")
                     destroy(player.uniqueId)
                     menu.close(player)
                 })
@@ -130,7 +130,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                         return@onClick
                     }
                     ModelRegistry.register(session.generate())
-                    player.sendPrefixedPluginMessage(ChatColor.GREEN + "新しいモデルを追加しました")
+                    player.sendVehiclePrefixedMessage(ChatColor.GREEN + "新しいモデルを追加しました")
                     destroy(player.uniqueId)
                     player.closeInventory()
                 })

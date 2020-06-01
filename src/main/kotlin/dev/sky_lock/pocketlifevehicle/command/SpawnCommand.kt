@@ -2,7 +2,7 @@ package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendPrefixedPluginMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import org.bukkit.Bukkit
@@ -18,36 +18,36 @@ class SpawnCommand : ICommand, IAdminCommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         val player = sender as Player
         if (args.size < 3) {
-            player.sendPrefixedPluginMessage(ChatColor.RED + "引数が足りません")
+            player.sendVehiclePrefixedMessage(ChatColor.RED + "引数が足りません")
             return
         }
         val name = args[1]
         val target = Bukkit.getPlayer(name)
         if (target == null) {
-            player.sendPrefixedPluginMessage(ChatColor.RED + "プレイヤーが見つかりませんでした")
+            player.sendVehiclePrefixedMessage(ChatColor.RED + "プレイヤーが見つかりませんでした")
             return
         }
         if (!VehiclePlugin.instance.pluginConfiguration.isWorldVehicleCanPlaced(target.world)) {
-            player.sendPrefixedPluginMessage(ChatColor.RED + "対象のプレイヤーがいるワールドは乗り物の使用が許可されていません")
+            player.sendVehiclePrefixedMessage(ChatColor.RED + "対象のプレイヤーがいるワールドは乗り物の使用が許可されていません")
             return
         }
         val id = args[2]
         val model = ModelRegistry.findById(id)
         if (model == null) {
-            player.sendPrefixedPluginMessage(ChatColor.RED + "モデルが見つかりませんでした")
+            player.sendVehiclePrefixedMessage(ChatColor.RED + "モデルが見つかりませんでした")
             return
         }
         if (!VehicleManager.verifyPlaceableLocation(target.location)) {
-            player.sendPrefixedPluginMessage(ChatColor.RED + "対象のプレイヤーの位置に乗り物を設置することができませんでした")
+            player.sendVehiclePrefixedMessage(ChatColor.RED + "対象のプレイヤーの位置に乗り物を設置することができませんでした")
             return
         }
         VehicleManager.kill(target.uniqueId)
         val success = VehicleManager.placeEntity(target.uniqueId, model, target.location, model.spec.maxFuel)
         if (success) {
-            player.sendPrefixedPluginMessage(ChatColor.GREEN + name + " に " + id + " を渡しました")
-            target.sendPrefixedPluginMessage(ChatColor.GREEN + "乗り物を受け取りました")
+            player.sendVehiclePrefixedMessage(ChatColor.GREEN + name + " に " + id + " を渡しました")
+            target.sendVehiclePrefixedMessage(ChatColor.GREEN + "乗り物を受け取りました")
         } else {
-            player.sendPrefixedPluginMessage(ChatColor.RED + "乗り物を設置できませんでした")
+            player.sendVehiclePrefixedMessage(ChatColor.RED + "乗り物を設置できませんでした")
         }
     }
 }
