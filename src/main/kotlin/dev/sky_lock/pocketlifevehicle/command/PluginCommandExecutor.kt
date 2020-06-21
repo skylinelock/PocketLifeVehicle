@@ -7,10 +7,12 @@ import dev.sky_lock.pocketlifevehicle.command.lib.builder.ArgumentBuilder
 import dev.sky_lock.pocketlifevehicle.command.lib.builder.LiteralArgumentBuilder
 import dev.sky_lock.pocketlifevehicle.command.lib.builder.RequiredArgumentBuilder
 import dev.sky_lock.pocketlifevehicle.command.lib.node.RootCommandNode
-import me.lucko.commodore.CommodoreProvider
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
 /**
  * @author sky_lock
@@ -25,12 +27,14 @@ class PluginCommandExecutor : CommandExecutor {
         this.register(
             literal("test")
                 .then(
-                    literal("test").executes { sender, cmd, label, args ->
+                    literal("normal").executes { sender, cmd, label, args ->
+                        val player = sender as Player
+                        player.inventory.addItem(ItemStackBuilder(Material.GOLDEN_AXE, 1).build())
                         return@executes 1
                     }
                 )
                 .then(
-                    literal("test2").then(
+                    literal("complete").then(
                         argument("player", player()).executes { sender, cmd, label, args ->
                             return@executes 1
                         }
@@ -72,9 +76,8 @@ class PluginCommandExecutor : CommandExecutor {
             val commodore = CommodoreProvider.getCommodore(this.plugin)
 
             val brigadierLiteralBuilder = com.mojang.brigadier.builder.LiteralArgumentBuilder.literal<Any>(name)
-            literalNode.getChildNodes().forEach { node ->
+            val childNodes = literalBuilder.rootNode.getChildNodes()
 
-            }
 
             commodore.register(command, brigadierLiteralBuilder)
         }*/
@@ -85,24 +88,26 @@ class PluginCommandExecutor : CommandExecutor {
         var cursor = -1
 
         args.forEachIndexed { index, arg ->
+            cursor++
+            var node = commandNode
+            if (index == 0) {
+                node = commandNode.findChild(arg.toLowerCase()) ?: TODO("when node is null, maybe help")
+            }
             if (index == cursor) {
-                var node = commandNode
-                for (i in 0..cursor) {
-                    val current = node.findChild(arg.toLowerCase())
-                    if (current == null) {
+                for (i in 0..cursor+1) {
+                    if (args.size == index + 1) {
                         val exec = node.command ?: TODO("when command is null")
                         exec.run(sender, command, label, args)
                         return true
                     }
-                    node = current
+                    node = node.findChild(args[index + 1]) ?: TODO("when node is null")
                 }
-            } else {
-                cursor++
             }
         }
 
         if (cursor == -1) {
-            TODO("when args is empty")
+            val exec = commandNode.command ?: TODO("when command not exists")
+            exec.run(sender, command, label, args)
         }
         return true
     }
