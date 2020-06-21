@@ -3,6 +3,7 @@ package dev.sky_lock.pocketlifevehicle
 import com.life.pocket.VehicleAPI
 import dev.sky_lock.menu.InventoryMenuListener
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler
+import dev.sky_lock.pocketlifevehicle.command.PluginCommandExecutor
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolationList
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
@@ -25,7 +26,11 @@ class VehiclePlugin : JavaPlugin() {
     }
 
     lateinit var pluginConfiguration: PluginConfiguration
+        private set
     lateinit var parkingViolationList: ParkingViolationList
+        private set
+    lateinit var commandExecutor: PluginCommandExecutor
+        private set
 
     override fun onLoad() {
         CustomEntityTypes.registerEntities()
@@ -39,6 +44,7 @@ class VehiclePlugin : JavaPlugin() {
         this.parkingViolationList.load()
 
         getCommand("vehicle")?.setExecutor(CommandHandler())
+        this.commandExecutor = PluginCommandExecutor()
 
         this.registerEventListeners()
 

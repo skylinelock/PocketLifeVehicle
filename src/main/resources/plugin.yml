@@ -10,3 +10,6 @@ commands:
   vehicle:
     description: vehicle command.
     aliases: [car]
+  test:
+    description: test command.
+    aliases: [test]
