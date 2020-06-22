@@ -3,7 +3,8 @@ package dev.sky_lock.pocketlifevehicle
 import com.life.pocket.VehicleAPI
 import dev.sky_lock.menu.InventoryMenuListener
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler
-import dev.sky_lock.pocketlifevehicle.command.PluginCommandExecutor
+import dev.sky_lock.pocketlifevehicle.command.new.PluginCommandExecutor
+import dev.sky_lock.pocketlifevehicle.command.new.TestCommand
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolationList
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
@@ -45,6 +46,7 @@ class VehiclePlugin : JavaPlugin() {
 
         getCommand("vehicle")?.setExecutor(CommandHandler())
         this.commandExecutor = PluginCommandExecutor()
+        this.commandExecutor.register(TestCommand())
 
         this.registerEventListeners()
 

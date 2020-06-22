@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.command.lib
+package dev.sky_lock.pocketlifevehicle.command.new
 
 import com.mojang.brigadier.StringReader
 import com.mojang.brigadier.arguments.ArgumentType

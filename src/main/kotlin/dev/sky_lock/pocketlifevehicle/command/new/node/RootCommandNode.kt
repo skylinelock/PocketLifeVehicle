@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.command.lib.node
+package dev.sky_lock.pocketlifevehicle.command.new.node
 
 /**
  * @author sky_lock

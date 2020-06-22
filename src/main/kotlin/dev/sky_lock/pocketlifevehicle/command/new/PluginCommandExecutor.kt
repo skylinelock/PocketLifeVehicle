@@ -1,12 +1,12 @@
-package dev.sky_lock.pocketlifevehicle.command
+package dev.sky_lock.pocketlifevehicle.command.new
 
 import com.mojang.brigadier.arguments.ArgumentType
+import com.mojang.brigadier.arguments.IntegerArgumentType
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import dev.sky_lock.pocketlifevehicle.command.lib.PlayerArgumentType
-import dev.sky_lock.pocketlifevehicle.command.lib.builder.ArgumentBuilder
-import dev.sky_lock.pocketlifevehicle.command.lib.builder.LiteralArgumentBuilder
-import dev.sky_lock.pocketlifevehicle.command.lib.builder.RequiredArgumentBuilder
-import dev.sky_lock.pocketlifevehicle.command.lib.node.RootCommandNode
+import dev.sky_lock.pocketlifevehicle.command.new.builder.ArgumentBuilder
+import dev.sky_lock.pocketlifevehicle.command.new.builder.LiteralArgumentBuilder
+import dev.sky_lock.pocketlifevehicle.command.new.builder.RequiredArgumentBuilder
+import dev.sky_lock.pocketlifevehicle.command.new.node.RootCommandNode
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import org.bukkit.Bukkit
 import org.bukkit.Material
@@ -27,52 +27,17 @@ class PluginCommandExecutor : CommandExecutor {
     val plugin = VehiclePlugin.instance
     val root = RootCommandNode()
 
-    init {
-        this.register(
-            literal("test")
-                .then(
-                    literal("normal").executes { sender, cmd, label, args ->
-                        val player = sender as Player
-                        player.inventory.addItem(ItemStackBuilder(Material.GOLDEN_AXE, 1).build())
-                        return@executes 1
-                    }
-                )
-                .then(
-                    literal("complete").then(
-                        argument("player", player()).executes { sender, cmd, label, args ->
-                            return@executes 1
-                        }
-                    )
-
-                )
-                .executes { sender, cmd, label, args ->
-                    sender.sendMessage("specify sub command")
-                    return@executes 1
-                }
-        )
+    fun register(command: ICommand) {
+        this.register(command.builder)
     }
 
-    private fun literal(literal: String): LiteralArgumentBuilder {
-        return LiteralArgumentBuilder(literal)
-    }
-
-    private fun <T> argument(name: String, type: ArgumentType<T>): RequiredArgumentBuilder<T> {
-        return RequiredArgumentBuilder(name, type)
-    }
-
-    private fun player(): PlayerArgumentType {
-        return PlayerArgumentType.player()
-    }
-
-    private fun register(builder: ArgumentBuilder) {
+    fun register(builder: ArgumentBuilder) {
         if (builder !is LiteralArgumentBuilder) {
             throw IllegalStateException("Builder should not be NodeBuilder but LiteralNodeBuilder")
         }
-        val literalBuilder = builder as LiteralArgumentBuilder
-        val name = literalBuilder.literal
-        this.registerPluginCommand(name, this)
+        this.registerPluginCommand(builder.literal, builder.aliases, builder.description, builder.permission, this)
 
-        val literalNode = literalBuilder.build()
+        val literalNode = builder.build()
         this.root.addChild(literalNode)
 
         /*if (CommodoreProvider.isSupported()) {
@@ -86,11 +51,15 @@ class PluginCommandExecutor : CommandExecutor {
         }*/
     }
 
-    private fun registerPluginCommand(name: String, executor: CommandExecutor) {
+    private fun registerPluginCommand(name: String, aliases: List<String>, description: String, permission: String, executor: CommandExecutor) {
         val constructor = PluginCommand::class.java.getDeclaredConstructor(String::class.java, Plugin::class.java)
         constructor.isAccessible = true
         val command = constructor.newInstance(name, this.plugin)
         command.setExecutor(executor)
+        command.description = description
+        command.permission = permission
+        command.aliases = aliases
+        // TODO("permission message?")
         (Bukkit.getServer() as CraftServer).commandMap.register(this.plugin.description.name, command)
     }
 
@@ -102,12 +71,13 @@ class PluginCommandExecutor : CommandExecutor {
             cursor++
             var node = commandNode
             if (index == 0) {
+                sender.sendMessage(arg.toLowerCase())
                 node = commandNode.findChild(arg.toLowerCase()) ?: TODO("when node is null, maybe help")
             }
             if (index == cursor) {
-                for (i in 0..cursor+1) {
+                for (i in 0..cursor + 1) {
                     if (args.size == index + 1) {
-                        val exec = node.command ?: TODO("when command is null")
+                        val exec = node.runnable ?: TODO("when command is null")
                         exec.run(sender, command, label, args)
                         return true
                     }
@@ -117,7 +87,7 @@ class PluginCommandExecutor : CommandExecutor {
         }
 
         if (cursor == -1) {
-            val exec = commandNode.command ?: TODO("when command not exists")
+            val exec = commandNode.runnable ?: TODO("when command not exists")
             exec.run(sender, command, label, args)
         }
         return true

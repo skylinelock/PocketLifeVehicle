@@ -1,8 +1,8 @@
-package dev.sky_lock.pocketlifevehicle.command.lib.builder
+package dev.sky_lock.pocketlifevehicle.command.new.builder
 
-import dev.sky_lock.pocketlifevehicle.command.lib.node.BukkitCommandNode
-import dev.sky_lock.pocketlifevehicle.command.lib.ICommand
-import dev.sky_lock.pocketlifevehicle.command.lib.node.RootCommandNode
+import dev.sky_lock.pocketlifevehicle.command.new.node.BukkitCommandNode
+import dev.sky_lock.pocketlifevehicle.command.new.CommandRunnable
+import dev.sky_lock.pocketlifevehicle.command.new.node.RootCommandNode
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 
@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender
 abstract class ArgumentBuilder {
 
     protected abstract fun getThis(): ArgumentBuilder
-    var command: ICommand? = null
+    var runnable: CommandRunnable? = null
     val rootNode = RootCommandNode()
 
     fun then(nodeBuilder: ArgumentBuilder): ArgumentBuilder {
@@ -22,13 +22,13 @@ abstract class ArgumentBuilder {
         return getThis()
     }
 
-    fun executes(command: ICommand): ArgumentBuilder {
-        this.command = command
+    fun executes(runnable: CommandRunnable): ArgumentBuilder {
+        this.runnable = runnable
         return getThis()
     }
 
     fun executes(exec : (sender: CommandSender, cmd: Command, label: String, args: Array<String>) -> Int): ArgumentBuilder {
-        this.command = object : ICommand {
+        this.runnable = object : CommandRunnable {
             override fun run(sender: CommandSender, command: Command, label: String, args: Array<String>): Int {
                 return exec(sender, command, label, args)
             }

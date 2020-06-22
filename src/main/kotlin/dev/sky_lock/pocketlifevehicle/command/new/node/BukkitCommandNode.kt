@@ -1,12 +1,13 @@
-package dev.sky_lock.pocketlifevehicle.command.lib.node
+package dev.sky_lock.pocketlifevehicle.command.new.node
 
-import dev.sky_lock.pocketlifevehicle.command.lib.ICommand
+import dev.sky_lock.pocketlifevehicle.command.new.CommandRunnable
+import org.bukkit.Bukkit
 
 /**
  * @author sky_lock
  */
 
-abstract class BukkitCommandNode (val command: ICommand?){
+abstract class BukkitCommandNode(val runnable: CommandRunnable?) {
 
     abstract val name: String
     val children = LinkedHashMap<String, BukkitCommandNode>()
@@ -14,16 +15,22 @@ abstract class BukkitCommandNode (val command: ICommand?){
     val arguments = LinkedHashMap<String, ArgumentCommandNode<Any>>()
 
     fun findChild(name: String): BukkitCommandNode? {
+        this.literals.values.forEach { literalNode ->
+            val node = literalNode.aliases.find { alias -> name.equals(alias, ignoreCase = true) }
+            if (node != null) {
+                return literalNode
+            }
+        }
         return this.children[name]
     }
 
     fun addChild(node: BukkitCommandNode) {
         val child = this.children[node.name.toLowerCase()]
         if (child == null) {
-            this.children[node.name] = node
-            if (child is LiteralCommandNode) {
+            this.children[node.name.toLowerCase()] = node
+            if (node is LiteralCommandNode) {
                 this.literals[node.name] = node as LiteralCommandNode
-            } else if (child is ArgumentCommandNode<*>) {
+            } else if (node is ArgumentCommandNode<*>) {
                 this.arguments[node.name] = node as ArgumentCommandNode<Any>
             }
         } else {
