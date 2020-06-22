@@ -8,11 +8,15 @@ import dev.sky_lock.pocketlifevehicle.command.lib.builder.LiteralArgumentBuilder
 import dev.sky_lock.pocketlifevehicle.command.lib.builder.RequiredArgumentBuilder
 import dev.sky_lock.pocketlifevehicle.command.lib.node.RootCommandNode
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
+import org.bukkit.command.PluginCommand
+import org.bukkit.craftbukkit.v1_14_R1.CraftServer
 import org.bukkit.entity.Player
+import org.bukkit.plugin.Plugin
 
 /**
  * @author sky_lock
@@ -66,8 +70,7 @@ class PluginCommandExecutor : CommandExecutor {
         }
         val literalBuilder = builder as LiteralArgumentBuilder
         val name = literalBuilder.literal
-        val command = this.plugin.getCommand(name) ?: throw IllegalStateException("Command '$name' not in plugin.yml")
-        command.setExecutor(this)
+        this.registerPluginCommand(name, this)
 
         val literalNode = literalBuilder.build()
         this.root.addChild(literalNode)
@@ -81,6 +84,14 @@ class PluginCommandExecutor : CommandExecutor {
 
             commodore.register(command, brigadierLiteralBuilder)
         }*/
+    }
+
+    private fun registerPluginCommand(name: String, executor: CommandExecutor) {
+        val constructor = PluginCommand::class.java.getDeclaredConstructor(String::class.java, Plugin::class.java)
+        constructor.isAccessible = true
+        val command = constructor.newInstance(name, this.plugin)
+        command.setExecutor(executor)
+        (Bukkit.getServer() as CraftServer).commandMap.register(this.plugin.description.name, command)
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
