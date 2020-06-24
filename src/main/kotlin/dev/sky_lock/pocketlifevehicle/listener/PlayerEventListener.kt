@@ -67,18 +67,26 @@ class PlayerEventListener : Listener {
         EditSessions.destroy(event.player.uniqueId)
     }
 
+    // メインハンド、オフハンドごとに２回呼ばれる
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
         if (event.action != Action.RIGHT_CLICK_BLOCK) {
             return
         }
-        val itemStack = event.item ?: return
-        if (!itemStack.hasItemMeta()) {
+        val player = event.player
+        val itemInMainHand = player.inventory.itemInMainHand
+        val itemInOffHand = player.inventory.itemInOffHand
+        if (!itemInMainHand.hasItemMeta() && !itemInOffHand.hasItemMeta()) {
             return
         }
-        val dataContainer = itemStack.itemMeta.persistentDataContainer
-        val player = event.player
-        val model = ModelRegistry.findByItemStack(itemStack) ?: return
+        val mainHandModel = ModelRegistry.findByItemStack(itemInMainHand)
+        val offHandModel = ModelRegistry.findByItemStack(itemInOffHand)
+        if (!(mainHandModel == null).xor(offHandModel == null)) {
+            return
+        }
+        val model = mainHandModel ?: offHandModel ?: return
+        val item = event.item ?: return
+        val dataContainer = item.itemMeta.persistentDataContainer
         event.isCancelled = true
         event.setUseInteractedBlock(Event.Result.DENY)
         event.setUseItemInHand(Event.Result.DENY)
@@ -104,21 +112,21 @@ class PlayerEventListener : Listener {
         val owner = dataContainer.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
         var fuel = dataContainer.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
         if (owner == null || fuel == null) {
-            placeVehicleEntity(itemStack, player.uniqueId, model, where, model.spec.maxFuel)
+            placeVehicleEntity(item, player.uniqueId, model, where, model.spec.maxFuel)
             return
         }
         if (fuel > model.spec.maxFuel) {
             fuel = model.spec.maxFuel
         }
         if (player.uniqueId == owner) {
-            placeVehicleEntity(itemStack, owner, model, where, fuel)
+            placeVehicleEntity(item, owner, model, where, fuel)
             return
         }
         if (!Permission.PLACE_OTHER_VEHICLE.obtained(player)) {
             player.sendActionBar(ChatColor.RED + "この乗り物を所有していません")
             return
         }
-        placeVehicleEntity(itemStack, owner, model, where, fuel)
+        placeVehicleEntity(item, owner, model, where, fuel)
     }
 
     @EventHandler
