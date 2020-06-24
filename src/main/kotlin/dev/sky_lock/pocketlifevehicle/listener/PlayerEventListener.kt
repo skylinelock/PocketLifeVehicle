@@ -27,6 +27,7 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import org.spigotmc.event.entity.EntityDismountEvent
@@ -73,19 +74,17 @@ class PlayerEventListener : Listener {
         if (event.action != Action.RIGHT_CLICK_BLOCK) {
             return
         }
+        if (event.hand == EquipmentSlot.OFF_HAND) {
+            return
+        }
         val player = event.player
         val itemInMainHand = player.inventory.itemInMainHand
         val itemInOffHand = player.inventory.itemInOffHand
         if (!itemInMainHand.hasItemMeta() && !itemInOffHand.hasItemMeta()) {
             return
         }
-        val mainHandModel = ModelRegistry.findByItemStack(itemInMainHand)
-        val offHandModel = ModelRegistry.findByItemStack(itemInOffHand)
-        if (!(mainHandModel == null).xor(offHandModel == null)) {
-            return
-        }
-        val model = mainHandModel ?: offHandModel ?: return
         val item = event.item ?: return
+        val model = ModelRegistry.findByItemStack(item) ?: return
         val dataContainer = item.itemMeta.persistentDataContainer
         event.isCancelled = true
         event.setUseInteractedBlock(Event.Result.DENY)
