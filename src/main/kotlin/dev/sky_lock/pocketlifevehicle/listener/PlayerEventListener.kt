@@ -74,21 +74,43 @@ class PlayerEventListener : Listener {
         if (event.action != Action.RIGHT_CLICK_BLOCK) {
             return
         }
-        if (event.hand == EquipmentSlot.OFF_HAND) {
-            return
-        }
         val player = event.player
+
         val itemInMainHand = player.inventory.itemInMainHand
         val itemInOffHand = player.inventory.itemInOffHand
         if (!itemInMainHand.hasItemMeta() && !itemInOffHand.hasItemMeta()) {
             return
         }
-        val item = event.item ?: return
-        val model = ModelRegistry.findByItemStack(item) ?: return
+        var model: Model? = null
+        var item: ItemStack? = null
+        val mainModel = ModelRegistry.findByItemStack(itemInMainHand)
+        val offModel = ModelRegistry.findByItemStack(itemInOffHand)
+        if (event.hand == EquipmentSlot.HAND) {
+            if (mainModel != null && offModel == null) {
+                item = itemInMainHand
+                model = mainModel
+            }
+        } else if (event.hand == EquipmentSlot.OFF_HAND) {
+            if (offModel != null) {
+                if (mainModel == null) {
+                    model = offModel
+                    item = itemInOffHand
+                } else {
+                    model = mainModel
+                    item = itemInMainHand
+                }
+            }
+        } else {
+            return
+        }
+        if (model == null || item == null) return
+
         val dataContainer = item.itemMeta.persistentDataContainer
+
         event.isCancelled = true
         event.setUseInteractedBlock(Event.Result.DENY)
         event.setUseItemInHand(Event.Result.DENY)
+
         if (!this.plugin.pluginConfiguration.isWorldVehicleCanPlaced(player.world)) {
             player.sendActionBar(ChatColor.RED + "このワールドでは乗り物は使用できません")
             return
