@@ -1,19 +1,14 @@
 package dev.sky_lock.pocketlifevehicle.command.new
 
-import com.mojang.brigadier.arguments.ArgumentType
-import com.mojang.brigadier.arguments.IntegerArgumentType
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.command.new.builder.ArgumentBuilder
 import dev.sky_lock.pocketlifevehicle.command.new.builder.LiteralArgumentBuilder
-import dev.sky_lock.pocketlifevehicle.command.new.builder.RequiredArgumentBuilder
+import dev.sky_lock.pocketlifevehicle.command.new.node.BukkitCommandNode
 import dev.sky_lock.pocketlifevehicle.command.new.node.RootCommandNode
-import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import org.bukkit.Bukkit
-import org.bukkit.Material
-import org.bukkit.command.Command
-import org.bukkit.command.CommandExecutor
-import org.bukkit.command.CommandSender
-import org.bukkit.command.PluginCommand
+import org.bukkit.ChatColor
+import org.bukkit.command.*
 import org.bukkit.craftbukkit.v1_14_R1.CraftServer
 import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
@@ -28,14 +23,14 @@ class PluginCommandExecutor : CommandExecutor {
     val root = RootCommandNode()
 
     fun register(command: ICommand) {
-        this.register(command.builder)
+        this.register(command.builder, command.permissionMessage)
     }
 
-    fun register(builder: ArgumentBuilder) {
+    fun register(builder: ArgumentBuilder, permissionMessage: String) {
         if (builder !is LiteralArgumentBuilder) {
             throw IllegalStateException("Builder should not be NodeBuilder but LiteralNodeBuilder")
         }
-        this.registerPluginCommand(builder.literal, builder.aliases, builder.description, builder.permission, this)
+        this.registerPluginCommand(builder.literal, builder.aliases, builder.description, permissionMessage, this)
 
         val literalNode = builder.build()
         this.root.addChild(literalNode)
@@ -51,45 +46,63 @@ class PluginCommandExecutor : CommandExecutor {
         }*/
     }
 
-    private fun registerPluginCommand(name: String, aliases: List<String>, description: String, permission: String, executor: CommandExecutor) {
+    private fun registerPluginCommand(name: String, aliases: List<String>, description: String, permissionMessage: String, executor: CommandExecutor) {
         val constructor = PluginCommand::class.java.getDeclaredConstructor(String::class.java, Plugin::class.java)
         constructor.isAccessible = true
         val command = constructor.newInstance(name, this.plugin)
         command.setExecutor(executor)
-        command.description = description
-        command.permission = permission
         command.aliases = aliases
-        // TODO("permission message?")
+        command.description = description
+        command.permissionMessage = permissionMessage
         (Bukkit.getServer() as CraftServer).commandMap.register(this.plugin.description.name, command)
     }
 
+    private fun sendPermissionMessage(sender: CommandSender, node: Command) {
+        val permissionMessage = node.permissionMessage
+            ?: ChatColor.RED + """I'm sorry, but you do not have permission to perform this command.
+                    Please contact the server administrators if you believe that this is a mistake."""
+        sender.sendMessage(permissionMessage)
+    }
+
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        val commandNode = this.root.findChild(command.name.toLowerCase()) ?: TODO("when command not exists")
+        var node = this.root.findChild(command.name.toLowerCase())
+            ?: throw CommandException("Illegal command name (bug)")
         var cursor = -1
 
         args.forEachIndexed { index, arg ->
             cursor++
-            var node = commandNode
             if (index == 0) {
-                sender.sendMessage(arg.toLowerCase())
-                node = commandNode.findChild(arg.toLowerCase()) ?: TODO("when node is null, maybe help")
+                node = node.findChild(arg.toLowerCase()) ?: return@forEachIndexed
             }
             if (index == cursor) {
                 for (i in 0..cursor + 1) {
-                    if (args.size == index + 1) {
-                        val exec = node.runnable ?: TODO("when command is null")
-                        exec.run(sender, command, label, args)
-                        return true
+                    if (args.size <= index + 1) {
+                        return@forEachIndexed
                     }
-                    node = node.findChild(args[index + 1]) ?: TODO("when node is null")
+                    node = node.findChild(args[index + 1]) ?: throw CommandException("Illegal index (bug)")
                 }
             }
         }
+        val permission = node.permission
 
-        if (cursor == -1) {
-            val exec = commandNode.runnable ?: TODO("when command not exists")
-            exec.run(sender, command, label, args)
+        // TODO: permissionMessage一括で管理したら後は自由に
+        // TODO: permissionが設定できない
+        if (permission == null) {
+            if (!sender.isOp) {
+                this.sendPermissionMessage(sender, command)
+                return true
+            }
+        } else {
+            sender.sendMessage(permission.default.name + " : " + permission.default.getValue(sender.isOp).toString())
+            sender.sendMessage(sender.hasPermission(permission).toString())
+            if (!sender.hasPermission(permission)) {
+                this.sendPermissionMessage(sender, command)
+                return true
+            }
         }
+
+        val exec = node.runnable ?: throw CommandException("Illegal node (bug)")
+        exec.run(sender, command, label, args)
         return true
     }
 }

@@ -1,13 +1,13 @@
 package dev.sky_lock.pocketlifevehicle.command.new.node
 
 import dev.sky_lock.pocketlifevehicle.command.new.CommandRunnable
-import org.bukkit.Bukkit
+import org.bukkit.permissions.Permission
 
 /**
  * @author sky_lock
  */
 
-abstract class BukkitCommandNode(val runnable: CommandRunnable?) {
+abstract class BukkitCommandNode(val permission: Permission?, val runnable: CommandRunnable?) {
 
     abstract val name: String
     val children = LinkedHashMap<String, BukkitCommandNode>()

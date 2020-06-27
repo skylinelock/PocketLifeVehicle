@@ -6,10 +6,9 @@ import dev.sky_lock.pocketlifevehicle.command.new.node.LiteralCommandNode
  * @author sky_lock
  */
 
-class LiteralArgumentBuilder(val literal: String): ArgumentBuilder() {
+class LiteralArgumentBuilder(val literal: String) : ArgumentBuilder() {
     val aliases = mutableListOf<String>()
     var description = ""
-    var permission = ""
 
     fun alias(vararg aliases: String): LiteralArgumentBuilder {
         // TODO("when alias duplicated")
@@ -22,13 +21,14 @@ class LiteralArgumentBuilder(val literal: String): ArgumentBuilder() {
         return getThis()
     }
 
-    fun permission(permission: String):LiteralArgumentBuilder {
-        this.permission = permission
-        return getThis()
-    }
 
     override fun build(): LiteralCommandNode {
-        val result = LiteralCommandNode(this.literal, this.aliases, this.description, this.permission, this.runnable)
+        val result = LiteralCommandNode(
+            this.literal,
+            this.aliases,
+            this.description,
+            this.permission,
+            this.runnable)
         this.rootNode.getChildNodes().forEach(result::addChild)
         return result
     }

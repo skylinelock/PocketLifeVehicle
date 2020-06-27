@@ -1,9 +1,12 @@
 package dev.sky_lock.pocketlifevehicle.command.new
 
-import dev.sky_lock.pocketlifevehicle.VehiclePlugin
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.permissions.Permission
+import org.bukkit.permissions.PermissionDefault
 
 /**
  * @author sky_lock
@@ -11,20 +14,21 @@ import org.bukkit.entity.Player
 
 class TestCommand : ICommand {
 
-    val executor = VehiclePlugin.instance.commandExecutor
+    override val permissionMessage = ChatColor.RED + "You don't have permission to perform this."
     override val builder =
         literal("test")
             .description("A test command")
             .alias("test2", "test3")
-            .permission("test.perm")
+            .permission(Permission("test.root", "hogehogeeee", PermissionDefault.OP))
             .then(
                 literal("golden")
                     .alias("gold")
+                    .permission(Permission("hogehoge.hagehage.", "hogehogeeee", PermissionDefault.TRUE))
                     .executes { sender, cmd, label, args ->
-                    val player = sender as Player
-                    player.inventory.addItem(ItemStackBuilder(Material.GOLDEN_AXE, 1).build())
-                    return@executes 1
-                }
+                        val player = sender as Player
+                        player.inventory.addItem(ItemStackBuilder(Material.GOLDEN_AXE, 1).build())
+                        return@executes 1
+                    }
                     .then(
                         argument("count", integer()).executes { sender, cmd, label, args ->
                             val player = sender as Player
@@ -36,11 +40,12 @@ class TestCommand : ICommand {
             .then(
                 literal("iron")
                     .alias("tetsu")
+                    .permission(Permission("test.arg2", "hogehogeeee", PermissionDefault.OP))
                     .executes { sender, cmd, label, args ->
-                    val player = sender as Player
-                    player.inventory.addItem(ItemStackBuilder(Material.IRON_AXE, 1).build())
-                    return@executes 1
-                }
+                        val player = sender as Player
+                        player.inventory.addItem(ItemStackBuilder(Material.IRON_AXE, 1).build())
+                        return@executes 1
+                    }
             )
             .then(
                 literal("complete").then(

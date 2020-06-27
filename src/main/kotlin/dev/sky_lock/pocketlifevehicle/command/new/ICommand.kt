@@ -9,5 +9,6 @@ import dev.sky_lock.pocketlifevehicle.command.new.builder.ArgumentBuilder
 
 interface ICommand {
 
+    val permissionMessage: String
     val builder: ArgumentBuilder
 }

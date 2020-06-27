@@ -11,7 +11,7 @@ import dev.sky_lock.pocketlifevehicle.command.new.node.BukkitCommandNode
 class RequiredArgumentBuilder<T>(val name: String, val type: ArgumentType<T>): ArgumentBuilder() {
 
     override fun build(): BukkitCommandNode {
-        val result = ArgumentCommandNode<T>(this.name, runnable, type)
+        val result = ArgumentCommandNode(this.name, this.type, this.permission, this.runnable)
         this.rootNode.getChildNodes().forEach(result::addChild)
         return result
     }

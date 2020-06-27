@@ -5,7 +5,8 @@ import org.bukkit.permissions.Permissible
 /**
  * @author sky_lock
  */
- 
+
+// TODO: BukkitのPermissionと名前被り
  enum class Permission(private val permission: String) {
     ADMIN_COMMAND("plvehicle.command.admin.use"),
     OPEN_VEHICLE_GUI("plvehicle.entity.gui.open"),
