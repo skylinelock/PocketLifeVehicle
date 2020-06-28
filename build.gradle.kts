@@ -15,9 +15,13 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven(url = "https://jitpack.io")
+    // For paper
     maven(url = "https://papermc.io/repo/repository/maven-public/")
+    // For protocol-lib
     maven(url = "https://repo.dmulloy2.net/nexus/repository/public/")
+    // For bStats
     maven(url = "https://repo.codemc.org/repository/maven-public")
+    // For commodore
     maven(url = "https://libraries.minecraft.net/")
 }
 
