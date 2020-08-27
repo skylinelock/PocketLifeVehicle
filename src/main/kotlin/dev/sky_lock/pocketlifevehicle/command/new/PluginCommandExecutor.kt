@@ -85,16 +85,12 @@ class PluginCommandExecutor : CommandExecutor {
         }
         val permission = node.permission
 
-        // TODO: permissionMessage一括で管理したら後は自由に
-        // TODO: permissionが設定できない
         if (permission == null) {
             if (!sender.isOp) {
                 this.sendPermissionMessage(sender, command)
                 return true
             }
         } else {
-            sender.sendMessage(permission.default.name + " : " + permission.default.getValue(sender.isOp).toString())
-            sender.sendMessage(sender.hasPermission(permission).toString())
             if (!sender.hasPermission(permission)) {
                 this.sendPermissionMessage(sender, command)
                 return true

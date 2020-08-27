@@ -53,10 +53,9 @@ class TestCommand : ICommand {
                         return@executes 1
                     }
                 )
-
             )
             .executes { sender, cmd, label, args ->
-                sender.sendMessage("specify sub command")
+                sender.sendMessage("root command")
                 return@executes 1
             }
 }
