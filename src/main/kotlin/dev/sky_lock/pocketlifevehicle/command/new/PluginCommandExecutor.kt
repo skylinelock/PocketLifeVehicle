@@ -3,14 +3,12 @@ package dev.sky_lock.pocketlifevehicle.command.new
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.command.new.builder.ArgumentBuilder
 import dev.sky_lock.pocketlifevehicle.command.new.builder.LiteralArgumentBuilder
-import dev.sky_lock.pocketlifevehicle.command.new.node.BukkitCommandNode
 import dev.sky_lock.pocketlifevehicle.command.new.node.RootCommandNode
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.*
 import org.bukkit.craftbukkit.v1_14_R1.CraftServer
-import org.bukkit.entity.Player
 import org.bukkit.plugin.Plugin
 
 /**
@@ -67,21 +65,9 @@ class PluginCommandExecutor : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         var node = this.root.findChild(command.name.toLowerCase())
             ?: throw CommandException("Illegal command name (bug)")
-        var cursor = -1
 
-        args.forEachIndexed { index, arg ->
-            cursor++
-            if (index == 0) {
-                node = node.findChild(arg.toLowerCase()) ?: return@forEachIndexed
-            }
-            if (index == cursor) {
-                for (i in 0..cursor + 1) {
-                    if (args.size <= index + 1) {
-                        return@forEachIndexed
-                    }
-                    node = node.findChild(args[index + 1]) ?: throw CommandException("Illegal index (bug)")
-                }
-            }
+        args.forEach { arg ->
+            node = node.findChild(arg.toLowerCase()) ?: return@forEach
         }
         val permission = node.permission
 

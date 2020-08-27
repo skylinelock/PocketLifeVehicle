@@ -48,7 +48,9 @@ class TestCommand : ICommand {
                     }
             )
             .then(
-                literal("complete").then(
+                literal("playercomplete")
+                    .alias("pc")
+                    .then(
                     argument("player", player()).executes { sender, cmd, label, args ->
                         return@executes 1
                     }
