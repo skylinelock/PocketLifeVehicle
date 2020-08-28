@@ -1,13 +1,14 @@
 package dev.sky_lock.pocketlifevehicle.command.new.node
 
-import dev.sky_lock.pocketlifevehicle.command.new.CommandRunnable
+import dev.sky_lock.pocketlifevehicle.command.new.Command
+import dev.sky_lock.pocketlifevehicle.command.new.context.CommandContextBuilder
 import org.bukkit.permissions.Permission
 
 /**
  * @author sky_lock
  */
 
-abstract class BukkitCommandNode(val permission: Permission?, val runnable: CommandRunnable?) {
+abstract class BukkitCommandNode(val permission: Permission?, val runnable: Command?) {
 
     abstract val name: String
     val children = LinkedHashMap<String, BukkitCommandNode>()
@@ -41,4 +42,6 @@ abstract class BukkitCommandNode(val permission: Permission?, val runnable: Comm
     fun getChildNodes(): Collection<BukkitCommandNode> {
         return this.children.values
     }
+
+    abstract fun parse(word: String, contextBuilder: CommandContextBuilder)
 }

@@ -1,7 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.command.new.node
 
+import com.mojang.brigadier.StringReader
 import com.mojang.brigadier.arguments.ArgumentType
-import dev.sky_lock.pocketlifevehicle.command.new.CommandRunnable
+import dev.sky_lock.pocketlifevehicle.command.new.Command
+import dev.sky_lock.pocketlifevehicle.command.new.context.CommandContextBuilder
 import org.bukkit.permissions.Permission
 
 /**
@@ -10,9 +12,13 @@ import org.bukkit.permissions.Permission
 
 class ArgumentCommandNode<T>(
     override val name: String,
-    argumentType: ArgumentType<T>,
+    val argumentType: ArgumentType<T>,
     permission: Permission?,
-    cmd: CommandRunnable?
+    cmd: Command?
 ) : BukkitCommandNode(permission, cmd) {
 
+    override fun parse(word: String, contextBuilder: CommandContextBuilder) {
+        val result = argumentType.parse(StringReader(word))
+        // contextBuilder.withArgument(name, )
+    }
 }

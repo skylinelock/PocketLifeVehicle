@@ -12,7 +12,7 @@ import org.bukkit.permissions.PermissionDefault
  * @author sky_lock
  */
 
-class TestCommand : ICommand {
+class TestCommand : CommandBase() {
 
     override val permissionMessage = ChatColor.RED + "You don't have permission to perform this."
     override val builder =
@@ -30,11 +30,19 @@ class TestCommand : ICommand {
                         return@executes 1
                     }
                     .then(
-                        argument("count", integer()).executes { sender, cmd, label, args ->
-                            val player = sender as Player
-                            player.inventory.addItem(ItemStackBuilder(Material.DIAMOND_AXE, 1).build())
-                            return@executes 1
-                        }
+                        argument("count", integer())
+                            .then(
+                                argument("text", string())
+                                    .executes { sender, cmd, label, args ->
+
+                                        return@executes 1
+                                    }
+                            )
+                            .executes { sender, cmd, label, args ->
+                                val player = sender as Player
+                                player.inventory.addItem(ItemStackBuilder(Material.DIAMOND_AXE, 1).build())
+                                return@executes 1
+                            }
                     )
             )
             .then(
@@ -51,10 +59,10 @@ class TestCommand : ICommand {
                 literal("playercomplete")
                     .alias("pc")
                     .then(
-                    argument("player", player()).executes { sender, cmd, label, args ->
-                        return@executes 1
-                    }
-                )
+                        argument("player", player()).executes { sender, cmd, label, args ->
+                            return@executes 1
+                        }
+                    )
             )
             .executes { sender, cmd, label, args ->
                 sender.sendMessage("root command")

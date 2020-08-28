@@ -1,6 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.command.new.node
 
-import dev.sky_lock.pocketlifevehicle.command.new.CommandRunnable
+import dev.sky_lock.pocketlifevehicle.command.new.Command
+import dev.sky_lock.pocketlifevehicle.command.new.context.CommandContextBuilder
 import org.bukkit.permissions.Permission
 
 /**
@@ -9,7 +10,11 @@ import org.bukkit.permissions.Permission
 
 class LiteralCommandNode(
     literal: String, val aliases: List<String>, val description: String,
-    permission: Permission?, cmd: CommandRunnable?
+    permission: Permission?, cmd: Command?
 ): BukkitCommandNode(permission, cmd) {
     override val name: String = literal
+
+    override fun parse(word: String, contextBuilder: CommandContextBuilder) {
+        TODO("Not yet implemented")
+    }
 }

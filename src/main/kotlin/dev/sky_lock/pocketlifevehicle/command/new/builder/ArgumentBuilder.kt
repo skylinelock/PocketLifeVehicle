@@ -1,9 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.command.new.builder
 
-import dev.sky_lock.pocketlifevehicle.command.new.CommandRunnable
 import dev.sky_lock.pocketlifevehicle.command.new.node.BukkitCommandNode
 import dev.sky_lock.pocketlifevehicle.command.new.node.RootCommandNode
-import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.permissions.Permission
 
@@ -15,7 +13,7 @@ import org.bukkit.permissions.Permission
 abstract class ArgumentBuilder {
 
     protected abstract fun getThis(): ArgumentBuilder
-    var runnable: CommandRunnable? = null
+    var runnable: dev.sky_lock.pocketlifevehicle.command.new.Command? = null
     val rootNode = RootCommandNode()
     var permission: Permission? = null
 
@@ -29,14 +27,14 @@ abstract class ArgumentBuilder {
         return getThis()
     }
 
-    fun executes(runnable: CommandRunnable): ArgumentBuilder {
+    fun executes(runnable: dev.sky_lock.pocketlifevehicle.command.new.Command): ArgumentBuilder {
         this.runnable = runnable
         return getThis()
     }
 
-    fun executes(exec: (sender: CommandSender, cmd: Command, label: String, args: Array<String>) -> Int): ArgumentBuilder {
-        this.runnable = object : CommandRunnable {
-            override fun run(sender: CommandSender, command: Command, label: String, args: Array<String>): Int {
+    fun executes(exec: (sender: CommandSender, cmd: org.bukkit.command.Command, label: String, args: Array<String>) -> Int): ArgumentBuilder {
+        this.runnable = object : dev.sky_lock.pocketlifevehicle.command.new.Command {
+            override fun run(sender: CommandSender, command: org.bukkit.command.Command, label: String, args: Array<String>): Int {
                 return exec(sender, command, label, args)
             }
         }

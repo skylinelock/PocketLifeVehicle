@@ -8,6 +8,7 @@ import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.*
+import org.bukkit.command.Command
 import org.bukkit.craftbukkit.v1_14_R1.CraftServer
 import org.bukkit.plugin.Plugin
 
@@ -20,8 +21,8 @@ class PluginCommandExecutor : CommandExecutor {
     val plugin = VehiclePlugin.instance
     val root = RootCommandNode()
 
-    fun register(command: ICommand) {
-        this.register(command.builder, command.permissionMessage)
+    fun register(commandBase: CommandBase) {
+        this.register(commandBase.builder, commandBase.permissionMessage)
     }
 
     fun register(builder: ArgumentBuilder, permissionMessage: String) {

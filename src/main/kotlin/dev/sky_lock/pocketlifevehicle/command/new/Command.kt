@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender
  * @author sky_lock
  */
 
-interface CommandRunnable {
+interface Command {
 
     fun run(sender: CommandSender, command: Command, label: String, args: Array<String>): Int
 }
