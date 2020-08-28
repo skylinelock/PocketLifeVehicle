@@ -12,7 +12,11 @@ val sourceCompatibility = "1.8"
 extra["kotlin_version"] = "1.3.72"
 
 repositories {
-    mavenLocal()
+    mavenLocal {
+        content {
+            includeGroup("org.bukkit")
+        }
+    }
     mavenCentral()
     maven(url = "https://jitpack.io")
     // For paper
