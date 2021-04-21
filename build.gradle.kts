@@ -1,11 +1,11 @@
 plugins {
     java
     kotlin("jvm") version "1.3.72"
-    id("com.github.johnrengelman.shadow") version "6.0.0"
+    id("com.github.johnrengelman.shadow") version "6.1.0"
 }
 
 group = "dev.sky_lock"
-version = "1.3.6"
+version = "1.0"
 
 val sourceCompatibility = "1.8"
 
@@ -15,6 +15,7 @@ repositories {
     mavenLocal {
         content {
             includeGroup("org.bukkit")
+            includeGroup("games.pocketlife.play")
         }
     }
     mavenCentral()
@@ -34,7 +35,7 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation("me.lucko:commodore:1.5")
     implementation("org.bstats:bstats-bukkit:1.7")
-    compileOnly("com.life.pocket:PocketLifeCore:1.0-SNAPSHOT")
+    compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
     compileOnly("com.destroystokyo.paper:paper-api:1.14.4-R0.1-SNAPSHOT")
     compileOnly("org.bukkit:craftbukkit:1.14.4-R0.1-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:4.5.0")

@@ -1,1 +1,1 @@
-rootProject.name = "pocketlifevehicle"
+rootProject.name = "PocketLifeVehicle"
