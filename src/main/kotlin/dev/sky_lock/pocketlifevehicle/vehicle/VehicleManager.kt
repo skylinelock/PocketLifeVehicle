@@ -2,6 +2,7 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
@@ -157,5 +158,9 @@ object VehicleManager {
         placeEntity(entry.ownerUuid, model, player.location, entry.fuel)
         plugin.parkingViolationList.removeEntry(player)
         return true
+    }
+
+    fun printLocation(player: Player) {
+
     }
 }
