@@ -39,7 +39,7 @@ dependencies {
     compileOnly(files("lib/PocketLifeCore-1.0-SNAPSHOT.jar"))
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
     compileOnly("com.destroystokyo.paper:paper-api:1.14.4-R0.1-SNAPSHOT")
-    compileOnly("org.bukkit:craftbukkit:1.14.4-R0.1-SNAPSHOT")
+    // compileOnly("org.bukkit:craftbukkit:1.14.4-R0.1-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:4.5.0")
 }
 
