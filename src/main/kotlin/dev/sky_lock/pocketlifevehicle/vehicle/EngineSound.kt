@@ -15,7 +15,7 @@ class EngineSound(var location: Location) {
     var pitch: Float = 0.0f
 
     fun start() {
-        task = Bukkit.getScheduler().runTaskTimerAsynchronously(VehiclePlugin.instance, Runnable {
+        task = Bukkit.getScheduler().runTaskTimer(VehiclePlugin.instance, Runnable {
             if (this.isCancelled) {
                 this.stop()
             }
@@ -30,6 +30,12 @@ class EngineSound(var location: Location) {
     private fun stop() {
         task?.let {
             if (!it.isCancelled) {
+                location.getNearbyPlayers(50.0).forEach { player ->
+                    player.stopSound(Sound.ENTITY_PIG_HURT)
+                    player.stopSound(Sound.ENTITY_MINECART_RIDING)
+                    player.stopSound(Sound.ENTITY_PLAYER_BURP)
+                    player.stopSound(Sound.ENTITY_ENDERMAN_DEATH)
+                }
                 it.cancel()
             }
         }
