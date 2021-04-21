@@ -37,7 +37,7 @@ jobs:
           version: "tags/v1.2.14"
           file: "PocketLifeCore-1.0-SNAPSHOT.jar"
           target: "lib/PocketLifeCore-1.0-SNAPSHOT.jar"
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
