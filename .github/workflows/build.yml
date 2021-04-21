@@ -48,7 +48,7 @@ jobs:
       - name: Generate New Tag
         id: generate-tag
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: sh scripts/generate-tag.sh
 
