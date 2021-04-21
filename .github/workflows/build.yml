@@ -34,7 +34,7 @@ jobs:
         uses: dsaltares/fetch-gh-release-asset@master
         with:
           repo: "PocketLifeProject/PocketLifeCore"
-          version: "latest"
+          version: "tags/v1.2.14"
           file: "PocketLifeCore-1.0-SNAPSHOT.jar"
           target: "lib/PocketLifeCore-1.0-SNAPSHOT.jar"
           token: ${{ secrets.GITHUB_TOKEN }}
