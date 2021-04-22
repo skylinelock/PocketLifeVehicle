@@ -59,11 +59,11 @@ class CommandHandler : CommandExecutor, TabExecutor {
         } else if (args.size == 2 && Permission.ADMIN_COMMAND.obtained(sender)) {
             val input = args[1]
             when (args[0].toLowerCase()) {
-                "give" -> tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
-                "spawn" -> tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
+                "give" -> tabCompletes.addAll(listPlayerNamesStartsWith(input))
+                "spawn" -> tabCompletes.addAll(listPlayerNamesStartsWith(input))
                 "reload" -> tabCompletes.addAll(listOf("from", "to").filter { str -> str.startsWith(input) })
                 "search", "pop" -> if (Permission.ADMIN_COMMAND.obtained(sender)) {
-                    tabCompletes.addAll(Bukkit.getOnlinePlayers().map { player -> player.name })
+                    tabCompletes.addAll(listPlayerNamesStartsWith(input))
                 }
                 "world" -> tabCompletes.addAll(listOf("add", "remove", "list").filter { str -> str.startsWith(input) })
             }
@@ -79,5 +79,9 @@ class CommandHandler : CommandExecutor, TabExecutor {
             }
         }
         return tabCompletes
+    }
+
+    fun listPlayerNamesStartsWith(input: String): List<String> {
+        return Bukkit.getOnlinePlayers().filter { player -> player.name.startsWith(input) }.map { player -> player.name }
     }
 }
