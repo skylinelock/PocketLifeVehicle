@@ -103,6 +103,7 @@ class ModelArmorStand : EntityArmorStand {
                 vehicle.driver == null || this.isInWater || inLava) {
             vehicle.engine.stop()
             vehicle.engineSound.pitch = 0.0f
+            vehicle.engineSound.location = this.location
             super.e(vec3d)
             return
         }
