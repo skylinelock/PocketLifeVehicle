@@ -22,10 +22,12 @@ class ReloadCommand : ICommand, IAdminCommand, IConsoleCommand {
             flag.equals("from", ignoreCase = true) -> {
                 ModelRegistry.reloadConfig()
                 VehiclePlugin.instance.pluginConfiguration.load()
+                VehiclePlugin.instance.parkingViolationList.load()
                 sender.sendVehiclePrefixedMessage(ChatColor.GREEN + "ディスクからデータを読み込みました")
             }
             flag.equals("to", ignoreCase = true) -> {
                 VehiclePlugin.instance.pluginConfiguration.save()
+                VehiclePlugin.instance.parkingViolationList.save()
                 ModelRegistry.saveToFile()
                 sender.sendVehiclePrefixedMessage(ChatColor.GREEN + "ディスクへデータを保存しました")
             }
