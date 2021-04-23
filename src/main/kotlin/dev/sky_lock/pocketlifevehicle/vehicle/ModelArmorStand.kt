@@ -23,15 +23,7 @@ class ModelArmorStand : EntityArmorStand {
     constructor(world: World, x: Double, y: Double, z: Double, yaw: Float) : super(EntityTypes.a(CustomEntityTypes.VEHICLE_MODEL.key).get() as EntityTypes<SeatArmorStand>, world) {
         super.setPosition(x, y, z)
         super.setYawPitch(yaw, 0.0F)
-        val nbt = NBTTagCompound()
-        nbt.setBoolean("NoBasePlate", true)
-        nbt.setBoolean("Invulnerable", true)
-        nbt.setBoolean("PersistenceRequired", true)
-        nbt.setBoolean("NoGravity", false)
-        nbt.setBoolean("Invisible", true)
-        nbt.setBoolean("Marker", false) // ArmorStand has a very small collision box when true
-        nbt.setBoolean("Small", true)
-        this.a(nbt)
+        this.a(EntityVehicleHelper.modelNBT())
         //乗れるブロックの高さ
         this.K = 1.0f
     }
