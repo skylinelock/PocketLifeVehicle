@@ -116,9 +116,10 @@ class PlayerEventListener : Listener {
             return
         }
         if (this.plugin.parkingViolationList.findEntry(player) != null) {
-            player.sendActionBar(ChatColor.RED + "乗り物を設置するには駐車違反料を支払う必要があります")
+            player.sendActionBar(ChatColor.RED + "乗り物を利用するにはスマホから駐車違反料を支払う必要があります")
             return
         }
+        // if (VehicleManager.hasVehicle())
         if (event.blockFace != BlockFace.UP) {
             player.sendActionBar(ChatColor.RED + "乗り物は地面にのみ設置できます")
             return
@@ -207,7 +208,7 @@ class PlayerEventListener : Listener {
     }
 
     private fun placeVehicleEntity(vehicleStack: ItemStack, owner: UUID, model: Model, location: Location, fuel: Float) {
-        VehicleManager.pop(owner)
+        // VehicleManager.pop(owner)
         VehicleManager.placeEntity(owner, model, location, fuel)
         location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.0f)
         vehicleStack.subtract()
