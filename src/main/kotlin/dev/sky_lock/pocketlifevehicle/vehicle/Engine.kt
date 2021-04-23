@@ -5,33 +5,33 @@ import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 /**
  * @author sky_lock
  */
-class Engine(private val status: CarStatus, private val model: Model) {
-    private val speed: Speed = status.speed
+class Engine(private val state: State, private val model: Model) {
+    private val speed: Speed = state.speed
     var currentSpeed = 0f
         private set
 
     fun consumeFuel(sideInput: Float) {
-        if (status.fuel - 0.05f <= 0.0f) {
-            status.fuel = 0.0f
+        if (state.fuel - 0.05f <= 0.0f) {
+            state.fuel = 0.0f
             return
         }
         if (speed.approximate() == 0.0f && sideInput == 0.0f) {
             return
         }
-        status.fuel = status.fuel - 0.05f
+        state.fuel = state.fuel - 0.05f
     }
 
     fun refuel(added: Float): Boolean {
-        val current = status.fuel
+        val current = state.fuel
         val max = model.spec.maxFuel
         if (current >= max) {
             return false
         }
         if (current + added > max) {
-            status.fuel = max
+            state.fuel = max
             return true
         }
-        status.fuel = current + added
+        state.fuel = current + added
         return true
     }
 
@@ -45,7 +45,7 @@ class Engine(private val status: CarStatus, private val model: Model) {
         }
         val maxSpeed = model.spec.maxSpeed
         if (speed.exact() > maxSpeed.value) {
-            if (status.fuel <= 0.0f) {
+            if (state.fuel <= 0.0f) {
                 speed.zeroize()
             }
             currentSpeed = speed.exact()
@@ -57,14 +57,14 @@ class Engine(private val status: CarStatus, private val model: Model) {
         if (speed.isNegative) {
             speed.decrease()
         }
-        if (status.fuel <= 0.0f) {
+        if (state.fuel <= 0.0f) {
             speed.zeroize()
         }
         currentSpeed = speed.exact()
     }
 
     fun stop() {
-        status.speed.zeroize()
+        state.speed.zeroize()
     }
 
     fun speedPerSecond(): Float {

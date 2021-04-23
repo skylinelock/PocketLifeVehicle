@@ -17,11 +17,11 @@ import java.util.*
  * @author sky_lock
  */
 open class Vehicle constructor(val model: Model) {
-    val seats: MutableList<SeatArmorStand> = ArrayList()
-    var center: ModelArmorStand? = null
-        private set
+    private val seats: MutableList<SeatArmorStand> = ArrayList()
+    private var center: ModelArmorStand? = null
+
     private var menu: CarUtilMenu? = null
-    val status: CarStatus = CarStatus()
+    val state: State = State()
     lateinit var engineSound: EngineSound
     val engine: Engine
     val steering: Steering
@@ -30,9 +30,9 @@ open class Vehicle constructor(val model: Model) {
     var isUndrivable = false
 
     init {
-        engine = Engine(status, model)
-        steering = Steering(status)
-        meterPanel = MeterPanel(status, model, engine)
+        engine = Engine(state, model)
+        steering = Steering(state)
+        meterPanel = MeterPanel(state, model, engine)
     }
 
     val location: Location
@@ -58,11 +58,11 @@ open class Vehicle constructor(val model: Model) {
 
     open fun spawn(location: Location) {
         center = ModelArmorStand((location.world as CraftWorld).handle, location.x, location.y, location.z, location.yaw)
-        status.location = location
+        state.location = location
         // EngineSound初期化してからassemble
         this.engineSound = EngineSound(location)
         center!!.assemble(this)
-        status.yaw = location.yaw
+        state.yaw = location.yaw
         val world = center!!.world
         world.addEntity(center)
 

@@ -5,7 +5,7 @@ import org.bukkit.Location
 /**
  * @author sky_lock
  */
-class CarStatus {
+class State {
     val speed: Speed = Speed()
     var fuel = 0f
     var yaw = 0f

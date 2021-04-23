@@ -8,33 +8,33 @@ import kotlin.math.roundToInt
 /**
  * @author sky_lock
  */
-class Steering(private val status: CarStatus) {
+class Steering(private val state: State) {
     fun right(driver: Player) {
-        val speed = status.speed
-        if (status.fuel.roundToInt() == 0 || speed.isApproximateZero) {
+        val speed = state.speed
+        if (state.fuel.roundToInt() == 0 || speed.isApproximateZero) {
             return
         }
         if (speed.isPositive) {
-            status.yaw = status.yaw + 4.0f
+            state.yaw = state.yaw + 4.0f
         } else {
-            status.yaw = status.yaw - 4.0f
+            state.yaw = state.yaw - 4.0f
         }
-        if (status.isWieldHand) {
+        if (state.isWieldHand) {
             raiseLeftArm(driver)
         }
     }
 
     fun left(driver: Player) {
-        val speed = status.speed
-        if (status.fuel.roundToInt() == 0 || speed.isApproximateZero) {
+        val speed = state.speed
+        if (state.fuel.roundToInt() == 0 || speed.isApproximateZero) {
             return
         }
         if (speed.isPositive) {
-            status.yaw = status.yaw - 4.0f
+            state.yaw = state.yaw - 4.0f
         } else {
-            status.yaw = status.yaw + 4.0f
+            state.yaw = state.yaw + 4.0f
         }
-        if (status.isWieldHand) {
+        if (state.isWieldHand) {
             raiseRightArm(driver)
         }
     }

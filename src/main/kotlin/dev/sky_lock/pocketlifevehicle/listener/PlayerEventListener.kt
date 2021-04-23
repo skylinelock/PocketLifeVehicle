@@ -185,7 +185,7 @@ class PlayerEventListener : Listener {
                 armorStand.addPassenger(player)
                 return
             }
-            if (vehicle.status.isLocked) {
+            if (vehicle.state.isLocked) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }
@@ -199,7 +199,7 @@ class PlayerEventListener : Listener {
                 vehicle.addPassenger(player)
                 return
             }
-            if (vehicle.status.isLocked) {
+            if (vehicle.state.isLocked) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }

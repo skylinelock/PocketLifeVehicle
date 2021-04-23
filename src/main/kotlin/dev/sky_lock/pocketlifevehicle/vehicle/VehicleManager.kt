@@ -6,7 +6,6 @@ import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolation
-import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.*
 import org.bukkit.entity.ArmorStand
@@ -22,13 +21,13 @@ object VehicleManager {
 
     fun placeEntity(vehicle: Vehicle): Boolean {
         val playerUid = this.getOwnerUid(vehicle) ?: return false
-        return this.placeEntity(playerUid, vehicle.model, vehicle.location, vehicle.status.fuel)
+        return this.placeEntity(playerUid, vehicle.model, vehicle.location, vehicle.state.fuel)
     }
 
     // 呼ぶ前に乗り物の設置が許可されているワールドか確認する
     fun placeEntity(playerUid: UUID, model: Model, location: Location, fuel: Float): Boolean {
         val vehicle = Vehicle(model)
-        vehicle.status.fuel = fuel
+        vehicle.state.fuel = fuel
         vehicle.spawn(location)
         this.kill(playerUid)
         vehicleMap[playerUid] = vehicle
@@ -60,7 +59,7 @@ object VehicleManager {
 
     private fun pop(playerUid: UUID, vehicle: Vehicle) {
         val model = vehicle.model
-        val fuel = vehicle.status.fuel
+        val fuel = vehicle.state.fuel
         val itemStack = ItemStackBuilder(model.itemStack)
                 .setPersistentData(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE, playerUid)
                 .setPersistentData(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT, fuel)
@@ -103,7 +102,7 @@ object VehicleManager {
 
     fun registerIllegalParking(playerUid: UUID) {
         val vehicle = vehicleMap[playerUid] ?: return
-        val entry = ParkingViolation(Date(), playerUid, vehicle.model.id, vehicle.status.fuel)
+        val entry = ParkingViolation(Date(), playerUid, vehicle.model.id, vehicle.state.fuel)
         VehiclePlugin.instance.parkingViolationList.registerNewEntry(entry)
         this.kill(playerUid)
     }
@@ -111,7 +110,7 @@ object VehicleManager {
     fun registerAllIllegalParkings() {
         vehicleMap.entries.removeIf { entry ->
             val vehicle = entry.value
-            val parkingEntry = ParkingViolation(Date(), entry.key, vehicle.model.id, vehicle.status.fuel)
+            val parkingEntry = ParkingViolation(Date(), entry.key, vehicle.model.id, vehicle.state.fuel)
             VehiclePlugin.instance.parkingViolationList.registerNewEntry(parkingEntry)
             vehicle.remove()
             return@removeIf true
@@ -129,7 +128,7 @@ object VehicleManager {
             return false
         }
         kill(player.uniqueId)
-        return placeEntity(player.uniqueId, vehicle.model, player.location, vehicle.status.fuel)
+        return placeEntity(player.uniqueId, vehicle.model, player.location, vehicle.state.fuel)
     }
 
     fun restore(player: Player): Boolean {

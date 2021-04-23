@@ -113,7 +113,7 @@ class ModelArmorStand : EntityArmorStand {
         }
 
         // yawとpitchを設定
-        this.yaw = vehicle.status.yaw
+        this.yaw = vehicle.state.yaw
         this.lastYaw = this.yaw
         this.pitch = 0.0f
         this.setYawPitch(yaw, pitch)
@@ -123,8 +123,8 @@ class ModelArmorStand : EntityArmorStand {
         this.o(vehicle.engine.currentSpeed)
         super.e(vec3d.e(Vec3D(0.0, 0.0, 3.0)))
 
-        vehicle.status.location = location
+        vehicle.state.location = location
         vehicle.engineSound.location = this.location
-        vehicle.engineSound.pitch = vehicle.status.speed.approximate() / vehicle.model.spec.maxSpeed.value
+        vehicle.engineSound.pitch = vehicle.state.speed.approximate() / vehicle.model.spec.maxSpeed.value
     }
 }
