@@ -78,9 +78,9 @@ class ModelArmorStand : EntityArmorStand {
             return super.a(entityPose)
         }
         val size = this.entityType.k()
-        val collideBox = vehicle!!.model.collideBox
-        val widthScale = collideBox.baseSide / size.width
-        val heightScale = collideBox.height / size.height
+        val boxSize = vehicle!!.model.size
+        val widthScale = boxSize.baseSide / size.width
+        val heightScale = boxSize.height / size.height
         return entityType.k().a(widthScale, heightScale)
     }
 

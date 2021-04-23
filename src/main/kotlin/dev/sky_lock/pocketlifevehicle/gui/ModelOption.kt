@@ -20,20 +20,21 @@ class ModelOption {
     var itemType: Material? = null
     var itemId = 0
         private set
-    var position: ItemPosition? = null
+    var itemPosition: ItemPosition? = null
         private set
     var collideBaseSide = 0.2f
     var collideHeight = 0.2f
     var isBig = false
     var height = 0f
     var sound: Sound? = null
+    var position: Position? = null
 
     fun setItemID(itemId: Int) {
         this.itemId = itemId
     }
 
     fun setItemPosition(position: ItemPosition?) {
-        this.position = position
+        this.itemPosition = position
     }
 
     val isItemValid: Boolean
@@ -45,12 +46,15 @@ class ModelOption {
                 id = id!!,
                 name = name!!,
                 lore = lore,
-                spec = Spec(maxFuel, maxSpeed!!, capacity!!, SteeringLevel.NORMAL),
-                itemOption = ItemOption(itemType!!, itemId, position!!),
-                collideBox = CollideBox(collideBaseSide, collideHeight),
+                spec = Spec(maxFuel, maxSpeed!!, SteeringLevel.NORMAL),
+                itemOption = ItemOption(itemType!!, itemId, itemPosition!!),
+                size = Size(collideBaseSide, collideHeight),
                 isBig = isBig,
                 height = height,
-                sound = Sound.NONE
+                sound = Sound.NONE,
+                capacity = capacity!!,
+            //TODO
+                position = Position(0.0F, 0.0F, 0.0F)
         )
     }
 
@@ -58,7 +62,7 @@ class ModelOption {
         return id != null && name != null &&
                 maxFuel != 0.0f && maxSpeed != null && capacity != null &&
                 itemType != null && itemId != 0 &&
-                position != null && height != 0.0f
+                itemPosition != null && height != 0.0f
     }
 
     fun unfilledOptionWarning(): List<String> {
@@ -86,7 +90,7 @@ class ModelOption {
         if (itemType == null || itemId == 0) {
             lore.add(ChatColor.RED + "- アイテム")
         }
-        if (position == null) {
+        if (itemPosition == null) {
             lore.add(ChatColor.RED + "- アイテム位置")
         }
         if (height == 0.0f) {

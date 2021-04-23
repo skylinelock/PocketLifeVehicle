@@ -1,10 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.config
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import dev.sky_lock.pocketlifevehicle.vehicle.model.CollideBox
-import dev.sky_lock.pocketlifevehicle.vehicle.model.ItemOption
-import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import dev.sky_lock.pocketlifevehicle.vehicle.model.Spec
+import dev.sky_lock.pocketlifevehicle.vehicle.model.*
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.configuration.serialization.ConfigurationSerialization
 import java.nio.file.Path
@@ -21,7 +18,8 @@ class ModelConfiguration {
         ConfigurationSerialization.registerClass(Model::class.java)
         ConfigurationSerialization.registerClass(Spec::class.java)
         ConfigurationSerialization.registerClass(ItemOption::class.java)
-        ConfigurationSerialization.registerClass(CollideBox::class.java)
+        ConfigurationSerialization.registerClass(Size::class.java)
+        ConfigurationSerialization.registerClass(Position::class.java)
         this.path = VehiclePlugin.instance.dataFolder.toPath().resolve("vehicles.yml")
     }
 

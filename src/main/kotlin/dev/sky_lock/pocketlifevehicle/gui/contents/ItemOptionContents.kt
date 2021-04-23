@@ -26,8 +26,8 @@ class ItemOptionContents(private val player: Player) : MenuContents() {
                 itemItem = ItemStackBuilder(itemItem).addGlowEffect().setLore(session.itemType!!.name, session.itemId.toString()).build()
                 updateItemStack(21, itemItem)
             }
-            if (session.position != null) {
-                positionItem = ItemStackBuilder(positionItem).addGlowEffect().setLore(session.position!!.label).build()
+            if (session.itemPosition != null) {
+                positionItem = ItemStackBuilder(positionItem).addGlowEffect().setLore(session.itemPosition!!.label).build()
                 updateItemStack(23, positionItem)
             }
             menu.update()

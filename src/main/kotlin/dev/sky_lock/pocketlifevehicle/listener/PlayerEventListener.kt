@@ -191,7 +191,7 @@ class PlayerEventListener : Listener {
             }
             armorStand.addPassenger(player)
         } else if (handle is ModelArmorStand) {
-            if (vehicle.passengers.size >= vehicle.model.spec.capacity.value()) {
+            if (vehicle.passengers.size >= vehicle.model.capacity.value()) {
                 sendRefusedReason(player, "この乗り物は満員です")
                 return
             }

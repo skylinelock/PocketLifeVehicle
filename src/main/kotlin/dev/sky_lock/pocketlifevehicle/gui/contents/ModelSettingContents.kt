@@ -165,9 +165,9 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                 steeringItem = ItemStackBuilder(steeringItem).setLore(session.steeringLevel!!.name).addGlowEffect().build()
                 updateItemStack(steeringSlot.toInt(), steeringItem)
             }
-            if (session.isItemValid && session.position != null) {
+            if (session.isItemValid && session.itemPosition != null) {
                 val modelId = session.itemId
-                itemOptionItem = ItemStackBuilder(itemOptionItem).setLore(session.itemType!!.name, modelId.toString(), session.position!!.label).addGlowEffect().build()
+                itemOptionItem = ItemStackBuilder(itemOptionItem).setLore(session.itemType!!.name, modelId.toString(), session.itemPosition!!.label).addGlowEffect().build()
                 updateItemStack(itemSlot.toInt(), itemOptionItem)
             }
             if (session.collideHeight != 0.0f && session.collideBaseSide != 0.0f) {

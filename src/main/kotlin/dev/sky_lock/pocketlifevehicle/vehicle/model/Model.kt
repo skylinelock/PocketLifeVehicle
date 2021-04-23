@@ -15,7 +15,9 @@ import java.util.*
 @SerializableAs("Model")
 class Model constructor(val id: String, val name: String,
                         val lore: List<String>, val spec: Spec, val itemOption: ItemOption,
-                        val collideBox: CollideBox, val isBig: Boolean, val height: Float, val sound: Sound) : ConfigurationSerializable {
+                        val size: Size, val isBig: Boolean, val height: Float, val sound: Sound,
+                        val capacity: Capacity,
+                        val position: Position) : ConfigurationSerializable {
 
     val itemStack: ItemStack
         get() {
@@ -35,10 +37,12 @@ class Model constructor(val id: String, val name: String,
         map["lore"] = lore
         map["spec"] = spec
         map["item"] = itemOption
-        map["collidebox"] = collideBox
+        map["size"] = size
         map["big"] = isBig
         map["height"] = height
         map["sound"] = sound.toString()
+        map["capacity"] = capacity.value()
+        map["position"] = position
         return map
     }
 
@@ -50,20 +54,24 @@ class Model constructor(val id: String, val name: String,
             val lore = (map["lore"] as List<*>).filterIsInstance<String>()
             val spec = map["spec"] as Spec
             val itemOption = map["item"] as ItemOption
-            val collideBox = map["collidebox"] as CollideBox
+            val size = map["size"] as Size
             val isBig = map["big"].toString().toBoolean()
             val height = (map["height"] as Double).toFloat()
             val sound = Sound.valueOf(map["sound"].toString())
+            val capacity = Capacity.valueOf(map["capacity"] as Int)
+            val position = map["position"] as Position
             return Model(
                     id = id,
                     name = name,
                     lore = lore,
                     spec = spec,
                     itemOption = itemOption,
-                    collideBox = collideBox,
+                    size = size,
                     isBig = isBig,
                     height = height,
-                    sound = sound
+                    sound = sound,
+                    capacity = capacity,
+                    position = position
             )
         }
     }

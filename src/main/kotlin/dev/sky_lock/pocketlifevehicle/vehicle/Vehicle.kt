@@ -66,14 +66,14 @@ open class Vehicle constructor(val model: Model) {
         val world = center!!.world
         world.addEntity(center)
 
-        when (model.spec.capacity) {
-            Capacity.ONE_SEAT -> {
+        when (model.capacity) {
+            Capacity.SINGLE -> {
                 val driver = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
                 driver.assemble(this, SeatPosition.ONE_DRIVER)
                 seats.add(driver)
                 seats.forEach { entity: SeatArmorStand -> center!!.getWorld().addEntity(entity) }
             }
-            Capacity.TWO_SEATS -> {
+            Capacity.DOUBLE -> {
                 val driver = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
                 driver.assemble(this, SeatPosition.TWO_DRIVER)
                 val passenger = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
@@ -82,7 +82,7 @@ open class Vehicle constructor(val model: Model) {
                 seats.add(passenger)
                 seats.forEach { entity: SeatArmorStand -> center!!.getWorld().addEntity(entity) }
             }
-            Capacity.FOUR_SEATS -> {
+            Capacity.QUAD -> {
                 val driver = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
                 driver.assemble(this, SeatPosition.FOUR_DRIVER)
                 val passenger = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)

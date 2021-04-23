@@ -7,8 +7,8 @@ import java.util.*
 /**
  * @author sky_lock
  */
-@SerializableAs("CollideBox")
-class CollideBox(val baseSide: Float, val height: Float) : ConfigurationSerializable {
+@SerializableAs("Size")
+class Size(val baseSide: Float, val height: Float) : ConfigurationSerializable {
 
     override fun serialize(): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
@@ -19,10 +19,10 @@ class CollideBox(val baseSide: Float, val height: Float) : ConfigurationSerializ
 
     companion object {
         @JvmStatic
-        fun deserialize(map: Map<String, Any>): CollideBox {
+        fun deserialize(map: Map<String, Any>): Size {
             val baseSide = (map["baseside"] as Double).toFloat()
             val height = (map["height"] as Double).toFloat()
-            return CollideBox(baseSide, height)
+            return Size(baseSide, height)
         }
     }
 

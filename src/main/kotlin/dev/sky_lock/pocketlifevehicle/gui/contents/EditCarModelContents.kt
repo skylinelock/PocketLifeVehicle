@@ -43,9 +43,9 @@ class EditCarModelContents(player: Player) : MenuContents() {
             val spec = model.spec
             desc.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + spec.maxFuel)
             desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + spec.maxSpeed.label)
-            desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + spec.capacity.value())
+            desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + model.capacity.value())
             val itemOption = model.itemOption
-            val box = model.collideBox
+            val box = model.size
             desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + itemOption.position.label)
             desc.add(ChatColor.DARK_AQUA + "当たり判定(高さ): " + ChatColor.AQUA + box.height)
             desc.add(ChatColor.DARK_AQUA + "当たり判定(底辺): " + ChatColor.AQUA + box.baseSide)
@@ -62,12 +62,12 @@ class EditCarModelContents(player: Player) : MenuContents() {
                         session.lore = model.lore
                         session.maxFuel = spec.maxFuel
                         session.maxSpeed = spec.maxSpeed
-                        session.capacity = spec.capacity
+                        session.capacity = model.capacity
                         session.itemType = itemOption.type
                         session.setItemID(itemOption.id)
                         session.setItemPosition(itemOption.position)
-                        session.collideBaseSide = model.collideBox.baseSide
-                        session.collideHeight = model.collideBox.height
+                        session.collideBaseSide = model.size.baseSide
+                        session.collideHeight = model.size.height
                         session.isBig = model.isBig
                         session.height = model.height
                         session.sound = model.sound
