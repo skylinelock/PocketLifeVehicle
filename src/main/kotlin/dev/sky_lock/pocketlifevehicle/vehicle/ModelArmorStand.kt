@@ -129,7 +129,7 @@ class ModelArmorStand : EntityArmorStand {
         this.aM = this.aK
 
         this.o(vehicle.engine.currentSpeed)
-        super.e(vec3d.e(Vec3D(0.0, 1.0, 3.0)))
+        super.e(vec3d.e(Vec3D(0.0, 0.0, 3.0)))
 
         vehicle.status.location = location
         vehicle.engineSound.location = this.location
