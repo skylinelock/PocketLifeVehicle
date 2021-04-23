@@ -5,7 +5,7 @@ package dev.sky_lock.pocketlifevehicle.vehicle.model
  * @author sky_lock
  */
 enum class Capacity(private val value: Int) {
-    ONE_SEAT(1), TWO_SEATS(2), FOR_SEATS(4);
+    ONE_SEAT(1), TWO_SEATS(2), FOUR_SEATS(4);
 
     fun value(): Int {
         return value

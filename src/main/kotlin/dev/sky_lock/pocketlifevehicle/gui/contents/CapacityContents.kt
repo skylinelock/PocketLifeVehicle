@@ -32,7 +32,7 @@ class CapacityContents(player: Player) : MenuContents() {
                 flipPage(player, ModelMenuIndex.SETTING.ordinal)
             })
             addSlot(Slot(24, ItemStackBuilder(Material.BIRCH_PLANKS, 1).setName("4").build()) {
-                session.capacity = Capacity.FOR_SEATS
+                session.capacity = Capacity.FOUR_SEATS
                 flipPage(player, ModelMenuIndex.SETTING.ordinal)
             })
         }

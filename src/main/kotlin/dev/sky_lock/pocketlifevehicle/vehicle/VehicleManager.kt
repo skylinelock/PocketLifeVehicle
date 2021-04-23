@@ -2,7 +2,6 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
@@ -28,17 +27,7 @@ object VehicleManager {
 
     // 呼ぶ前に乗り物の設置が許可されているワールドか確認する
     fun placeEntity(playerUid: UUID, model: Model, location: Location, fuel: Float): Boolean {
-        val vehicle = when (model.spec.capacity) {
-            Capacity.ONE_SEAT -> {
-                OneSeatVehicle(model)
-            }
-            Capacity.TWO_SEATS -> {
-                TwoSeatsVehicle(model)
-            }
-            Capacity.FOR_SEATS -> {
-                FourSeatsVehicle(model)
-            }
-        }
+        val vehicle = Vehicle(model)
         vehicle.status.fuel = fuel
         vehicle.spawn(location)
         this.kill(playerUid)
