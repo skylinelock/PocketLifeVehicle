@@ -28,9 +28,9 @@ class EditCarModelContents(player: Player) : MenuContents() {
         newSession(player.uniqueId)
         super.addSlot(Slot(4, ItemStackBuilder(Material.ENDER_EYE, 1).setName(ChatColor.RED + "閉じる").build()) { event: InventoryClickEvent -> of(player).ifPresent { menu: InventoryMenu -> menu.close((event.whoClicked as Player)) } })
         var modelSlot = 9
-        ModelRegistry.forEach { model ->
+        for (model in ModelRegistry.set()) {
             if (modelSlot > 44) {
-                return@forEach
+                break
             }
             val desc: MutableList<String> = ArrayList()
             desc.add(ChatColor.DARK_AQUA + "名前: " + ChatColor.AQUA + model.name)

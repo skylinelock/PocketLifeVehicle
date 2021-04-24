@@ -70,11 +70,9 @@ class CommandHandler : CommandExecutor, TabExecutor {
         } else if (args.size == 3 && Permission.ADMIN_COMMAND.obtained(sender)) {
             val input = args[2]
             if (args[0].equals("give", ignoreCase = true) || args[0].equals("spawn", ignoreCase = true)) {
-                ModelRegistry.forEach { model: Model ->
+                for (model in ModelRegistry.set()) {
                     val id = model.id
-                    if (id.startsWith(input)) {
-                        tabCompletes.add(id)
-                    }
+                    if (id.startsWith(input)) tabCompletes.add(id)
                 }
             }
         }

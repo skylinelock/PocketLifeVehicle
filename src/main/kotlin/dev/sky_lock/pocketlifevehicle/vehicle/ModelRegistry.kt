@@ -39,8 +39,8 @@ object ModelRegistry {
         this.config.writeModels(this.models)
     }
 
-    fun forEach(action: (Model) -> Unit) {
-        models.forEach(action)
+    fun set(): Set<Model> {
+        return models.toSet()
     }
 
     fun findByItemStack(itemStack: ItemStack): Model? {

@@ -1,8 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.inventory
 
-import dev.sky_lock.pocketlifevehicle.inventory.ContainerTextEdit
+import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryVehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
-import net.minecraft.server.v1_14_R1.World
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventoryPlayer
