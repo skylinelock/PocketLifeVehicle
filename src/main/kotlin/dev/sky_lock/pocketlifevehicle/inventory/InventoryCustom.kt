@@ -58,10 +58,6 @@ abstract class InventoryCustom(size: Int, title: String) : CraftInventoryCustom(
 
     open fun onUpdate() {}
 
-    fun close() {
-        slots.clear()
-    }
-
     private fun setAction(index: Int, action: (InventoryClickEvent) -> Unit) {
         slots[index] = action
     }
@@ -69,6 +65,11 @@ abstract class InventoryCustom(size: Int, title: String) : CraftInventoryCustom(
     fun setSlot(index: Int, item: ItemStack, action: (InventoryClickEvent) -> Unit) {
         setItem(index, item)
         setAction(index, action)
+    }
+
+    override fun clear(i: Int) {
+        super.clear(i)
+        slots.remove(i)
     }
 
     fun size(): Int {
