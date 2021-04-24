@@ -23,17 +23,26 @@ class CapacityContents(player: Player) : MenuContents() {
 
     init {
         of(player.uniqueId).ifPresent { session: ModelOption ->
-            addSlot(Slot(20, ItemStackBuilder(Material.OAK_PLANKS, 1).setName("1").build()) {
+            addSlot(Slot(11, ItemStackBuilder(Material.OAK_PLANKS, 1).setName("1").build()) {
                 session.capacity = Capacity.SINGLE
                 flipPage(player, ModelMenuIndex.SETTING.ordinal)
             })
-            addSlot(Slot(22, ItemStackBuilder(Material.SPRUCE_PLANKS, 1).setName("2").build()) {
+            addSlot(Slot(13, ItemStackBuilder(Material.SPRUCE_PLANKS, 1).setName("2").build()) {
                 session.capacity = Capacity.DOUBLE
                 flipPage(player, ModelMenuIndex.SETTING.ordinal)
             })
-            addSlot(Slot(24, ItemStackBuilder(Material.BIRCH_PLANKS, 1).setName("4").build()) {
+            addSlot(Slot(15, ItemStackBuilder(Material.BIRCH_PLANKS, 1).setName("4").build()) {
                 session.capacity = Capacity.QUAD
                 flipPage(player, ModelMenuIndex.SETTING.ordinal)
+            })
+            addSlot(Slot(29, ItemStackBuilder(Material.WHITE_STAINED_GLASS, 1).setName("オフセット").build()) {
+
+            })
+            addSlot(Slot(31, ItemStackBuilder(Material.LIGHT_BLUE_STAINED_GLASS, 1).setName("奥行き").build()) {
+
+            })
+            addSlot(Slot(33, ItemStackBuilder(Material.PINK_STAINED_GLASS, 1).setName("幅").build()) {
+
             })
         }
     }

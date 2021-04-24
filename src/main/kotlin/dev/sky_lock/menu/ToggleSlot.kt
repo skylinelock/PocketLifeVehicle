@@ -12,9 +12,8 @@ class ToggleSlot(index: Int, beforeStart: Boolean, before: ItemStack, after: Ite
     private val beforeClick: (InventoryClickEvent) -> Unit
     private val afterClick: (InventoryClickEvent) -> Unit
     private var current: ItemStack? = null
-    override fun getItemStack(): ItemStack {
-        return current!!
-    }
+    override var itemStack: ItemStack = before
+        get() = current!!
 
     override fun click(event: InventoryClickEvent) {
         if (current == before) {

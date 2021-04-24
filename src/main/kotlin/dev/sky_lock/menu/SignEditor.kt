@@ -9,6 +9,7 @@ import com.comphenix.protocol.wrappers.BlockPosition
 import dev.sky_lock.pocketlifevehicle.packet.BlockChangePacket
 import dev.sky_lock.pocketlifevehicle.packet.OpenSignEditorPacket
 import dev.sky_lock.pocketlifevehicle.packet.UpdateSignPacket
+import net.md_5.bungee.api.chat.ClickEvent
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin

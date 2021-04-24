@@ -86,7 +86,7 @@ abstract class InventoryMenu(title: String,
     fun update() {
         openingContents.ifPresent { content: MenuContents ->
             inventory.clear()
-            content.getSlots().forEach(Consumer { slot: Slot -> inventory.setItem(slot.index(), slot.getItemStack()) })
+            content.getSlots().forEach(Consumer { slot: Slot -> inventory.setItem(slot.index, slot.itemStack) })
         }
     }
 

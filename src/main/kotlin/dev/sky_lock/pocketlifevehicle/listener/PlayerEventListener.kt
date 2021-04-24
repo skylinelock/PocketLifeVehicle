@@ -5,6 +5,7 @@ import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
+import dev.sky_lock.pocketlifevehicle.inventory.openVehicleUtilityMenu
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
@@ -173,7 +174,7 @@ class PlayerEventListener : Listener {
                 sendRefusedReason(player, "この乗り物は $ownerName が所有しています")
                 return
             }
-            vehicle.openMenu(player)
+            player.openVehicleUtilityMenu(vehicle)
             return
         }
 

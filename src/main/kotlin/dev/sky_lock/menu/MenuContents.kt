@@ -18,7 +18,7 @@ abstract class MenuContents {
     }
 
     fun updateItemStack(index: Int, newStack: ItemStack) {
-        slots.stream().filter { slot: Slot -> slot.index() == index }.findFirst().ifPresent { slot: Slot -> slot.setItemStack(newStack) }
+        slots.stream().filter { slot: Slot -> slot.index == index }.findFirst().ifPresent { slot: Slot -> slot.itemStack = newStack }
     }
 
     fun getSlots(): List<Slot> {
@@ -30,11 +30,11 @@ abstract class MenuContents {
     }
 
     fun removeSlot(index: Int) {
-        slots.stream().filter { slot: Slot -> slot.index() == index }.findFirst().ifPresent { o: Slot -> slots.remove(o) }
+        slots.stream().filter { slot: Slot -> slot.index == index }.findFirst().ifPresent { o: Slot -> slots.remove(o) }
     }
 
     fun click(event: InventoryClickEvent) {
-        slots.stream().filter { slot: Slot -> slot.index() == event.slot }.findFirst().ifPresent { slot: Slot -> slot.click(event) }
+        slots.stream().filter { slot: Slot -> slot.index == event.slot }.findFirst().ifPresent { slot: Slot -> slot.click(event) }
     }
 
     abstract fun onFlip(menu: InventoryMenu)
