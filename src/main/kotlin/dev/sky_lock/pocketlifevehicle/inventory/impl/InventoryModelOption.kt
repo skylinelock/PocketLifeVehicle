@@ -1,12 +1,16 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 /**
  * @author sky_lock
@@ -17,63 +21,78 @@ class InventoryModelOption(private val player: Player, private val model: Model)
     init {
         val deleteRedStone = ItemStackBuilder(Material.REDSTONE, 1).setName(ChatColor.RED + "削除する").build()
         setSlot(3, deleteRedStone) {
-
+            player.openInventory(InventoryConfirmDelete(
+                {
+                    player.openInventory(InventoryModelOption(player, model))
+                },
+                {
+                    val id = model.id
+                    ModelRegistry.unregister(id)
+                    VehicleManager.scrapAll(id)
+                    player.sendVehiclePrefixedMessage(ChatColor.GREEN + id + "を削除しました")
+                    player.openInventory(InventoryListModel(player))
+                }
+            ))
         }
 
-        val recreateEmerald = ItemStackBuilder(Material.EMERALD, 1).setName(ChatColor.GREEN + "IDを変更して再構成する").build()
+        val recreateEmerald = optionItem(Material.EMERALD, ChatColor.GREEN + "ID(" + ChatColor.YELLOW + model.id + ChatColor.GREEN + ")を変更する", ChatColor.RED + "※モデルは同じ設定で再作成されます")
         setSlot(5, recreateEmerald) {
 
         }
 
-        val nameTag = ItemStackBuilder(Material.NAME_TAG, 1).setName("名前").build()
+        val nameTag = optionItem(Material.NAME_TAG, ChatColor.GREEN + "名前", ChatColor.YELLOW + model.name)
         setSlot(11, nameTag) {
 
         }
 
-        val loreSign = ItemStackBuilder(Material.OAK_SIGN, 1).setName("説明").build()
+        val loreSign = optionItem(Material.OAK_SIGN, ChatColor.GREEN + "説明")
         setSlot(13, loreSign) {
 
         }
 
-        val heightArmor = ItemStackBuilder(Material.IRON_HORSE_ARMOR, 1).setName("座高").build()
+        val heightArmor = optionItem(Material.IRON_HORSE_ARMOR, ChatColor.GREEN + "座高", ChatColor.YELLOW + model.height.toString())
         setSlot(15, heightArmor) {
 
         }
-
-        val fuelCoalBlock = ItemStackBuilder(Material.COAL_BLOCK, 1).setName("燃料上限").build()
+        val spec = model.spec
+        val fuelCoalBlock = optionItem(Material.COAL_BLOCK, ChatColor.GREEN + "燃料上限", ChatColor.YELLOW + spec.maxFuel.toString())
         setSlot(20, fuelCoalBlock) {
 
         }
 
-        val speedDiamond = ItemStackBuilder(Material.DIAMOND, 1).setName("最高速度").build()
+        val speedDiamond = optionItem(Material.DIAMOND, ChatColor.GREEN + "最高速度", ChatColor.YELLOW + spec.maxSpeed.label)
         setSlot(22, speedDiamond) {
 
         }
 
-        val capacitySaddle = ItemStackBuilder(Material.SADDLE, 1).setName("乗車人数").build()
+        val capacitySaddle = optionItem(Material.SADDLE, ChatColor.GREEN + "乗車人数", ChatColor.YELLOW + model.capacity.value().toString())
         setSlot(24, capacitySaddle) {
 
         }
 
-        val collideBeacon = ItemStackBuilder(Material.BEACON, 1).setName("当たり判定").build()
+        val collideBeacon = optionItem(Material.BEACON, ChatColor.GREEN + "当たり判定")
         setSlot(29, collideBeacon) {
 
         }
 
-        val armorStand = ItemStackBuilder(Material.ARMOR_STAND, 1).setName("アーマースタンド").build()
+        val armorStand = optionItem(Material.ARMOR_STAND, ChatColor.GREEN + "アーマースタンド")
         setSlot(31, armorStand) {
 
         }
 
-        val flagRepeater = ItemStackBuilder(Material.REPEATER, 1).setName("フラグ").build()
+        val flagRepeater = optionItem(Material.REPEATER, ChatColor.GREEN + "フラグ")
         setSlot(33, flagRepeater) {
 
         }
 
-        val backBarrier = ItemStackBuilder(Material.BARRIER, 1).setName("戻る").build()
+        val backBarrier = optionItem(Material.BARRIER, ChatColor.RED + "戻る")
         setSlot(40, backBarrier) {
             player.openInventory(InventoryListModel(player))
         }
+    }
+
+    private fun optionItem(material: Material, title: String, vararg defaults: String): ItemStack {
+        return ItemStackBuilder(material, 1).setName(title).setLore(*defaults).build()
     }
 
 
