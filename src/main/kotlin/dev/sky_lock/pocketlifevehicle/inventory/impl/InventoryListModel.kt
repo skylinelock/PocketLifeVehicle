@@ -7,6 +7,7 @@ import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import java.util.ArrayList
 
@@ -14,7 +15,7 @@ import java.util.ArrayList
  * @author sky_lock
  */
 
-class InventoryListModel: InventoryCustom(27, "モデル一覧") {
+class InventoryListModel(private val player: Player): InventoryCustom(27, "モデル一覧") {
     private var page = 1
     private val models = ModelRegistry.set().toList()
 
@@ -23,7 +24,6 @@ class InventoryListModel: InventoryCustom(27, "モデル一覧") {
         setSlot(22, addVehicleCart) { event ->
 
         }
-
         setModelSlots()
     }
 
@@ -54,7 +54,7 @@ class InventoryListModel: InventoryCustom(27, "モデル一覧") {
                 break
             }
             setSlot(count % 18, modelItem(model)) { event ->
-
+                player.openInventory(InventoryModelOption(model))
             }
             count++
         }

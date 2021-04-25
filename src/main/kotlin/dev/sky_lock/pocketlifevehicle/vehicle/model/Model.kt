@@ -13,11 +13,11 @@ import java.util.*
  * @author sky_lock
  */
 @SerializableAs("Model")
-class Model constructor(val id: String, val name: String,
-                        val lore: List<String>, val spec: Spec, val itemOption: ItemOption,
-                        val size: Size, val isBig: Boolean, val height: Float, val sound: Sound,
-                        val capacity: Capacity,
-                        val position: Position) : ConfigurationSerializable {
+class Model constructor(val id: String, var name: String,
+                        var lore: List<String>, var spec: Spec, var itemOption: ItemOption,
+                        var size: Size, var isBig: Boolean, var height: Float, var sound: Sound,
+                        var capacity: Capacity,
+                        var position: Position) : ConfigurationSerializable {
 
     val itemStack: ItemStack
         get() {
