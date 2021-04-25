@@ -11,6 +11,6 @@ import org.bukkit.entity.Player
 class DebugCommand : ICommand, IAdminCommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         val player = sender as Player
-        player.openInventory(InventoryListModel())
+        player.openInventory(InventoryListModel(player))
     }
 }

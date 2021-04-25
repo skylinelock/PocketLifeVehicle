@@ -54,7 +54,7 @@ class InventoryListModel(private val player: Player): InventoryCustom(27, "ãƒ¢ãƒ
                 break
             }
             setSlot(count % 18, modelItem(model)) { event ->
-                player.openInventory(InventoryModelOption(model))
+                player.openInventory(InventoryModelOption(player, model))
             }
             count++
         }
