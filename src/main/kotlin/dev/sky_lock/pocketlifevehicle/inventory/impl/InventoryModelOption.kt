@@ -39,12 +39,12 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val recreateEmerald = optionItem(Material.EMERALD, ChatColor.GREEN + "ID(" + ChatColor.YELLOW + model.id + ChatColor.GREEN + ")を変更する", ChatColor.RED + "※モデルは同じ設定で再作成されます")
         setSlot(5, recreateEmerald) {
-            player.openModelTextEditor("ID", "id", null)
+            player.openModelTextEditor("ID", "id", ContainerModelTextEdit.ModifyType.ID, null)
         }
 
         val nameTag = optionItem(Material.NAME_TAG, ChatColor.GREEN + "名前", ChatColor.YELLOW + model.name)
         setSlot(11, nameTag) {
-            player.openModelTextEditor("名前設定", "", model)
+            player.openModelTextEditor("名前設定", "", ContainerModelTextEdit.ModifyType.NAME, model)
         }
 
         val loreSign = optionItem(Material.OAK_SIGN, ChatColor.GREEN + "説明")
@@ -54,7 +54,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val heightArmor = optionItem(Material.IRON_HORSE_ARMOR, ChatColor.GREEN + "座高", ChatColor.YELLOW + model.height.toString())
         setSlot(15, heightArmor) {
-            player.openModelTextEditor("座高設定", "", model)
+            player.openModelTextEditor("座高設定", "", ContainerModelTextEdit.ModifyType.HEIGHT, model)
         }
         val spec = model.spec
         val fuelCoalBlock = optionItem(Material.COAL_BLOCK, ChatColor.GREEN + "燃料上限", ChatColor.YELLOW + spec.maxFuel.toString())

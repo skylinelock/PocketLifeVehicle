@@ -2,8 +2,10 @@ package dev.sky_lock.pocketlifevehicle.inventory.impl
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import net.minecraft.server.v1_14_R1.*
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld
@@ -25,6 +27,7 @@ import org.bukkit.persistence.PersistentDataType
 class ContainerModelTextEdit constructor(
     title: String,
     default: String,
+    private val modifyType: ModifyType,
     val model: Model?,
     val player: Player
 ) : ContainerAnvil(
@@ -64,43 +67,67 @@ class ContainerModelTextEdit constructor(
 
     inner class CraftModelTextEditor(
         location: Location, inventory: IInventory, inventory2: IInventory, private val container: ContainerModelTextEdit
-    )
-        : CraftInventoryAnvil(location, inventory, inventory2, container) {
+    ) : CraftInventoryAnvil(location, inventory, inventory2, container) {
 
-            fun onClick(event: InventoryClickEvent) {
-                if (event.slotType == InventoryType.SlotType.OUTSIDE) {
-                    return
-                }
-                if (event.click.isShiftClick) {
-                    event.isCancelled = true
-                    return
-                }
-                // クリックしたインベントリーがBottomInventoryか
-                if (event.clickedInventory == event.view.bottomInventory) {
-                    return
-                }
-                // クリックしたインベントリーがTopInventoryか
-                if (event.inventory != event.clickedInventory) {
-                    return
-                }
-                if (event.action == InventoryAction.HOTBAR_SWAP || event.action == InventoryAction.HOTBAR_MOVE_AND_READD) {
-                    event.isCancelled = true
-                    return
-                }
-                if (!(event.click.isRightClick || event.click.isLeftClick)) {
-                    event.isCancelled = true
-                    return
-                }
-                event.isCancelled = true
-                event.result = Event.Result.DENY
-                val slot = event.slot
-                if (!(slot == 0 || slot == 2)) {
-                    return
-                }
-                event.view.topInventory.clear(0)
-                val model = model ?: return
-                player.openInventory(InventoryModelOption(player, model))
+        fun onClick(event: InventoryClickEvent) {
+            if (event.slotType == InventoryType.SlotType.OUTSIDE) {
+                return
             }
+            if (event.click.isShiftClick) {
+                event.isCancelled = true
+                return
+            }
+            // クリックしたインベントリーがBottomInventoryか
+            if (event.clickedInventory == event.view.bottomInventory) {
+                return
+            }
+            // クリックしたインベントリーがTopInventoryか
+            if (event.inventory != event.clickedInventory) {
+                return
+            }
+            if (event.action == InventoryAction.HOTBAR_SWAP || event.action == InventoryAction.HOTBAR_MOVE_AND_READD) {
+                event.isCancelled = true
+                return
+            }
+            if (!(event.click.isRightClick || event.click.isLeftClick)) {
+                event.isCancelled = true
+                return
+            }
+            event.isCancelled = true
+            event.result = Event.Result.DENY
+
+            val text = renameText
+            if (text == null || text.isBlank()) {
+                return
+            }
+            val model = model ?: ModelRegistry.default(text)
+            val slot = event.slot
+            if (slot == 2) {
+                event.view.topInventory.clear(0)
+                if (modifyType == ModifyType.ID_CREATE) {
+                    ModelRegistry.register(model)
+                }
+                player.openInventory(InventoryModelOption(player, model))
+                return
+            }
+            if (slot != 0) {
+                return
+            }
+            event.view.topInventory.clear(0)
+            when (modifyType) {
+                ModifyType.ID_CREATE -> {
+                    player.openInventory(InventoryModelList(player))
+                }
+                else -> {
+                    player.openInventory(InventoryModelOption(player, model))
+                }
+            }
+
+        }
+    }
+
+    enum class ModifyType {
+        ID_CREATE, ID, NAME, HEIGHT
     }
 
 }

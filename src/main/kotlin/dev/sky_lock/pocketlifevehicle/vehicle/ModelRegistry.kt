@@ -13,40 +13,43 @@ object ModelRegistry {
 
     private val config = ModelConfiguration()
     private val models = config.loadModels()
-    val DEFAULT = Model(
-        id = "id",
-        name = "name",
-        lore = listOf(),
-        spec = Spec(
-            maxFuel = 750F,
-            maxSpeed = MaxSpeed.NORMAL,
-            steeringLevel = SteeringLevel.NORMAL
-        ),
-        flag = Flag(
-            engineSound = true,
-            animation = true,
-            consumeFuel = true,
-            eventOnly = false
-        ),
-        size = Size(
-            baseSide = 1.0F,
-            height = 1.0F
-        ),
-        height = 1.0F,
-        sound = Sound.NONE,
-        modelOption = ModelOption(
-            type = Material.IRON_NUGGET,
-            id = 1,
-            position = ItemPosition.HEAD,
-            isBig = true
-        ),
-        seatOption = SeatOption(
-            capacity = Capacity.QUAD,
-            offset = 0.0F,
-            depth = 1.0F,
-            width = 1.0F
+
+    fun default(id: String): Model {
+        return Model(
+            id = id,
+            name = "name",
+            lore = listOf(),
+            spec = Spec(
+                maxFuel = 750F,
+                maxSpeed = MaxSpeed.NORMAL,
+                steeringLevel = SteeringLevel.NORMAL
+            ),
+            flag = Flag(
+                engineSound = true,
+                animation = true,
+                consumeFuel = true,
+                eventOnly = false
+            ),
+            size = Size(
+                baseSide = 1.0F,
+                height = 1.0F
+            ),
+            height = 1.0F,
+            sound = Sound.NONE,
+            modelOption = ModelOption(
+                type = Material.IRON_NUGGET,
+                id = 1,
+                position = ItemPosition.HEAD,
+                isBig = true
+            ),
+            seatOption = SeatOption(
+                capacity = Capacity.QUAD,
+                offset = 0.0F,
+                depth = 1.0F,
+                width = 1.0F
+            )
         )
-    )
+    }
 
     private fun checkIdEquality(model: Model, id: String): Boolean {
         return model.id.equals(id, ignoreCase = true)

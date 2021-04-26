@@ -22,7 +22,7 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
     init {
         val addVehicleCart = ItemStackBuilder(Material.CHEST_MINECART, 1).setName(ChatColor.GREEN + "車種を追加する").build()
         setSlot(22, addVehicleCart) { event ->
-            player.openModelTextEditor("ID", "id", ModelRegistry.DEFAULT)
+            player.openModelTextEditor("ID", "id", ContainerModelTextEdit.ModifyType.ID_CREATE, null)
         }
         setModelSlots()
     }
