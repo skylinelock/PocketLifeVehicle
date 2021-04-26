@@ -38,7 +38,7 @@ object ModelRegistry {
             sound = Sound.NONE,
             modelOption = ModelOption(
                 type = Material.IRON_NUGGET,
-                id = 1,
+                id = 1000,
                 position = ItemPosition.HEAD,
                 isBig = true
             ),
