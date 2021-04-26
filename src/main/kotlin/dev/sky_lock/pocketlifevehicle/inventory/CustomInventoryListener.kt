@@ -52,6 +52,11 @@ class CustomInventoryListener : Listener {
         val player = event.player as? Player ?: return
         val inventory = event.inventory
         if (inventory is InventoryCustom) inventory.onInventoryClose(player)
+        val craftInventory = inventory as CraftInventory
+        if (craftInventory !is ContainerModelTextEdit.CraftModelTextEditor) {
+            return
+        }
+        craftInventory.onClose(event)
     }
 
     @EventHandler
