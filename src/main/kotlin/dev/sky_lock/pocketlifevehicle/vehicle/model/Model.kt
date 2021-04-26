@@ -12,20 +12,22 @@ import org.bukkit.inventory.ItemStack
  * @author sky_lock
  */
 @SerializableAs("Model")
-class Model constructor(val id: String, var name: String,
-                        var lore: List<String>, val spec: Spec, val flag: Flag,
-                        val size: Size, var height: Float, var sound: Sound,
-                        val modelOption: ModelOption, val seatOption: SeatOption) : ConfigurationSerializable {
+class Model constructor(
+    val id: String, var name: String,
+    var lore: List<String>, val spec: Spec, val flag: Flag,
+    val size: Size, var height: Float, var sound: Sound,
+    val modelOption: ModelOption, val seatOption: SeatOption
+) : ConfigurationSerializable {
 
     val itemStack: ItemStack
         get() {
             return ItemStackBuilder(modelOption.type, 1)
-                    .setName(name)
-                    .setLore(*lore.map { text -> ChatColor.RESET + text }.toTypedArray())
-                    .setCustomModelData(modelOption.id)
-                    .setUnbreakable(true)
-                    .addItemFlags(*ItemFlag.values())
-                    .build()
+                .setName(name)
+                .setLore(*lore.map { text -> ChatColor.RESET + text }.toTypedArray())
+                .setCustomModelData(modelOption.id)
+                .setUnbreakable(true)
+                .addItemFlags(*ItemFlag.values())
+                .build()
         }
 
     override fun serialize(): Map<String, Any> {
@@ -57,16 +59,16 @@ class Model constructor(val id: String, var name: String,
             val modelOption = map["modelOption"] as ModelOption
             val seatOption = map["seatOption"] as SeatOption
             return Model(
-                    id = id,
-                    name = name,
-                    lore = lore,
-                    spec = spec,
-                    flag = flag,
-                    size = size,
-                    height = height,
-                    sound = sound,
-                    modelOption = modelOption,
-                    seatOption = seatOption
+                id = id,
+                name = name,
+                lore = lore,
+                spec = spec,
+                flag = flag,
+                size = size,
+                height = height,
+                sound = sound,
+                modelOption = modelOption,
+                seatOption = seatOption
             )
         }
     }

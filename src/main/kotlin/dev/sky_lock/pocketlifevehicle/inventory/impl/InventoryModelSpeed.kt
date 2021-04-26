@@ -17,9 +17,9 @@ import org.bukkit.inventory.ItemStack
 class InventoryModelSpeed(private val player: Player, private val model: Model): InventoryCustom(18, "最高速度") {
 
     init {
-        for (i in 0..9) {
+        for (i in 0..4) {
             val maxSpeed = MaxSpeed.values()[i]
-            setSlot(0, speedItem(maxSpeed)) { event ->
+            setSlot(2 * i, speedItem(maxSpeed)) { event ->
                 model.spec.maxSpeed = maxSpeed
                 addSelectGrowEffectToSingleItem(event)
             }

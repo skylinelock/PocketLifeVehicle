@@ -2,6 +2,7 @@ package dev.sky_lock.pocketlifevehicle.inventory.impl
 
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
+import dev.sky_lock.pocketlifevehicle.inventory.openModelTextEditor
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
@@ -21,6 +22,7 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
     init {
         val addVehicleCart = ItemStackBuilder(Material.CHEST_MINECART, 1).setName(ChatColor.GREEN + "車種を追加する").build()
         setSlot(22, addVehicleCart) { event ->
+            player.openModelTextEditor("ID", "id", ModelRegistry.DEFAULT)
         }
         setModelSlots()
     }

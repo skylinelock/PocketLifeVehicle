@@ -55,8 +55,6 @@ abstract class InventoryCustom(size: Int, title: String) : CraftInventoryCustom(
 
     open fun onInventoryClose(player: Player) {}
 
-    open fun onUpdate() {}
-
     private fun setAction(index: Int, action: (InventoryClickEvent) -> Unit) {
         slots[index] = action
     }
@@ -69,6 +67,9 @@ abstract class InventoryCustom(size: Int, title: String) : CraftInventoryCustom(
     fun addSelectGrowEffectToSingleItem(event: InventoryClickEvent) {
         val inventory = event.view.topInventory
         for (item in inventory.contents) {
+            if (item == null) {
+                continue
+            }
             if (item.itemMeta.hasEnchant(ItemStackBuilder.GLOW_ENCHANT)) {
                 item.itemMeta.removeEnchant(ItemStackBuilder.GLOW_ENCHANT)
             }

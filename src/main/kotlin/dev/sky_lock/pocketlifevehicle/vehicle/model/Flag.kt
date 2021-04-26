@@ -8,13 +8,14 @@ import org.bukkit.configuration.serialization.SerializableAs
  */
 
 @SerializableAs("Flag")
-class Flag(var engineSound: Boolean, var animation: Boolean, var consumeFuel: Boolean): ConfigurationSerializable {
+class Flag(var engineSound: Boolean, var animation: Boolean, var consumeFuel: Boolean, var eventOnly: Boolean): ConfigurationSerializable {
 
     override fun serialize(): MutableMap<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
         map["engineSound"] = engineSound
         map["animation"] = animation
         map["consumeFuel"] = consumeFuel
+        map["eventOnly"] = eventOnly
         return map
     }
 
@@ -24,7 +25,8 @@ class Flag(var engineSound: Boolean, var animation: Boolean, var consumeFuel: Bo
             val engineSound = map["engineSound"].toString().toBoolean()
             val animation = map["animation"].toString().toBoolean()
             val consumeFuel = map["consumeFuel"].toString().toBoolean()
-            return Flag(engineSound, animation, consumeFuel)
+            val eventOnly = map["eventOnly"].toString().toBoolean()
+            return Flag(engineSound, animation, consumeFuel, eventOnly)
         }
     }
 }
