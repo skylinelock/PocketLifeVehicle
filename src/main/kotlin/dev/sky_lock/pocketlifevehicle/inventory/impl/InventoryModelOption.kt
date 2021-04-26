@@ -3,6 +3,7 @@ package dev.sky_lock.pocketlifevehicle.inventory.impl
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
+import dev.sky_lock.pocketlifevehicle.inventory.openTextEditInventory
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
@@ -30,7 +31,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
                     ModelRegistry.unregister(id)
                     VehicleManager.scrapAll(id)
                     player.sendVehiclePrefixedMessage(ChatColor.GREEN + id + "を削除しました")
-                    player.openInventory(InventoryListModel(player))
+                    player.openInventory(InventoryModelList(player))
                 }
             ))
         }
@@ -42,7 +43,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val nameTag = optionItem(Material.NAME_TAG, ChatColor.GREEN + "名前", ChatColor.YELLOW + model.name)
         setSlot(11, nameTag) {
-
+            player.openTextEditInventory("名前設定", "")
         }
 
         val loreSign = optionItem(Material.OAK_SIGN, ChatColor.GREEN + "説明")
@@ -52,42 +53,42 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val heightArmor = optionItem(Material.IRON_HORSE_ARMOR, ChatColor.GREEN + "座高", ChatColor.YELLOW + model.height.toString())
         setSlot(15, heightArmor) {
-
+            player.openTextEditInventory("座高設定", "")
         }
         val spec = model.spec
         val fuelCoalBlock = optionItem(Material.COAL_BLOCK, ChatColor.GREEN + "燃料上限", ChatColor.YELLOW + spec.maxFuel.toString())
         setSlot(20, fuelCoalBlock) {
-
+            player.openInventory(InventoryModelFuel(player, model))
         }
 
         val speedDiamond = optionItem(Material.DIAMOND, ChatColor.GREEN + "最高速度", ChatColor.YELLOW + spec.maxSpeed.label)
         setSlot(22, speedDiamond) {
-
+            player.openInventory(InventoryModelSpeed(player, model))
         }
 
         val capacitySaddle = optionItem(Material.SADDLE, ChatColor.GREEN + "乗車人数", ChatColor.YELLOW + model.capacity.value().toString())
         setSlot(24, capacitySaddle) {
-
+            player.openInventory(InventoryModelCapacity(player, model))
         }
 
         val collideBeacon = optionItem(Material.BEACON, ChatColor.GREEN + "当たり判定")
         setSlot(29, collideBeacon) {
-
+            player.openInventory(InventoryModelCollideBox(player, model))
         }
 
         val armorStand = optionItem(Material.ARMOR_STAND, ChatColor.GREEN + "アーマースタンド")
         setSlot(31, armorStand) {
-
+            player.openInventory(InventoryModelArmorStand(player, model))
         }
 
         val flagRepeater = optionItem(Material.REPEATER, ChatColor.GREEN + "フラグ")
         setSlot(33, flagRepeater) {
-
+            player.openInventory(InventoryModelFlags(player, model))
         }
 
         val backBarrier = optionItem(Material.BARRIER, ChatColor.RED + "戻る")
         setSlot(40, backBarrier) {
-            player.openInventory(InventoryListModel(player))
+            player.openInventory(InventoryModelList(player))
         }
     }
 

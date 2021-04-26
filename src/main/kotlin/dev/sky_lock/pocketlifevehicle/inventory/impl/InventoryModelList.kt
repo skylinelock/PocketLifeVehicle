@@ -15,14 +15,13 @@ import java.util.ArrayList
  * @author sky_lock
  */
 
-class InventoryListModel(private val player: Player): InventoryCustom(27, "モデル一覧") {
+class InventoryModelList(private val player: Player): InventoryCustom(27, "モデル一覧") {
     private var page = 1
     private val models = ModelRegistry.set().toList()
 
     init {
         val addVehicleCart = ItemStackBuilder(Material.CHEST_MINECART, 1).setName(ChatColor.GREEN + "車種を追加する").build()
         setSlot(22, addVehicleCart) { event ->
-
         }
         setModelSlots()
     }

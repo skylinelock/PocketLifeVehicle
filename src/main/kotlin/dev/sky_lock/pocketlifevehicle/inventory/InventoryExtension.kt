@@ -11,11 +11,15 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
  
- fun Player.openTextEditInventory(default: String) {
+ fun Player.openTextEditInventory(title: String, default: String) {
     val entityPlayer = (this as CraftPlayer).handle
     val inventory = (this.inventory as CraftInventoryPlayer).inventory
     val world = (this.world as CraftWorld).handle
-    openInventory(ContainerTextEdit(entityPlayer.nextContainerCounter(), inventory, world, default).bukkitView)
+    openInventory(
+        ContainerTextEdit(
+            title, entityPlayer.nextContainerCounter(), inventory, world, default
+        ).bukkitView
+    )
  }
 
 fun Player.openVehicleUtilityMenu(vehicle: Vehicle) {

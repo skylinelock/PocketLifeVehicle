@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.command
 
-import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryListModel
+import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryModelList
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -11,6 +11,6 @@ import org.bukkit.entity.Player
 class DebugCommand : ICommand, IAdminCommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         val player = sender as Player
-        player.openInventory(InventoryListModel(player))
+        player.openInventory(InventoryModelList(player))
     }
 }
