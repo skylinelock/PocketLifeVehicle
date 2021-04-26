@@ -5,7 +5,6 @@ import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
 import net.minecraft.server.v1_14_R1.*
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import java.lang.IllegalStateException
 import kotlin.math.atan
 import kotlin.math.pow
 import kotlin.math.sqrt

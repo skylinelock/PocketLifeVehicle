@@ -1,9 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.model
 
-import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity.Companion.valueOf
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.SerializableAs
-import java.util.*
 
 /**
  * @author sky_lock

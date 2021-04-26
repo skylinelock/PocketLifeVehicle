@@ -1,9 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.model
 
-import org.bukkit.Material
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.SerializableAs
-import java.util.HashMap
 
 /**
  * @author sky_lock

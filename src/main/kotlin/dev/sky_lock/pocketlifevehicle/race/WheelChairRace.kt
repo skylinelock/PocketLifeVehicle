@@ -2,7 +2,6 @@ package dev.sky_lock.pocketlifevehicle.race
 
 import org.bukkit.entity.Player
 import java.util.*
-import kotlin.collections.ArrayList
 
 /**
  * @author sky_lock

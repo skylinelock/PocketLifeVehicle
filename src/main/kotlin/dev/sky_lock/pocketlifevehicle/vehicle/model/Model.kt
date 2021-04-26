@@ -7,7 +7,6 @@ import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.SerializableAs
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 /**
  * @author sky_lock
@@ -56,7 +55,7 @@ class Model constructor(val id: String, var name: String,
             val height = (map["height"] as Double).toFloat()
             val sound = Sound.valueOf(map["sound"].toString())
             val modelOption = map["modelOption"] as ModelOption
-            val passengerOption = map["seatOption"] as SeatOption
+            val seatOption = map["seatOption"] as SeatOption
             return Model(
                     id = id,
                     name = name,
@@ -67,7 +66,7 @@ class Model constructor(val id: String, var name: String,
                     height = height,
                     sound = sound,
                     modelOption = modelOption,
-                    seatOption = passengerOption
+                    seatOption = seatOption
             )
         }
     }

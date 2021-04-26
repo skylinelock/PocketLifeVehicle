@@ -7,7 +7,6 @@ import net.minecraft.server.v1_14_R1.*
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
-import org.bukkit.entity.ArmorStand
 import org.bukkit.util.EulerAngle
 
 /**
@@ -30,7 +29,7 @@ class ModelArmorStand : EntityArmorStand {
 
     fun assemble(vehicle: Vehicle) {
         this.vehicle = vehicle
-        val armorStand: ArmorStand = bukkitEntity as CraftArmorStand
+        val armorStand = bukkitEntity as CraftArmorStand
         armorStand.rightArmPose = EulerAngle.ZERO
         val model = vehicle.model
         val modelOption = model.modelOption

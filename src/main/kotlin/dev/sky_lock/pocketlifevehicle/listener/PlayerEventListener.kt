@@ -1,6 +1,5 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
-import com.sun.beans.editors.StringEditor
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
