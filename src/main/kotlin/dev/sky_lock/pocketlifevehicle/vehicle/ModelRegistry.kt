@@ -54,9 +54,9 @@ object ModelRegistry {
         val itemId = meta.customModelData
 
         return models.find {model ->
-            val itemOption = model.itemOption
-            val modelItemId = itemOption.id
-            val modelItemType = itemOption.type
+            val modelOption = model.modelOption
+            val modelItemId = modelOption.id
+            val modelItemType = modelOption.type
 
             return@find itemStack.type == modelItemType && itemId == modelItemId
         }

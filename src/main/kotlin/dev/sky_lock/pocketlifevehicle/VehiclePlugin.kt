@@ -1,13 +1,11 @@
 package dev.sky_lock.pocketlifevehicle
 
-import dev.sky_lock.menu.InventoryMenuListener
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler
 import dev.sky_lock.pocketlifevehicle.command.new.PluginCommandExecutor
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
 import dev.sky_lock.pocketlifevehicle.inventory.CustomInventoryListener
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolationList
 import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
-import dev.sky_lock.pocketlifevehicle.listener.InventoryEventListener
 import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
@@ -65,10 +63,8 @@ class VehiclePlugin : JavaPlugin() {
     private fun registerEventListeners() {
         val pluginManager = server.pluginManager
         pluginManager.registerEvents(CustomInventoryListener(), this)
-        pluginManager.registerEvents(InventoryMenuListener(this), this)
         pluginManager.registerEvents(ChunkEventListener(), this)
         pluginManager.registerEvents(PlayerEventListener(), this)
-        pluginManager.registerEvents(InventoryEventListener(), this)
     }
 
     fun createKey(key: String): NamespacedKey {

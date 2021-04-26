@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.CustomEntityTypes
-import dev.sky_lock.pocketlifevehicle.vehicle.model.Position
+import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
 import net.minecraft.server.v1_14_R1.*
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -30,7 +30,7 @@ class SeatArmorStand : EntityArmorStand {
         this.vehicle = vehicle
         this.position = position
         val center = vehicle.location
-        val loc = calculateLocation(center, vehicle.model.position, position)
+        val loc = calculateLocation(center, vehicle.model.seatOption, position)
         setLocation(loc.x, center.y - 1.675 + vehicle.model.height, loc.z, center.yaw, center.pitch)
     }
 
@@ -61,7 +61,7 @@ class SeatArmorStand : EntityArmorStand {
         get() = position === SeatPosition.ONE_DRIVER || position === SeatPosition.TWO_DRIVER || position === SeatPosition.FOUR_DRIVER
 
     private fun synchronize() {
-        val loc = calculateLocation(vehicle!!.location, vehicle!!.model.position, position!!)
+        val loc = calculateLocation(vehicle!!.location, vehicle!!.model.seatOption, position!!)
         locX = loc.x
         locY = vehicle!!.location.y - 1.675 + vehicle!!.model.height
         locZ = loc.z
@@ -89,12 +89,12 @@ class SeatArmorStand : EntityArmorStand {
             }
         }
 
-    private fun calculateLocation(location: Location, pos: Position, seatPos: SeatPosition): Location {
+    private fun calculateLocation(location: Location, seatOption : SeatOption, seatPos: SeatPosition): Location {
         val loc = location.clone()
 
-        val offset = pos.offset
-        val depth = pos.depth
-        val width = pos.width
+        val offset = seatOption.offset
+        val depth = seatOption.depth
+        val width = seatOption.width
 
         val unit = loc.direction
         val vec = unit.clone().multiply(offset)

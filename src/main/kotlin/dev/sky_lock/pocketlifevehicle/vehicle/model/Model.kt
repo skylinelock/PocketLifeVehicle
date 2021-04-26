@@ -14,17 +14,16 @@ import java.util.*
  */
 @SerializableAs("Model")
 class Model constructor(val id: String, var name: String,
-                        var lore: List<String>, var spec: Spec, var itemOption: ItemOption,
-                        var size: Size, var isBig: Boolean, var height: Float, var sound: Sound,
-                        var capacity: Capacity,
-                        var position: Position) : ConfigurationSerializable {
+                        var lore: List<String>, val spec: Spec, val flag: Flag,
+                        val size: Size, var height: Float, var sound: Sound,
+                        val modelOption: ModelOption, val seatOption: SeatOption) : ConfigurationSerializable {
 
     val itemStack: ItemStack
         get() {
-            return ItemStackBuilder(itemOption.type, 1)
+            return ItemStackBuilder(modelOption.type, 1)
                     .setName(name)
                     .setLore(*lore.map { text -> ChatColor.RESET + text }.toTypedArray())
-                    .setCustomModelData(itemOption.id)
+                    .setCustomModelData(modelOption.id)
                     .setUnbreakable(true)
                     .addItemFlags(*ItemFlag.values())
                     .build()
@@ -36,13 +35,12 @@ class Model constructor(val id: String, var name: String,
         map["name"] = name
         map["lore"] = lore
         map["spec"] = spec
-        map["item"] = itemOption
+        map["flag"] = flag
         map["size"] = size
-        map["big"] = isBig
         map["height"] = height
         map["sound"] = sound.toString()
-        map["capacity"] = capacity.value()
-        map["position"] = position
+        map["modelOption"] = modelOption
+        map["seatOption"] = seatOption
         return map
     }
 
@@ -53,25 +51,23 @@ class Model constructor(val id: String, var name: String,
             val name = map["name"].toString()
             val lore = (map["lore"] as List<*>).filterIsInstance<String>()
             val spec = map["spec"] as Spec
-            val itemOption = map["item"] as ItemOption
+            val flag = map["flag"] as Flag
             val size = map["size"] as Size
-            val isBig = map["big"].toString().toBoolean()
             val height = (map["height"] as Double).toFloat()
             val sound = Sound.valueOf(map["sound"].toString())
-            val capacity = Capacity.valueOf(map["capacity"] as Int)
-            val position = map["position"] as Position
+            val modelOption = map["modelOption"] as ModelOption
+            val passengerOption = map["seatOption"] as SeatOption
             return Model(
                     id = id,
                     name = name,
                     lore = lore,
                     spec = spec,
-                    itemOption = itemOption,
+                    flag = flag,
                     size = size,
-                    isBig = isBig,
                     height = height,
                     sound = sound,
-                    capacity = capacity,
-                    position = position
+                    modelOption = modelOption,
+                    seatOption = passengerOption
             )
         }
     }

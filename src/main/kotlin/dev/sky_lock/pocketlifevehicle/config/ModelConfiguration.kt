@@ -17,9 +17,10 @@ class ModelConfiguration {
     init {
         ConfigurationSerialization.registerClass(Model::class.java)
         ConfigurationSerialization.registerClass(Spec::class.java)
-        ConfigurationSerialization.registerClass(ItemOption::class.java)
         ConfigurationSerialization.registerClass(Size::class.java)
-        ConfigurationSerialization.registerClass(Position::class.java)
+        ConfigurationSerialization.registerClass(Flag::class.java)
+        ConfigurationSerialization.registerClass(ModelOption::class.java)
+        ConfigurationSerialization.registerClass(SeatOption::class.java)
         this.path = VehiclePlugin.instance.dataFolder.toPath().resolve("vehicles.yml")
     }
 

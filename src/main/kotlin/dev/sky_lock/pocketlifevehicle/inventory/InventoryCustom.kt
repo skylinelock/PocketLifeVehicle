@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.inventory
 
+import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventoryCustom
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
@@ -63,6 +64,17 @@ abstract class InventoryCustom(size: Int, title: String) : CraftInventoryCustom(
     fun setSlot(index: Int, item: ItemStack, action: (InventoryClickEvent) -> Unit) {
         setItem(index, item)
         setAction(index, action)
+    }
+
+    fun addSelectGrowEffectToSingleItem(event: InventoryClickEvent) {
+        val inventory = event.view.topInventory
+        for (item in inventory.contents) {
+            if (item.itemMeta.hasEnchant(ItemStackBuilder.GLOW_ENCHANT)) {
+                item.itemMeta.removeEnchant(ItemStackBuilder.GLOW_ENCHANT)
+            }
+        }
+        val item = event.currentItem ?: return
+        event.currentItem = ItemStackBuilder(item).addGlowEffect().build()
     }
 
     override fun clear(i: Int) {

@@ -33,8 +33,9 @@ class ModelArmorStand : EntityArmorStand {
         val armorStand: ArmorStand = bukkitEntity as CraftArmorStand
         armorStand.rightArmPose = EulerAngle.ZERO
         val model = vehicle.model
-        armorStand.setItem(model.itemOption.position.slot, model.itemStack)
-        armorStand.isSmall = !model.isBig
+        val modelOption = model.modelOption
+        armorStand.setItem(modelOption.position.slot, model.itemStack)
+        armorStand.isSmall = !modelOption.isBig
         this.updateSize()
         vehicle.engineSound.start()
     }

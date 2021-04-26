@@ -1,10 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
+import com.sun.beans.editors.StringEditor
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.gui.EditSessions
-import dev.sky_lock.pocketlifevehicle.gui.StringEditor
 import dev.sky_lock.pocketlifevehicle.inventory.openVehicleUtilityMenu
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
@@ -65,8 +64,6 @@ class PlayerEventListener : Listener {
     fun onPlayerQuit(event: PlayerQuitEvent) {
         val uuid = event.player.uniqueId
         VehicleManager.registerIllegalParking(uuid)
-        StringEditor.close(event.player)
-        EditSessions.destroy(event.player.uniqueId)
     }
 
     // メインハンド、オフハンドごとに２回呼ばれる
@@ -192,7 +189,7 @@ class PlayerEventListener : Listener {
             }
             armorStand.addPassenger(player)
         } else if (handle is ModelArmorStand) {
-            if (vehicle.passengers.size >= vehicle.model.capacity.value()) {
+            if (vehicle.passengers.size >= vehicle.model.seatOption.capacity.value()) {
                 sendRefusedReason(player, "この乗り物は満員です")
                 return
             }

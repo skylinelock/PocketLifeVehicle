@@ -12,7 +12,7 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 
-class InventoryModelArmorStand(private val player: Player, private val model: Model): InventoryCustom(18, "アーマースタンド設定") {
+class InventoryModelArmorStand(private val player: Player, private val model: Model): InventoryCustom(18, "3Dモデル設定") {
 
     init {
         val sizePerl = ItemStackBuilder(Material.ENDER_PEARL, 1).setName(ChatColor.GREEN + "大きさ").build()

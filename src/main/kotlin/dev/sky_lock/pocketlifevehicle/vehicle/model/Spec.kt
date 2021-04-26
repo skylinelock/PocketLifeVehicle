@@ -9,7 +9,7 @@ import java.util.*
  * @author sky_lock
  */
 @SerializableAs("Spec")
-class Spec(val maxFuel: Float, val maxSpeed: MaxSpeed, val steeringLevel: SteeringLevel) : ConfigurationSerializable {
+class Spec(var maxFuel: Float, var maxSpeed: MaxSpeed, var steeringLevel: SteeringLevel) : ConfigurationSerializable {
 
     override fun serialize(): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()

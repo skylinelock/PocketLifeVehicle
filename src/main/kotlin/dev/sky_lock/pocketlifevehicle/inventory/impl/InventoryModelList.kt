@@ -81,13 +81,13 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
         val spec = model.spec
         desc.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + spec.maxFuel)
         desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + spec.maxSpeed.label)
-        desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + model.capacity.value())
-        val itemOption = model.itemOption
+        desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + model.seatOption.capacity.value())
+        val modelOption = model.modelOption
         val box = model.size
-        desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + itemOption.position.label)
+        desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + modelOption.position.label)
         desc.add(ChatColor.DARK_AQUA + "当たり判定(高さ): " + ChatColor.AQUA + box.height)
         desc.add(ChatColor.DARK_AQUA + "当たり判定(底辺): " + ChatColor.AQUA + box.baseSide)
-        val size = if (model.isBig) "大きい" else "小さい"
+        val size = if (model.modelOption.isBig) "大きい" else "小さい"
         desc.add(ChatColor.DARK_AQUA + "大きさ: " + ChatColor.AQUA + size)
         desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + model.height)
         return ItemStackBuilder(model.itemStack).setName(ChatColor.YELLOW + model.id).setLore(desc).build()

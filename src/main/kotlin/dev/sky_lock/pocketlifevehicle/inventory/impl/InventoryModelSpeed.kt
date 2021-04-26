@@ -17,20 +17,12 @@ import org.bukkit.inventory.ItemStack
 class InventoryModelSpeed(private val player: Player, private val model: Model): InventoryCustom(18, "最高速度") {
 
     init {
-        setSlot(0, speedItem(MaxSpeed.SLOWEST)) {
-
-        }
-        setSlot(2, speedItem(MaxSpeed.SLOW)) {
-
-        }
-        setSlot(4, speedItem(MaxSpeed.NORMAL)) {
-
-        }
-        setSlot(6, speedItem(MaxSpeed.FAST)) {
-
-        }
-        setSlot(8, speedItem(MaxSpeed.FASTEST)) {
-
+        for (i in 0..9) {
+            val maxSpeed = MaxSpeed.values()[i]
+            setSlot(0, speedItem(maxSpeed)) { event ->
+                model.spec.maxSpeed = maxSpeed
+                addSelectGrowEffectToSingleItem(event)
+            }
         }
 
         val backBarrier = ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.RED + "戻る").build()

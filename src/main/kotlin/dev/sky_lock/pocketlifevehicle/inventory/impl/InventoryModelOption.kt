@@ -67,9 +67,9 @@ class InventoryModelOption(private val player: Player, private val model: Model)
             player.openInventory(InventoryModelSpeed(player, model))
         }
 
-        val capacitySaddle = optionItem(Material.SADDLE, ChatColor.GREEN + "乗車人数", ChatColor.YELLOW + model.capacity.value().toString())
+        val capacitySaddle = optionItem(Material.SADDLE, ChatColor.GREEN + "座席", ChatColor.YELLOW + model.seatOption.capacity.value().toString())
         setSlot(24, capacitySaddle) {
-            player.openInventory(InventoryModelCapacity(player, model))
+            player.openInventory(InventoryModelSeatOption(player, model))
         }
 
         val collideBeacon = optionItem(Material.BEACON, ChatColor.GREEN + "当たり判定")
@@ -77,7 +77,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
             player.openInventory(InventoryModelCollideBox(player, model))
         }
 
-        val armorStand = optionItem(Material.ARMOR_STAND, ChatColor.GREEN + "アーマースタンド")
+        val armorStand = optionItem(Material.ARMOR_STAND, ChatColor.GREEN + "3Dモデル")
         setSlot(31, armorStand) {
             player.openInventory(InventoryModelArmorStand(player, model))
         }

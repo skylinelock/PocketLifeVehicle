@@ -1,6 +1,5 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
-import dev.sky_lock.pocketlifevehicle.gui.CarUtilMenu
 import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
@@ -20,7 +19,6 @@ open class Vehicle constructor(val model: Model) {
     private val seats: MutableList<SeatArmorStand> = ArrayList()
     private var center: ModelArmorStand? = null
 
-    private var menu: CarUtilMenu? = null
     val state: State = State()
     lateinit var engineSound: EngineSound
     val engine: Engine
@@ -42,20 +40,6 @@ open class Vehicle constructor(val model: Model) {
         return engine.refuel(fuel)
     }
 
-    fun openMenu(player: Player) {
-        if (menu == null) {
-            menu = CarUtilMenu(player, this)
-        }
-        menu!!.open(player, 0)
-    }
-
-    fun closeMenu(player: Player) {
-        if (menu == null) {
-            return
-        }
-        menu!!.close(player)
-    }
-
     open fun spawn(location: Location) {
         center = ModelArmorStand((location.world as CraftWorld).handle, location.x, location.y, location.z, location.yaw)
         state.location = location
@@ -66,7 +50,7 @@ open class Vehicle constructor(val model: Model) {
         val world = center!!.world
         world.addEntity(center)
 
-        when (model.capacity) {
+        when (model.seatOption.capacity) {
             Capacity.SINGLE -> {
                 val driver = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
                 driver.assemble(this, SeatPosition.ONE_DRIVER)
