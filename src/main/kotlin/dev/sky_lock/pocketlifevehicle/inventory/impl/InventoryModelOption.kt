@@ -43,7 +43,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val nameTag = optionItem(Material.NAME_TAG, ChatColor.GREEN + "名前", ChatColor.YELLOW + model.name)
         setSlot(11, nameTag) {
-            player.openTextEditInventory("名前設定", "")
+            player.openTextEditInventory("名前設定", "", model)
         }
 
         val loreSign = optionItem(Material.OAK_SIGN, ChatColor.GREEN + "説明")
@@ -53,7 +53,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val heightArmor = optionItem(Material.IRON_HORSE_ARMOR, ChatColor.GREEN + "座高", ChatColor.YELLOW + model.height.toString())
         setSlot(15, heightArmor) {
-            player.openTextEditInventory("座高設定", "")
+            player.openTextEditInventory("座高設定", "", model)
         }
         val spec = model.spec
         val fuelCoalBlock = optionItem(Material.COAL_BLOCK, ChatColor.GREEN + "燃料上限", ChatColor.YELLOW + spec.maxFuel.toString())

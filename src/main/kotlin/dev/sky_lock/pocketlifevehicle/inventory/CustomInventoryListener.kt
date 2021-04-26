@@ -1,13 +1,12 @@
 package dev.sky_lock.pocketlifevehicle.inventory
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
+import dev.sky_lock.pocketlifevehicle.inventory.impl.ContainerModelTextEdit
+import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventory
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
-import org.bukkit.event.inventory.InventoryClickEvent
-import org.bukkit.event.inventory.InventoryCloseEvent
-import org.bukkit.event.inventory.InventoryDragEvent
-import org.bukkit.event.inventory.InventoryOpenEvent
+import org.bukkit.event.inventory.*
 import org.bukkit.event.server.PluginDisableEvent
 
 /**
@@ -27,7 +26,15 @@ class CustomInventoryListener : Listener {
     fun onInventoryClick(event: InventoryClickEvent) {
         val player = event.whoClicked
         val inventory = player.openInventory.topInventory
-        if (inventory is InventoryCustom) inventory.onInventoryClick(event)
+        if (inventory is InventoryCustom) {
+            inventory.onInventoryClick(event)
+            return
+        }
+        val craftInventory = inventory as CraftInventory
+        if (craftInventory !is ContainerModelTextEdit.CraftModelTextEditor) {
+            return
+        }
+        craftInventory.onClick(event)
     }
 
     @EventHandler
