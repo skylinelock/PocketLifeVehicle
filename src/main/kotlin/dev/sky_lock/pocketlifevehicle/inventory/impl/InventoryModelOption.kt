@@ -39,7 +39,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val recreateEmerald = optionItem(Material.EMERALD, ChatColor.GREEN + "ID(" + ChatColor.YELLOW + model.id + ChatColor.GREEN + ")を変更する", ChatColor.RED + "※モデルは同じ設定で再作成されます")
         setSlot(5, recreateEmerald) {
-
+            player.openModelTextEditor("ID", "id", null)
         }
 
         val nameTag = optionItem(Material.NAME_TAG, ChatColor.GREEN + "名前", ChatColor.YELLOW + model.name)

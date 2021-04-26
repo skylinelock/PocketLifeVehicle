@@ -26,7 +26,7 @@ import org.bukkit.persistence.PersistentDataType
 class ContainerModelTextEdit constructor(
     title: String,
     default: String,
-    val model: Model,
+    val model: Model?,
     val player: Player
 ) : ContainerAnvil(
     (player as CraftPlayer).handle.nextContainerCounter(),
@@ -99,6 +99,7 @@ class ContainerModelTextEdit constructor(
                     return
                 }
                 event.view.topInventory.clear(0)
+                val model = model ?: return
                 player.openInventory(InventoryModelOption(player, model))
             }
     }

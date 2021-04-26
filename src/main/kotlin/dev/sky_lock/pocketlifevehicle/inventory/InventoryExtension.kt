@@ -18,6 +18,6 @@ fun Player.openModelLoreEditor(default: String, model: Model) {
     ModelLoreEditor(this, model)
 }
 
-fun Player.openModelTextEditor(title: String, default: String, model: Model) {
+fun Player.openModelTextEditor(title: String, default: String, model: Model?) {
     openInventory(ContainerModelTextEdit(title, default, model, this).bukkitView)
 }
