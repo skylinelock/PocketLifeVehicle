@@ -17,17 +17,23 @@ class InventoryModelFlags(private val player: Player, private val model: Model):
     init {
         // 切り替え可能かなし
         val engineBell = ItemStackBuilder(Material.BELL, 1).setName(ChatColor.GREEN + "エンジン音").build()
-        setSlot(2, engineBell) {
+        setSlot(1, engineBell) {
 
         }
 
         val animationDye = ItemStackBuilder(Material.YELLOW_DYE, 1).setName(ChatColor.GREEN + "ハンドリングのアニメーション").build()
-        setSlot(4, animationDye) {
+        setSlot(3, animationDye) {
         }
 
-        //ありかなし
+        //消費する/消費しない
         val fuelCoal = ItemStackBuilder(Material.CHARCOAL, 1).setName(ChatColor.GREEN + "燃料消費").build()
-        setSlot(6, fuelCoal) {
+        setSlot(5, fuelCoal) {
+
+        }
+
+        //専用/汎用
+        val eventElytra = ItemStackBuilder(Material.ELYTRA, 1).setName(ChatColor.GREEN + "イベント専用").build()
+        setSlot(7, eventElytra) {
 
         }
 
