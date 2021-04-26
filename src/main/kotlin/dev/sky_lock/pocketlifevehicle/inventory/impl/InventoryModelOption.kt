@@ -3,7 +3,8 @@ package dev.sky_lock.pocketlifevehicle.inventory.impl
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
-import dev.sky_lock.pocketlifevehicle.inventory.openTextEditInventory
+import dev.sky_lock.pocketlifevehicle.inventory.openModelLoreEditor
+import dev.sky_lock.pocketlifevehicle.inventory.openModelTextEditor
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
@@ -43,17 +44,17 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val nameTag = optionItem(Material.NAME_TAG, ChatColor.GREEN + "名前", ChatColor.YELLOW + model.name)
         setSlot(11, nameTag) {
-            player.openTextEditInventory("名前設定", "", model)
+            player.openModelTextEditor("名前設定", "", model)
         }
 
         val loreSign = optionItem(Material.OAK_SIGN, ChatColor.GREEN + "説明")
         setSlot(13, loreSign) {
-
+            player.openModelLoreEditor("", model)
         }
 
         val heightArmor = optionItem(Material.IRON_HORSE_ARMOR, ChatColor.GREEN + "座高", ChatColor.YELLOW + model.height.toString())
         setSlot(15, heightArmor) {
-            player.openTextEditInventory("座高設定", "", model)
+            player.openModelTextEditor("座高設定", "", model)
         }
         val spec = model.spec
         val fuelCoalBlock = optionItem(Material.COAL_BLOCK, ChatColor.GREEN + "燃料上限", ChatColor.YELLOW + spec.maxFuel.toString())

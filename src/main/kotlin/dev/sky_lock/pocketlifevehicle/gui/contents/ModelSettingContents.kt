@@ -9,7 +9,6 @@ import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.destroy
 import dev.sky_lock.pocketlifevehicle.gui.EditSessions.of
-import dev.sky_lock.pocketlifevehicle.gui.LoreEditor
 import dev.sky_lock.pocketlifevehicle.gui.ModelMenuIndex
 import dev.sky_lock.pocketlifevehicle.gui.ModelSettingMenu
 import dev.sky_lock.pocketlifevehicle.gui.StringEditor
@@ -74,7 +73,7 @@ class ModelSettingContents(private val player: Player): MenuContents() {
                 destroy(player.uniqueId)
             })
             addSlot(Slot(nameSlot.toInt(), nameItem) { of(player).ifPresent { menu: InventoryMenu? -> open(player, StringEditor.Type.NAME, menu as ModelSettingMenu) } })
-            addSlot(Slot(loreSlot.toInt(), loreItem) { LoreEditor(player).open() })
+            addSlot(Slot(loreSlot.toInt(), loreItem) { })
             addSlot(Slot(fuelSlot.toInt(), fuelItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.FUEL.ordinal) } })
             addSlot(Slot(speedSlot.toInt(), speedItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.SPEED.ordinal) } })
             addSlot(Slot(capacitySlot.toInt(), capacityItem) { of(player).ifPresent { menu: InventoryMenu -> menu.flip(player, ModelMenuIndex.CAPACITY.ordinal) } })

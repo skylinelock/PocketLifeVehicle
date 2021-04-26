@@ -9,11 +9,15 @@ import org.bukkit.entity.Player
 /**
  * @author sky_lock
  */
- 
- fun Player.openTextEditInventory(title: String, default: String, model: Model) {
-    openInventory(ContainerModelTextEdit(title, default, model, this).bukkitView)
- }
 
 fun Player.openVehicleUtilityMenu(vehicle: Vehicle) {
     openInventory(InventoryVehicle(this, vehicle))
+}
+
+fun Player.openModelLoreEditor(default: String, model: Model) {
+    ModelLoreEditor(this, model)
+}
+
+fun Player.openModelTextEditor(title: String, default: String, model: Model) {
+    openInventory(ContainerModelTextEdit(title, default, model, this).bukkitView)
 }
