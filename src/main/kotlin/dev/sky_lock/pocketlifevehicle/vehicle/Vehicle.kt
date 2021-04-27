@@ -15,10 +15,10 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 open class Vehicle constructor(val model: Model) {
-    private val seats: MutableList<SeatArmorStand> = ArrayList()
+    private val seats = mutableListOf<SeatArmorStand>()
     private var center: ModelArmorStand? = null
 
-    val state: State = State()
+    val state = State()
     lateinit var engineSound: EngineSound
     val engine: Engine
     val steering: Steering

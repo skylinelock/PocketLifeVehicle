@@ -23,46 +23,10 @@ import kotlin.math.roundToInt
 class InventoryVehicle(private val player: Player, private val vehicle: Vehicle) : InventoryCustom(54, "乗り物ユーティリティ") {
 
     init {
-        val infoBook = ItemStackBuilder(Material.BOOK, 1).setName(colorizeTitle("車両情報")).setLore(vehicleInfoLore()).build()
-        setItem(15, infoBook)
-
-        val popCart = ItemStackBuilder(Material.MINECART, 1).setName(colorizeTitle("回収する"))
-            .setLore(ChatColor.GRAY + "アイテム化して持ち運べるようにします").build()
-        setSlot(2, popCart) {
-            VehicleManager.pop(vehicle)
-            player.closeInventory()
-        }
-
-        val owner = VehicleManager.getOwnerUid(vehicle)
-        val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).setName(colorizeTitle("所有者")).setLore(
-            ChatColor.AQUA + VehicleManager.getOwnerName(
-                vehicle
-            )
-        ).build()
-        setItem(11, ownerSkull)
-
-        val wieldDye = wieldDye()
-        setSlot(4, wieldDye) { event ->
-            val isWieldHand = vehicle.state.isWieldHand
-            vehicle.state.isWieldHand = !isWieldHand
-            event.currentItem = wieldDye()
-        }
-
-        setSlot(6, lockBarrier()) { event ->
-            val isLocked = vehicle.state.isLocked
-            if (isLocked) {
-                player.playSound(player.location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.4f)
-            } else {
-                player.playSound(player.location, Sound.BLOCK_IRON_DOOR_CLOSE, 1.0f, 1.4f)
-            }
-            vehicle.state.isLocked = !isLocked
-            event.currentItem = lockBarrier()
-        }
-
         val refuelHopper =
             ItemStackBuilder(Material.HOPPER, 1).setName(colorizeTitle("給油口")).setLore(refuelInfo(vehicle.state.fuel))
                 .build()
-        setSlot(13, refuelHopper) { event ->
+        setSlot(2, refuelHopper) { event ->
             val cursor = event.cursor ?: return@setSlot
             if (cursor.type != Material.COAL_BLOCK) return@setSlot
             if (!vehicle.refuel(30f)) return@setSlot
@@ -73,6 +37,53 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
             event.currentItem = refuelHopper
             updateFuelGage()
         }
+
+        if (vehicle.model.flag.engineSound) {
+            val soundNote = soundNoteBlock()
+            setSlot(8, soundNote) { event ->
+                val shouldPlaySound = vehicle.state.shouldPlaySound
+                vehicle.state.shouldPlaySound = !shouldPlaySound
+                event.currentItem = soundNoteBlock()
+            }
+        }
+
+        if (vehicle.model.flag.animation) {
+            val wieldDye = wieldDye()
+            setSlot(17, wieldDye) { event ->
+                val shouldAnimate = vehicle.state.shouldAnimate
+                vehicle.state.shouldAnimate = !shouldAnimate
+                event.currentItem = wieldDye()
+            }
+        }
+
+        val popCart = ItemStackBuilder(Material.MINECART, 1).setName(colorizeTitle("回収する"))
+            .setLore(ChatColor.GRAY + "アイテム化して持ち運べるようにします").build()
+        setSlot(33, popCart) {
+            VehicleManager.pop(vehicle)
+            player.closeInventory()
+        }
+
+        setSlot(35, lockBarrier()) { event ->
+            val isLocked = vehicle.state.isLocked
+            if (isLocked) {
+                player.playSound(player.location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.4f)
+            } else {
+                player.playSound(player.location, Sound.BLOCK_IRON_DOOR_CLOSE, 1.0f, 1.4f)
+            }
+            vehicle.state.isLocked = !isLocked
+            event.currentItem = lockBarrier()
+        }
+
+        val owner = VehicleManager.getOwnerUid(vehicle)
+        val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).setName(colorizeTitle("所有者")).setLore(
+            ChatColor.AQUA + VehicleManager.getOwnerName(
+                vehicle
+            )
+        ).build()
+        setItem(44, ownerSkull)
+
+        val infoBook = ItemStackBuilder(Material.BOOK, 1).setName(colorizeTitle("車両情報")).setLore(vehicleInfoLore()).build()
+        setItem(53, infoBook)
 
         updateFuelGage()
     }
@@ -88,8 +99,22 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         }
     }
 
+    private fun soundNoteBlock(): ItemStack {
+        return if (vehicle.state.shouldPlaySound) {
+            ItemStackBuilder(
+                Material.NOTE_BLOCK,
+                1
+            ).setName(ChatColor.RED + "" + ChatColor.BOLD + "エンジン音を消す").build()
+        } else {
+            ItemStackBuilder(
+                Material.NOTE_BLOCK,
+                1
+            ).setName(ChatColor.GREEN + "" + ChatColor.BOLD + "エンジン音をつける").build()
+        }
+    }
+
     private fun wieldDye(): ItemStack {
-        return if (vehicle.state.isWieldHand) {
+        return if (vehicle.state.shouldAnimate) {
             ItemStackBuilder(
                 Material.LIME_DYE,
                 1
@@ -103,8 +128,10 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
     }
 
     private fun refuelInfo(fuel: Float): List<String> {
+        val currentFuel = abs(fuel).truncateToOneDecimalPlace()
+        val maxFuel = abs(vehicle.model.spec.maxFuel).truncateToOneDecimalPlace()
         return listOf(
-            ChatColor.GRAY + "残燃料 : " + abs(fuel).truncateToOneDecimalPlace(),
+            ChatColor.GRAY + "残燃料 : $currentFuel/$maxFuel",
             ChatColor.GRAY + "石炭ブロックを持って右クリック",
             ChatColor.GRAY + "すると燃料を補充できます"
         )
@@ -120,18 +147,15 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         val fuel = vehicle.state.fuel
         val maxFuel = vehicle.model.spec.maxFuel
         val rate = fuel / maxFuel
-        val filledSlots = (9 * rate).roundToInt()
-        for (j in 0..8) {
-            if (j < filledSlots) {
-                setItem(18 + j, filled)
-                setItem(27 + j, filled)
-                setItem(36 + j, filled)
-                setItem(45 + j, filled)
-            } else {
-                setItem(18 + j, unfilled)
-                setItem(27 + j, unfilled)
-                setItem(36 + j, unfilled)
-                setItem(45 + j, unfilled)
+        val threshold = (5 * (1 - rate)).roundToInt()
+        for (i in 0..4) {
+            for (j in 0..4) {
+                val slot = 9 * (j + 1) + i
+                if (j < threshold) {
+                    setItem(slot, unfilled)
+                } else {
+                    setItem(slot, filled)
+                }
             }
         }
     }

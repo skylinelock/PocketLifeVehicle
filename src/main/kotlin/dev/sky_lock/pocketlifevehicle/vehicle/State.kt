@@ -6,11 +6,12 @@ import org.bukkit.Location
  * @author sky_lock
  */
 class State {
-    val speed: Speed = Speed()
+    val speed = Speed()
     var fuel = 0f
     var yaw = 0f
     var isLocked = true
-    var isWieldHand = true
-    var location: Location? = null
+    var shouldPlaySound = true
+    var shouldAnimate = true
 
+    var location: Location? = null
 }

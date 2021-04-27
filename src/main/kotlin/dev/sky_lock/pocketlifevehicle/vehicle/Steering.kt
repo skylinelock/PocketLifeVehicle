@@ -19,7 +19,7 @@ class Steering(private val state: State) {
         } else {
             state.yaw = state.yaw - 4.0f
         }
-        if (state.isWieldHand) {
+        if (state.shouldAnimate) {
             raiseLeftArm(driver)
         }
     }
@@ -34,7 +34,7 @@ class Steering(private val state: State) {
         } else {
             state.yaw = state.yaw + 4.0f
         }
-        if (state.isWieldHand) {
+        if (state.shouldAnimate) {
             raiseRightArm(driver)
         }
     }
