@@ -6,7 +6,6 @@ import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import net.minecraft.server.v1_14_R1.*
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
@@ -21,6 +20,7 @@ import org.bukkit.event.inventory.InventoryAction
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryType
+import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 
 /**
@@ -103,26 +103,25 @@ class ContainerModelTextEdit constructor(
             if (text == null || text.isBlank()) {
                 return
             }
+            val current = event.currentItem ?: return
             val model = model ?: ModelRegistry.default(text)
             val slot = event.slot
             if (slot == 2) {
                 when (modifyType) {
-                    ModifyType.ID_CREATE -> {
+                    ModifyType.ID_CREATE, ModifyType.ID -> {
+                        if (ModelRegistry.hasRegistered(text)) {
+                            displayError(current, ChatColor.RED + "そのIDは既に登録されています。")
+                            return
+                        }
                         ModelRegistry.register(model)
                     }
                     ModifyType.HEIGHT -> {
                         val height = text.toFloatOrNull()
-                        val current = event.currentItem ?: return
-                        val meta = current.itemMeta
                         if (height == null) {
-                            meta.lore = listOf(ChatColor.RED + "有効な数字を入力して下さい")
-                            current.itemMeta = meta
+                            displayError(current, ChatColor.RED + "有効な数字を入力して下さい")
                             return
                         }
                         model.height = text.toFloat()
-                    }
-                    ModifyType.ID -> {
-                        ModelRegistry.unregister(model.id)
                     }
                     ModifyType.NAME -> {
                         model.name = ChatColor.translateAlternateColorCodes('&', text)
@@ -145,6 +144,12 @@ class ContainerModelTextEdit constructor(
                 }
             }
 
+        }
+
+        fun displayError(itemStack: ItemStack, error: String) {
+            val meta = itemStack.itemMeta
+            meta.lore = listOf(error)
+            itemStack.itemMeta = meta
         }
 
         fun onClose(event: InventoryCloseEvent) {
