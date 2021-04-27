@@ -47,7 +47,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
             player.openModelTextEditor("名前設定", "", ContainerModelTextEdit.ModifyType.NAME, model)
         }
 
-        val loreSign = optionItem(Material.OAK_SIGN, ChatColor.GREEN + "説明")
+        val loreSign = optionItem(Material.OAK_SIGN, ChatColor.GREEN + "説明", *model.lore.toTypedArray())
         setSlot(13, loreSign) {
             player.openModelLoreEditor("", model)
         }
