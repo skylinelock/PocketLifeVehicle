@@ -59,7 +59,7 @@ class ContainerModelTextEdit constructor(
         val inventory = super.getBukkitView().topInventory as CraftInventoryAnvil
         val location = inventory.location ?: player.location
         val customInventory = CraftModelTextEditor(location, inventory.inventory, inventory.resultInventory, this)
-        return CraftInventoryView(player, customInventory, this);
+        return CraftInventoryView(player, customInventory, this)
     }
 
     // update
@@ -69,7 +69,7 @@ class ContainerModelTextEdit constructor(
     }
 
     inner class CraftModelTextEditor(
-        location: Location, inventory: IInventory, inventory2: IInventory, private val container: ContainerModelTextEdit
+        location: Location, inventory: IInventory, inventory2: IInventory, container: ContainerModelTextEdit
     ) : CraftInventoryAnvil(location, inventory, inventory2, container) {
 
         fun onClick(event: InventoryClickEvent) {
@@ -115,6 +115,9 @@ class ContainerModelTextEdit constructor(
                         }
                         ModelRegistry.register(model)
                     }
+                    ModifyType.NAME -> {
+                        model.name = ChatColor.translateAlternateColorCodes('&', text)
+                    }
                     ModifyType.HEIGHT -> {
                         val height = text.toFloatOrNull()
                         if (height == null) {
@@ -123,8 +126,29 @@ class ContainerModelTextEdit constructor(
                         }
                         model.height = text.toFloat()
                     }
-                    ModifyType.NAME -> {
-                        model.name = ChatColor.translateAlternateColorCodes('&', text)
+                    ModifyType.OFFSET -> {
+                        val offset = text.toFloatOrNull()
+                        if (offset == null) {
+                            displayError(current, ChatColor.RED + "有効な数字を入力して下さい")
+                            return
+                        }
+                        model.seatOption.offset = offset
+                    }
+                    ModifyType.WIDTH -> {
+                        val width = text.toFloatOrNull()
+                        if (width == null) {
+                            displayError(current, ChatColor.RED + "有効な数字を入力して下さい")
+                            return
+                        }
+                        model.seatOption.width = width
+                    }
+                    ModifyType.DEPTH -> {
+                        val depth = text.toFloatOrNull()
+                        if (depth == null) {
+                            displayError(current, ChatColor.RED + "有効な数字を入力して下さい")
+                            return
+                        }
+                        model.seatOption.depth = text.toFloat()
                     }
                 }
                 event.view.topInventory.clear(0)
@@ -139,6 +163,9 @@ class ContainerModelTextEdit constructor(
                 ModifyType.ID_CREATE -> {
                     player.openInventory(InventoryModelList(player))
                 }
+                ModifyType.WIDTH, ModifyType.DEPTH, ModifyType.OFFSET -> {
+                    player.openInventory(InventoryModelArmorStand(player, model))
+                }
                 else -> {
                     player.openInventory(InventoryModelOption(player, model))
                 }
@@ -146,7 +173,7 @@ class ContainerModelTextEdit constructor(
 
         }
 
-        fun displayError(itemStack: ItemStack, error: String) {
+        private fun displayError(itemStack: ItemStack, error: String) {
             val meta = itemStack.itemMeta
             meta.lore = listOf(error)
             itemStack.itemMeta = meta
@@ -158,7 +185,7 @@ class ContainerModelTextEdit constructor(
     }
 
     enum class ModifyType {
-        ID_CREATE, ID, NAME, HEIGHT
+        ID_CREATE, ID, NAME, HEIGHT, OFFSET, WIDTH, DEPTH
     }
 
 }

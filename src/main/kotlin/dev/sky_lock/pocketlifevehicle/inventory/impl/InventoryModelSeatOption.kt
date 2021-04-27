@@ -2,6 +2,7 @@ package dev.sky_lock.pocketlifevehicle.inventory.impl
 
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
+import dev.sky_lock.pocketlifevehicle.inventory.openModelTextEditor
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
@@ -45,17 +46,17 @@ class InventoryModelSeatOption(private val player: Player, private val model: Mo
 
         val offsetGlass = ItemStackBuilder(Material.WHITE_STAINED_GLASS, 1).setName("オフセット").build()
         setSlot(11, offsetGlass) {
-
+            player.openModelTextEditor("オフセット", model.seatOption.offset.toString(), ContainerModelTextEdit.ModifyType.OFFSET, model)
         }
 
         val depthGlass = ItemStackBuilder(Material.LIGHT_BLUE_STAINED_GLASS, 1).setName("奥行き").build()
         setSlot(13, depthGlass) {
-
+            player.openModelTextEditor("奥行き", model.seatOption.depth.toString(), ContainerModelTextEdit.ModifyType.DEPTH, model)
         }
 
         val widthGlass = ItemStackBuilder(Material.PINK_STAINED_GLASS, 1).setName("幅").build()
         setSlot(15, widthGlass) {
-
+            player.openModelTextEditor("幅", model.seatOption.width.toString(), ContainerModelTextEdit.ModifyType.WIDTH, model)
         }
 
         val backBarrier = ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.RED + "戻る").build()
