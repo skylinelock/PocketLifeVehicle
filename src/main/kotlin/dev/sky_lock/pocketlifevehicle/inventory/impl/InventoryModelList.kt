@@ -72,26 +72,31 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
     }
 
     private fun modelItem(model: Model): ItemStack {
-        val desc: MutableList<String> = ArrayList()
+        val desc = mutableListOf<String>()
         desc.add(ChatColor.DARK_AQUA + "名前: " + ChatColor.AQUA + model.name)
-        //TODO: [] -> ""
-        var lore: List<String?> = model.lore
-        if (lore.isEmpty()) {
-            lore = listOf("")
-        }
-        desc.add(ChatColor.DARK_AQUA + "説明: " + ChatColor.AQUA + lore)
+        desc.add(ChatColor.DARK_AQUA + "説明: ")
+        model.lore.forEach { line -> desc.add("  $line") }
         val spec = model.spec
         desc.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + spec.maxFuel)
         desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + spec.maxSpeed.label)
-        desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + model.seatOption.capacity.value())
-        val modelOption = model.modelOption
         val box = model.size
-        desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + modelOption.position.label)
         desc.add(ChatColor.DARK_AQUA + "当たり判定(高さ): " + ChatColor.AQUA + box.height)
         desc.add(ChatColor.DARK_AQUA + "当たり判定(底辺): " + ChatColor.AQUA + box.baseSide)
+        desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + model.height)
+        val modelOption = model.modelOption
+        desc.add(ChatColor.DARK_AQUA + "モデル位置: " + ChatColor.AQUA + modelOption.position.label)
         val size = if (model.modelOption.isBig) "大きい" else "小さい"
         desc.add(ChatColor.DARK_AQUA + "大きさ: " + ChatColor.AQUA + size)
-        desc.add(ChatColor.DARK_AQUA + "座高: " + ChatColor.AQUA + model.height)
+        val seatOption = model.seatOption
+        desc.add(ChatColor.DARK_AQUA + "乗車人数: " + ChatColor.AQUA + seatOption.capacity.value())
+        desc.add(ChatColor.DARK_AQUA + "オフセット: " + ChatColor.AQUA + seatOption.offset.toString())
+        desc.add(ChatColor.DARK_AQUA + "座席間距離(縦): " + ChatColor.AQUA + seatOption.depth.toString())
+        desc.add(ChatColor.DARK_AQUA + "座席間距離(横): " + ChatColor.AQUA + seatOption.width.toString())
+        val flag = model.flag
+        desc.add(ChatColor.DARK_AQUA + "エンジン音: " + ChatColor.AQUA + flag.engineSoundText())
+        desc.add(ChatColor.DARK_AQUA + "アニメーション: " + ChatColor.AQUA + flag.animationText())
+        desc.add(ChatColor.DARK_AQUA + "燃料消費: " + ChatColor.AQUA + flag.consumeFuelText())
+        desc.add(ChatColor.DARK_AQUA + "イベント仕様: " + ChatColor.AQUA + flag.eventOnlyText())
         return ItemStackBuilder(model.itemStack).setName(ChatColor.YELLOW + model.id).setLore(desc).build()
     }
 }

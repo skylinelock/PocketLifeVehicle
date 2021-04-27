@@ -10,6 +10,22 @@ import org.bukkit.configuration.serialization.SerializableAs
 @SerializableAs("Flag")
 class Flag(var engineSound: Boolean, var animation: Boolean, var consumeFuel: Boolean, var eventOnly: Boolean): ConfigurationSerializable {
 
+    fun engineSoundText(): String {
+        return if (engineSound) "切替可能" else "なし"
+    }
+
+    fun animationText(): String {
+        return if (animation) "切替可能" else "なし"
+    }
+
+    fun consumeFuelText(): String {
+        return if (consumeFuel) "する" else "しない"
+    }
+
+    fun eventOnlyText(): String {
+        return if (eventOnly) "はい" else "いいえ"
+    }
+
     override fun serialize(): MutableMap<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
         map["engineSound"] = engineSound

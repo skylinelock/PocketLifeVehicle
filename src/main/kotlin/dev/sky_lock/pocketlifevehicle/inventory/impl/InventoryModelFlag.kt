@@ -18,47 +18,47 @@ class InventoryModelFlag(private val player: Player, private val model: Model): 
         // 切り替え可能かなし
         val engineBell = ItemStackBuilder(Material.BELL, 1)
             .setName(ChatColor.GREEN + "エンジン音")
-            .setLore(ChatColor.YELLOW + turningText(model.flag.engineSound))
+            .setLore(ChatColor.YELLOW + model.flag.engineSoundText())
             .build()
         setSlot(1, engineBell) { event ->
             model.flag.engineSound = !model.flag.engineSound
             event.currentItem = ItemStackBuilder(engineBell)
-                .setLore(ChatColor.YELLOW + turningText(model.flag.engineSound))
+                .setLore(ChatColor.YELLOW + model.flag.engineSoundText())
                 .build()
         }
 
         val animationDye = ItemStackBuilder(Material.YELLOW_DYE, 1)
             .setName(ChatColor.GREEN + "ハンドリングのアニメーション")
-            .setLore(ChatColor.YELLOW + turningText(model.flag.animation))
+            .setLore(ChatColor.YELLOW + model.flag.animationText())
             .build()
         setSlot(3, animationDye) { event ->
             model.flag.animation = !model.flag.animation
             event.currentItem = ItemStackBuilder(animationDye)
-                .setLore(ChatColor.YELLOW + turningText(model.flag.animation))
+                .setLore(ChatColor.YELLOW + model.flag.animationText())
                 .build()
         }
 
         //消費する/消費しない
         val fuelCoal = ItemStackBuilder(Material.CHARCOAL, 1)
             .setName(ChatColor.GREEN + "燃料消費")
-            .setLore(ChatColor.YELLOW + fuelText(model.flag.consumeFuel))
+            .setLore(ChatColor.YELLOW + model.flag.consumeFuelText())
             .build()
         setSlot(5, fuelCoal) { event ->
             model.flag.consumeFuel = !model.flag.consumeFuel
             event.currentItem = ItemStackBuilder(fuelCoal)
-                .setLore(ChatColor.YELLOW + fuelText(model.flag.consumeFuel))
+                .setLore(ChatColor.YELLOW + model.flag.consumeFuelText())
                 .build()
         }
 
         //専用/汎用
         val eventElytra = ItemStackBuilder(Material.ELYTRA, 1)
             .setName(ChatColor.GREEN + "イベント仕様")
-            .setLore(ChatColor.YELLOW + eventText(model.flag.eventOnly))
+            .setLore(ChatColor.YELLOW + model.flag.eventOnlyText())
             .build()
         setSlot(7, eventElytra) { event ->
             model.flag.eventOnly = !model.flag.eventOnly
             event.currentItem = ItemStackBuilder(eventElytra)
-                .setLore(ChatColor.YELLOW + eventText(model.flag.eventOnly))
+                .setLore(ChatColor.YELLOW + model.flag.eventOnlyText())
                 .build()
         }
 
@@ -66,17 +66,5 @@ class InventoryModelFlag(private val player: Player, private val model: Model): 
         setSlot(13, backBarrier) {
             player.openInventory(InventoryModelOption(player, model))
         }
-    }
-
-    private fun turningText(bool: Boolean): String {
-        return if (bool) "切り替え可能" else "なし"
-    }
-
-    private fun fuelText(bool: Boolean): String {
-        return if (bool) "する" else "しない"
-    }
-
-    private fun eventText(bool: Boolean): String {
-        return if (bool) "はい" else "いいえ"
     }
 }
