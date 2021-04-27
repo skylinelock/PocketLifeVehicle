@@ -84,7 +84,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val flagRepeater = optionItem(Material.REPEATER, ChatColor.GREEN + "フラグ")
         setSlot(33, flagRepeater) {
-            player.openInventory(InventoryModelFlags(player, model))
+            player.openInventory(InventoryModelFlag(player, model))
         }
 
         val backBarrier = optionItem(Material.BARRIER, ChatColor.RED + "戻る")
