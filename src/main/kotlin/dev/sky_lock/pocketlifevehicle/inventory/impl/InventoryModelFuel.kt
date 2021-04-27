@@ -21,8 +21,11 @@ class InventoryModelFuel(private val player: Player, private val model: Model): 
                 if (j % 2 == 0) {
                     val slot = 9 * i + j
                     val fuel = index * 25
-                    val iron = ItemStackBuilder(Material.IRON_BLOCK, 1).setName(fuel.toString()).build()
-                    setSlot(slot, iron) { event ->
+                    val builder = ItemStackBuilder(Material.IRON_BLOCK, 1).setName(fuel.toString())
+                    if (model.spec.maxFuel == fuel.toFloat()) {
+                        builder.addGlowEffect()
+                    }
+                    setSlot(slot, builder.build()) { event ->
                         model.spec.maxFuel = fuel.toFloat()
                         addSelectGrowEffectToSingleItem(event)
                     }

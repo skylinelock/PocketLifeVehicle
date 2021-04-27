@@ -19,7 +19,8 @@ class InventoryModelSpeed(private val player: Player, private val model: Model):
     init {
         for (i in 0..4) {
             val maxSpeed = MaxSpeed.values()[i]
-            setSlot(2 * i, speedItem(maxSpeed)) { event ->
+            val speedItem = speedItem(maxSpeed, model.spec.maxSpeed == maxSpeed)
+            setSlot(2 * i, speedItem) { event ->
                 model.spec.maxSpeed = maxSpeed
                 addSelectGrowEffectToSingleItem(event)
             }
@@ -31,10 +32,11 @@ class InventoryModelSpeed(private val player: Player, private val model: Model):
         }
     }
 
-    private fun speedItem(speed: MaxSpeed): ItemStack {
-        return ItemStackBuilder(Material.SEA_LANTERN, 1)
+    private fun speedItem(speed: MaxSpeed, glow: Boolean): ItemStack {
+        val builder = ItemStackBuilder(Material.SEA_LANTERN, 1)
             .setName(speed.label)
             .setLore(ChatColor.GRAY + "- 約" + speed.forTick(20).toString() + "blocks/s")
-            .build()
+        if (glow) builder.addGlowEffect()
+        return builder.build()
     }
 }

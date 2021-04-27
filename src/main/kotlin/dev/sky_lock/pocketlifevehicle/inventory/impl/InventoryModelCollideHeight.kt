@@ -16,9 +16,13 @@ class InventoryModelCollideHeight(private val player: Player, private val model:
 
     init {
         for (i in 0..8) {
-            val height = 0.5 * (i + 1)
-            setSlot(i, ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName(height.toString()).build()) { event ->
-                model.size.height = height.toFloat()
+            val height = (0.5 * (i + 1)).toFloat()
+            val builder = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName(height.toString())
+            if (model.size.height == height) {
+                builder.addGlowEffect()
+            }
+            setSlot(i, builder.build()) { event ->
+                model.size.height = height
                 addSelectGrowEffectToSingleItem(event)
             }
         }

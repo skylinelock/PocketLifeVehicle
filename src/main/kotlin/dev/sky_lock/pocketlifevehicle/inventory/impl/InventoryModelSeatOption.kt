@@ -16,20 +16,29 @@ import org.bukkit.entity.Player
 class InventoryModelSeatOption(private val player: Player, private val model: Model): InventoryCustom(27, "座席設定") {
 
     init {
-        val singlePlanks = ItemStackBuilder(Material.OAK_PLANKS, 1).setName("1").build()
-        setSlot(2, singlePlanks) { event ->
+        val singlePlanksBuilder = ItemStackBuilder(Material.OAK_PLANKS, 1).setName("1")
+        if (model.seatOption.capacity == Capacity.SINGLE) {
+            singlePlanksBuilder.addGlowEffect()
+        }
+        setSlot(2, singlePlanksBuilder.build()) { event ->
             model.seatOption.capacity = Capacity.SINGLE
             addSelectGrowEffectToSingleItem(event)
         }
 
-        val doublePlanks = ItemStackBuilder(Material.SPRUCE_PLANKS, 1).setName("2").build()
-        setSlot(4, doublePlanks) { event ->
+        val doublePlanksBuilder = ItemStackBuilder(Material.SPRUCE_PLANKS, 1).setName("2")
+        if (model.seatOption.capacity == Capacity.DOUBLE) {
+            doublePlanksBuilder.addGlowEffect()
+        }
+        setSlot(4, doublePlanksBuilder.build()) { event ->
             model.seatOption.capacity = Capacity.DOUBLE
             addSelectGrowEffectToSingleItem(event)
         }
 
-        val quadPlanks = ItemStackBuilder(Material.BIRCH_PLANKS, 1).setName("4").build()
-        setSlot(6, quadPlanks) { event ->
+        val quadPlanksBuilder = ItemStackBuilder(Material.BIRCH_PLANKS, 1).setName("4")
+        if (model.seatOption.capacity == Capacity.QUAD) {
+            quadPlanksBuilder.addGlowEffect()
+        }
+        setSlot(6, quadPlanksBuilder.build()) { event ->
             model.seatOption.capacity = Capacity.QUAD
             addSelectGrowEffectToSingleItem(event)
         }
