@@ -36,7 +36,9 @@ class ModelArmorStand : EntityArmorStand {
         armorStand.setItem(modelOption.position.slot, model.itemStack)
         armorStand.isSmall = !modelOption.isBig
         this.updateSize()
-        vehicle.engineSound.start()
+        if (vehicle.model.flag.engineSound) {
+            vehicle.engineSound.start()
+        }
     }
 
     val location: Location
