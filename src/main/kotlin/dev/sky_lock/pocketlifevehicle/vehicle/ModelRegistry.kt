@@ -20,7 +20,7 @@ object ModelRegistry {
             name = "name",
             lore = listOf(),
             spec = Spec(
-                maxFuel = 750F,
+                maxFuel = 450F,
                 maxSpeed = MaxSpeed.NORMAL,
                 steeringLevel = SteeringLevel.NORMAL
             ),
@@ -38,7 +38,7 @@ object ModelRegistry {
             sound = Sound.NONE,
             modelOption = ModelOption(
                 type = Material.IRON_NUGGET,
-                id = 1000,
+                id = 1001,
                 position = ItemPosition.HEAD,
                 isBig = true
             ),
