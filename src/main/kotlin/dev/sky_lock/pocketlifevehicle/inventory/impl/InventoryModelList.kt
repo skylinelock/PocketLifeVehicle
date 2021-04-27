@@ -75,7 +75,7 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
         val desc = mutableListOf<String>()
         desc.add(ChatColor.DARK_AQUA + "名前: " + ChatColor.AQUA + model.name)
         desc.add(ChatColor.DARK_AQUA + "説明: ")
-        model.lore.forEach { line -> desc.add("  $line") }
+        model.lore.forEach { line -> desc.add(ChatColor.DARK_GRAY + "- " + ChatColor.RESET + line) }
         val spec = model.spec
         desc.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + spec.maxFuel)
         desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + spec.maxSpeed.label)
