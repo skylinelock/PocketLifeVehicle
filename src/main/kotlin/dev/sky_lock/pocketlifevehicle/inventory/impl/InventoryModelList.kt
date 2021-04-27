@@ -21,7 +21,7 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
 
     init {
         val addVehicleCart = ItemStackBuilder(Material.CHEST_MINECART, 1).setName(ChatColor.GREEN + "車種を追加する").build()
-        setSlot(22, addVehicleCart) { event ->
+        setSlot(22, addVehicleCart) {
             player.openModelTextEditor("ID", "id", ContainerModelTextEdit.ModifyType.ID_CREATE, null)
         }
         setModelSlots()
@@ -46,14 +46,14 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
             }
             if (count > end) {
                 val next = ItemStackBuilder(Material.IRON_NUGGET, 1).setName(ChatColor.AQUA + "次のページ").setCustomModelData(16).build()
-                setSlot(23, next) { event ->
+                setSlot(23, next) {
                     page++
                     clearModelSlots()
                     setModelSlots()
                 }
                 break
             }
-            setSlot(count % 18, modelItem(model)) { event ->
+            setSlot(count % 18, modelItem(model)) {
                 player.openInventory(InventoryModelOption(player, model))
             }
             count++
@@ -63,7 +63,7 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
             val back =
                 ItemStackBuilder(Material.IRON_NUGGET, 1).setName(ChatColor.AQUA + "前のページ").setCustomModelData(17)
                     .build()
-            setSlot(21, back) { event ->
+            setSlot(21, back) {
                 if (page > 1) page--
                 clearModelSlots()
                 setModelSlots()

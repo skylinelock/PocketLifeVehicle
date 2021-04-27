@@ -30,7 +30,7 @@ class InventoryModelArmorStand(private val player: Player, private val model: Mo
 
         val itemCream = ItemStackBuilder(Material.MAGMA_CREAM, 1).setName(ChatColor.GREEN + "アイテム").build()
         setSlot(6, itemCream) {
-
+            player.openInventory(InventoryModelItem(player, model))
         }
 
         val backBarrier = ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.RED + "戻る").build()
