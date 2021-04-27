@@ -6,7 +6,7 @@ import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
  * @author sky_lock
  */
 class Engine(private val state: State, private val model: Model) {
-    private val speed: Speed = state.speed
+    private val speed = state.speed
     var currentSpeed = 0f
         private set
 

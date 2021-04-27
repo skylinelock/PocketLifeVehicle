@@ -43,7 +43,7 @@ open class Vehicle constructor(val model: Model) {
         center = ModelArmorStand((location.world as CraftWorld).handle, location.x, location.y, location.z, location.yaw)
         state.location = location
         // EngineSound初期化してからassemble
-        this.engineSound = EngineSound(location)
+        this.engineSound = EngineSound(state, location)
         center!!.assemble(this)
         state.yaw = location.yaw
         val world = center!!.world

@@ -9,15 +9,16 @@ import org.bukkit.scheduler.BukkitTask
 /**
  * @author sky_lock
  */
-class EngineSound(var location: Location) {
+class EngineSound(private val state: State, var location: Location) {
     private var task: BukkitTask? = null
     var isCancelled: Boolean = false
     var pitch: Float = 0.0f
 
     fun start() {
         task = Bukkit.getScheduler().runTaskTimer(VehiclePlugin.instance, Runnable {
-            if (this.isCancelled) {
-                this.stop()
+            if (isCancelled) {
+                stop()
+                return@Runnable
             }
             val world = location.world
             world.playSound(location, Sound.ENTITY_PIG_HURT, 0.03f, 0.7f)
@@ -27,15 +28,19 @@ class EngineSound(var location: Location) {
         }, 0L, 2L)
     }
 
-    private fun stop() {
+    private fun clearSounds() {
+        location.getNearbyPlayers(50.0).forEach { player ->
+            player.stopSound(Sound.ENTITY_PIG_HURT)
+            player.stopSound(Sound.ENTITY_MINECART_RIDING)
+            player.stopSound(Sound.ENTITY_PLAYER_BURP)
+            player.stopSound(Sound.ENTITY_ENDERMAN_DEATH)
+        }
+    }
+
+     fun stop() {
         task?.let {
             if (!it.isCancelled) {
-                location.getNearbyPlayers(50.0).forEach { player ->
-                    player.stopSound(Sound.ENTITY_PIG_HURT)
-                    player.stopSound(Sound.ENTITY_MINECART_RIDING)
-                    player.stopSound(Sound.ENTITY_PLAYER_BURP)
-                    player.stopSound(Sound.ENTITY_ENDERMAN_DEATH)
-                }
+                clearSounds()
                 it.cancel()
             }
         }
