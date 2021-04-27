@@ -1,11 +1,13 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
+import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import net.minecraft.server.v1_14_R1.*
 import org.bukkit.Bukkit
+import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld
@@ -104,21 +106,29 @@ class ContainerModelTextEdit constructor(
             val model = model ?: ModelRegistry.default(text)
             val slot = event.slot
             if (slot == 2) {
-                event.view.topInventory.clear(0)
                 when (modifyType) {
                     ModifyType.ID_CREATE -> {
                         ModelRegistry.register(model)
                     }
                     ModifyType.HEIGHT -> {
+                        val height = text.toFloatOrNull()
+                        val current = event.currentItem ?: return
+                        val meta = current.itemMeta
+                        if (height == null) {
+                            meta.lore = listOf(ChatColor.RED + "有効な数字を入力して下さい")
+                            current.itemMeta = meta
+                            return
+                        }
                         model.height = text.toFloat()
                     }
                     ModifyType.ID -> {
                         ModelRegistry.unregister(model.id)
                     }
                     ModifyType.NAME -> {
-                        model.name = text
+                        model.name = ChatColor.translateAlternateColorCodes('&', text)
                     }
                 }
+                event.view.topInventory.clear(0)
                 player.openInventory(InventoryModelOption(player, model))
                 return
             }
