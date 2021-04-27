@@ -104,15 +104,24 @@ class ContainerModelTextEdit constructor(
                 return
             }
             val current = event.currentItem ?: return
-            val model = model ?: ModelRegistry.default(text)
+            var model = model ?: ModelRegistry.default(text)
             val slot = event.slot
             if (slot == 2) {
                 when (modifyType) {
-                    ModifyType.ID_CREATE, ModifyType.ID -> {
+                    ModifyType.ID_CREATE -> {
                         if (ModelRegistry.hasRegistered(text)) {
                             displayError(current, ChatColor.RED + "そのIDは既に登録されています。")
                             return
                         }
+                        ModelRegistry.register(model)
+                    }
+                    ModifyType.ID -> {
+                        if (ModelRegistry.hasRegistered(text)) {
+                            displayError(current, ChatColor.RED + "そのIDは既に登録されています。")
+                            return
+                        }
+                        ModelRegistry.unregister(model.id)
+                        model = ModelRegistry.recreate(text, model)
                         ModelRegistry.register(model)
                     }
                     ModifyType.NAME -> {

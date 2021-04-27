@@ -51,6 +51,21 @@ object ModelRegistry {
         )
     }
 
+    fun recreate(id: String, model: Model): Model {
+        return Model(
+            id = id,
+            name = model.name,
+            lore = model.lore,
+            spec = model.spec,
+            flag = model.flag,
+            size = model.size,
+            height = 1.0F,
+            sound = Sound.NONE,
+            modelOption = model.modelOption,
+            seatOption = model.seatOption
+        )
+    }
+
     private fun checkIdEquality(model: Model, id: String): Boolean {
         return model.id.equals(id, ignoreCase = true)
     }
