@@ -70,8 +70,10 @@ abstract class InventoryCustom(size: Int, title: String) : CraftInventoryCustom(
             if (item == null) {
                 continue
             }
-            if (item.itemMeta.hasEnchant(ItemStackBuilder.GLOW_ENCHANT)) {
-                item.itemMeta.removeEnchant(ItemStackBuilder.GLOW_ENCHANT)
+            val meta = item.itemMeta
+            if (meta.hasEnchant(ItemStackBuilder.GLOW_ENCHANT)) {
+                meta.removeEnchant(ItemStackBuilder.GLOW_ENCHANT)
+                item.itemMeta = meta
             }
         }
         val item = event.currentItem ?: return
