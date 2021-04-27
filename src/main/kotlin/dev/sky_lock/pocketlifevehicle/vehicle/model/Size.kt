@@ -7,7 +7,7 @@ import org.bukkit.configuration.serialization.SerializableAs
  * @author sky_lock
  */
 @SerializableAs("Size")
-class Size(val baseSide: Float, val height: Float) : ConfigurationSerializable {
+class Size(var baseSide: Float, var height: Float) : ConfigurationSerializable {
 
     override fun serialize(): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()

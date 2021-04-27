@@ -105,8 +105,19 @@ class ContainerModelTextEdit constructor(
             val slot = event.slot
             if (slot == 2) {
                 event.view.topInventory.clear(0)
-                if (modifyType == ModifyType.ID_CREATE) {
-                    ModelRegistry.register(model)
+                when (modifyType) {
+                    ModifyType.ID_CREATE -> {
+                        ModelRegistry.register(model)
+                    }
+                    ModifyType.HEIGHT -> {
+                        model.height = text.toFloat()
+                    }
+                    ModifyType.ID -> {
+                        ModelRegistry.unregister(model.id)
+                    }
+                    ModifyType.NAME -> {
+                        model.name = text
+                    }
                 }
                 player.openInventory(InventoryModelOption(player, model))
                 return

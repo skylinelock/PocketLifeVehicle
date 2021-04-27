@@ -12,13 +12,13 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 
-class InventoryModelCollideHeight(private val player: Player, private val model: Model): InventoryCustom(18, "当たり判定(高さ)") {
+class InventoryModelCollideBaseSide(private val player: Player, private val model: Model): InventoryCustom(18, "当たり判定(底辺)")  {
 
     init {
         for (i in 0..8) {
-            val height = 0.5 * (i + 1)
-            setSlot(i, ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName(height.toString()).build()) { event ->
-                model.size.height = height.toFloat()
+            val baseSide = 0.5 * (i + 1)
+            setSlot(i, ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName(baseSide.toString()).build()) { event ->
+                model.size.baseSide = baseSide.toFloat()
                 addSelectGrowEffectToSingleItem(event)
             }
         }
