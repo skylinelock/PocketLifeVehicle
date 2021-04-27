@@ -28,9 +28,11 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
                 .build()
         setSlot(2, refuelHopper) { event ->
             val cursor = event.cursor ?: return@setSlot
-            if (cursor.type != Material.COAL_BLOCK) return@setSlot
-            if (!vehicle.refuel(30f)) return@setSlot
-
+            if (cursor.type == Material.COAL_BLOCK) {
+                if (!vehicle.refuel(30f)) return@setSlot
+            } else if (cursor.type == Material.COAL) {
+                if (!vehicle.refuel(3.0f)) return@setSlot
+            }
             cursor.amount -= 1
             player.playSound(player.location, Sound.BLOCK_BREWING_STAND_BREW, 1.0f, 0.6f)
             refuelHopper.lore = refuelInfo(vehicle.state.fuel)
@@ -87,7 +89,8 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         ).build()
         setItem(44, ownerSkull)
 
-        val infoBook = ItemStackBuilder(Material.BOOK, 1).setName(colorizeTitle("車両情報")).setLore(vehicleInfoLore()).build()
+        val infoBook =
+            ItemStackBuilder(Material.BOOK, 1).setName(colorizeTitle("車両情報")).setLore(vehicleInfoLore()).build()
         setItem(53, infoBook)
 
         updateFuelGage()
