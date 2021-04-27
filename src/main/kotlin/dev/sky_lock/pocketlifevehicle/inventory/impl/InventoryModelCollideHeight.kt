@@ -28,7 +28,7 @@ class InventoryModelCollideHeight(private val player: Player, private val model:
         }
         val backBarrier = ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.RED + "戻る").build()
         setSlot(13, backBarrier) {
-            player.openInventory(InventoryModelOption(player, model))
+            player.openInventory(InventoryModelCollideBox(player, model))
         }
     }
 }
