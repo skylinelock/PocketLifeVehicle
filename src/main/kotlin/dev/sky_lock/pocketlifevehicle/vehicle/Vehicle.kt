@@ -28,7 +28,7 @@ open class Vehicle constructor(val model: Model) {
 
     init {
         engine = Engine(state, model)
-        steering = Steering(state)
+        steering = Steering(state, model)
         meterPanel = MeterPanel(state, model, engine)
     }
 
@@ -122,7 +122,7 @@ open class Vehicle constructor(val model: Model) {
 
     fun remove() {
         center!!.killEntity()
-        seats.forEach { obj: SeatArmorStand -> obj.killEntity() }
+        seats.forEach { seat -> seat.killEntity() }
     }
 
     fun explode() {

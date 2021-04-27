@@ -1,6 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.packet.AnimationPacket
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.entity.Player
 import org.bukkit.inventory.MainHand
 import kotlin.math.roundToInt
@@ -8,7 +9,7 @@ import kotlin.math.roundToInt
 /**
  * @author sky_lock
  */
-class Steering(private val state: State) {
+class Steering(private val state: State, private val model: Model) {
     fun right(driver: Player) {
         val speed = state.speed
         if (state.fuel.roundToInt() == 0 || speed.isApproximateZero) {
@@ -19,7 +20,7 @@ class Steering(private val state: State) {
         } else {
             state.yaw = state.yaw - 4.0f
         }
-        if (state.shouldAnimate) {
+        if (state.shouldAnimate && model.flag.animation) {
             raiseLeftArm(driver)
         }
     }
@@ -34,7 +35,7 @@ class Steering(private val state: State) {
         } else {
             state.yaw = state.yaw + 4.0f
         }
-        if (state.shouldAnimate) {
+        if (state.shouldAnimate && model.flag.animation) {
             raiseRightArm(driver)
         }
     }
