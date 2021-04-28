@@ -22,14 +22,12 @@ open class Vehicle constructor(val model: Model) {
     lateinit var engineSound: EngineSound
     val engine: Engine
     val steering: Steering
-    val meterPanel: MeterPanel
     var isBeginExplode = false
     var isUndrivable = false
 
     init {
         engine = Engine(state, model)
         steering = Steering(state, model)
-        meterPanel = MeterPanel(state, model, engine)
     }
 
     val location: Location
