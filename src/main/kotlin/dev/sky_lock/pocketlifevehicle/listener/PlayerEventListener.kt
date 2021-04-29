@@ -38,7 +38,7 @@ import java.util.*
 
 class PlayerEventListener : Listener {
 
-    val plugin = VehiclePlugin.instance
+    private val plugin = VehiclePlugin.instance
 
     @EventHandler
     fun onPlayerDismount(event: EntityDismountEvent) {

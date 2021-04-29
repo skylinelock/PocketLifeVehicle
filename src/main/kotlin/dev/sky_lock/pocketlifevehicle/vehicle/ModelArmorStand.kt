@@ -19,7 +19,13 @@ class ModelArmorStand : EntityArmorStand {
         this.killEntity()
     }
 
-    constructor(world: World, x: Double, y: Double, z: Double, yaw: Float) : super(EntityTypes.a(CustomEntityTypes.VEHICLE_MODEL.key).get() as EntityTypes<SeatArmorStand>, world) {
+    constructor(
+        world: World,
+        x: Double,
+        y: Double,
+        z: Double,
+        yaw: Float
+    ) : super(EntityTypes.a(CustomEntityTypes.VEHICLE_MODEL.key).get() as EntityTypes<SeatArmorStand>, world) {
         super.setPosition(x, y, z)
         super.setYawPitch(yaw, 0.0F)
         this.a(EntityVehicleHelper.modelNBT())
@@ -94,7 +100,8 @@ class ModelArmorStand : EntityArmorStand {
         }
         val vehicle = vehicle!!
         if (vehicle.isUndrivable || vehicle.passengers.isEmpty() ||
-                vehicle.driver == null || this.isInWater || inLava) {
+            vehicle.driver == null || this.isInWater || inLava
+        ) {
             vehicle.engine.stop()
             vehicle.location = location
             vehicle.sound.pitch = 0.0f
@@ -102,7 +109,9 @@ class ModelArmorStand : EntityArmorStand {
             super.e(vec3d)
             return
         }
-        vehicle.driver.let { driver ->
+        val driver = vehicle.driver
+
+        if (driver != null) {
             val player = (driver as CraftPlayer).handle
             val sideIn = player.bb
             val forIn = player.bd
