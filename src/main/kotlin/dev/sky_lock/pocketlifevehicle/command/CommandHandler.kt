@@ -57,8 +57,12 @@ class CommandHandler : CommandExecutor, TabExecutor {
         } else if (args.size == 2 && Permission.ADMIN_COMMAND.obtained(sender)) {
             val input = args[1]
             when (args[0].toLowerCase()) {
-                "give" -> tabCompletes.addAll(listPlayerNamesStartsWith(input))
-                "spawn" -> tabCompletes.addAll(listPlayerNamesStartsWith(input))
+                "give", "spawn" -> {
+                    for (model in ModelRegistry.set()) {
+                        val id = model.id
+                        if (id.startsWith(input)) tabCompletes.add(id)
+                    }
+                }
                 "reload" -> tabCompletes.addAll(listOf("from", "to").filter { str -> str.startsWith(input) })
                 "search", "pop" -> if (Permission.ADMIN_COMMAND.obtained(sender)) {
                     tabCompletes.addAll(listPlayerNamesStartsWith(input))
@@ -66,12 +70,9 @@ class CommandHandler : CommandExecutor, TabExecutor {
                 "world" -> tabCompletes.addAll(listOf("add", "remove", "list").filter { str -> str.startsWith(input) })
             }
         } else if (args.size == 3 && Permission.ADMIN_COMMAND.obtained(sender)) {
-            val input = args[2]
-            if (args[0].equals("give", ignoreCase = true) || args[0].equals("spawn", ignoreCase = true)) {
-                for (model in ModelRegistry.set()) {
-                    val id = model.id
-                    if (id.startsWith(input)) tabCompletes.add(id)
-                }
+            val input = args[2].toLowerCase()
+            if (args[0] == "give" || args[0] == "spawn") {
+                tabCompletes.addAll(listPlayerNamesStartsWith(input))
             }
         }
         return tabCompletes

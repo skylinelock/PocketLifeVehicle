@@ -14,8 +14,8 @@ class HelpCommand : ICommand {
         sender.sendVehiclePrefixedMessage("/vehicle - 利用可能なコマンドを表示します")
         if (Permission.ADMIN_COMMAND.obtained(sender)) {
             sender.sendVehiclePrefixedMessage("/vehicle world [add|remove|list] - ワールドで乗り物が使用できるかどうかを設定します")
-            sender.sendVehiclePrefixedMessage("/vehicle give [target] [modelId] - モデルアイテムをプレイヤーにインベントリーに追加します")
-            sender.sendVehiclePrefixedMessage("/vehicle spawn [target] [modelId] - モデルをプレイヤーの位置にスポーンさせます")
+            sender.sendVehiclePrefixedMessage("/vehicle give [modelId] [target] - モデルアイテムをプレイヤーにインベントリーに追加します")
+            sender.sendVehiclePrefixedMessage("/vehicle spawn [modelId] [target] - モデルをプレイヤーの位置にスポーンさせます")
             sender.sendVehiclePrefixedMessage("/vehicle search [target] - 乗り物の現在地を表示します")
             sender.sendVehiclePrefixedMessage("/vehicle pop [target] - プレイヤーの乗り物をアイテム化します")
             sender.sendVehiclePrefixedMessage("/vehicle model - モデルエディタを開きます")

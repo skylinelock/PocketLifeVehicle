@@ -10,22 +10,32 @@ import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class GiveCommand : ICommand, IAdminCommand {
+
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         val player = sender as Player
-        if (args.size < 3) {
+        if (args.size < 2) {
             player.sendVehiclePrefixedMessage(ChatColor.RED + "引数が足りません")
             return
         }
-        val name = args[1]
-        val target = Bukkit.getPlayer(name)
-        if (target == null) {
-            player.sendVehiclePrefixedMessage(ChatColor.RED + "プレイヤーが見つかりませんでした")
-            return
-        }
-        val id = args[2]
+        val id = args[1]
         val model = ModelRegistry.findById(id)
         if (model == null) {
             player.sendVehiclePrefixedMessage(ChatColor.RED + "モデルが見つかりませんでした")
+            return
+        }
+        if (model.flag.eventOnly) {
+            player.sendVehiclePrefixedMessage(ChatColor.RED + "イベント専用車両にはspawnコマンドを使って下さい")
+            return
+        }
+        if (args.size == 2) {
+            player.inventory.addItem(model.itemStack)
+            player.sendVehiclePrefixedMessage(ChatColor.GREEN + id + "を取得しました")
+            return
+        }
+        val name = args[2]
+        val target = Bukkit.getPlayer(name)
+        if (target == null) {
+            player.sendVehiclePrefixedMessage(ChatColor.RED + "プレイヤーが見つかりませんでした")
             return
         }
         target.inventory.addItem(model.itemStack)
