@@ -21,6 +21,8 @@ class Engine(private val tank: FuelTank, private val model: Model) {
         if (speed.exact() > model.spec.maxSpeed.value) {
             if (forIn < ZERO) {
                 speed.decelerate()
+            } else if (forIn == ZERO) {
+                speed.frictionalDecelerate()
             }
             currentSpeed = speed.exact()
             if (model.flag.consumeFuel) {
