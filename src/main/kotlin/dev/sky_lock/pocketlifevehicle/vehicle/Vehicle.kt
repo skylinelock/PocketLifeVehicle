@@ -25,7 +25,7 @@ class Vehicle(var location: Location, val model: Model, fuel: Float) {
 
     val sound = EngineSound(location)
     val tank = FuelTank(fuel, model.spec.maxFuel)
-    val engine = Engine(tank, model.spec.maxSpeed)
+    val engine = Engine(tank, model)
     val steering = Steering(this)
 
     var yaw = 0f
@@ -35,12 +35,11 @@ class Vehicle(var location: Location, val model: Model, fuel: Float) {
 
     init {
         location = center.location
+        yaw = location.yaw
     }
 
     fun spawn(location: Location) {
-        // EngineSound初期化してからassemble
         center.assemble(this)
-        yaw = location.yaw
         val world = center.world
         world.addEntity(center)
 

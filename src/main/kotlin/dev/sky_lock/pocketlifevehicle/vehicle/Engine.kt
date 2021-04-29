@@ -1,14 +1,14 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
-import dev.sky_lock.pocketlifevehicle.vehicle.model.MaxSpeed
+import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 
 /**
  * @author sky_lock
  */
+private const val ZERO = 0.0F
 
-class Engine(private val tank: FuelTank, private val maxSpeed: MaxSpeed) {
+class Engine(private val tank: FuelTank, private val model: Model) {
     val speed = Speed()
-    private val ZERO = 0.0F
     var currentSpeed = ZERO
         private set
 
@@ -18,12 +18,14 @@ class Engine(private val tank: FuelTank, private val maxSpeed: MaxSpeed) {
             currentSpeed = speed.exact()
             return
         }
-        if (speed.exact() > maxSpeed.value) {
+        if (speed.exact() > model.spec.maxSpeed.value) {
             if (forIn < ZERO) {
                 speed.decelerate()
             }
             currentSpeed = speed.exact()
-            tank.consume()
+            if (model.flag.consumeFuel) {
+                tank.consume()
+            }
             return
         }
         if (forIn == ZERO) {
@@ -39,7 +41,10 @@ class Engine(private val tank: FuelTank, private val maxSpeed: MaxSpeed) {
             speed.decrease()
         }
         currentSpeed = speed.exact()
-        if (speed.approximate() != ZERO && sideIn == ZERO) {
+        if (speed.approximate() == ZERO && sideIn == ZERO) {
+            return
+        }
+        if (model.flag.consumeFuel) {
             tank.consume()
         }
     }

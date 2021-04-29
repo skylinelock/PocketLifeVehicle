@@ -23,7 +23,6 @@ class GiveCommand : ICommand, IAdminCommand {
             return
         }
         val id = args[2]
-        // TODO: 登録時のignoreCase
         val model = ModelRegistry.findById(id)
         if (model == null) {
             player.sendVehiclePrefixedMessage(ChatColor.RED + "モデルが見つかりませんでした")
