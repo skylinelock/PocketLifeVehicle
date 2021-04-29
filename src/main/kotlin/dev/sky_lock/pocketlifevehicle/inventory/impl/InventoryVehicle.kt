@@ -24,18 +24,21 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
 
     init {
         val refuelHopper =
-            ItemStackBuilder(Material.HOPPER, 1).setName(colorizeTitle("給油口")).setLore(refuelInfo(vehicle.state.fuel))
+            ItemStackBuilder(Material.HOPPER, 1).setName(colorizeTitle("給油口")).setLore(refuelInfo(vehicle.tank.fuel))
                 .build()
         setSlot(2, refuelHopper) { event ->
             val cursor = event.cursor ?: return@setSlot
             if (cursor.type == Material.COAL_BLOCK) {
-                if (!vehicle.refuel(30f)) return@setSlot
+                if (!vehicle.tank.refuel(30F)) return@setSlot
             } else if (cursor.type == Material.COAL) {
-                if (!vehicle.refuel(3.0f)) return@setSlot
+                if (!vehicle.tank.refuel(3.0F)) return@setSlot
+            } else {
+                return@setSlot
             }
+
             cursor.amount -= 1
             player.playSound(player.location, Sound.BLOCK_BREWING_STAND_BREW, 1.0f, 0.6f)
-            refuelHopper.lore = refuelInfo(vehicle.state.fuel)
+            refuelHopper.lore = refuelInfo(vehicle.tank.fuel)
             event.currentItem = refuelHopper
             updateFuelGage()
         }
@@ -43,12 +46,12 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         if (vehicle.model.flag.engineSound) {
             val soundNote = soundNoteBlock()
             setSlot(8, soundNote) { event ->
-                val shouldPlaySound = vehicle.state.shouldPlaySound
-                vehicle.state.shouldPlaySound = !shouldPlaySound
-                if (vehicle.state.shouldPlaySound) {
-                    vehicle.engineSound.start()
+                val shouldPlaySound = vehicle.shouldPlaySound
+                vehicle.shouldPlaySound = !shouldPlaySound
+                if (vehicle.shouldPlaySound) {
+                    vehicle.sound.start()
                 } else {
-                    vehicle.engineSound.stop()
+                    vehicle.sound.stop()
                 }
                 event.currentItem = soundNoteBlock()
             }
@@ -57,8 +60,8 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         if (vehicle.model.flag.animation) {
             val wieldDye = wieldDye()
             setSlot(17, wieldDye) { event ->
-                val shouldAnimate = vehicle.state.shouldAnimate
-                vehicle.state.shouldAnimate = !shouldAnimate
+                val shouldAnimate = vehicle.shouldAnimate
+                vehicle.shouldAnimate = !shouldAnimate
                 event.currentItem = wieldDye()
             }
         }
@@ -71,13 +74,13 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         }
 
         setSlot(35, lockBarrier()) { event ->
-            val isLocked = vehicle.state.isLocked
+            val isLocked = vehicle.isLocked
             if (isLocked) {
                 player.playSound(player.location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.4f)
             } else {
                 player.playSound(player.location, Sound.BLOCK_IRON_DOOR_CLOSE, 1.0f, 1.4f)
             }
-            vehicle.state.isLocked = !isLocked
+            vehicle.isLocked = !isLocked
             event.currentItem = lockBarrier()
         }
 
@@ -98,7 +101,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
 
     private fun lockBarrier(): ItemStack {
         val lockDesc = listOf(ChatColor.GRAY + "他プレイヤーが乗り物に乗れるかどうか", ChatColor.GRAY + "を設定することができます")
-        return if (vehicle.state.isLocked) {
+        return if (vehicle.isLocked) {
             ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.AQUA + "" + ChatColor.BOLD + "鍵を開ける")
                 .setLore(lockDesc).build()
         } else {
@@ -108,7 +111,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
     }
 
     private fun soundNoteBlock(): ItemStack {
-        return if (vehicle.state.shouldPlaySound) {
+        return if (vehicle.shouldPlaySound) {
             ItemStackBuilder(
                 Material.NOTE_BLOCK,
                 1
@@ -122,7 +125,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
     }
 
     private fun wieldDye(): ItemStack {
-        return if (vehicle.state.shouldAnimate) {
+        return if (vehicle.shouldAnimate) {
             ItemStackBuilder(
                 Material.LIME_DYE,
                 1
@@ -152,7 +155,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
     private fun updateFuelGage() {
         val filled = ItemStackBuilder(Material.GREEN_STAINED_GLASS_PANE, 1).setName(ChatColor.GREEN + "補充済み").build()
         val unfilled = ItemStackBuilder(Material.RED_STAINED_GLASS_PANE, 1).setName(ChatColor.RED + "未補充").build()
-        val fuel = vehicle.state.fuel
+        val fuel = vehicle.tank.fuel
         val maxFuel = vehicle.model.spec.maxFuel
         val rate = fuel / maxFuel
         val threshold = (5 * (1 - rate)).roundToInt()

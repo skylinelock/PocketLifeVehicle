@@ -1,7 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.packet.AnimationPacket
-import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.entity.Player
 import org.bukkit.inventory.MainHand
 import kotlin.math.roundToInt
@@ -9,33 +8,36 @@ import kotlin.math.roundToInt
 /**
  * @author sky_lock
  */
-class Steering(private val state: State, private val model: Model) {
+class Steering(private val vehicle: Vehicle) {
+
     fun right(driver: Player) {
-        val speed = state.speed
-        if (state.fuel.roundToInt() == 0 || speed.isApproximateZero) {
+        val speed = vehicle.engine.speed
+        val tank = vehicle.tank
+        if (tank.fuel.roundToInt() == 0 || speed.isApproximateZero) {
             return
         }
         if (speed.isPositive) {
-            state.yaw = state.yaw + 4.0f
+            vehicle.yaw += 4.0F
         } else {
-            state.yaw = state.yaw - 4.0f
+            vehicle.yaw -= 4.0F
         }
-        if (state.shouldAnimate && model.flag.animation) {
+        if (vehicle.shouldAnimate && vehicle.model.flag.animation) {
             raiseLeftArm(driver)
         }
     }
 
     fun left(driver: Player) {
-        val speed = state.speed
-        if (state.fuel.roundToInt() == 0 || speed.isApproximateZero) {
+        val speed = vehicle.engine.speed
+        val tank = vehicle.tank
+        if (tank.fuel.roundToInt() == 0 || speed.isApproximateZero) {
             return
         }
         if (speed.isPositive) {
-            state.yaw = state.yaw - 4.0f
+            vehicle.yaw -= 4.0f
         } else {
-            state.yaw = state.yaw + 4.0f
+            vehicle.yaw += 4.0f
         }
-        if (state.shouldAnimate && model.flag.animation) {
+        if (vehicle.shouldAnimate && vehicle.model.flag.animation) {
             raiseRightArm(driver)
         }
     }

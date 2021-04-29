@@ -37,7 +37,7 @@ class ModelArmorStand : EntityArmorStand {
         armorStand.isSmall = !modelOption.isBig
         this.updateSize()
         if (vehicle.model.flag.engineSound) {
-            vehicle.engineSound.start()
+            vehicle.sound.start()
         }
     }
 
@@ -46,7 +46,7 @@ class ModelArmorStand : EntityArmorStand {
 
     override fun killEntity() {
         if (vehicle != null) {
-            vehicle!!.engineSound.isCancelled = true
+            vehicle!!.sound.isCancelled = true
         }
         super.killEntity()
     }
@@ -71,7 +71,7 @@ class ModelArmorStand : EntityArmorStand {
     override fun az() {
         super.az()
         SubmergedMessageTask().run(vehicle!!)
-        vehicle!!.engineSound.isCancelled = true
+        vehicle!!.sound.isCancelled = true
     }
 
     // applyPoseToSize
@@ -96,37 +96,38 @@ class ModelArmorStand : EntityArmorStand {
         if (vehicle.isUndrivable || vehicle.passengers.isEmpty() ||
                 vehicle.driver == null || this.isInWater || inLava) {
             vehicle.engine.stop()
-            vehicle.engineSound.pitch = 0.0f
-            vehicle.engineSound.location = this.location
+            vehicle.location = location
+            vehicle.sound.pitch = 0.0f
+            vehicle.sound.location = this.location
             super.e(vec3d)
             return
         }
         vehicle.driver.let { driver ->
             val player = (driver as CraftPlayer).handle
             val sideIn = player.bb
-            val forwardIn = player.bd
+            val forIn = player.bd
             if (sideIn < 0.0f) {
                 vehicle.steering.right(driver)
             } else if (sideIn > 0.0f) {
                 vehicle.steering.left(driver)
             }
-            vehicle.engine.update(forwardIn)
-            vehicle.engine.consumeFuel(sideIn)
+            vehicle.engine.update(sideIn, forIn)
         }
 
         // yawとpitchを設定
-        this.yaw = vehicle.state.yaw
+        this.yaw = vehicle.yaw
         this.lastYaw = this.yaw
         this.pitch = 0.0f
         this.setYawPitch(yaw, pitch)
-        this.aK = this.yaw;
+        this.aK = this.yaw
         this.aM = this.aK
 
         this.o(vehicle.engine.currentSpeed)
         super.e(vec3d.e(Vec3D(0.0, 0.0, 3.0)))
 
-        vehicle.state.location = location
-        vehicle.engineSound.location = this.location
-        vehicle.engineSound.pitch = vehicle.state.speed.approximate() / vehicle.model.spec.maxSpeed.value
+        val speed = vehicle.engine.speed
+        vehicle.location = location
+        vehicle.sound.location = this.location
+        vehicle.sound.pitch = speed.approximate() / vehicle.model.spec.maxSpeed.value
     }
 }

@@ -1,9 +1,11 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
+import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.config.ModelConfiguration
 import dev.sky_lock.pocketlifevehicle.vehicle.model.*
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
 
 /**
  * @author sky_lock
@@ -103,6 +105,8 @@ object ModelRegistry {
         if (!meta.hasCustomModelData()) {
             return null
         }
+        val container = meta.persistentDataContainer
+        val id = container.get(VehiclePlugin.instance.createKey("id"), PersistentDataType.STRING) ?: return null
         val itemId = meta.customModelData
 
         return models.find { model ->
@@ -110,7 +114,7 @@ object ModelRegistry {
             val modelItemId = modelOption.id
             val modelItemType = modelOption.type
 
-            return@find itemStack.type == modelItemType && itemId == modelItemId
+            return@find itemStack.type == modelItemType && itemId == modelItemId && model.id == id
         }
     }
 

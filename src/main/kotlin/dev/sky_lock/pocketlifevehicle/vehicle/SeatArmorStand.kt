@@ -32,7 +32,7 @@ class SeatArmorStand : EntityArmorStand {
         this.vehicle = vehicle
         this.position = position
         val center = vehicle.location
-        val loc = calculateLocation(center, vehicle.model.seatOption, position)
+        val loc = calcSeatPosition(center, vehicle.model.seatOption, position)
         setLocation(loc.x, center.y - 1.675 + vehicle.model.height, loc.z, center.yaw, center.pitch)
     }
 
@@ -63,14 +63,15 @@ class SeatArmorStand : EntityArmorStand {
         get() = position === SeatPosition.ONE_DRIVER || position === SeatPosition.TWO_DRIVER || position === SeatPosition.FOUR_DRIVER
 
     private fun synchronize() {
-        val loc = calculateLocation(vehicle!!.location, vehicle!!.model.seatOption, position!!)
+        val vehicle = vehicle!!
+        val loc = calcSeatPosition(vehicle.location, vehicle.model.seatOption, position!!)
         locX = loc.x
-        locY = vehicle!!.location.y - 1.675 + vehicle!!.model.height
+        locY = vehicle.location.y - 1.675 + vehicle.model.height
         locZ = loc.z
         setPosition(locX, locY, locZ)
-        yaw = vehicle!!.location.yaw
+        yaw = vehicle.location.yaw
         lastYaw = yaw
-        pitch = vehicle!!.location.pitch
+        pitch = vehicle.location.pitch
         setYawPitch(yaw, pitch)
     }
 
@@ -87,7 +88,7 @@ class SeatArmorStand : EntityArmorStand {
             }
         }
 
-    private fun calculateLocation(location: Location, seatOption: SeatOption, seatPos: SeatPosition): Location {
+    private fun calcSeatPosition(location: Location, seatOption: SeatOption, seatPos: SeatPosition): Location {
         val loc = location.clone()
 
         val offset = seatOption.offset
@@ -141,12 +142,13 @@ class SeatArmorStand : EntityArmorStand {
 
     private fun displayMeterPanel(player: Player) {
         val model = vehicle!!.model
-        val state = vehicle!!.state
+        val tank = vehicle!!.tank
+        val speed = vehicle!!.engine.speed
         val engine = vehicle!!.engine
 
         val builder = StringBuilder()
         builder.append(ChatColor.RED).append(ChatColor.BOLD).append("E ").append(ChatColor.GREEN)
-        val fuelRate = state.fuel / model.spec.maxFuel
+        val fuelRate = tank.fuel / model.spec.maxFuel
         val filled = (70 * fuelRate).roundToInt()
         IntStream.range(0, filled).forEach { builder.append("ǀ") }
         builder.append(ChatColor.RED)
@@ -154,7 +156,6 @@ class SeatArmorStand : EntityArmorStand {
         builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("   ").append(
             ChatColor.DARK_PURPLE
         ).append(ChatColor.BOLD)
-        val speed = state.speed
         if (speed.isApproximateZero) {
             builder.append("P")
         } else {

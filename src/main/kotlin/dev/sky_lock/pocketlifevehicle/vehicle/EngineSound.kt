@@ -9,7 +9,7 @@ import org.bukkit.scheduler.BukkitTask
 /**
  * @author sky_lock
  */
-class EngineSound(private val state: State, var location: Location) {
+class EngineSound(var location: Location) {
     private var task: BukkitTask? = null
     var isCancelled: Boolean = false
     var pitch: Float = 0.0f

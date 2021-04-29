@@ -14,75 +14,72 @@ import org.bukkit.entity.Player
 /**
  * @author sky_lock
  */
-open class Vehicle constructor(val model: Model) {
+class Vehicle(var location: Location, val model: Model, fuel: Float) {
     private val seats = mutableListOf<SeatArmorStand>()
-    private var center: ModelArmorStand? = null
+    private var center = ModelArmorStand(
+        (location.world as CraftWorld).handle, location.x, location.y, location.z, location.yaw
+    )
 
-    val state = State()
-    lateinit var engineSound: EngineSound
-    val engine: Engine
-    val steering: Steering
     var isBeginExplode = false
     var isUndrivable = false
 
+    val sound = EngineSound(location)
+    val tank = FuelTank(fuel, model.spec.maxFuel)
+    val engine = Engine(tank, model.spec.maxSpeed)
+    val steering = Steering(this)
+
+    var yaw = 0f
+    var isLocked = true
+    var shouldPlaySound = true
+    var shouldAnimate = true
+
     init {
-        engine = Engine(state, model)
-        steering = Steering(state, model)
+        location = center.location
     }
 
-    val location: Location
-        get() = center!!.location
-
-    fun refuel(fuel: Float): Boolean {
-        return engine.refuel(fuel)
-    }
-
-    open fun spawn(location: Location) {
-        center = ModelArmorStand((location.world as CraftWorld).handle, location.x, location.y, location.z, location.yaw)
-        state.location = location
+    fun spawn(location: Location) {
         // EngineSound初期化してからassemble
-        this.engineSound = EngineSound(state, location)
-        center!!.assemble(this)
-        state.yaw = location.yaw
-        val world = center!!.world
+        center.assemble(this)
+        yaw = location.yaw
+        val world = center.world
         world.addEntity(center)
 
         when (model.seatOption.capacity) {
             Capacity.SINGLE -> {
-                val driver = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
+                val driver = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
                 driver.assemble(this, SeatPosition.ONE_DRIVER)
                 seats.add(driver)
-                seats.forEach { entity: SeatArmorStand -> center!!.getWorld().addEntity(entity) }
+                seats.forEach { entity: SeatArmorStand -> center.getWorld().addEntity(entity) }
             }
             Capacity.DOUBLE -> {
-                val driver = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
+                val driver = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
                 driver.assemble(this, SeatPosition.TWO_DRIVER)
-                val passenger = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
+                val passenger = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
                 passenger.assemble(this, SeatPosition.TWO_PASSENGER)
                 seats.add(driver)
                 seats.add(passenger)
-                seats.forEach { entity: SeatArmorStand -> center!!.getWorld().addEntity(entity) }
+                seats.forEach { entity: SeatArmorStand -> center.getWorld().addEntity(entity) }
             }
             Capacity.QUAD -> {
-                val driver = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
+                val driver = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
                 driver.assemble(this, SeatPosition.FOUR_DRIVER)
-                val passenger = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
+                val passenger = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
                 passenger.assemble(this, SeatPosition.FOUR_PASSENGER)
-                val rearRight = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
+                val rearRight = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
                 rearRight.assemble(this, SeatPosition.FOUR_REAR_RIGHT)
-                val rearLeft = SeatArmorStand(center!!.getWorld(), location.x, location.y, location.z)
+                val rearLeft = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
                 rearLeft.assemble(this, SeatPosition.FOUR_REAR_LEFT)
                 seats.add(driver)
                 seats.add(passenger)
                 seats.add(rearRight)
                 seats.add(rearLeft)
-                seats.forEach { entity: SeatArmorStand? -> center!!.getWorld().addEntity(entity) }
+                seats.forEach { entity: SeatArmorStand? -> center.getWorld().addEntity(entity) }
             }
         }
     }
 
     val isInWater: Boolean
-        get() = center!!.isInWater
+        get() = center.isInWater
 
     fun consistsOf(armorStand: ArmorStand): Boolean {
         val handle = (armorStand as CraftArmorStand).handle
@@ -92,14 +89,6 @@ open class Vehicle constructor(val model: Model) {
             return center == handle
         }
         return false
-    }
-
-    operator fun contains(seat: SeatArmorStand): Boolean {
-        return seats.contains(seat)
-    }
-
-    operator fun contains(basis: ModelArmorStand): Boolean {
-        return center == basis
     }
 
     val passengers: List<Player>
@@ -119,7 +108,7 @@ open class Vehicle constructor(val model: Model) {
         get() = seats.find { seat -> seat.isDriverSheet && seat.passengers.isNotEmpty() }?.passenger
 
     fun remove() {
-        center!!.killEntity()
+        center.killEntity()
         seats.forEach { seat -> seat.killEntity() }
     }
 

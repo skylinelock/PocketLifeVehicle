@@ -102,8 +102,6 @@ class PlayerEventListener : Listener {
         }
         if (model == null || item == null) return
 
-        val dataContainer = item.itemMeta.persistentDataContainer
-
         event.isCancelled = true
         event.setUseInteractedBlock(Event.Result.DENY)
         event.setUseItemInHand(Event.Result.DENY)
@@ -128,8 +126,10 @@ class PlayerEventListener : Listener {
             return
         }
         where.yaw = player.location.yaw
-        val owner = dataContainer.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
-        var fuel = dataContainer.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
+
+        val container = item.itemMeta.persistentDataContainer
+        val owner = container.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
+        var fuel = container.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
         if (owner == null || fuel == null) {
             placeVehicleEntity(item, player.uniqueId, model, where, model.spec.maxFuel)
             return
@@ -182,7 +182,7 @@ class PlayerEventListener : Listener {
                 armorStand.addPassenger(player)
                 return
             }
-            if (vehicle.state.isLocked) {
+            if (vehicle.isLocked) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }
@@ -196,7 +196,7 @@ class PlayerEventListener : Listener {
                 vehicle.addPassenger(player)
                 return
             }
-            if (vehicle.state.isLocked) {
+            if (vehicle.isLocked) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }
