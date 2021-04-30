@@ -75,6 +75,9 @@ object VehicleManager {
             remove(vehicle)
             return
         }
+        if (!vehicles.contains(vehicle)) {
+            return
+        }
         val itemStack = ItemStackBuilder(model.itemStack)
             .setPersistentData(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE, owner)
             .setPersistentData(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT, fuel)

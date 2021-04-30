@@ -20,7 +20,8 @@ import kotlin.math.roundToInt
  * @author sky_lock
  */
 
-class InventoryVehicle(private val player: Player, private val vehicle: Vehicle) : InventoryCustom(54, "乗り物ユーティリティ") {
+class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
+    : InventoryCustom(54, "乗り物ユーティリティ") {
 
     init {
         val refuelHopper =
