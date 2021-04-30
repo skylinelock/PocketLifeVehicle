@@ -4,8 +4,7 @@ import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwnerUid
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.kill
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import net.minecraft.server.v1_14_R1.EntityPlayer
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -25,7 +24,7 @@ class BurnExplosionTask {
                 if (vehicle.passengers.isEmpty()) {
                     if (count == 0) {
                         vehicle.explode()
-                        kill(vehicle)
+                        VehicleManager.remove(vehicle)
                         cancel()
                     }
                     count--
@@ -33,7 +32,7 @@ class BurnExplosionTask {
                 }
                 if (count == 0) {
                     vehicle.explode()
-                    getOwnerUid(vehicle)?.let { ownerUuid ->
+                    vehicle.owner?.let { ownerUuid ->
                         val owner = Bukkit.getPlayer(ownerUuid) ?: return@let
                         if (vehicle.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
                             return@let
@@ -44,7 +43,7 @@ class BurnExplosionTask {
                         warning.stop(player)
                         ((player as CraftPlayer).handle as EntityPlayer).killEntity()
                     }
-                    kill(vehicle)
+                    VehicleManager.remove(vehicle)
                     cancel()
                     return
                 }

@@ -84,11 +84,8 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
             event.currentItem = lockBarrier()
         }
 
-        val owner = VehicleManager.getOwnerUid(vehicle)
-        val ownerSkull = PlayerHeadBuilder(1).owingPlayer(owner).setName(colorizeTitle("所有者")).setLore(
-            ChatColor.AQUA + VehicleManager.getOwnerName(
-                vehicle
-            )
+        val ownerSkull = PlayerHeadBuilder(1).owingPlayer(vehicle.owner).setName(colorizeTitle("所有者")).setLore(
+            ChatColor.AQUA + vehicle.getOwnerName()
         ).build()
         setItem(44, ownerSkull)
 
@@ -172,18 +169,18 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
     }
 
     private fun vehicleInfoLore(): List<String> {
-        val carInfo: MutableList<String> = ArrayList()
-        carInfo.add(ChatColor.GREEN + "名前     : " + ChatColor.RESET + vehicle.model.name)
-        carInfo.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + vehicle.model.spec.maxFuel)
-        carInfo.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + vehicle.model.spec.maxSpeed.label)
-        carInfo.add(ChatColor.GREEN + "説明 :")
-        vehicle.model.lore.forEach { lore -> carInfo.add("- " + ChatColor.RESET + lore) }
+        val info: MutableList<String> = ArrayList()
+        info.add(ChatColor.GREEN + "名前     : " + ChatColor.RESET + vehicle.model.name)
+        info.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + vehicle.model.spec.maxFuel)
+        info.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + vehicle.model.spec.maxSpeed.label)
+        info.add(ChatColor.GREEN + "説明 :")
+        vehicle.model.lore.forEach { lore -> info.add("- " + ChatColor.RESET + lore) }
         if (vehicle.isUndrivable) {
-            carInfo.add(ChatColor.GREEN + "状態 : " + ChatColor.RED + "廃車")
+            info.add(ChatColor.GREEN + "状態 : " + ChatColor.RED + "廃車")
         } else {
-            carInfo.add(ChatColor.GREEN + "状態 : " + ChatColor.YELLOW + "運転可能")
+            info.add(ChatColor.GREEN + "状態 : " + ChatColor.YELLOW + "運転可能")
         }
-        return carInfo
+        return info
     }
 
 }

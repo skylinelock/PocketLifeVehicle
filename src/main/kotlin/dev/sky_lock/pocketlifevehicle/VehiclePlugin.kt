@@ -56,6 +56,7 @@ class VehiclePlugin : JavaPlugin() {
         ModelRegistry.saveToFile()
         pluginConfiguration.save()
         VehicleManager.registerAllIllegalParkings()
+        VehicleManager.removeEventVehicles()
         parkingViolationList.save()
         CustomEntityTypes.unregisterEntities()
     }

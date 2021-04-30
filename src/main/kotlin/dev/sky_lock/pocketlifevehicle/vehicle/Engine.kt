@@ -25,7 +25,7 @@ class Engine(private val tank: FuelTank, private val model: Model) {
                 speed.frictionalDecelerate()
             }
             currentSpeed = speed.exact()
-            if (model.flag.consumeFuel) {
+            if (!model.flag.eventOnly && model.flag.consumeFuel) {
                 tank.consume()
             }
             return
@@ -46,7 +46,7 @@ class Engine(private val tank: FuelTank, private val model: Model) {
         if (speed.approximate() == ZERO && sideIn == ZERO) {
             return
         }
-        if (model.flag.consumeFuel) {
+        if (!model.flag.eventOnly && model.flag.consumeFuel) {
             tank.consume()
         }
     }

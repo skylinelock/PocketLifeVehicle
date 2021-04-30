@@ -4,8 +4,7 @@ import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.getOwnerUid
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager.pop
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.scheduler.BukkitRunnable
@@ -21,7 +20,7 @@ class SubmergedMessageTask {
             override fun run() {
                 if (vehicle.passengers.isEmpty()) {
                     if (count == 0) {
-                        pop(vehicle)
+                        VehicleManager.pop(vehicle)
                         cancel()
                         return
                     }
@@ -39,14 +38,14 @@ class SubmergedMessageTask {
                     count--
                     return
                 }
-                getOwnerUid(vehicle)?.let { ownerUuid ->
+                vehicle.owner?.let { ownerUuid ->
                     if (vehicle.passengers.any { player -> player.uniqueId == ownerUuid }) {
                         return@let
                     }
                     val ownPlayer = Bukkit.getPlayer(ownerUuid)
                     ownPlayer?.sendVehiclePrefixedMessage(ChatColor.RED + "乗り物が" + vehicle.passengers[0].name + "の運転によって水没しました")
                 }
-                pop(vehicle)
+                VehicleManager.pop(vehicle)
                 vehicle.passengers.forEach { player -> warning.stop(player) }
                 cancel()
             }

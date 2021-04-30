@@ -3,6 +3,7 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld
@@ -10,11 +11,12 @@ import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Player
+import java.util.*
 
 /**
  * @author sky_lock
  */
-class Vehicle(var location: Location, val model: Model, fuel: Float) {
+class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: Float) {
     private val seats = mutableListOf<SeatArmorStand>()
     private var center = ModelArmorStand(
         (location.world as CraftWorld).handle, location.x, location.y, location.z, location.yaw
@@ -29,9 +31,10 @@ class Vehicle(var location: Location, val model: Model, fuel: Float) {
     val steering = Steering(this)
 
     var yaw = 0f
-    var isLocked = true
-    var shouldPlaySound = true
-    var shouldAnimate = true
+    private var isEventOnly = model.flag.eventOnly
+    var isLocked = !isEventOnly
+    var shouldPlaySound = model.flag.engineSound
+    var shouldAnimate = model.flag.animation
 
     init {
         location = center.location
@@ -101,6 +104,11 @@ class Vehicle(var location: Location, val model: Model, fuel: Float) {
         } else {
             driverSeat.bukkitEntity.addPassenger(player)
         }
+    }
+
+    fun getOwnerName(): String {
+        val uuid = owner ?: return "unknown"
+        return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
     }
 
     val driver: Player?

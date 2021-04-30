@@ -42,7 +42,7 @@ class ModelArmorStand : EntityArmorStand {
         armorStand.setItem(modelOption.position.slot, model.itemStack)
         armorStand.isSmall = !modelOption.isBig
         this.updateSize()
-        if (vehicle.model.flag.engineSound) {
+        if (vehicle.shouldPlaySound) {
             vehicle.sound.start()
         }
     }

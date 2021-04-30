@@ -3,7 +3,8 @@ package dev.sky_lock.pocketlifevehicle.listener
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.inventory.openVehicleUtilityMenu
+import dev.sky_lock.pocketlifevehicle.inventory.openEventVehicleUtility
+import dev.sky_lock.pocketlifevehicle.inventory.openVehicleUtility
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
@@ -157,27 +158,52 @@ class PlayerEventListener : Listener {
         val player = event.player
 
         val handle = armorStand.handle
-        val clicked = player.uniqueId
-        val vehicle = VehicleManager.getVehicle(armorStand) ?: return
-        val owner = VehicleManager.getOwnerUid(vehicle) ?: return
-
-        val ownerName = VehicleManager.getOwnerName(vehicle)
-
+        val vehicle = VehicleManager.findVehicle(armorStand) ?: return
         event.isCancelled = true
+        val owner = vehicle.owner
+        if (owner == null) {
+            if (Permission.OPEN_EVENT_VEHICLE_GUI.obtained(player) && player.isSneaking) {
+                player.openEventVehicleUtility(vehicle)
+                return
+            }
+            if (handle is SeatArmorStand) {
+                if (armorStand.passengers.isNotEmpty()) return
+                if (vehicle.isLocked) {
+                    sendRefusedReason(player, "この乗り物には鍵が掛かっています")
+                    return
+                }
+                armorStand.addPassenger(player)
+                return
+            }
+            if (handle !is ModelArmorStand) {
+                return
+            }
+            if (vehicle.passengers.size >= vehicle.model.seatOption.capacity.value()) {
+                sendRefusedReason(player, "この乗り物は満員です")
+                return
+            }
+            if (vehicle.isLocked) {
+                sendRefusedReason(player, "この乗り物には鍵が掛かっています")
+                return
+            }
+            vehicle.addPassenger(player)
+            return
+        }
+
+        val ownerName = vehicle.getOwnerName()
+        val clicked = player.uniqueId
 
         if (player.isSneaking) {
             if (clicked != owner && !Permission.OPEN_VEHICLE_GUI.obtained(player)) {
                 sendRefusedReason(player, "この乗り物は $ownerName が所有しています")
                 return
             }
-            player.openVehicleUtilityMenu(vehicle)
+            player.openVehicleUtility(vehicle)
             return
         }
 
         if (handle is SeatArmorStand) {
-            if (armorStand.passengers.isNotEmpty()) {
-                return
-            }
+            if (armorStand.passengers.isNotEmpty()) return
             if (clicked == owner) {
                 armorStand.addPassenger(player)
                 return
@@ -204,9 +230,15 @@ class PlayerEventListener : Listener {
         }
     }
 
-    private fun placeVehicleEntity(vehicleStack: ItemStack, owner: UUID, model: Model, location: Location, fuel: Float) {
+    private fun placeVehicleEntity(
+        vehicleStack: ItemStack,
+        owner: UUID,
+        model: Model,
+        location: Location,
+        fuel: Float
+    ) {
         // VehicleManager.pop(owner)
-        VehicleManager.placeEntity(owner, model, location, fuel)
+        VehicleManager.placeVehicle(owner, location, model, fuel)
         location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.0f)
         vehicleStack.subtract()
     }

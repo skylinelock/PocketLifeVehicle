@@ -141,31 +141,34 @@ class SeatArmorStand : EntityArmorStand {
     }
 
     private fun displayMeterPanel(player: Player) {
-        val model = vehicle!!.model
-        val tank = vehicle!!.tank
-        val speed = vehicle!!.engine.speed
-        val engine = vehicle!!.engine
+        val vehicle = vehicle!!
+        val model = vehicle.model
+        val tank = vehicle.tank
+        val speed = vehicle.engine.speed
+        val engine = vehicle.engine
 
         val builder = StringBuilder()
-        builder.append(ChatColor.RED).append(ChatColor.BOLD).append("E ").append(ChatColor.GREEN)
-        val fuelRate = tank.fuel / model.spec.maxFuel
-        val filled = (70 * fuelRate).roundToInt()
-        IntStream.range(0, filled).forEach { builder.append("ǀ") }
-        builder.append(ChatColor.RED)
-        IntStream.range(0, 70 - filled).forEach { builder.append("ǀ") }
-        builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("   ").append(
-            ChatColor.DARK_PURPLE
-        ).append(ChatColor.BOLD)
-        if (speed.isApproximateZero) {
-            builder.append("P")
-        } else {
-            if (speed.isPositive) {
-                builder.append("D")
-            } else if (speed.isNegative) {
-                builder.append("R")
+        if (!vehicle.model.flag.eventOnly) {
+            builder.append(ChatColor.RED).append(ChatColor.BOLD).append("E ").append(ChatColor.GREEN)
+            val fuelRate = tank.fuel / model.spec.maxFuel
+            val filled = (70 * fuelRate).roundToInt()
+            IntStream.range(0, filled).forEach { builder.append("ǀ") }
+            builder.append(ChatColor.RED)
+            IntStream.range(0, 70 - filled).forEach { builder.append("ǀ") }
+            builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("   ").append(
+                ChatColor.DARK_PURPLE
+            ).append(ChatColor.BOLD)
+            if (speed.isApproximateZero) {
+                builder.append("P")
+            } else {
+                if (speed.isPositive) {
+                    builder.append("D")
+                } else if (speed.isNegative) {
+                    builder.append("R")
+                }
             }
+            builder.append("   ")
         }
-        builder.append("   ")
         builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD)
         val blockPerSecond = abs(engine.speedPerSecond()).truncateToOneDecimalPlace()
         builder.append(blockPerSecond).append(ChatColor.GRAY).append(ChatColor.BOLD).append(" blocks/s")

@@ -32,12 +32,17 @@ class SpawnCommand : ICommand, IAdminCommand {
                 player.sendVehiclePrefixedMessage(ChatColor.RED + "このワールドは乗り物の使用が許可されていません")
                 return
             }
+            if (model.flag.eventOnly) {
+                VehicleManager.placeEventVehicle(player.location, model)
+                player.sendVehiclePrefixedMessage(ChatColor.GREEN + "イベント専用車両を設置しました")
+                return
+            }
             if (!VehicleManager.verifyPlaceableLocation(player.location)) {
                 player.sendVehiclePrefixedMessage(ChatColor.RED + "この位置に乗り物は設置できません")
                 return
             }
-            VehicleManager.kill(player.uniqueId)
-            val success = VehicleManager.placeEntity(player.uniqueId, model, player.location, model.spec.maxFuel)
+            VehicleManager.remove(player.uniqueId)
+            val success = VehicleManager.placeVehicle(player.uniqueId, player.location, model, model.spec.maxFuel)
             if (success) {
                 player.sendVehiclePrefixedMessage(ChatColor.GREEN + id + " を取得しました")
             } else {
@@ -55,13 +60,17 @@ class SpawnCommand : ICommand, IAdminCommand {
             player.sendVehiclePrefixedMessage(ChatColor.RED + "対象のプレイヤーがいるワールドは乗り物の使用が許可されていません")
             return
         }
-
+        if (model.flag.eventOnly) {
+            VehicleManager.placeEventVehicle(target.location, model)
+            player.sendVehiclePrefixedMessage(ChatColor.GREEN + name + "の位置にイベント専用車両を設置しました")
+            return
+        }
         if (!VehicleManager.verifyPlaceableLocation(target.location)) {
             player.sendVehiclePrefixedMessage(ChatColor.RED + "対象のプレイヤーの位置に乗り物を設置することができませんでした")
             return
         }
-        VehicleManager.kill(target.uniqueId)
-        val success = VehicleManager.placeEntity(target.uniqueId, model, target.location, model.spec.maxFuel)
+        VehicleManager.remove(target.uniqueId)
+        val success = VehicleManager.placeVehicle(target.uniqueId, target.location, model, model.spec.maxFuel)
         if (success) {
             player.sendVehiclePrefixedMessage(ChatColor.GREEN + name + " に " + id + " を渡しました")
             target.sendVehiclePrefixedMessage(ChatColor.GREEN + "乗り物を受け取りました")
