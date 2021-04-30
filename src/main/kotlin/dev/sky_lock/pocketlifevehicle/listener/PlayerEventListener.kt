@@ -21,6 +21,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractAtEntityEvent
@@ -64,6 +65,23 @@ class PlayerEventListener : Listener {
     fun onPlayerQuit(event: PlayerQuitEvent) {
         val uuid = event.player.uniqueId
         VehicleManager.registerIllegalParking(uuid)
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    fun onPlayerInteractOnVehicle(event: PlayerInteractEvent) {
+        if (event.action != Action.RIGHT_CLICK_BLOCK &&
+            event.action != Action.RIGHT_CLICK_AIR) {
+            return
+        }
+        val mount = event.player.vehicle ?: return
+        val handle = (mount as CraftEntity).handle
+        if (handle !is SeatArmorStand) return
+        if (!handle.isDriverSheet) return
+        val player = event.player
+        val loc = player.location
+        loc.yaw = handle.bukkitYaw
+        player.teleport(loc)
+        mount.addPassenger(player)
     }
 
     // メインハンド、オフハンドごとに２回呼ばれる

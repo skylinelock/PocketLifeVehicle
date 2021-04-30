@@ -94,7 +94,8 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
     }
 
     val passengers: List<Player>
-        get() = seats.filter { seat -> seat.passengers.isNotEmpty() }.map { seat -> seat.passengers[0].bukkitEntity as CraftPlayer }
+        get() = seats.filter { seat -> seat.passengers.isNotEmpty() }
+            .map { seat -> seat.passengers[0].bukkitEntity as CraftPlayer }
 
     fun addPassenger(player: Player) {
         val driverSeat = seats.find { seat -> seat.isDriverSheet && seat.passengers.isEmpty() }
@@ -111,8 +112,19 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
         return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
     }
 
+    private fun getDriverSeat(): SeatArmorStand? {
+        return seats.find { seat -> seat.isDriverSheet }
+    }
+
+    fun setDriver(player: Player) {
+        if (driver != null) {
+            getDriverSeat()?.ejectPassengers()
+        }
+        getDriverSeat()?.bukkitEntity?.addPassenger(player)
+    }
+
     val driver: Player?
-        get() = seats.find { seat -> seat.isDriverSheet && seat.passengers.isNotEmpty() }?.passenger
+        get() = getDriverSeat()?.passenger
 
     fun remove() {
         center.killEntity()

@@ -80,12 +80,9 @@ class SeatArmorStand : EntityArmorStand {
 
     val passenger: Player?
         get() {
+            if (passengers.isEmpty()) return null
             val passenger = passengers[0] ?: return null
-            return if (passenger is EntityHuman) {
-                passenger.bukkitEntity as Player
-            } else {
-                null
-            }
+            return if (passenger is EntityHuman) passenger.bukkitEntity as Player else null
         }
 
     private fun calcSeatPosition(location: Location, seatOption: SeatOption, seatPos: SeatPosition): Location {
