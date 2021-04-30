@@ -35,6 +35,7 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
     var isLocked = !isEventOnly
     var shouldPlaySound = model.flag.engineSound
     var shouldAnimate = model.flag.animation
+    var isLoaded = true
 
     init {
         location = center.location
