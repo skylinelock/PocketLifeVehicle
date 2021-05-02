@@ -29,7 +29,7 @@ class ModelArmorStand : EntityArmorStand {
         super.setPosition(x, y, z)
         super.setYawPitch(yaw, 0.0F)
         this.a(EntityVehicleHelper.modelNBT())
-        //乗れるブロックの高さ
+        // Entity#K = maxUpStep
         this.K = 1.0f
     }
 
@@ -73,7 +73,7 @@ class ModelArmorStand : EntityArmorStand {
         }
     }
 
-    // enterWater
+    // Entity#az() = doWaterSplashEffect()
     override fun az() {
         super.az()
         SubmergedMessageTask().run(vehicle!!)
@@ -92,7 +92,7 @@ class ModelArmorStand : EntityArmorStand {
         return entityType.k().a(widthScale, heightScale)
     }
 
-    // movementTick
+    // EntityLiving#e(Vec3D) = travel(Vec3D)
     override fun e(vec3d: Vec3D) {
         if (vehicle == null) {
             super.e(vec3d)
@@ -113,7 +113,9 @@ class ModelArmorStand : EntityArmorStand {
 
         if (driver != null) {
             val player = (driver as CraftPlayer).handle
+            // EntityLiving#bb = xxa
             val sideIn = player.bb
+            // EntityLiving#bb = zza
             val forIn = player.bd
             if (sideIn < 0.0f) {
                 vehicle.steering.right(driver)
@@ -128,9 +130,12 @@ class ModelArmorStand : EntityArmorStand {
         this.lastYaw = this.yaw
         this.pitch = 0.0f
         this.setYawPitch(yaw, pitch)
+        // EntityLiving#aK = yBodyRot
         this.aK = this.yaw
+        // EntityLiving#aM = yHeadRot
         this.aM = this.aK
 
+        // EntityLiving#o(float) = setSpeed(float)
         this.o(vehicle.engine.currentSpeed)
         super.e(vec3d.e(Vec3D(0.0, 0.0, 3.0)))
 
