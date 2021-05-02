@@ -82,7 +82,7 @@ object VehicleManager {
             .setPersistentData(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE, owner)
             .setPersistentData(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT, fuel)
             .addLore(
-                ChatColor.GREEN + "オーナー: " + ChatColor.YELLOW + vehicle.getOwnerName(),
+                ChatColor.GREEN + "オーナー: " + ChatColor.YELLOW + vehicle.ownerName,
                 ChatColor.GREEN + "燃料: " + ChatColor.YELLOW + fuel.truncateToOneDecimalPlace()
             )
             .build()

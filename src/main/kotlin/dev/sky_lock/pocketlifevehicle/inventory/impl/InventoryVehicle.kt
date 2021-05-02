@@ -86,7 +86,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         }
 
         val ownerSkull = PlayerHeadBuilder(1).owingPlayer(vehicle.owner).setName(colorizeTitle("所有者")).setLore(
-            ChatColor.AQUA + vehicle.getOwnerName()
+            ChatColor.AQUA + vehicle.ownerName
         ).build()
         setItem(44, ownerSkull)
 

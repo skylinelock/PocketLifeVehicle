@@ -17,6 +17,7 @@ import org.bukkit.Sound
 import org.bukkit.block.BlockFace
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
 import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity
+import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
@@ -63,16 +64,18 @@ class PlayerEventListener : Listener {
     // プレイヤーが自主的にログアウトした時のみ呼ばれる
     @EventHandler
     fun onPlayerQuit(event: PlayerQuitEvent) {
-        val uuid = event.player.uniqueId
-        VehicleManager.registerIllegalParking(uuid)
+        val player = event.player
+        VehicleManager.registerIllegalParking(player.uniqueId)
+        val riding = player.vehicle ?: return
+        if (riding.type != EntityType.ARMOR_STAND) return
+        val vehicle = VehicleManager.findVehicle(riding as ArmorStand) ?: return
+        vehicle.ejectPassenger(player)
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     fun onPlayerInteractOnVehicle(event: PlayerInteractEvent) {
         if (event.action != Action.RIGHT_CLICK_BLOCK &&
-            event.action != Action.RIGHT_CLICK_AIR) {
-            return
-        }
+            event.action != Action.RIGHT_CLICK_AIR) return
         val mount = event.player.vehicle ?: return
         val handle = (mount as CraftEntity).handle
         if (handle !is SeatArmorStand) return
@@ -87,9 +90,7 @@ class PlayerEventListener : Listener {
     // メインハンド、オフハンドごとに２回呼ばれる
     @EventHandler
     fun onPlayerInteract(event: PlayerInteractEvent) {
-        if (event.action != Action.RIGHT_CLICK_BLOCK) {
-            return
-        }
+        if (event.action != Action.RIGHT_CLICK_BLOCK) return
         val player = event.player
 
         val itemInMainHand = player.inventory.itemInMainHand
@@ -185,7 +186,7 @@ class PlayerEventListener : Listener {
                 return
             }
             if (handle is SeatArmorStand) {
-                if (armorStand.passengers.isNotEmpty()) return
+                if (handle.isVehicle) return
                 if (vehicle.isLocked) {
                     sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                     return
@@ -208,7 +209,7 @@ class PlayerEventListener : Listener {
             return
         }
 
-        val ownerName = vehicle.getOwnerName()
+        val ownerName = vehicle.ownerName
         val clicked = player.uniqueId
 
         if (player.isSneaking) {

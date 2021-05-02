@@ -6,6 +6,7 @@ import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
 import net.minecraft.server.v1_14_R1.*
 import org.bukkit.ChatColor
 import org.bukkit.Location
+import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import java.util.stream.IntStream
 import kotlin.math.*
@@ -28,6 +29,18 @@ class SeatArmorStand : EntityArmorStand {
         this.a(EntityVehicleHelper.seatNBT())
     }
 
+    val passenger: Player?
+        get() {
+            if (!isVehicle) return null
+            val passenger = bukkitEntity.passenger
+            return if (passenger is Player) passenger else null
+        }
+
+    val isDriverSheet: Boolean
+        get() = position === SeatPosition.ONE_DRIVER ||
+            position === SeatPosition.TWO_DRIVER ||
+            position === SeatPosition.FOUR_DRIVER
+
     fun assemble(vehicle: Vehicle, position: SeatPosition) {
         this.vehicle = vehicle
         this.position = position
@@ -38,7 +51,12 @@ class SeatArmorStand : EntityArmorStand {
 
     //足音がなるかどうか
     override fun isSilent(): Boolean {
-        return isCarSheet
+        return true
+    }
+
+    fun ejectPassenger(entity: Player) {
+        val player = (entity as CraftPlayer).handle
+        player.stopRiding()
     }
 
     override fun movementTick() {
@@ -59,9 +77,6 @@ class SeatArmorStand : EntityArmorStand {
         synchronize()
     }
 
-    val isDriverSheet: Boolean
-        get() = position === SeatPosition.ONE_DRIVER || position === SeatPosition.TWO_DRIVER || position === SeatPosition.FOUR_DRIVER
-
     private fun synchronize() {
         val vehicle = vehicle!!
         val loc = calcSeatPosition(vehicle.location, vehicle.model.seatOption, position!!)
@@ -74,16 +89,6 @@ class SeatArmorStand : EntityArmorStand {
         pitch = vehicle.location.pitch
         setYawPitch(yaw, pitch)
     }
-
-    private val isCarSheet: Boolean
-        get() = position != null
-
-    val passenger: Player?
-        get() {
-            if (passengers.isEmpty()) return null
-            val passenger = passengers[0] ?: return null
-            return if (passenger is EntityHuman) passenger.bukkitEntity as Player else null
-        }
 
     private fun calcSeatPosition(location: Location, seatOption: SeatOption, seatPos: SeatPosition): Location {
         val loc = location.clone()

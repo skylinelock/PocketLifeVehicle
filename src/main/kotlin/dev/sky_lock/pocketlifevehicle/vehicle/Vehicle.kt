@@ -22,6 +22,12 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
         (location.world as CraftWorld).handle, location.x, location.y, location.z, location.yaw
     )
 
+    val ownerName: String
+        get() {
+            val uuid = owner ?: return "unknown"
+            return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
+        }
+
     var isBeginExplode = false
     var isUndrivable = false
 
@@ -31,11 +37,24 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
     val steering = Steering(this)
 
     var yaw = 0f
+
     private var isEventOnly = model.flag.eventOnly
     var isLocked = !isEventOnly
     var shouldPlaySound = model.flag.engineSound
     var shouldAnimate = model.flag.animation
     var isLoaded = true
+
+    val isInWater
+        get() = center.isInWater
+
+    val passengers
+        get() = seats.filter { seat -> seat.isVehicle }.mapNotNull { seat -> seat.passenger }
+
+    private val driverSeat
+        get() = seats.find { seat -> seat.isDriverSheet }
+
+    val driver
+        get() = driverSeat?.passenger
 
     init {
         location = center.location
@@ -52,7 +71,7 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
                 val driver = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
                 driver.assemble(this, SeatPosition.ONE_DRIVER)
                 seats.add(driver)
-                seats.forEach { entity: SeatArmorStand -> center.getWorld().addEntity(entity) }
+                seats.forEach { entity -> center.getWorld().addEntity(entity) }
             }
             Capacity.DOUBLE -> {
                 val driver = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
@@ -61,7 +80,7 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
                 passenger.assemble(this, SeatPosition.TWO_PASSENGER)
                 seats.add(driver)
                 seats.add(passenger)
-                seats.forEach { entity: SeatArmorStand -> center.getWorld().addEntity(entity) }
+                seats.forEach { entity -> center.getWorld().addEntity(entity) }
             }
             Capacity.QUAD -> {
                 val driver = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
@@ -76,13 +95,10 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
                 seats.add(passenger)
                 seats.add(rearRight)
                 seats.add(rearLeft)
-                seats.forEach { entity: SeatArmorStand? -> center.getWorld().addEntity(entity) }
+                seats.forEach { entity -> center.getWorld().addEntity(entity) }
             }
         }
     }
-
-    val isInWater: Boolean
-        get() = center.isInWater
 
     fun consistsOf(armorStand: ArmorStand): Boolean {
         val handle = (armorStand as CraftArmorStand).handle
@@ -94,42 +110,25 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
         return false
     }
 
-    val passengers: List<Player>
-        get() = seats.filter { seat -> seat.passengers.isNotEmpty() }
-            .map { seat -> seat.passengers[0].bukkitEntity as CraftPlayer }
+    fun ejectPassenger(player: Player) {
+        seats.find { seat -> seat.passenger != null && seat.passenger == player } ?: return
+        (player as CraftPlayer).handle.stopRiding()
+    }
 
     fun addPassenger(player: Player) {
-        val driverSeat = seats.find { seat -> seat.isDriverSheet && seat.passengers.isEmpty() }
-        if (driverSeat == null) {
-            val passengerSeat = seats.find { seat -> seat.passengers.isEmpty() } ?: return
+        val driverSeat = driverSeat
+        if (driverSeat == null || driverSeat.isVehicle) {
+            val passengerSeat = seats.find { seat -> !seat.isVehicle } ?: return
             passengerSeat.bukkitEntity.addPassenger(player)
-        } else {
-            driverSeat.bukkitEntity.addPassenger(player)
+            return
         }
+        driverSeat.bukkitEntity.addPassenger(player)
     }
-
-    fun getOwnerName(): String {
-        val uuid = owner ?: return "unknown"
-        return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
-    }
-
-    private fun getDriverSeat(): SeatArmorStand? {
-        return seats.find { seat -> seat.isDriverSheet }
-    }
-
-    fun setDriver(player: Player) {
-        if (driver != null) {
-            getDriverSeat()?.ejectPassengers()
-        }
-        getDriverSeat()?.bukkitEntity?.addPassenger(player)
-    }
-
-    val driver: Player?
-        get() = getDriverSeat()?.passenger
 
     fun remove() {
         center.killEntity()
         seats.forEach { seat -> seat.killEntity() }
+        seats.clear()
     }
 
     fun explode() {
