@@ -1,6 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
 import dev.sky_lock.pocketlifevehicle.Permission
+import dev.sky_lock.pocketlifevehicle.PluginKey
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.inventory.openEventVehicleUtility
@@ -148,8 +149,8 @@ class PlayerEventListener : Listener {
         where.yaw = player.location.yaw
 
         val container = item.itemMeta.persistentDataContainer
-        val owner = container.get(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE)
-        var fuel = container.get(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT)
+        val owner = container.get(PluginKey.OWNER, UUIDTagType.INSTANCE)
+        var fuel = container.get(PluginKey.FUEL, PersistentDataType.FLOAT)
         if (owner == null || fuel == null) {
             placeVehicleEntity(item, player.uniqueId, model, where, model.spec.maxFuel)
             return

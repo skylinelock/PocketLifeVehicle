@@ -1,6 +1,5 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
-import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
@@ -21,7 +20,6 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
-import org.bukkit.persistence.PersistentDataType
 
 /**
  * @author sky_lock
@@ -45,11 +43,6 @@ class ContainerModelTextEdit constructor(
 
         val paper = ItemStackBuilder(Material.PAPER, 1)
             .setName(default.ifBlank { "name" })
-            .setPersistentData(
-                VehiclePlugin.instance.createKey("editor-result"),
-                PersistentDataType.SHORT,
-                1
-            )
             .build()
 
         bukkitView.topInventory.setItem(0, paper)

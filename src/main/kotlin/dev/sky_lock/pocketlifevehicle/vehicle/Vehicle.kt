@@ -3,6 +3,7 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
+import net.minecraft.server.v1_14_R1.EntityArmorStand
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Sound
@@ -62,8 +63,7 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
 
     fun spawn() {
         center.assemble(this)
-        val world = center.world
-        world.addEntity(center)
+        spawnEntity(center)
 
         when (model.seatOption.capacity) {
             Capacity.SINGLE -> {
@@ -87,7 +87,11 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
         val seat = SeatArmorStand(world, location.x, location.y, location.z)
         seat.assemble(this, position)
         seats.add(seat)
-        world.addEntity(seat)
+        spawnEntity(seat)
+    }
+
+    private fun spawnEntity(armorStand: EntityArmorStand) {
+        armorStand.world.addEntity(armorStand)
     }
 
     fun consistsOf(armorStand: ArmorStand): Boolean {

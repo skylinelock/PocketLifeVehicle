@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
-import dev.sky_lock.pocketlifevehicle.VehiclePlugin
+import dev.sky_lock.pocketlifevehicle.PluginKey
 import dev.sky_lock.pocketlifevehicle.config.ModelConfiguration
 import dev.sky_lock.pocketlifevehicle.vehicle.model.*
 import org.bukkit.Material
@@ -106,7 +106,7 @@ object ModelRegistry {
             return null
         }
         val container = meta.persistentDataContainer
-        val id = container.get(VehiclePlugin.instance.createKey("id"), PersistentDataType.STRING) ?: return null
+        val id = container.get(PluginKey.ID, PersistentDataType.STRING) ?: return null
         val itemId = meta.customModelData
 
         return models.find { model ->

@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
+import dev.sky_lock.pocketlifevehicle.PluginKey
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
@@ -74,8 +75,8 @@ object VehicleManager {
             return
         }
         val itemStack = ItemStackBuilder(model.itemStack)
-            .setPersistentData(VehiclePlugin.instance.createKey("owner"), UUIDTagType.INSTANCE, owner)
-            .setPersistentData(VehiclePlugin.instance.createKey("fuel"), PersistentDataType.FLOAT, fuel)
+            .setPersistentData(PluginKey.OWNER, UUIDTagType.INSTANCE, owner)
+            .setPersistentData(PluginKey.FUEL, PersistentDataType.FLOAT, fuel)
             .addLore(
                 ChatColor.GREEN + "オーナー: " + ChatColor.YELLOW + vehicle.ownerName,
                 ChatColor.GREEN + "燃料: " + ChatColor.YELLOW + fuel.truncateToOneDecimalPlace()
