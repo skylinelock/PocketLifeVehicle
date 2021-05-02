@@ -6,7 +6,6 @@ import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
 import net.minecraft.server.v1_14_R1.*
 import org.bukkit.ChatColor
 import org.bukkit.Location
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
 import org.bukkit.entity.Player
 import java.util.stream.IntStream
 import kotlin.math.*
@@ -52,11 +51,6 @@ class SeatArmorStand : EntityArmorStand {
     //足音がなるかどうか
     override fun isSilent(): Boolean {
         return true
-    }
-
-    fun ejectPassenger(entity: Player) {
-        val player = (entity as CraftPlayer).handle
-        player.stopRiding()
     }
 
     override fun movementTick() {

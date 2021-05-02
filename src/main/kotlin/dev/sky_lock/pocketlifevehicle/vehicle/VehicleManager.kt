@@ -37,15 +37,10 @@ object VehicleManager {
         return vehicle.location
     }
 
-    fun placeVehicle(vehicle: Vehicle) {
-        vehicle.spawn(vehicle.location)
-        vehicles.add(vehicle)
-    }
-
     // 呼ぶ前に乗り物の設置が許可されているワールドか確認する
     fun placeVehicle(owner: UUID, location: Location, model: Model, fuel: Float): Boolean {
         val vehicle = Vehicle(owner, location, model, fuel)
-        vehicle.spawn(location)
+        vehicle.spawn()
         remove(owner)
         vehicles.add(vehicle)
         return true
@@ -53,7 +48,7 @@ object VehicleManager {
 
     fun placeEventVehicle(location: Location, model: Model) {
         val vehicle = Vehicle(null, location, model, model.spec.maxFuel)
-        vehicle.spawn(location)
+        vehicle.spawn()
         vehicles.add(vehicle)
     }
 

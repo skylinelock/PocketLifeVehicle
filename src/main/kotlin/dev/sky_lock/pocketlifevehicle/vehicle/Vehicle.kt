@@ -28,9 +28,6 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
             return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
         }
 
-    var isBeginExplode = false
-    var isUndrivable = false
-
     val sound = EngineSound(location)
     val tank = FuelTank(fuel, model.spec.maxFuel)
     val engine = Engine(tank, model)
@@ -44,6 +41,8 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
     var shouldAnimate = model.flag.animation
     var isLoaded = true
 
+    var isBeginExplode = false
+    var isUndrivable = false
     val isInWater
         get() = center.isInWater
 
@@ -61,43 +60,34 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
         yaw = location.yaw
     }
 
-    fun spawn(location: Location) {
+    fun spawn() {
         center.assemble(this)
         val world = center.world
         world.addEntity(center)
 
         when (model.seatOption.capacity) {
             Capacity.SINGLE -> {
-                val driver = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
-                driver.assemble(this, SeatPosition.ONE_DRIVER)
-                seats.add(driver)
-                seats.forEach { entity -> center.getWorld().addEntity(entity) }
+                spawnSeatArmorStand(SeatPosition.ONE_DRIVER)
             }
             Capacity.DOUBLE -> {
-                val driver = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
-                driver.assemble(this, SeatPosition.TWO_DRIVER)
-                val passenger = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
-                passenger.assemble(this, SeatPosition.TWO_PASSENGER)
-                seats.add(driver)
-                seats.add(passenger)
-                seats.forEach { entity -> center.getWorld().addEntity(entity) }
+                spawnSeatArmorStand(SeatPosition.TWO_DRIVER)
+                spawnSeatArmorStand(SeatPosition.TWO_PASSENGER)
             }
             Capacity.QUAD -> {
-                val driver = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
-                driver.assemble(this, SeatPosition.FOUR_DRIVER)
-                val passenger = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
-                passenger.assemble(this, SeatPosition.FOUR_PASSENGER)
-                val rearRight = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
-                rearRight.assemble(this, SeatPosition.FOUR_REAR_RIGHT)
-                val rearLeft = SeatArmorStand(center.getWorld(), location.x, location.y, location.z)
-                rearLeft.assemble(this, SeatPosition.FOUR_REAR_LEFT)
-                seats.add(driver)
-                seats.add(passenger)
-                seats.add(rearRight)
-                seats.add(rearLeft)
-                seats.forEach { entity -> center.getWorld().addEntity(entity) }
+                spawnSeatArmorStand(SeatPosition.FOUR_DRIVER)
+                spawnSeatArmorStand(SeatPosition.FOUR_PASSENGER)
+                spawnSeatArmorStand(SeatPosition.FOUR_REAR_LEFT)
+                spawnSeatArmorStand(SeatPosition.FOUR_REAR_RIGHT)
             }
         }
+    }
+
+    private fun spawnSeatArmorStand(position: SeatPosition) {
+        val world = (location.world as CraftWorld).handle
+        val seat = SeatArmorStand(world, location.x, location.y, location.z)
+        seat.assemble(this, position)
+        seats.add(seat)
+        world.addEntity(seat)
     }
 
     fun consistsOf(armorStand: ArmorStand): Boolean {

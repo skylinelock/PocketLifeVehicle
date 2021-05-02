@@ -31,7 +31,7 @@ class ChunkEventListener : Listener {
                 if (entity !is ArmorStand) return@forEach
                 val vehicle = VehicleManager.findVehicle(entity) ?: return@forEach
                 if (vehicle.isLoaded) return@forEach
-                vehicle.spawn(entity.location)
+                vehicle.spawn()
                 vehicle.isLoaded = true
             }
     }
