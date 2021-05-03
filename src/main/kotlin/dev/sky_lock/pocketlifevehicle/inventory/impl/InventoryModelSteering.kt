@@ -3,8 +3,8 @@ package dev.sky_lock.pocketlifevehicle.inventory.impl
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
-import dev.sky_lock.pocketlifevehicle.vehicle.model.MaxSpeed
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
+import dev.sky_lock.pocketlifevehicle.vehicle.model.SteeringLevel
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -14,14 +14,13 @@ import org.bukkit.inventory.ItemStack
  * @author sky_lock
  */
 
-class InventoryModelSpeed(private val player: Player, private val model: Model): InventoryCustom(18, "最高速度") {
-
+class InventoryModelSteering(private val player: Player, private val model: Model): InventoryCustom(18, "ステアリング性能") {
     init {
         for (i in 0..4) {
-            val maxSpeed = MaxSpeed.values()[i]
-            val speedItem = speedItem(maxSpeed, model.spec.maxSpeed == maxSpeed)
+            val steering = SteeringLevel.values()[i]
+            val speedItem = steeringItem(steering, model.spec.steeringLevel == steering)
             setSlot(2 * i, speedItem) { event ->
-                model.spec.maxSpeed = maxSpeed
+                model.spec.steeringLevel = steering
                 addSelectGrowEffectToSingleItem(event)
             }
         }
@@ -32,10 +31,9 @@ class InventoryModelSpeed(private val player: Player, private val model: Model):
         }
     }
 
-    private fun speedItem(speed: MaxSpeed, glow: Boolean): ItemStack {
-        val builder = ItemStackBuilder(Material.SEA_LANTERN, 1)
-            .setName(speed.label)
-            .setLore(ChatColor.GRAY + "- 約" + speed.forTick(20).toString() + "blocks/s")
+    private fun steeringItem(steering: SteeringLevel, glow: Boolean): ItemStack {
+        val builder = ItemStackBuilder(Material.BEDROCK, 1)
+            .setName(steering.label)
         if (glow) builder.addGlowEffect()
         return builder.build()
     }

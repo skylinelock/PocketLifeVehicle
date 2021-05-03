@@ -13,7 +13,7 @@ class Spec(var maxFuel: Float, var maxSpeed: MaxSpeed, var steeringLevel: Steeri
         val map: MutableMap<String, Any> = HashMap()
         map["maxfuel"] = maxFuel
         map["maxspeed"] = maxSpeed.ordinal
-        map["steering"] = steeringLevel.toString()
+        map["steering"] = steeringLevel.ordinal
         return map
     }
 
@@ -22,7 +22,7 @@ class Spec(var maxFuel: Float, var maxSpeed: MaxSpeed, var steeringLevel: Steeri
         fun deserialize(map: Map<String, Any>): Spec {
             val maxFuel = (map["maxfuel"] as Double).toFloat()
             val speed = MaxSpeed.values()[map["maxspeed"] as Int]
-            val steeringLevel = SteeringLevel.valueOf(map["steering"].toString())
+            val steeringLevel = SteeringLevel.values()[map["steering"] as Int]
             return Spec(maxFuel, speed, steeringLevel)
         }
     }

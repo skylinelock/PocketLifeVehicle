@@ -9,6 +9,7 @@ import kotlin.math.roundToInt
  * @author sky_lock
  */
 class Steering(private val vehicle: Vehicle) {
+    private val spec = vehicle.model.spec
 
     fun right(driver: Player) {
         val speed = vehicle.engine.speed
@@ -16,10 +17,11 @@ class Steering(private val vehicle: Vehicle) {
         if (tank.fuel.roundToInt() == 0 || speed.isApproximateZero) {
             return
         }
+        val steeringYaw = spec.steeringLevel.value
         if (speed.isPositive) {
-            vehicle.yaw += 4.0F
+            vehicle.yaw += steeringYaw
         } else {
-            vehicle.yaw -= 4.0F
+            vehicle.yaw -= steeringYaw
         }
         if (vehicle.shouldAnimate && vehicle.model.flag.animation) {
             raiseLeftArm(driver)
@@ -32,10 +34,11 @@ class Steering(private val vehicle: Vehicle) {
         if (tank.fuel.roundToInt() == 0 || speed.isApproximateZero) {
             return
         }
+        val steeringYaw = spec.steeringLevel.value
         if (speed.isPositive) {
-            vehicle.yaw -= 4.0f
+            vehicle.yaw -= steeringYaw
         } else {
-            vehicle.yaw += 4.0f
+            vehicle.yaw += steeringYaw
         }
         if (vehicle.shouldAnimate && vehicle.model.flag.animation) {
             raiseRightArm(driver)

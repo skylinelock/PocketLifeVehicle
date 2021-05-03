@@ -137,7 +137,8 @@ class ModelArmorStand : EntityArmorStand {
 
         // EntityLiving#o(float) = setSpeed(float)
         this.o(vehicle.engine.currentSpeed)
-        super.e(vec3d.e(Vec3D(0.0, 0.0, 3.0)))
+        // InputのZ方向に進ませる。後に単位ベクトルに置き換えられるのでZは1.0で良い。
+        super.e(vec3d.e(Vec3D(0.0, 0.0, 1.0)))
 
         val speed = vehicle.engine.speed
         vehicle.location = location

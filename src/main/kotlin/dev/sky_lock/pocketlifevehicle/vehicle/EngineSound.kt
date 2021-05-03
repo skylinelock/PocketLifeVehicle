@@ -11,8 +11,8 @@ import org.bukkit.scheduler.BukkitTask
  */
 class EngineSound(var location: Location) {
     private var task: BukkitTask? = null
-    var isCancelled: Boolean = false
-    var pitch: Float = 0.0f
+    var isCancelled = false
+    var pitch = 0.0F
 
     fun start() {
         task = Bukkit.getScheduler().runTaskTimer(VehiclePlugin.instance, Runnable {

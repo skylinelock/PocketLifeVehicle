@@ -79,6 +79,7 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
         val spec = model.spec
         desc.add(ChatColor.DARK_AQUA + "燃料上限: " + ChatColor.AQUA + spec.maxFuel)
         desc.add(ChatColor.DARK_AQUA + "最高速度: " + ChatColor.AQUA + spec.maxSpeed.label)
+        desc.add(ChatColor.DARK_AQUA + "ステアリング性能: " + ChatColor.AQUA + spec.steeringLevel.label)
         val box = model.size
         desc.add(ChatColor.DARK_AQUA + "当たり判定(高さ): " + ChatColor.AQUA + box.height)
         desc.add(ChatColor.DARK_AQUA + "当たり判定(底辺): " + ChatColor.AQUA + box.baseSide)

@@ -62,9 +62,9 @@ class InventoryModelOption(private val player: Player, private val model: Model)
             player.openInventory(InventoryModelFuel(player, model))
         }
 
-        val speedDiamond = optionItem(Material.DIAMOND, ChatColor.GREEN + "最高速度", ChatColor.YELLOW + spec.maxSpeed.label)
-        setSlot(22, speedDiamond) {
-            player.openInventory(InventoryModelSpeed(player, model))
+        val specBottle = optionItem(Material.EXPERIENCE_BOTTLE, ChatColor.GREEN + "スペック")
+        setSlot(22, specBottle) {
+            player.openInventory(InventoryModelSpec(player, model))
         }
 
         val capacitySaddle = optionItem(Material.SADDLE, ChatColor.GREEN + "座席", ChatColor.YELLOW + model.seatOption.capacity.value().toString())
