@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
-import dev.sky_lock.pocketlifevehicle.CustomEntityTypes
+import dev.sky_lock.pocketlifevehicle.VehicleEntityType
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
 import net.minecraft.server.v1_14_R1.*
@@ -22,7 +22,7 @@ class SeatArmorStand : EntityArmorStand {
     }
 
     constructor(world: World, x: Double, y: Double, z: Double) : super(
-        EntityTypes.a(CustomEntityTypes.VEHICLE_SEAT.key).get() as EntityTypes<SeatArmorStand>, world
+        VehicleEntityType.SEAT.type(), world
     ) {
         super.setPosition(x, y, z)
         this.a(EntityVehicleHelper.seatNBT())
@@ -49,9 +49,7 @@ class SeatArmorStand : EntityArmorStand {
     }
 
     //足音がなるかどうか
-    override fun isSilent(): Boolean {
-        return true
-    }
+    override fun isSilent() = true
 
     override fun movementTick() {
         if (!isDriverSheet) {

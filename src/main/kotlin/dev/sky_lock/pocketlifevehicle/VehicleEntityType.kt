@@ -10,11 +10,34 @@ import net.minecraft.server.v1_14_R1.*
  * @author sky_lock
  */
 
-enum class CustomEntityTypes(val key: String, private val entityType: EntityTypes<out Entity>, private val builder: EntityTypes.b<*>) {
-    VEHICLE_MODEL("vehicle_model", EntityTypes.ARMOR_STAND, EntityTypes.b<ModelArmorStand> { type, world -> ModelArmorStand(type, world) }),
-    VEHICLE_SEAT("vehicle_seat", EntityTypes.ARMOR_STAND, EntityTypes.b<SeatArmorStand> { type, world -> SeatArmorStand(type, world) });
+class VehicleEntityType<T : Entity>(
+    private val key: String,
+    private val entityType: EntityTypes<out Entity>,
+    private val builder: EntityTypes.b<T>
+) {
 
-    fun register() {
+    companion object {
+        val MODEL = VehicleEntityType(
+            "vehicle_model",
+            EntityTypes.ARMOR_STAND,
+            EntityTypes.b<ModelArmorStand> { type, world -> ModelArmorStand(type, world) })
+        val SEAT = VehicleEntityType(
+            "vehicle_seat",
+            EntityTypes.ARMOR_STAND,
+            EntityTypes.b<SeatArmorStand> { type, world -> SeatArmorStand(type, world) })
+
+        fun registerTypes() {
+            MODEL.register()
+            SEAT.register()
+        }
+
+        fun unregisterTypes() {
+            MODEL.unregister()
+            SEAT.unregister()
+        }
+    }
+
+    private fun register() {
         // https://www.spigotmc.org/threads/registering-custom-entities-in-1-14-2.381499/#post-3460944
         val dataTypes = this.getRegisteredEntityTypesMap()
         val minecraftKey = MinecraftKey.a(this.key) ?: return
@@ -25,7 +48,7 @@ enum class CustomEntityTypes(val key: String, private val entityType: EntityType
         IRegistry.a(IRegistry.ENTITY_TYPE, 1, this.key, entity.a(this.key))
     }
 
-    fun unregister() {
+    private fun unregister() {
         val minecraftKey = MinecraftKey.a(this.key) ?: return
         val dataTypes = this.getRegisteredEntityTypesMap()
         dataTypes.remove(minecraftKey.toString())
@@ -33,23 +56,13 @@ enum class CustomEntityTypes(val key: String, private val entityType: EntityType
 
     private fun getRegisteredEntityTypesMap(): MutableMap<String, Type<*>?> {
         return DataConverterRegistry.a()
-                .getSchema(DataFixUtils.makeKey(SharedConstants.a().worldVersion))
-                .findChoiceType(DataConverterTypes.ENTITY)
-                .types() as MutableMap<String, Type<*>?>
+            .getSchema(DataFixUtils.makeKey(SharedConstants.a().worldVersion))
+            .findChoiceType(DataConverterTypes.ENTITY)
+            .types() as MutableMap<String, Type<*>?>
     }
 
-    companion object {
-
-        fun registerEntities() {
-            values().forEach { type ->
-                type.register()
-            }
-        }
-
-        fun unregisterEntities() {
-            values().forEach { type ->
-                type.unregister()
-            }
-        }
+    fun <T : Entity> type(): EntityTypes<T> {
+        return IRegistry.ENTITY_TYPE.get(MinecraftKey.a(key)) as EntityTypes<T>
     }
+
 }

@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
-import dev.sky_lock.pocketlifevehicle.CustomEntityTypes
+import dev.sky_lock.pocketlifevehicle.VehicleEntityType
 import dev.sky_lock.pocketlifevehicle.task.BurnExplosionTask
 import dev.sky_lock.pocketlifevehicle.task.SubmergedMessageTask
 import net.minecraft.server.v1_14_R1.*
@@ -25,7 +25,7 @@ class ModelArmorStand : EntityArmorStand {
         y: Double,
         z: Double,
         yaw: Float
-    ) : super(EntityTypes.a(CustomEntityTypes.VEHICLE_MODEL.key).get() as EntityTypes<SeatArmorStand>, world) {
+    ) : super(VehicleEntityType.MODEL.type(), world) {
         super.setPosition(x, y, z)
         super.setYawPitch(yaw, 0.0F)
         this.a(EntityVehicleHelper.modelNBT())
@@ -57,13 +57,9 @@ class ModelArmorStand : EntityArmorStand {
         super.killEntity()
     }
 
-    override fun isClimbing(): Boolean {
-        return false
-    }
+    override fun isClimbing() = false
 
-    override fun isSilent(): Boolean {
-        return true
-    }
+    override fun isSilent() = true
 
     override fun burn(i: Float) {
         super.burn(i)

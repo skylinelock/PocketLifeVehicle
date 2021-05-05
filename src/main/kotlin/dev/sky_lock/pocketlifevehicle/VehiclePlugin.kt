@@ -32,7 +32,7 @@ class VehiclePlugin : JavaPlugin() {
         private set
 
     override fun onLoad() {
-        CustomEntityTypes.registerEntities()
+        VehicleEntityType.registerTypes()
     }
 
     override fun onEnable() {
@@ -58,7 +58,7 @@ class VehiclePlugin : JavaPlugin() {
         VehicleManager.registerAllIllegalParkings()
         VehicleManager.removeEventVehicles()
         parkingViolationList.save()
-        CustomEntityTypes.unregisterEntities()
+        VehicleEntityType.unregisterTypes()
     }
 
     private fun registerEventListeners() {
