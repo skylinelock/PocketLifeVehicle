@@ -69,7 +69,6 @@ class SpawnCommand : ICommand, IAdminCommand {
             player.sendVehiclePrefixedMessage(ChatColor.RED + "対象のプレイヤーの位置に乗り物を設置することができませんでした")
             return
         }
-        VehicleManager.remove(target.uniqueId)
         val success = VehicleManager.placeVehicle(target.uniqueId, target.location, model, model.spec.maxFuel)
         if (success) {
             player.sendVehiclePrefixedMessage(ChatColor.GREEN + name + " に " + id + " を渡しました")

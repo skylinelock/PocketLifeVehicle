@@ -42,7 +42,7 @@ object VehicleManager {
     fun placeVehicle(owner: UUID, location: Location, model: Model, fuel: Float): Boolean {
         val vehicle = Vehicle(owner, location, model, fuel)
         vehicle.spawn()
-        remove(owner)
+        pop(owner)
         vehicles.add(vehicle)
         return true
     }
