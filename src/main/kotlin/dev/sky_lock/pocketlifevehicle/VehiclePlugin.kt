@@ -10,7 +10,6 @@ import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import games.pocketlife.play.VehicleAPI
-import org.bstats.bukkit.Metrics
 import org.bukkit.NamespacedKey
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -48,8 +47,6 @@ class VehiclePlugin : JavaPlugin() {
         this.registerEventListeners()
 
         VehicleAPI.registerImpl(VehicleAPIImpl())
-
-        Metrics(this, 7271)
     }
 
     override fun onDisable() {
