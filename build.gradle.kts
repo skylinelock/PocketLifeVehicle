@@ -1,15 +1,15 @@
 plugins {
-    java
-    kotlin("jvm") version "1.3.72"
-    id("com.github.johnrengelman.shadow") version "6.1.0"
+    kotlin("jvm") version "1.8.20"
+    id("io.papermc.paperweight.userdev") version "1.5.5"
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "dev.sky_lock"
-version = "1.0"
+version = "2.0"
 
-val sourceCompatibility = "1.8"
-
-extra["kotlin_version"] = "1.3.72"
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
 
 repositories {
     mavenLocal {
@@ -19,41 +19,34 @@ repositories {
         }
     }
     mavenCentral()
-    maven(url = "https://jitpack.io")
-    // For paper
-    maven(url = "https://papermc.io/repo/repository/maven-public/")
     // For protocol-lib
     maven(url = "https://repo.dmulloy2.net/nexus/repository/public/")
-    // For bStats
-    maven(url = "https://repo.codemc.org/repository/maven-public")
     // For commodore
     maven(url = "https://libraries.minecraft.net/")
 }
 
 dependencies {
-    implementation(kotlin("stdlib-jdk8"))
+    paperweight.paperDevBundle("1.19.4-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
     implementation("me.lucko:commodore:1.5")
-    implementation("org.bstats:bstats-bukkit:1.7")
-    compileOnly(files("lib/patched_1.14.4.jar"))
     compileOnly(files("lib/PocketLifeCore-1.0-SNAPSHOT.jar"))
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
-    compileOnly("com.destroystokyo.paper:paper-api:1.14.4-R0.1-SNAPSHOT")
-    // compileOnly("org.bukkit:craftbukkit:1.14.4-R0.1-SNAPSHOT")
-    compileOnly("com.comphenix.protocol:ProtocolLib:4.5.0")
+    compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0")
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+    assemble {
+        dependsOn(reobfJar)
     }
-    compileTestKotlin {
-        kotlinOptions.jvmTarget = "1.8"
+
+    compileJava {
+        options.encoding = Charsets.UTF_8.name()
+        options.release.set(17)
     }
+
     shadowJar {
-        archiveBaseName.set("PocketLifeVehicle")
-        archiveClassifier.set("")
-        relocate("org.bstats", "dev.sky_lock.pocketlifevehicle")
+        fun reloc(pkg: String) = relocate(pkg, "dev.sky_lock.dependency.$pkg")
+
         relocate("me.lucko.commodore", "dev.sky_lock.pocketlifevehicle.commodore")
     }
 }
