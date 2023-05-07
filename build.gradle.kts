@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm") version "1.8.20"
     id("io.papermc.paperweight.userdev") version "1.5.5"
+    id("xyz.jpenilla.run-paper") version "2.0.1"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -29,7 +30,7 @@ dependencies {
     paperweight.paperDevBundle("1.19.4-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
     implementation("me.lucko:commodore:1.5")
-    compileOnly(files("lib/PocketLifeCore-1.0-SNAPSHOT.jar"))
+    // compileOnly(files("lib/PocketLifeCore-1.0-SNAPSHOT.jar"))
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0")
 }

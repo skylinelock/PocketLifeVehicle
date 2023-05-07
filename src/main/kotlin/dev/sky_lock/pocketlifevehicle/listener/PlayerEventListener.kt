@@ -16,8 +16,8 @@ import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.block.BlockFace
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftEntity
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftArmorStand
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player

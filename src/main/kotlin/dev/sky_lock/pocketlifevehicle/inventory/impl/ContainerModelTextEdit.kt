@@ -4,15 +4,19 @@ import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import net.minecraft.server.v1_14_R1.*
+import net.minecraft.core.BlockPos
+import net.minecraft.network.chat.Component
+import net.minecraft.world.Container
+import net.minecraft.world.inventory.AnvilMenu
+import net.minecraft.world.inventory.ContainerLevelAccess
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventoryAnvil
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventoryPlayer
-import org.bukkit.craftbukkit.v1_14_R1.inventory.CraftInventoryView
+import org.bukkit.craftbukkit.v1_19_R3.CraftWorld
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftInventoryAnvil
+import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftInventoryPlayer
+import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftInventoryView
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.inventory.InventoryAction
@@ -30,16 +34,17 @@ class ContainerModelTextEdit constructor(
     default: String,
     private val modifyType: ModifyType,
     val model: Model?,
-    val player: Player
-) : ContainerAnvil(
-    (player as CraftPlayer).handle.nextContainerCounter(),
-    (player.inventory as CraftInventoryPlayer).inventory,
-    ContainerAccess.at((player.world as CraftWorld).handle, BlockPosition.ZERO)
+    // TODO: 変数削除
+    val bukkitPlayer: Player
+) : AnvilMenu(
+    (bukkitPlayer as CraftPlayer).handle.nextContainerCounter(),
+    (bukkitPlayer.inventory as CraftInventoryPlayer).inventory,
+    ContainerLevelAccess.create((bukkitPlayer.world as CraftWorld).handle, BlockPos.ZERO)
 ) {
 
     init {
         checkReachable = false
-        setTitle(ChatMessage(title))
+        setTitle(Component.literal(title))
 
         val paper = ItemStackBuilder(Material.PAPER, 1)
             .setName(default.ifBlank { "name" })
@@ -50,19 +55,18 @@ class ContainerModelTextEdit constructor(
 
     override fun getBukkitView(): CraftInventoryView {
         val inventory = super.getBukkitView().topInventory as CraftInventoryAnvil
-        val location = inventory.location ?: player.location
+        val location = inventory.location ?: bukkitPlayer.location
         val customInventory = CraftModelTextEditor(location, inventory.inventory, inventory.resultInventory, this)
-        return CraftInventoryView(player, customInventory, this)
+        return CraftInventoryView(bukkitPlayer, customInventory, this)
     }
 
-    // update
-    override fun e() {
-        super.e()
-        levelCost.set(0)
+    override fun createResult() {
+        super.createResult()
+        cost.set(0)
     }
 
     inner class CraftModelTextEditor(
-        location: Location, inventory: IInventory, inventory2: IInventory, container: ContainerModelTextEdit
+        location: Location, inventory: Container, inventory2: Container, container: ContainerModelTextEdit
     ) : CraftInventoryAnvil(location, inventory, inventory2, container) {
 
         fun onClick(event: InventoryClickEvent) {
@@ -93,7 +97,7 @@ class ContainerModelTextEdit constructor(
             event.result = Event.Result.DENY
 
             val text = renameText
-            if (text == null || text.isBlank()) {
+            if (text.isNullOrBlank()) {
                 return
             }
             val current = event.currentItem ?: return
@@ -154,7 +158,7 @@ class ContainerModelTextEdit constructor(
                     }
                 }
                 event.view.topInventory.clear(0)
-                player.openInventory(InventoryModelOption(player, model))
+                bukkitPlayer.openInventory(InventoryModelOption(bukkitPlayer, model))
                 return
             }
             if (slot != 0) {
@@ -163,13 +167,13 @@ class ContainerModelTextEdit constructor(
             event.view.topInventory.clear(0)
             when (modifyType) {
                 ModifyType.ID_CREATE -> {
-                    player.openInventory(InventoryModelList(player))
+                    bukkitPlayer.openInventory(InventoryModelList(bukkitPlayer))
                 }
                 ModifyType.WIDTH, ModifyType.DEPTH, ModifyType.OFFSET -> {
-                    player.openInventory(InventoryModelArmorStand(player, model))
+                    bukkitPlayer.openInventory(InventoryModelArmorStand(bukkitPlayer, model))
                 }
                 else -> {
-                    player.openInventory(InventoryModelOption(player, model))
+                    bukkitPlayer.openInventory(InventoryModelOption(bukkitPlayer, model))
                 }
             }
 

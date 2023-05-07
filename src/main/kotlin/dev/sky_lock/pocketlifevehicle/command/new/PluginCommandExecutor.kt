@@ -9,7 +9,7 @@ import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.command.*
 import org.bukkit.command.Command
-import org.bukkit.craftbukkit.v1_14_R1.CraftServer
+import org.bukkit.craftbukkit.v1_19_R3.CraftServer
 import org.bukkit.plugin.Plugin
 
 /**
@@ -64,11 +64,11 @@ class PluginCommandExecutor : CommandExecutor {
     }
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
-        var node = this.root.findChild(command.name.toLowerCase())
+        var node = this.root.findChild(command.name.lowercase())
             ?: throw CommandException("Illegal command name (bug)")
 
         args.forEach { arg ->
-            node = node.findChild(arg.toLowerCase()) ?: return@forEach
+            node = node.findChild(arg.lowercase()) ?: return@forEach
         }
         val permission = node.permission
 

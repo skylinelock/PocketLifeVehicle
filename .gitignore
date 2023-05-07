@@ -1,3 +1,6 @@
+run/
+run/plugins/
+
 # JetBrains
 .idea/
 *.iml

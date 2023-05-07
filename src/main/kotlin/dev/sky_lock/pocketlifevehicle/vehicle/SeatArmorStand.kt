@@ -3,9 +3,14 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 import dev.sky_lock.pocketlifevehicle.VehicleEntityType
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
-import net.minecraft.server.v1_14_R1.*
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.ai.attributes.AttributeMap
+import net.minecraft.world.entity.decoration.ArmorStand
+import net.minecraft.world.level.Level
 import org.bukkit.ChatColor
 import org.bukkit.Location
+import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import java.util.stream.IntStream
 import kotlin.math.*
@@ -13,19 +18,25 @@ import kotlin.math.*
 /**
  * @author sky_lock
  */
-class SeatArmorStand : EntityArmorStand {
+class SeatArmorStand : ArmorStand {
     private var vehicle: Vehicle? = null
     private var position: SeatPosition? = null
 
-    constructor(entityTypes: EntityTypes<out EntityArmorStand>, world: World) : super(entityTypes, world) {
-        this.killEntity()
+    constructor(entityTypes: EntityType<out ArmorStand>, world: Level) : super(entityTypes, world) {
+        this.kill()
     }
 
-    constructor(world: World, x: Double, y: Double, z: Double) : super(
+    constructor(world: Level, x: Double, y: Double, z: Double) : super(
         VehicleEntityType.SEAT.type(), world
     ) {
-        super.setPosition(x, y, z)
-        this.a(EntityVehicleHelper.seatNBT())
+        super.setPos(x, y, z)
+        this.readAdditionalSaveData(EntityVehicleHelper.seatNBT())
+
+        this.craftAttributes.registerAttribute(Attribute.GENERIC_MAX_HEALTH)
+        this.craftAttributes.registerAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)
+        this.craftAttributes.registerAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
+        this.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR)
+        this.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)
     }
 
     val passenger: Player?
@@ -45,13 +56,17 @@ class SeatArmorStand : EntityArmorStand {
         this.position = position
         val center = vehicle.location
         val loc = calcSeatPosition(center, vehicle.model.seatOption, position)
-        setLocation(loc.x, center.y - 1.675 + vehicle.model.height, loc.z, center.yaw, center.pitch)
+        this.absMoveTo(loc.x, center.y - 1.675 + vehicle.model.height, loc.z, center.yaw, center.pitch)
+    }
+
+    override fun getAttributes() : AttributeMap {
+        return AttributeMap(LivingEntity.createLivingAttributes().build())
     }
 
     //足音がなるかどうか
     override fun isSilent() = true
 
-    override fun movementTick() {
+    override fun aiStep() {
         if (!isDriverSheet) {
             synchronize()
             return
@@ -60,26 +75,26 @@ class SeatArmorStand : EntityArmorStand {
             synchronize()
             return
         }
-        val passenger = passengers[0] as EntityLiving
-        if (passenger !is EntityPlayer) {
+        val passenger = passengers[0] as LivingEntity
+        if (passenger !is net.minecraft.world.entity.player.Player) {
             synchronize()
             return
         }
-        displayMeterPanel(((passenger as EntityHuman).bukkitEntity as Player))
+        displayMeterPanel(passenger.bukkitEntity as Player)
         synchronize()
     }
 
     private fun synchronize() {
         val vehicle = vehicle!!
         val loc = calcSeatPosition(vehicle.location, vehicle.model.seatOption, position!!)
-        locX = loc.x
-        locY = vehicle.location.y - 1.675 + vehicle.model.height
-        locZ = loc.z
-        setPosition(locX, locY, locZ)
-        yaw = vehicle.location.yaw
-        lastYaw = yaw
-        pitch = vehicle.location.pitch
-        setYawPitch(yaw, pitch)
+        xo = loc.x
+        yo = vehicle.location.y - 1.675 + vehicle.model.height
+        zo = loc.z
+        setPos(xo, yo, zo)
+        yRot = vehicle.location.yaw
+        yRotO = yRot
+        xRot = vehicle.location.pitch
+        setRot(yRot, xRot)
     }
 
     private fun calcSeatPosition(location: Location, seatOption: SeatOption, seatPos: SeatPosition): Location {

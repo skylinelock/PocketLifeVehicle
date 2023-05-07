@@ -5,10 +5,9 @@ import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
-import net.minecraft.server.v1_14_R1.EntityPlayer
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 
@@ -41,7 +40,7 @@ class BurnExplosionTask {
                     }
                     vehicle.passengers.forEach { player ->
                         warning.stop(player)
-                        ((player as CraftPlayer).handle as EntityPlayer).killEntity()
+                        ((player as CraftPlayer).handle as net.minecraft.world.entity.player.Player).kill()
                     }
                     VehicleManager.remove(vehicle)
                     cancel()

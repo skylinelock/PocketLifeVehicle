@@ -3,16 +3,17 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import net.minecraft.server.v1_14_R1.EntityArmorStand
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Sound
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftArmorStand
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_19_R3.CraftWorld
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftArmorStand
+import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
 import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.Player
+import org.bukkit.event.entity.CreatureSpawnEvent
 import java.util.*
+import net.minecraft.world.entity.decoration.ArmorStand as NMSArmorStand
 
 /**
  * @author sky_lock
@@ -90,8 +91,8 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
         spawnEntity(seat)
     }
 
-    private fun spawnEntity(armorStand: EntityArmorStand) {
-        armorStand.world.addEntity(armorStand)
+    private fun spawnEntity(armorStand: NMSArmorStand) {
+        armorStand.level.world.addEntity<ArmorStand>(armorStand, CreatureSpawnEvent.SpawnReason.CUSTOM)
     }
 
     fun consistsOf(armorStand: ArmorStand): Boolean {
@@ -120,8 +121,8 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
     }
 
     fun remove() {
-        center.killEntity()
-        seats.forEach { seat -> seat.killEntity() }
+        center.kill()
+        seats.forEach { seat -> seat.kill() }
         seats.clear()
     }
 

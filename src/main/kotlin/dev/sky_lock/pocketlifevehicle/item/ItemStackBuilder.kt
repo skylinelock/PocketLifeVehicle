@@ -74,7 +74,7 @@ open class ItemStackBuilder constructor(itemStack: ItemStack) {
 
     companion object {
         // ItemStackBuilderが参照された初回にエンチャントを登録する
-        val GLOW_ENCHANT = EnchantGlow()
+        val GLOW_ENCHANT = GlowEnchantment()
     }
 
 }
