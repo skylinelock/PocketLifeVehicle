@@ -52,28 +52,36 @@ class Line {
         return this
     }
 
-    fun withSingleColorCode(text: String): Line {
-        val ccIndex = text.lastIndexOf('&')
-        if (ccIndex == -1) return raw(text)
-        val text = text.substring(ccIndex + 2)
-        val colorCode = text.substring(ccIndex, 1)
-        val color = parseColor(colorCode) ?: return raw(text)
-        component.append(Component.text(text, color))
+    fun colorCoded(text: String): Line {
+        val bars = text.split("&")
+        var firstChecked = false
+        for (bar in bars) {
+            if (bar.length < 2) {
+                raw(bar)
+                continue
+            }
+            if (firstChecked) {
+                component.append(Component.text(bar.substring(1), parseColor(bar[0])))
+                continue
+            }
+            if (text.startsWith("&")) {
+                component.append(Component.text(bar.substring(1), parseColor(bar[0])))
+            } else {
+                raw(bar)
+            }
+            firstChecked = true
+        }
         return this
     }
 
-    private fun parseColor(text: String): NamedTextColor? {
-        var result: ChatColor? = null
-        val iterator = text.iterator()
-        while (iterator.hasNext()) {
-            val char = iterator.nextChar()
-            if (char == '&' && iterator.hasNext()) {
-                val code = iterator.nextChar()
-                result = ChatColor.getByChar(code) ?: result
-            }
-        }
-        if (result == null) return NamedTextColor.WHITE
+    private fun parseColor(char: Char): NamedTextColor {
+        val result = ChatColor.getByChar(char) ?: return NamedTextColor.WHITE
         return toNamedTextColor(result) ?: NamedTextColor.WHITE
+    }
+
+    fun white(text: String): Line {
+        component.append(Component.text(text, NamedTextColor.WHITE))
+        return this
     }
 
     fun aqua(text: String): Line {

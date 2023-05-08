@@ -1,15 +1,12 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
 import dev.sky_lock.pocketlifevehicle.extension.chat.Line
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
-import net.kyori.adventure.text.format.NamedTextColor
-import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -173,16 +170,16 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
 
     private fun vehicleInfoLore(): List<Line> {
         val info: MutableList<Line> = ArrayList()
-        info.add(Line().green("名前     : ").raw(vehicle.model.name))
-        info.add(Line().green("最大燃料 : ").raw(vehicle.model.spec.maxFuel.toString()))
-        info.add(Line().green("最高速度 : ").raw(vehicle.model.spec.maxSpeed.label))
-        info.add(Line().green("説明 :").raw(vehicle.model.name))
+        info.add(Line().green("名前     : ").colorCoded(vehicle.model.name))
+        info.add(Line().green("最大燃料 : ").white(vehicle.model.spec.maxFuel.toString()))
+        info.add(Line().green("最高速度 : ").white(vehicle.model.spec.maxSpeed.label))
+        info.add(Line().green("説明     :"))
 
-        vehicle.model.lore.forEach { lore -> info.add(Line().withSingleColorCode("- $lore")) }
+        vehicle.model.lore.forEach { lore -> info.add(Line().darkGray("- ").colorCoded(lore)) }
         if (vehicle.isUndrivable) {
             info.add(Line().green("状態 : ").red("廃車"))
         } else {
-            info.add(Line().green("状態 : ").yellow("運転可能"))
+            info.add(Line().green("状態 : ").white("運転可能"))
         }
         return info
     }

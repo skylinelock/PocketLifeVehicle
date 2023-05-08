@@ -72,9 +72,9 @@ class InventoryModelList(private val player: Player): InventoryCustom(27, "モ�
 
     private fun modelItem(model: Model): ItemStack {
         val desc = mutableListOf<Line>()
-        desc.add(Line().darkAqua("名前: ").aqua(model.name))
+        desc.add(Line().darkAqua("名前: ").colorCoded(model.name))
         desc.add(Line().darkAqua("説明: "))
-        model.lore.forEach { line -> desc.add(Line().darkGray("- ").withSingleColorCode(line)) }
+        model.lore.forEach { line -> desc.add(Line().darkGray("- ").colorCoded(line)) }
         val spec = model.spec
         desc.add(Line().darkAqua("燃料上限: ").aqua(spec.maxFuel.toString()))
         desc.add(Line().darkAqua("最高速度: ").aqua(spec.maxSpeed.label))

@@ -13,7 +13,7 @@ import org.bukkit.persistence.PersistentDataType
  * @author sky_lock
  */
 @SerializableAs("Model")
-class Model constructor(
+class Model(
     val id: String, var name: String,
     var lore: List<String>, val spec: Spec, val flag: Flag,
     val size: Size, var height: Float, var sound: Sound,
@@ -23,8 +23,8 @@ class Model constructor(
     val itemStack: ItemStack
         get() {
             return ItemStackBuilder(modelOption.type, 1)
-                .setName(name)
-                .setLore(lore.map { text ->  Line().raw(text) })
+                .setName(Line().colorCoded(name))
+                .setLore(lore.map { text ->  Line().colorCoded(text) })
                 .setCustomModelData(modelOption.id)
                 .setPersistentData(PluginKey.ID, PersistentDataType.STRING, id)
                 .setUnbreakable(true)
