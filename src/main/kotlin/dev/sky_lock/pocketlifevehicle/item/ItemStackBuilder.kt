@@ -1,5 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.item
 
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
+import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemFlag
@@ -10,7 +12,7 @@ import org.bukkit.persistence.PersistentDataType
 /**
  * @author sky_lock
  */
-open class ItemStackBuilder constructor(itemStack: ItemStack) {
+open class ItemStackBuilder(itemStack: ItemStack) {
     private var itemStack: ItemStack = itemStack.clone()
     protected var itemMeta: ItemMeta = itemStack.itemMeta
 
@@ -21,28 +23,40 @@ open class ItemStackBuilder constructor(itemStack: ItemStack) {
         return this
     }
 
-    fun setLore(vararg lore: String): ItemStackBuilder {
-        this.setLore(listOf(*lore))
+    private fun setLore(vararg components: Component): ItemStackBuilder {
+        itemMeta.lore(mutableListOf(*components))
         return this
     }
 
-    fun setLore(lore: List<String>): ItemStackBuilder {
-        itemMeta.lore = lore
+    fun setLore(lines: List<Line>): ItemStackBuilder {
+        setLore(*lines.toTypedArray())
         return this
     }
 
-    fun addLore(vararg lore: String): ItemStackBuilder {
-        val origin = itemMeta.lore?.toTypedArray()
+    fun setLore(vararg lines: Line): ItemStackBuilder {
+        setLore(*mutableListOf(*lines).map { line -> line.toComponent() }.toTypedArray())
+        return this
+    }
+
+    fun addLore(vararg lines: Line): ItemStackBuilder {
+        val origin = itemMeta.lore()
         if (origin == null) {
-            this.setLore(*lore)
+            this.setLore(*lines)
         } else {
-            itemMeta.lore = listOf(*origin, *lore)
+            val new = ArrayList(origin)
+            new.addAll(mutableListOf(*lines).map { line -> line.toComponent() })
+            itemMeta.lore(new)
         }
         return this
     }
 
     fun setName(name: String): ItemStackBuilder {
         itemMeta.setDisplayName(name)
+        return this
+    }
+
+    fun setName(line: Line): ItemStackBuilder {
+        itemMeta.displayName(line.toComponent())
         return this
     }
 

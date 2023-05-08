@@ -1,9 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.model
 
 import dev.sky_lock.pocketlifevehicle.PluginKey
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
-import org.bukkit.ChatColor
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.SerializableAs
 import org.bukkit.inventory.ItemFlag
@@ -25,7 +24,7 @@ class Model constructor(
         get() {
             return ItemStackBuilder(modelOption.type, 1)
                 .setName(name)
-                .setLore(*lore.map { text -> ChatColor.RESET + text }.toTypedArray())
+                .setLore(lore.map { text ->  Line().raw(text) })
                 .setCustomModelData(modelOption.id)
                 .setPersistentData(PluginKey.ID, PersistentDataType.STRING, id)
                 .setUnbreakable(true)

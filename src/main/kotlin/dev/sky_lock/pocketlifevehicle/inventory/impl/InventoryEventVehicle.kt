@@ -1,11 +1,13 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
-import org.bukkit.ChatColor
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -18,7 +20,7 @@ import org.bukkit.inventory.ItemStack
 class InventoryEventVehicle(private val player: Player, private val vehicle: Vehicle): InventoryCustom(9, "乗り物ユーティリティー(イベント)") {
 
     init {
-        val deleteCart = ItemStackBuilder(Material.MINECART, 1).setName(ChatColor.RED + "この車両を削除する").build()
+        val deleteCart = ItemStackBuilder(Material.MINECART, 1).setName(Line().red("この車両を削除する")).build()
         setSlot(6, deleteCart) {
             VehicleManager.remove(vehicle)
             player.closeInventory()
@@ -36,25 +38,25 @@ class InventoryEventVehicle(private val player: Player, private val vehicle: Veh
             event.currentItem = lockBarrier()
         }
 
-        val infoBook = ItemStackBuilder(Material.BOOK, 1).setName(ChatColor.GREEN + "車両情報").setLore(vehicleInfoLore()).build()
+        val infoBook = ItemStackBuilder(Material.BOOK, 1).setName(Line().green("車両情報")).setLore(*vehicleInfoLore().toTypedArray()).build()
         setItem(2, infoBook)
     }
 
-    private fun vehicleInfoLore(): List<String> {
-        val info: MutableList<String> = ArrayList()
-        info.add(ChatColor.GREEN + "名前     : " + ChatColor.RESET + vehicle.model.name)
-        info.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + vehicle.model.spec.maxSpeed.label)
-        info.add(ChatColor.GREEN + "状態 : " + ChatColor.YELLOW + "イベント専用")
+    private fun vehicleInfoLore(): List<Line> {
+        val info: MutableList<Line> = ArrayList()
+        info.add(Line().green("名前     : ").raw(vehicle.model.name))
+        info.add(Line().green("最高速度 : ").raw(vehicle.model.spec.maxSpeed.label))
+        info.add(Line().green("状態 : ").yellow("イベント専用"))
         return info
     }
 
     private fun lockBarrier(): ItemStack {
-        val lockDesc = listOf(ChatColor.GRAY + "他プレイヤーが乗り物に乗れるかどうか", ChatColor.GRAY + "を設定することができます")
+        val lockDesc = listOf(Line().gray("他プレイヤーが乗り物に乗れるかどうか"), Line().gray("を設定することができます"))
         return if (vehicle.isLocked) {
-            ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.AQUA + "" + ChatColor.BOLD + "鍵を開ける")
+            ItemStackBuilder(Material.BARRIER, 1).setName(Line().aquaBold("鍵を開ける"))
                 .setLore(lockDesc).build()
         } else {
-            ItemStackBuilder(Material.STRUCTURE_VOID, 1).setName(ChatColor.RED + "" + ChatColor.BOLD + "鍵を閉める")
+            ItemStackBuilder(Material.STRUCTURE_VOID, 1).setName(Line().redBold("鍵を閉める"))
                 .setLore(lockDesc).build()
         }
     }

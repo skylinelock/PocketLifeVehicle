@@ -1,10 +1,10 @@
 package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedErrorMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedRawMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedSuccessMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
-import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 
@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender
 class ReloadCommand : ICommand, IAdminCommand, IConsoleCommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         if (args.size < 2) {
-            sender.sendVehiclePrefixedMessage(ChatColor.RED + "引数が足りません")
+            sender.sendVehiclePrefixedErrorMessage( "引数が足りません")
             return
         }
         val flag = args[1]
@@ -23,16 +23,16 @@ class ReloadCommand : ICommand, IAdminCommand, IConsoleCommand {
                 ModelRegistry.reloadConfig()
                 VehiclePlugin.instance.pluginConfiguration.load()
                 VehiclePlugin.instance.parkingViolationList.load()
-                sender.sendVehiclePrefixedMessage(ChatColor.GREEN + "ディスクからデータを読み込みました")
+                sender.sendVehiclePrefixedSuccessMessage( "ディスクからデータを読み込みました")
             }
             flag.equals("to", ignoreCase = true) -> {
                 VehiclePlugin.instance.pluginConfiguration.save()
                 VehiclePlugin.instance.parkingViolationList.save()
                 ModelRegistry.saveToFile()
-                sender.sendVehiclePrefixedMessage(ChatColor.GREEN + "ディスクへデータを保存しました")
+                sender.sendVehiclePrefixedSuccessMessage( "ディスクへデータを保存しました")
             }
             else -> {
-                sender.sendVehiclePrefixedMessage("/vehicle reload [from/to]")
+                sender.sendVehiclePrefixedRawMessage("/vehicle reload [from/to]")
             }
         }
     }

@@ -122,7 +122,7 @@ class ContainerModelTextEdit constructor(
                         ModelRegistry.register(model)
                     }
                     ModifyType.NAME -> {
-                        model.name = ChatColor.translateAlternateColorCodes('&', text)
+                        model.name = text
                     }
                     ModifyType.HEIGHT -> {
                         val height = text.toFloatOrNull()

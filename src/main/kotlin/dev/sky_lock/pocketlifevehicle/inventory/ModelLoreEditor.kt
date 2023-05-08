@@ -33,7 +33,6 @@ class ModelLoreEditor(private val player: Player, private val model: Model) {
             Bukkit.getScheduler().runTask(VehiclePlugin.instance) { _ ->
                 model.lore = UpdateSignPacket(event.packet).lines
                     .filter { line -> line.isNotBlank() }
-                    .map { line -> ChatColor.translateAlternateColorCodes('&', line) }
                 player.openInventory(InventoryModelOption(player, model))
                 close()
             }

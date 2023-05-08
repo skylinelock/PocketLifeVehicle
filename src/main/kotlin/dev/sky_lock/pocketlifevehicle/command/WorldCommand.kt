@@ -1,10 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedRawMessage
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedSuccessMessage
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -20,9 +19,9 @@ class WorldCommand : ICommand, IAdminCommand {
         if (args.size < 2 || args[1].equals("list", ignoreCase = true)) {
             Bukkit.getWorlds().forEach{world ->
                 if (config.isWorldVehicleCanPlaced(world)) {
-                    player.sendVehiclePrefixedMessage(ChatColor.GREEN + "- " + world.name)
+                    player.sendVehiclePrefixedSuccessMessage( "- " + world.name)
                 } else {
-                    player.sendVehiclePrefixedMessage("- " + world.name)
+                    player.sendVehiclePrefixedRawMessage("- " + world.name)
                 }
             }
             return
@@ -31,14 +30,14 @@ class WorldCommand : ICommand, IAdminCommand {
         when (args[1]) {
             "add" -> {
                 config.setWorldVehicleCanPlaced(uid, true)
-                player.sendVehiclePrefixedMessage(ChatColor.GREEN + "このワールドでの乗り物の使用を許可しました")
+                player.sendVehiclePrefixedSuccessMessage( "このワールドでの乗り物の使用を許可しました")
             }
             "remove" -> {
                 config.setWorldVehicleCanPlaced(uid, false)
-                player.sendVehiclePrefixedMessage(ChatColor.GREEN + "このワールドでの乗り物の使用をできないようにしました")
+                player.sendVehiclePrefixedSuccessMessage( "このワールドでの乗り物の使用をできないようにしました")
             }
             else -> {
-                player.sendVehiclePrefixedMessage("/vehicle world [add|remove|list]")
+                player.sendVehiclePrefixedRawMessage("/vehicle world [add|remove|list]")
             }
         }
     }

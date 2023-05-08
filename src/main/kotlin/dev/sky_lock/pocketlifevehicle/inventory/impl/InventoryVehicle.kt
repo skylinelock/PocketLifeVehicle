@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
@@ -7,7 +8,8 @@ import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.Vehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
-import org.bukkit.ChatColor
+import net.kyori.adventure.text.format.NamedTextColor
+import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
@@ -39,7 +41,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
 
             cursor.amount -= 1
             player.playSound(player.location, Sound.BLOCK_BREWING_STAND_BREW, 1.0f, 0.6f)
-            refuelHopper.lore = refuelInfo(vehicle.tank.fuel)
+            refuelHopper.lore(refuelInfo(vehicle.tank.fuel).map { line -> line.toComponent() })
             event.currentItem = refuelHopper
             updateFuelGage()
         }
@@ -68,7 +70,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         }
 
         val popCart = ItemStackBuilder(Material.MINECART, 1).setName(colorizeTitle("回収する"))
-            .setLore(ChatColor.GRAY + "アイテム化して持ち運べるようにします").build()
+            .setLore(Line().gray("アイテム化して持ち運べるようにします")).build()
         setSlot(33, popCart) {
             VehicleManager.pop(vehicle)
             player.closeInventory()
@@ -86,7 +88,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         }
 
         val ownerSkull = PlayerHeadBuilder(1).owingPlayer(vehicle.owner).setName(colorizeTitle("所有者")).setLore(
-            ChatColor.AQUA + vehicle.ownerName
+            Line().aqua(vehicle.ownerName)
         ).build()
         setItem(44, ownerSkull)
 
@@ -98,12 +100,12 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
     }
 
     private fun lockBarrier(): ItemStack {
-        val lockDesc = listOf(ChatColor.GRAY + "他プレイヤーが乗り物に乗れるかどうか", ChatColor.GRAY + "を設定することができます")
+        val lockDesc = listOf(Line().gray("他プレイヤーが乗り物に乗れるかどうか"), Line().gray("を設定することができます"))
         return if (vehicle.isLocked) {
-            ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.AQUA + "" + ChatColor.BOLD + "鍵を開ける")
+            ItemStackBuilder(Material.BARRIER, 1).setName(Line().aquaBold("鍵を開ける"))
                 .setLore(lockDesc).build()
         } else {
-            ItemStackBuilder(Material.STRUCTURE_VOID, 1).setName(ChatColor.RED + "" + ChatColor.BOLD + "鍵を閉める")
+            ItemStackBuilder(Material.STRUCTURE_VOID, 1).setName(Line().redBold("鍵を閉める"))
                 .setLore(lockDesc).build()
         }
     }
@@ -113,12 +115,12 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
             ItemStackBuilder(
                 Material.NOTE_BLOCK,
                 1
-            ).setName(ChatColor.RED + "" + ChatColor.BOLD + "エンジン音を消す").build()
+            ).setName(Line().redBold("エンジン音を消す")).build()
         } else {
             ItemStackBuilder(
                 Material.NOTE_BLOCK,
                 1
-            ).setName(ChatColor.GREEN + "" + ChatColor.BOLD + "エンジン音をつける").build()
+            ).setName(Line().greenBold("エンジン音をつける")).build()
         }
     }
 
@@ -127,32 +129,32 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
             ItemStackBuilder(
                 Material.LIME_DYE,
                 1
-            ).setName(ChatColor.RED + "" + ChatColor.BOLD + "ハンドリングのアニメーションを無効にする").build()
+            ).setName(Line().redBold("ハンドリングのアニメーションを無効にする")).build()
         } else {
             ItemStackBuilder(
                 Material.MAGENTA_DYE,
                 1
-            ).setName(ChatColor.GREEN + "" + ChatColor.BOLD + "ハンドリングのアニメーションを有効にする").build()
+            ).setName(Line().greenBold("ハンドリングのアニメーションを有効にする")).build()
         }
     }
 
-    private fun refuelInfo(fuel: Float): List<String> {
+    private fun refuelInfo(fuel: Float): List<Line> {
         val currentFuel = abs(fuel).truncateToOneDecimalPlace()
         val maxFuel = abs(vehicle.model.spec.maxFuel).truncateToOneDecimalPlace()
         return listOf(
-            ChatColor.GRAY + "残燃料 : $currentFuel/$maxFuel",
-            ChatColor.GRAY + "石炭ブロックを持って右クリック",
-            ChatColor.GRAY + "すると燃料を補充できます"
+                Line().gray("残燃料 : $currentFuel/$maxFuel"),
+                Line().gray("石炭ブロックを持って右クリック"),
+                Line().gray("すると燃料を補充できます")
         )
     }
 
-    private fun colorizeTitle(title: String): String {
-        return ChatColor.GOLD + ChatColor.BOLD + title
+    private fun colorizeTitle(title: String): Line {
+        return Line().goldBold(title)
     }
 
     private fun updateFuelGage() {
-        val filled = ItemStackBuilder(Material.GREEN_STAINED_GLASS_PANE, 1).setName(ChatColor.GREEN + "補充済み").build()
-        val unfilled = ItemStackBuilder(Material.RED_STAINED_GLASS_PANE, 1).setName(ChatColor.RED + "未補充").build()
+        val filled = ItemStackBuilder(Material.GREEN_STAINED_GLASS_PANE, 1).setName(Line().green("補充済み")).build()
+        val unfilled = ItemStackBuilder(Material.RED_STAINED_GLASS_PANE, 1).setName(Line().red("未補充")).build()
         val fuel = vehicle.tank.fuel
         val maxFuel = vehicle.model.spec.maxFuel
         val rate = fuel / maxFuel
@@ -169,17 +171,18 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
         }
     }
 
-    private fun vehicleInfoLore(): List<String> {
-        val info: MutableList<String> = ArrayList()
-        info.add(ChatColor.GREEN + "名前     : " + ChatColor.RESET + vehicle.model.name)
-        info.add(ChatColor.GREEN + "最大燃料 : " + ChatColor.RESET + vehicle.model.spec.maxFuel)
-        info.add(ChatColor.GREEN + "最高速度 : " + ChatColor.RESET + vehicle.model.spec.maxSpeed.label)
-        info.add(ChatColor.GREEN + "説明 :")
-        vehicle.model.lore.forEach { lore -> info.add("- " + ChatColor.RESET + lore) }
+    private fun vehicleInfoLore(): List<Line> {
+        val info: MutableList<Line> = ArrayList()
+        info.add(Line().green("名前     : ").raw(vehicle.model.name))
+        info.add(Line().green("最大燃料 : ").raw(vehicle.model.spec.maxFuel.toString()))
+        info.add(Line().green("最高速度 : ").raw(vehicle.model.spec.maxSpeed.label))
+        info.add(Line().green("説明 :").raw(vehicle.model.name))
+
+        vehicle.model.lore.forEach { lore -> info.add(Line().withSingleColorCode("- $lore")) }
         if (vehicle.isUndrivable) {
-            info.add(ChatColor.GREEN + "状態 : " + ChatColor.RED + "廃車")
+            info.add(Line().green("状態 : ").red("廃車"))
         } else {
-            info.add(ChatColor.GREEN + "状態 : " + ChatColor.YELLOW + "運転可能")
+            info.add(Line().green("状態 : ").yellow("運転可能"))
         }
         return info
     }

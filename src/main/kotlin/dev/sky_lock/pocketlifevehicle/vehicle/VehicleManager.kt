@@ -2,13 +2,12 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.PluginKey
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolation
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -30,7 +29,7 @@ object VehicleManager {
 
     fun scrapAll(modelId: String) {
         vehicles.filter { vehicle -> vehicle.model.id == modelId }
-            .forEach { vehicle -> vehicle.isUndrivable = true }
+                .forEach { vehicle -> vehicle.isUndrivable = true }
     }
 
     fun getLocation(owner: UUID): Location? {
@@ -55,12 +54,12 @@ object VehicleManager {
 
     fun setLockForEventVehicles(locked: Boolean) {
         vehicles.filter { vehicle -> vehicle.model.flag.eventOnly }
-            .forEach { vehicle -> vehicle.isLocked = locked }
+                .forEach { vehicle -> vehicle.isLocked = locked }
     }
 
     fun removeEventVehicles() {
         vehicles.filter { vehicle -> vehicle.model.flag.eventOnly }
-            .forEach { vehicle -> remove(vehicle) }
+                .forEach { vehicle -> remove(vehicle) }
     }
 
     fun pop(vehicle: Vehicle) {
@@ -75,13 +74,13 @@ object VehicleManager {
             return
         }
         val itemStack = ItemStackBuilder(model.itemStack)
-            .setPersistentData(PluginKey.OWNER, UUIDTagType.INSTANCE, owner)
-            .setPersistentData(PluginKey.FUEL, PersistentDataType.FLOAT, fuel)
-            .addLore(
-                ChatColor.GREEN + "オーナー: " + ChatColor.YELLOW + vehicle.ownerName,
-                ChatColor.GREEN + "燃料: " + ChatColor.YELLOW + fuel.truncateToOneDecimalPlace()
-            )
-            .build()
+                .setPersistentData(PluginKey.OWNER, UUIDTagType.INSTANCE, owner)
+                .setPersistentData(PluginKey.FUEL, PersistentDataType.FLOAT, fuel)
+                .addLore(
+                        Line().green("オーナー: ").yellow(vehicle.ownerName),
+                        Line().green("燃料: ").yellow(fuel.truncateToOneDecimalPlace())
+                )
+        .build()
         val location = vehicle.location
         location.world.dropItem(vehicle.location, itemStack)
         location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1f, 0.2f)
@@ -108,7 +107,7 @@ object VehicleManager {
     }
 
     private fun findVehicle(owner: UUID): Vehicle? {
-        return vehicles.find{vehicle -> vehicle.owner != null && vehicle.owner == owner}
+        return vehicles.find { vehicle -> vehicle.owner != null && vehicle.owner == owner }
     }
 
     fun verifyPlaceableLocation(location: Location): Boolean {
