@@ -30,7 +30,6 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
             return Bukkit.getOfflinePlayer(uuid).name ?: "unknown"
         }
 
-    val sound = EngineSound(location)
     val tank = FuelTank(fuel, model.spec.maxFuel)
     val engine = Engine(tank, model)
     val steering = Steering(this)
@@ -126,13 +125,37 @@ class Vehicle(val owner: UUID?, var location: Location, val model: Model, fuel: 
         seats.clear()
     }
 
-    fun explode() {
+    fun playExplosionEffect() {
         val explosion = FakeExplosionPacket()
         explosion.setX(location.x)
         explosion.setY(location.y)
         explosion.setZ(location.z)
         explosion.setRadius(5f)
         explosion.broadCast()
-        location.world?.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f)
+        location.world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f)
+    }
+
+    fun playEngineSound() {
+        if (!shouldPlaySound) return
+        val world = location.world
+        val pitch = engine.speed.approximate() / model.spec.maxSpeed.value
+        world.playSound(location, Sound.ENTITY_PIG_HURT, 0.03f, 0.7f)
+        world.playSound(location, Sound.ENTITY_MINECART_RIDING, 0.03f, 0.8f)
+        world.playSound(location, Sound.ENTITY_PLAYER_BURP, 0.03f, 0.8f)
+        world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.03f, pitch)
+    }
+
+    fun cancelEngineSound() {
+        location.getNearbyPlayers(50.0).forEach { player ->
+            player.stopSound(Sound.ENTITY_PIG_HURT)
+            player.stopSound(Sound.ENTITY_MINECART_RIDING)
+            player.stopSound(Sound.ENTITY_PLAYER_BURP)
+            player.stopSound(Sound.ENTITY_ENDERMAN_DEATH)
+        }
+        this.shouldPlaySound = false
+    }
+
+    fun updateLocation(location: Location) {
+        this.location = location
     }
 }

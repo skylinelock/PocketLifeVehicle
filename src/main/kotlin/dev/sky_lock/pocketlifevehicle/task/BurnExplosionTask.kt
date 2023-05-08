@@ -20,7 +20,7 @@ class BurnExplosionTask {
             override fun run() {
                 if (vehicle.passengers.isEmpty()) {
                     if (count == 0) {
-                        vehicle.explode()
+                        vehicle.playExplosionEffect()
                         VehicleManager.remove(vehicle)
                         cancel()
                     }
@@ -28,7 +28,7 @@ class BurnExplosionTask {
                     return
                 }
                 if (count == 0) {
-                    vehicle.explode()
+                    vehicle.playExplosionEffect()
                     vehicle.owner?.let { ownerUuid ->
                         val owner = Bukkit.getPlayer(ownerUuid) ?: return@let
                         if (vehicle.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {

@@ -56,9 +56,6 @@ class ModelArmorStand : ArmorStand {
         armorStand.setItem(modelOption.position.slot, model.itemStack)
         armorStand.isSmall = !modelOption.isBig
         this.refreshDimensions()
-        if (vehicle.shouldPlaySound) {
-            vehicle.sound.start()
-        }
     }
 
     val location: Location
@@ -70,7 +67,7 @@ class ModelArmorStand : ArmorStand {
 
     override fun kill() {
         if (vehicle != null) {
-            vehicle!!.sound.isCancelled = true
+            vehicle!!.cancelEngineSound()
         }
         super.kill()
     }
@@ -91,14 +88,12 @@ class ModelArmorStand : ArmorStand {
         return false
     }
 
-    // Entity#az() = doWaterSplashEffect()
     override fun doWaterSplashEffect() {
         super.doWaterSplashEffect()
         SubmergedMessageTask().run(vehicle!!)
-        vehicle!!.sound.isCancelled = true
+        vehicle!!.cancelEngineSound()
     }
 
-    // applyPoseToSize
     override fun getDimensions(entityPose: Pose): EntityDimensions {
         if (vehicle == null) {
             return super.getDimensions(entityPose)
@@ -110,7 +105,7 @@ class ModelArmorStand : ArmorStand {
         return this.type.dimensions.scale(widthScale, heightScale)
     }
 
-    // EntityLiving#e(Vec3D) = travel(Vec3D)
+    // Playerがマウントしてる間呼び続けられる
     override fun travel(vec3: Vec3) {
         if (vehicle == null) {
             super.travel(vec3)
@@ -121,9 +116,6 @@ class ModelArmorStand : ArmorStand {
             vehicle.driver == null || isInWater || isInLava
         ) {
             vehicle.engine.stop()
-            vehicle.location = location
-            vehicle.sound.pitch = 0.0f
-            vehicle.sound.location = this.location
             super.travel(vec3)
             return
         }
@@ -152,10 +144,13 @@ class ModelArmorStand : ArmorStand {
         this.speed = vehicle.engine.currentSpeed
         // InputのZ方向に進ませる。後に単位ベクトルに置き換えられるのでZは1.0で良い。
         super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
+    }
 
-        val speed = vehicle.engine.speed
-        vehicle.location = location
-        vehicle.sound.location = this.location
-        vehicle.sound.pitch = speed.approximate() / vehicle.model.spec.maxSpeed.value
+    override fun tick() {
+        super.tick()
+        vehicle?.updateLocation(location)
+        if (tickCount % 2 == 0) {
+            vehicle?.playEngineSound()
+        }
     }
 }

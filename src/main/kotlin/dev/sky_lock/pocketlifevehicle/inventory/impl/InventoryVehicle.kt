@@ -48,11 +48,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: Vehicle)
             setSlot(8, soundNote) { event ->
                 val shouldPlaySound = vehicle.shouldPlaySound
                 vehicle.shouldPlaySound = !shouldPlaySound
-                if (vehicle.shouldPlaySound) {
-                    vehicle.sound.start()
-                } else {
-                    vehicle.sound.stop()
-                }
+                if (!vehicle.shouldPlaySound) vehicle.cancelEngineSound()
                 event.currentItem = soundNoteBlock()
             }
         }
