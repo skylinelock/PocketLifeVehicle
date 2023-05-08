@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.task
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import org.bukkit.ChatColor
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
+import net.kyori.adventure.title.Title
 import org.bukkit.entity.Player
 
 /**
@@ -10,8 +10,9 @@ import org.bukkit.entity.Player
 open class AbstractWarning {
     var count = 0
 
-    fun send(player: Player, subTitle: String) {
-        player.sendTitle(WARNING, subTitle, 1, 20, 1)
+    fun send(player: Player, subTitle: Line) {
+        val title = Title.title(WARNING.toComponent(), subTitle.toComponent())
+        player.showTitle(title)
     }
 
     fun stop(player: Player) {
@@ -19,6 +20,6 @@ open class AbstractWarning {
     }
 
     companion object {
-        private val WARNING = ChatColor.RED + "⚠⚠WARNING⚠⚠"
+        private val WARNING = Line().red("⚠⚠WARNING⚠⚠")
     }
 }

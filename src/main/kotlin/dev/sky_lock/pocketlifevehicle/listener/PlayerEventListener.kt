@@ -4,8 +4,8 @@ import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.PluginKey
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.Line
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendActionBar
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendMessage
 import dev.sky_lock.pocketlifevehicle.inventory.openEventVehicleUtility
 import dev.sky_lock.pocketlifevehicle.inventory.openVehicleUtility
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
@@ -15,7 +15,6 @@ import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import net.kyori.adventure.text.Component
-import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.block.BlockFace
@@ -61,7 +60,7 @@ class PlayerEventListener : Listener {
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
         if (plugin.parkingViolationList.findEntry(player) != null) {
-            event.player.sendMessage(ChatColor.BOLD + ChatColor.RED + "駐車違反登録されています。乗り物を利用するにはスマホから駐車違反料を払う必要があります。")
+            event.player.sendMessage(Line().redBold("駐車違反登録されています。乗り物を利用するにはスマホから駐車違反料を払う必要があります。"))
         }
     }
 

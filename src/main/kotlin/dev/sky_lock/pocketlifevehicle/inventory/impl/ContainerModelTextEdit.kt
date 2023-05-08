@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
@@ -9,7 +9,6 @@ import net.minecraft.network.chat.Component
 import net.minecraft.world.Container
 import net.minecraft.world.inventory.AnvilMenu
 import net.minecraft.world.inventory.ContainerLevelAccess
-import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.craftbukkit.v1_19_R3.CraftWorld
@@ -107,14 +106,14 @@ class ContainerModelTextEdit(
                 when (modifyType) {
                     ModifyType.ID_CREATE -> {
                         if (ModelRegistry.hasRegistered(text)) {
-                            displayError(current, ChatColor.RED + "そのIDは既に登録されています。")
+                            displayError(current, Line().red("そのIDは既に登録されています。"))
                             return
                         }
                         ModelRegistry.register(model)
                     }
                     ModifyType.ID -> {
                         if (ModelRegistry.hasRegistered(text)) {
-                            displayError(current, ChatColor.RED + "そのIDは既に登録されています。")
+                            displayError(current, Line().red("そのIDは既に登録されています。"))
                             return
                         }
                         ModelRegistry.unregister(model.id)
@@ -127,7 +126,7 @@ class ContainerModelTextEdit(
                     ModifyType.HEIGHT -> {
                         val height = text.toFloatOrNull()
                         if (height == null) {
-                            displayError(current, ChatColor.RED + "有効な数字を入力して下さい")
+                            displayError(current, Line().red("有効な数字を入力して下さい"))
                             return
                         }
                         model.height = text.toFloat()
@@ -135,7 +134,7 @@ class ContainerModelTextEdit(
                     ModifyType.OFFSET -> {
                         val offset = text.toFloatOrNull()
                         if (offset == null) {
-                            displayError(current, ChatColor.RED + "有効な数字を入力して下さい")
+                            displayError(current, Line().red("有効な数字を入力して下さい"))
                             return
                         }
                         model.seatOption.offset = offset
@@ -143,7 +142,7 @@ class ContainerModelTextEdit(
                     ModifyType.WIDTH -> {
                         val width = text.toFloatOrNull()
                         if (width == null) {
-                            displayError(current, ChatColor.RED + "有効な数字を入力して下さい")
+                            displayError(current, Line().red("有効な数字を入力して下さい"))
                             return
                         }
                         model.seatOption.width = width
@@ -151,7 +150,7 @@ class ContainerModelTextEdit(
                     ModifyType.DEPTH -> {
                         val depth = text.toFloatOrNull()
                         if (depth == null) {
-                            displayError(current, ChatColor.RED + "有効な数字を入力して下さい")
+                            displayError(current, Line().red("有効な数字を入力して下さい"))
                             return
                         }
                         model.seatOption.depth = text.toFloat()
@@ -179,9 +178,9 @@ class ContainerModelTextEdit(
 
         }
 
-        private fun displayError(itemStack: ItemStack, error: String) {
+        private fun displayError(itemStack: ItemStack, line: Line) {
             val meta = itemStack.itemMeta
-            meta.lore = listOf(error)
+            meta.lore(listOf(line.toComponent()))
             itemStack.itemMeta = meta
         }
 

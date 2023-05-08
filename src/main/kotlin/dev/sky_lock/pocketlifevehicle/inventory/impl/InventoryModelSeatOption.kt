@@ -1,12 +1,11 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.inventory.openModelTextEditor
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -59,7 +58,7 @@ class InventoryModelSeatOption(private val player: Player, private val model: Mo
             player.openModelTextEditor("幅", model.seatOption.width.toString(), ContainerModelTextEdit.ModifyType.WIDTH, model)
         }
 
-        val backBarrier = ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.RED + "戻る").build()
+        val backBarrier = ItemStackBuilder(Material.BARRIER, 1).setName(Line().red("戻る")).build()
         setSlot(22, backBarrier) {
             player.openInventory(InventoryModelOption(player, model))
         }

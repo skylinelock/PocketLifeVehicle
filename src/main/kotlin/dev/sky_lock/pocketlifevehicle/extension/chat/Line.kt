@@ -84,6 +84,11 @@ class Line {
         return this
     }
 
+    fun gold(text: String): Line {
+        component.append(Component.text(text, NamedTextColor.GOLD))
+        return this
+    }
+
     fun aqua(text: String): Line {
         component.append(Component.text(text, NamedTextColor.AQUA))
         return this

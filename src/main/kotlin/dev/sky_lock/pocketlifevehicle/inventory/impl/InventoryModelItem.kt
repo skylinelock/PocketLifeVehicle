@@ -1,10 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
@@ -18,7 +17,7 @@ class InventoryModelItem(private val player: Player, private val model: Model) :
     init {
         setItems()
 
-        val backBarrier = ItemStackBuilder(Material.BARRIER, 1).setName(ChatColor.RED + "戻る").build()
+        val backBarrier = ItemStackBuilder(Material.BARRIER, 1).setName(Line().red("戻る")).build()
         setSlot(22, backBarrier) {
             player.openInventory(InventoryModelArmorStand(player, model))
         }
@@ -43,7 +42,7 @@ class InventoryModelItem(private val player: Player, private val model: Model) :
             }
             if (count > end) {
                 val next =
-                    ItemStackBuilder(Material.IRON_NUGGET, 1).setName(ChatColor.AQUA + "次のページ").setCustomModelData(16)
+                    ItemStackBuilder(Material.IRON_NUGGET, 1).setName(Line().aqua("次のページ")).setCustomModelData(16)
                         .build()
                 setSlot(23, next) {
                     page++
@@ -67,7 +66,7 @@ class InventoryModelItem(private val player: Player, private val model: Model) :
         }
         if (page > 1) {
             val back =
-                ItemStackBuilder(Material.IRON_NUGGET, 1).setName(ChatColor.AQUA + "前のページ").setCustomModelData(17)
+                ItemStackBuilder(Material.IRON_NUGGET, 1).setName(Line().aqua("前のページ")).setCustomModelData(17)
                     .build()
             setSlot(21, back) {
                 if (page > 1) page--

@@ -1,7 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.task
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.plus
-import org.bukkit.ChatColor
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import org.bukkit.entity.Player
 
 /**
@@ -9,6 +8,6 @@ import org.bukkit.entity.Player
  */
 class BurnExplosionWarning : AbstractWarning() {
     fun send(player: Player) {
-        super.send(player, ChatColor.GOLD + "乗り物は" + count + "秒後に爆発します")
+        super.send(player, Line().gold("乗り物は" + count + "秒後に爆発します"))
     }
 }
