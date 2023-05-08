@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.VehicleEntityType
-import dev.sky_lock.pocketlifevehicle.task.BurnExplosionTask
-import dev.sky_lock.pocketlifevehicle.task.SubmergedMessageTask
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.cancelEngineSound
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.playEngineSound
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.damagesource.DamageTypes
 import net.minecraft.world.entity.EntityDimensions
@@ -23,7 +23,9 @@ import org.bukkit.util.EulerAngle
  * @author sky_lock
  */
 class ModelArmorStand : ArmorStand {
-    private var vehicle: Vehicle? = null
+    private var status: VehicleStatus? = null
+    private var driverSeat: SeatArmorStand? = null
+
     constructor(entityTypes: EntityType<out ArmorStand>, world: Level) : super(entityTypes, world) {
         this.kill()
     }
@@ -47,11 +49,12 @@ class ModelArmorStand : ArmorStand {
         this.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)
     }
 
-    fun assemble(vehicle: Vehicle) {
-        this.vehicle = vehicle
+    fun assemble(status: VehicleStatus, driverSeat: SeatArmorStand) {
+        this.status = status
+        this.driverSeat = driverSeat
         val armorStand = bukkitEntity as CraftArmorStand
         armorStand.rightArmPose = EulerAngle.ZERO
-        val model = vehicle.model
+        val model = status.model
         val modelOption = model.modelOption
         armorStand.setItem(modelOption.position.slot, model.itemStack)
         armorStand.isSmall = !modelOption.isBig
@@ -61,13 +64,13 @@ class ModelArmorStand : ArmorStand {
     val location: Location
         get() = bukkitEntity.location
 
-    override fun getAttributes() : AttributeMap {
+    override fun getAttributes(): AttributeMap {
         return AttributeMap(LivingEntity.createLivingAttributes().build())
     }
 
     override fun kill() {
-        if (vehicle != null) {
-            vehicle!!.cancelEngineSound()
+        if (status != null) {
+            cancelEngineSound(status!!)
         }
         super.kill()
     }
@@ -81,25 +84,25 @@ class ModelArmorStand : ArmorStand {
         if (!(source.`is`(DamageTypes.IN_FIRE) && source.`is`(DamageTypes.LAVA) && source.`is`(DamageTypes.ON_FIRE))) {
             return false
         }
-        if (!vehicle!!.isBeginExplode) {
-            BurnExplosionTask().run(vehicle!!)
-            vehicle!!.isBeginExplode = true
-        }
+/*        if (!status!!.isBeginExplode) {
+            BurnExplosionTask().run()
+            status!!.isBeginExplode = true
+        }*/
         return false
     }
 
     override fun doWaterSplashEffect() {
         super.doWaterSplashEffect()
-        SubmergedMessageTask().run(vehicle!!)
-        vehicle!!.cancelEngineSound()
+        // SubmergedMessageTask().run(status)
+        cancelEngineSound(status!!)
     }
 
     override fun getDimensions(entityPose: Pose): EntityDimensions {
-        if (vehicle == null) {
+        if (status == null) {
             return super.getDimensions(entityPose)
         }
         val size = this.type.dimensions
-        val boxSize = vehicle!!.model.size
+        val boxSize = status!!.model.size
         val widthScale = boxSize.baseSide / size.width
         val heightScale = boxSize.height / size.height
         return this.type.dimensions.scale(widthScale, heightScale)
@@ -107,50 +110,48 @@ class ModelArmorStand : ArmorStand {
 
     // Playerがマウントしてる間呼び続けられる
     override fun travel(vec3: Vec3) {
-        if (vehicle == null) {
+        if (status == null) {
             super.travel(vec3)
             return
         }
-        val vehicle = vehicle!!
-        if (vehicle.isUndrivable || vehicle.passengers.isEmpty() ||
-            vehicle.driver == null || isInWater || isInLava
+        val status = status!!
+        val driverSeat = driverSeat!!
+        if (status.isUndrivable || driverSeat.passengers.isEmpty() || isInWater || isInLava
         ) {
-            vehicle.engine.stop()
+            status.engine.stop()
             super.travel(vec3)
             return
         }
-        val driver = vehicle.driver
-
-        if (driver != null) {
-            val player = (driver as CraftPlayer).handle
-            val sideIn = player.xxa
-            val forIn = player.zza
-            if (sideIn < 0.0f) {
-                vehicle.steering.right(driver)
-            } else if (sideIn > 0.0f) {
-                vehicle.steering.left(driver)
-            }
-            vehicle.engine.update(sideIn, forIn)
+        val driver = driverSeat.passengers[0].bukkitEntity as CraftPlayer
+        val player = driver.handle
+        val sideIn = player.xxa
+        val forIn = player.zza
+        if (sideIn < 0.0f) {
+            status.steering.right(driver)
+        } else if (sideIn > 0.0f) {
+            status.steering.left(driver)
         }
+        status.engine.update(sideIn, forIn)
 
         // yawとpitchを設定
-        yRot = vehicle.yaw
+        yRot = status.yaw
         yRotO = this.yRot
         xRot = 0.0f
         this.setRot(yRot, xRot)
         this.yBodyRot = this.yRot
         this.yHeadRot = this.yBodyRot
 
-        this.speed = vehicle.engine.currentSpeed
+        this.speed = status.engine.currentSpeed
         // InputのZ方向に進ませる。後に単位ベクトルに置き換えられるのでZは1.0で良い。
         super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
     }
 
     override fun tick() {
         super.tick()
-        vehicle?.updateLocation(location)
+        status?.updateLocation(location)
         if (tickCount % 2 == 0) {
-            vehicle?.playEngineSound()
+            playEngineSound(status!!)
         }
     }
+
 }

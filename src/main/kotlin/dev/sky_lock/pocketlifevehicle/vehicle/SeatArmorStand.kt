@@ -20,7 +20,7 @@ import kotlin.math.*
  * @author sky_lock
  */
 class SeatArmorStand : ArmorStand {
-    private var vehicle: Vehicle? = null
+    private var status: VehicleStatus? = null
     private var position: SeatPosition? = null
 
     constructor(entityTypes: EntityType<out ArmorStand>, world: Level) : super(entityTypes, world) {
@@ -52,12 +52,12 @@ class SeatArmorStand : ArmorStand {
             position === SeatPosition.TWO_DRIVER ||
             position === SeatPosition.FOUR_DRIVER
 
-    fun assemble(vehicle: Vehicle, position: SeatPosition) {
-        this.vehicle = vehicle
+    fun assemble(status: VehicleStatus, position: SeatPosition) {
+        this.status = status
         this.position = position
-        val center = vehicle.location
-        val loc = calcSeatPosition(center, vehicle.model.seatOption, position)
-        this.absMoveTo(loc.x, center.y - 1.675 + vehicle.model.height, loc.z, center.yaw, center.pitch)
+        val center = status.location
+        val loc = calcSeatPosition(center, status.model.seatOption, position)
+        this.absMoveTo(loc.x, center.y - 1.675 + status.model.height, loc.z, center.yaw, center.pitch)
     }
 
     override fun getAttributes() : AttributeMap {
@@ -72,7 +72,7 @@ class SeatArmorStand : ArmorStand {
             synchronize()
             return
         }
-        if (vehicle!!.driver == null) {
+        if (passengers.isEmpty()) {
             synchronize()
             return
         }
@@ -86,7 +86,7 @@ class SeatArmorStand : ArmorStand {
     }
 
     private fun synchronize() {
-        val vehicle = vehicle!!
+        val vehicle = status!!
         val loc = calcSeatPosition(vehicle.location, vehicle.model.seatOption, position!!)
         xo = loc.x
         yo = vehicle.location.y - 1.675 + vehicle.model.height
@@ -151,7 +151,7 @@ class SeatArmorStand : ArmorStand {
     }
 
     private fun displayMeterPanel(player: Player) {
-        val vehicle = vehicle!!
+        val vehicle = status!!
         val model = vehicle.model
         val tank = vehicle.tank
         val speed = vehicle.engine.speed

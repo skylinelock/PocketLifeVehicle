@@ -18,9 +18,9 @@ class ChunkEventListener : Listener {
                 .forEach { entity ->
                     if (entity !is ArmorStand) return@forEach
                     val vehicle = VehicleManager.findVehicle(entity) ?: return@forEach
-                    if (!vehicle.isLoaded) return
+                    if (!vehicle.status.isLoaded) return
                     vehicle.remove()
-                    vehicle.isLoaded = false
+                    vehicle.status.isLoaded = false
                 }
     }
 
@@ -30,9 +30,9 @@ class ChunkEventListener : Listener {
             .forEach { entity ->
                 if (entity !is ArmorStand) return@forEach
                 val vehicle = VehicleManager.findVehicle(entity) ?: return@forEach
-                if (vehicle.isLoaded) return@forEach
+                if (vehicle.status.isLoaded) return@forEach
                 vehicle.spawn()
-                vehicle.isLoaded = true
+                vehicle.status.isLoaded = true
             }
     }
 }

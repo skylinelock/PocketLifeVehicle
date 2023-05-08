@@ -8,39 +8,39 @@ import kotlin.math.roundToInt
 /**
  * @author sky_lock
  */
-class Steering(private val vehicle: Vehicle) {
-    private val spec = vehicle.model.spec
+class Steering(private val status: VehicleStatus) {
+    private val spec = status.model.spec
 
     fun right(driver: Player) {
-        val speed = vehicle.engine.speed
-        val tank = vehicle.tank
+        val speed = status.engine.speed
+        val tank = status.tank
         if (tank.fuel.roundToInt() == 0 || speed.isApproximateZero) {
             return
         }
         val steeringYaw = spec.steeringLevel.value
         if (speed.isPositive) {
-            vehicle.yaw += steeringYaw
+            status.yaw += steeringYaw
         } else {
-            vehicle.yaw -= steeringYaw
+            status.yaw -= steeringYaw
         }
-        if (vehicle.shouldAnimate && vehicle.model.flag.animation) {
+        if (status.shouldAnimate && status.model.flag.animation) {
             raiseLeftArm(driver)
         }
     }
 
     fun left(driver: Player) {
-        val speed = vehicle.engine.speed
-        val tank = vehicle.tank
+        val speed = status.engine.speed
+        val tank = status.tank
         if (tank.fuel.roundToInt() == 0 || speed.isApproximateZero) {
             return
         }
         val steeringYaw = spec.steeringLevel.value
         if (speed.isPositive) {
-            vehicle.yaw -= steeringYaw
+            status.yaw -= steeringYaw
         } else {
-            vehicle.yaw += steeringYaw
+            status.yaw += steeringYaw
         }
-        if (vehicle.shouldAnimate && vehicle.model.flag.animation) {
+        if (status.shouldAnimate && status.model.flag.animation) {
             raiseRightArm(driver)
         }
     }

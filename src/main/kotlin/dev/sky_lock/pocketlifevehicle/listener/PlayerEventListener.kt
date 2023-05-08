@@ -182,7 +182,7 @@ class PlayerEventListener : Listener {
         val handle = armorStand.handle
         val vehicle = VehicleManager.findVehicle(armorStand) ?: return
         event.isCancelled = true
-        val owner = vehicle.owner
+        val owner = vehicle.status.owner
         if (owner == null) {
             if (Permission.OPEN_EVENT_VEHICLE_GUI.obtained(player) && player.isSneaking) {
                 player.openEventVehicleUtility(vehicle)
@@ -190,7 +190,7 @@ class PlayerEventListener : Listener {
             }
             if (handle is SeatArmorStand) {
                 if (handle.isVehicle) return
-                if (vehicle.isLocked) {
+                if (vehicle.status.isLocked) {
                     sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                     return
                 }
@@ -200,11 +200,11 @@ class PlayerEventListener : Listener {
             if (handle !is ModelArmorStand) {
                 return
             }
-            if (vehicle.passengers.size >= vehicle.model.seatOption.capacity.value()) {
+            if (vehicle.passengers.size >= vehicle.status.model.seatOption.capacity.value()) {
                 sendRefusedReason(player, "この乗り物は満員です")
                 return
             }
-            if (vehicle.isLocked) {
+            if (vehicle.status.isLocked) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }
@@ -212,7 +212,7 @@ class PlayerEventListener : Listener {
             return
         }
 
-        val ownerName = vehicle.ownerName
+        val ownerName = vehicle.status.ownerName
         val clicked = player.uniqueId
 
         if (player.isSneaking) {
@@ -230,13 +230,13 @@ class PlayerEventListener : Listener {
                 armorStand.addPassenger(player)
                 return
             }
-            if (vehicle.isLocked) {
+            if (vehicle.status.isLocked) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }
             armorStand.addPassenger(player)
         } else if (handle is ModelArmorStand) {
-            if (vehicle.passengers.size >= vehicle.model.seatOption.capacity.value()) {
+            if (vehicle.passengers.size >= vehicle.status.model.seatOption.capacity.value()) {
                 sendRefusedReason(player, "この乗り物は満員です")
                 return
             }
@@ -244,7 +244,7 @@ class PlayerEventListener : Listener {
                 vehicle.addPassenger(player)
                 return
             }
-            if (vehicle.isLocked) {
+            if (vehicle.status.isLocked) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }
