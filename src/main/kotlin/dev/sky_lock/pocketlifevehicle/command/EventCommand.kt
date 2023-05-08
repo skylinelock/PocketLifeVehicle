@@ -19,7 +19,7 @@ class EventCommand : ICommand, IAdminCommand {
             player.sendVehiclePrefixedErrorMessage( "引数が足りません")
             return
         }
-        val arg = args[1].toLowerCase()
+        val arg = args[1].lowercase()
         when(arg) {
             "clear" -> {
                 VehicleManager.removeEventVehicles()

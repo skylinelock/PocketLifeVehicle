@@ -26,9 +26,9 @@ abstract class BukkitCommandNode(val permission: Permission?, val runnable: Comm
     }
 
     fun addChild(node: BukkitCommandNode) {
-        val child = this.children[node.name.toLowerCase()]
+        val child = this.children[node.name.lowercase()]
         if (child == null) {
-            this.children[node.name.toLowerCase()] = node
+            this.children[node.name.lowercase()] = node
             if (node is LiteralCommandNode) {
                 this.literals[node.name] = node as LiteralCommandNode
             } else if (node is ArgumentCommandNode<*>) {

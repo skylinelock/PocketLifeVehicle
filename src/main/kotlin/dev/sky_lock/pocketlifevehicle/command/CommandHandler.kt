@@ -17,7 +17,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
         var cmd: ICommand = HelpCommand()
         if (args.isNotEmpty()) {
-            when (args[0].toLowerCase()) {
+            when (args[0].lowercase()) {
                 "give" -> cmd = GiveCommand()
                 "spawn" -> cmd = SpawnCommand()
                 "pop" -> cmd = PopCommand()
@@ -55,7 +55,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
             tabCompletes.addAll(listOf("pop", "search").filter { str -> str.startsWith(input) })
         } else if (args.size == 2 && Permission.ADMIN_COMMAND.obtained(sender)) {
             val input = args[1]
-            when (args[0].toLowerCase()) {
+            when (args[0].lowercase()) {
                 "give", "spawn" -> {
                     for (model in ModelRegistry.set()) {
                         val id = model.id
@@ -70,7 +70,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
                 "world" -> tabCompletes.addAll(listOf("add", "remove", "list").filter { str -> str.startsWith(input) })
             }
         } else if (args.size == 3 && Permission.ADMIN_COMMAND.obtained(sender)) {
-            val input = args[2].toLowerCase()
+            val input = args[2].lowercase()
             if (args[0] == "give" || args[0] == "spawn") {
                 tabCompletes.addAll(listPlayerNamesStartsWith(input))
             }

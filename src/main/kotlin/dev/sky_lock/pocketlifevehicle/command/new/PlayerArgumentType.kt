@@ -23,7 +23,7 @@ class PlayerArgumentType private constructor() : ArgumentType<Player>  {
 
     override fun <S : Any> listSuggestions(context: CommandContext<S>, builder: SuggestionsBuilder): CompletableFuture<Suggestions> {
         Bukkit.getOnlinePlayers().forEach { player ->
-            if (player.name.startsWith(builder.remaining.toLowerCase())) {
+            if (player.name.startsWith(builder.remaining.lowercase())) {
                 builder.suggest(player.name)
             }
         }
