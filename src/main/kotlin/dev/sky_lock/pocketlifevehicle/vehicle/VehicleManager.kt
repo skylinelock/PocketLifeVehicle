@@ -38,12 +38,11 @@ object VehicleManager {
     }
 
     // 呼ぶ前に乗り物の設置が許可されているワールドか確認する
-    fun placeVehicle(owner: UUID, location: Location, model: Model, fuel: Float): Boolean {
+    fun placeVehicle(owner: UUID, location: Location, model: Model, fuel: Float) {
         val vehicle = Vehicle(owner, location, model, fuel)
         vehicle.spawn()
         pop(owner)
         vehicles.add(vehicle)
-        return true
     }
 
     fun placeEventVehicle(location: Location, model: Model) {
@@ -121,7 +120,8 @@ object VehicleManager {
             return false
         }
         remove(player.uniqueId)
-        return placeVehicle(player.uniqueId, player.location, vehicle.model, vehicle.tank.fuel)
+        placeVehicle(player.uniqueId, player.location, vehicle.model, vehicle.tank.fuel)
+        return true
     }
 
     fun restore(player: Player): Boolean {

@@ -17,63 +17,55 @@ class SpawnCommand : ICommand, IAdminCommand {
     override fun execute(sender: CommandSender, cmd: Command, args: Array<String>) {
         val player = sender as Player
         if (args.size < 2) {
-            player.sendVehiclePrefixedErrorMessage( "引数が足りません")
+            player.sendVehiclePrefixedErrorMessage("引数が足りません")
             return
         }
         val id = args[1]
         val model = ModelRegistry.findById(id)
         if (model == null) {
-            player.sendVehiclePrefixedErrorMessage( "モデルが見つかりませんでした")
+            player.sendVehiclePrefixedErrorMessage("モデルが見つかりませんでした")
             return
         }
         if (args.size == 2) {
             if (!VehiclePlugin.instance.pluginConfiguration.isWorldVehicleCanPlaced(player.world)) {
-                player.sendVehiclePrefixedErrorMessage( "このワールドは乗り物の使用が許可されていません")
+                player.sendVehiclePrefixedErrorMessage("このワールドは乗り物の使用が許可されていません")
                 return
             }
             if (model.flag.eventOnly) {
                 VehicleManager.placeEventVehicle(player.location, model)
-                player.sendVehiclePrefixedSuccessMessage( "イベント専用車両を設置しました")
+                player.sendVehiclePrefixedSuccessMessage("イベント専用車両を設置しました")
                 return
             }
             if (!VehicleManager.verifyPlaceableLocation(player.location)) {
-                player.sendVehiclePrefixedErrorMessage( "この位置に乗り物は設置できません")
+                player.sendVehiclePrefixedErrorMessage("この位置に乗り物は設置できません")
                 return
             }
             VehicleManager.remove(player.uniqueId)
-            val success = VehicleManager.placeVehicle(player.uniqueId, player.location, model, model.spec.maxFuel)
-            if (success) {
-                player.sendVehiclePrefixedSuccessMessage("$id を取得しました")
-            } else {
-                player.sendVehiclePrefixedErrorMessage( "乗り物を設置できませんでした")
-            }
+            VehicleManager.placeVehicle(player.uniqueId, player.location, model, model.spec.maxFuel)
+            player.sendVehiclePrefixedSuccessMessage("$id を取得しました")
             return
         }
         val name = args[2]
         val target = Bukkit.getPlayer(name)
         if (target == null) {
-            player.sendVehiclePrefixedErrorMessage( "プレイヤーが見つかりませんでした")
+            player.sendVehiclePrefixedErrorMessage("プレイヤーが見つかりませんでした")
             return
         }
         if (!VehiclePlugin.instance.pluginConfiguration.isWorldVehicleCanPlaced(target.world)) {
-            player.sendVehiclePrefixedErrorMessage( "対象のプレイヤーがいるワールドは乗り物の使用が許可されていません")
+            player.sendVehiclePrefixedErrorMessage("対象のプレイヤーがいるワールドは乗り物の使用が許可されていません")
             return
         }
         if (model.flag.eventOnly) {
             VehicleManager.placeEventVehicle(target.location, model)
-            player.sendVehiclePrefixedSuccessMessage( name + "の位置にイベント専用車両を設置しました")
+            player.sendVehiclePrefixedSuccessMessage(name + "の位置にイベント専用車両を設置しました")
             return
         }
         if (!VehicleManager.verifyPlaceableLocation(target.location)) {
-            player.sendVehiclePrefixedErrorMessage( "対象のプレイヤーの位置に乗り物を設置することができませんでした")
+            player.sendVehiclePrefixedErrorMessage("対象のプレイヤーの位置に乗り物を設置することができませんでした")
             return
         }
-        val success = VehicleManager.placeVehicle(target.uniqueId, target.location, model, model.spec.maxFuel)
-        if (success) {
-            player.sendVehiclePrefixedSuccessMessage("$name に $id を渡しました")
-            target.sendVehiclePrefixedSuccessMessage( "乗り物を受け取りました")
-        } else {
-            player.sendVehiclePrefixedErrorMessage( "乗り物を設置できませんでした")
-        }
+        VehicleManager.placeVehicle(target.uniqueId, target.location, model, model.spec.maxFuel)
+        player.sendVehiclePrefixedSuccessMessage("$name に $id を渡しました")
+        target.sendVehiclePrefixedSuccessMessage("乗り物を受け取りました")
     }
 }
