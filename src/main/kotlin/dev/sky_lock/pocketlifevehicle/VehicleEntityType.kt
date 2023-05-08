@@ -64,7 +64,7 @@ class VehicleEntityType<T : Entity>(
         frozen.isAccessible = true
         frozen.set(registry, false)
 
-        Registry.register(BuiltInRegistries.ENTITY_TYPE, resourceKey, entity.build(this.id))
+        Registry.registerMapping(BuiltInRegistries.ENTITY_TYPE, 2, this.id, entity.build(this.id))
 
         unregisteredIntrusiveHolders.set(registry, null)
         unregisteredIntrusiveHolders.isAccessible = false
