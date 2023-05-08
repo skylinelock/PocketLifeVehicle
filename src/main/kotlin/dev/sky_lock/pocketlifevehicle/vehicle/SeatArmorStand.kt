@@ -1,6 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.VehicleEntityType
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendActionBar
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
 import net.minecraft.world.entity.EntityType
@@ -8,7 +10,6 @@ import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.ai.attributes.AttributeMap
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
-import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
@@ -156,31 +157,26 @@ class SeatArmorStand : ArmorStand {
         val speed = vehicle.engine.speed
         val engine = vehicle.engine
 
-        val builder = StringBuilder()
+        val line = Line()
         if (!vehicle.model.flag.eventOnly) {
-            builder.append(ChatColor.RED).append(ChatColor.BOLD).append("E ").append(ChatColor.GREEN)
+            line.redBold("E ")
             val fuelRate = tank.fuel / model.spec.maxFuel
             val filled = (70 * fuelRate).roundToInt()
-            IntStream.range(0, filled).forEach { builder.append("ǀ") }
-            builder.append(ChatColor.RED)
-            IntStream.range(0, 70 - filled).forEach { builder.append("ǀ") }
-            builder.append(" ").append(ChatColor.GREEN).append(ChatColor.BOLD).append(" F").append("   ").append(
-                ChatColor.DARK_PURPLE
-            ).append(ChatColor.BOLD)
+            IntStream.range(0, filled).forEach { line.green("ǀ") }
+            IntStream.range(0, 70 - filled).forEach { line.red("ǀ") }
+            line.greenBold(" F   ")
             if (speed.isApproximateZero) {
-                builder.append("P")
+                line.darkPurpleBold("P   ")
             } else {
                 if (speed.isPositive) {
-                    builder.append("D")
+                    line.darkPurpleBold("D   ")
                 } else if (speed.isNegative) {
-                    builder.append("R")
+                    line.darkPurpleBold("R   ")
                 }
             }
-            builder.append("   ")
         }
-        builder.append(ChatColor.DARK_GREEN).append(ChatColor.BOLD)
         val blockPerSecond = abs(engine.speedPerSecond()).truncateToOneDecimalPlace()
-        builder.append(blockPerSecond).append(ChatColor.GRAY).append(ChatColor.BOLD).append(" blocks/s")
-        player.sendActionBar(builder.toString())
+        line.darkGreenBold(blockPerSecond).grayBold(" blocks/s")
+        player.sendActionBar(line)
     }
 }

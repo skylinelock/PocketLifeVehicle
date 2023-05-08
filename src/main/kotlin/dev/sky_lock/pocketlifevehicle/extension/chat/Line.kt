@@ -99,8 +99,23 @@ class Line {
         return this
     }
 
+    fun grayBold(text: String): Line {
+        component.append(Component.text(text, Style.style(NamedTextColor.GRAY, TextDecoration.BOLD)))
+        return this
+    }
+
     fun darkGray(text: String): Line {
         component.append(Component.text(text, NamedTextColor.DARK_GRAY))
+        return this
+    }
+
+    fun darkPurpleBold(text: String): Line {
+        component.append(Component.text(text, Style.style(NamedTextColor.DARK_PURPLE, TextDecoration.BOLD)))
+        return this
+    }
+
+    fun darkGreenBold(text: String): Line {
+        component.append(Component.text(text, Style.style(NamedTextColor.DARK_GREEN, TextDecoration.BOLD)))
         return this
     }
 
@@ -121,6 +136,11 @@ class Line {
 
     fun greenBold(text: String): Line {
         component.append(Component.text(text, Style.style(NamedTextColor.GREEN, TextDecoration.BOLD)))
+        return this
+    }
+
+    fun yellowBold(text: String): Line {
+        component.append(Component.text(text, Style.style(NamedTextColor.YELLOW, TextDecoration.BOLD)))
         return this
     }
 

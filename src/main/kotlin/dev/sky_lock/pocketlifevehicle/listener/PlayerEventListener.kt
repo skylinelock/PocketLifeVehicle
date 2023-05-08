@@ -3,7 +3,9 @@ package dev.sky_lock.pocketlifevehicle.listener
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.PluginKey
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
+import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.extension.chat.plus
+import dev.sky_lock.pocketlifevehicle.extension.chat.sendActionBar
 import dev.sky_lock.pocketlifevehicle.inventory.openEventVehicleUtility
 import dev.sky_lock.pocketlifevehicle.inventory.openVehicleUtility
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
@@ -12,6 +14,7 @@ import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
+import net.kyori.adventure.text.Component
 import org.bukkit.ChatColor
 import org.bukkit.Location
 import org.bukkit.Sound
@@ -51,7 +54,7 @@ class PlayerEventListener : Listener {
         if (dismounted.handle !is SeatArmorStand || entity !is Player) {
             return
         }
-        entity.sendActionBar(" ")
+        entity.sendActionBar(Component.empty())
     }
 
     @EventHandler
@@ -128,22 +131,22 @@ class PlayerEventListener : Listener {
         event.setUseItemInHand(Event.Result.DENY)
 
         if (!this.plugin.pluginConfiguration.isWorldVehicleCanPlaced(player.world)) {
-            player.sendActionBar(ChatColor.RED + "このワールドでは乗り物は使用できません")
+            player.sendActionBar(Line().red("このワールドでは乗り物は使用できません"))
             return
         }
         if (this.plugin.parkingViolationList.findEntry(player) != null) {
-            player.sendActionBar(ChatColor.RED + "乗り物を利用するにはスマホから駐車違反料を支払う必要があります")
+            player.sendActionBar(Line().red("乗り物を利用するにはスマホから駐車違反料を支払う必要があります"))
             return
         }
         // if (VehicleManager.hasVehicle())
         if (event.blockFace != BlockFace.UP) {
-            player.sendActionBar(ChatColor.RED + "乗り物は地面にのみ設置できます")
+            player.sendActionBar(Line().red("乗り物は地面にのみ設置できます"))
             return
         }
         val block = event.clickedBlock ?: return
         val where = block.location.clone().add(0.5, 1.0, 0.5)
         if (!VehicleManager.verifyPlaceableLocation(where)) {
-            player.sendActionBar(ChatColor.RED + "ブロックがあるので乗り物を設置できません")
+            player.sendActionBar(Line().red("ブロックがあるので乗り物を設置できません"))
             return
         }
         where.yaw = player.location.yaw
@@ -163,7 +166,7 @@ class PlayerEventListener : Listener {
             return
         }
         if (!Permission.PLACE_OTHER_VEHICLE.obtained(player)) {
-            player.sendActionBar(ChatColor.RED + "この乗り物を所有していません")
+            player.sendActionBar(Line().red("この乗り物を所有していません"))
             return
         }
         placeVehicleEntity(item, owner, model, where, fuel)
@@ -264,6 +267,6 @@ class PlayerEventListener : Listener {
     }
 
     private fun sendRefusedReason(player: Player, message: String) {
-        player.sendActionBar(ChatColor.YELLOW + ChatColor.BOLD + "⚠⚠ " + ChatColor.RED + "" + ChatColor.BOLD + message + ChatColor.YELLOW + "" + ChatColor.BOLD + " ⚠⚠")
+        player.sendActionBar(Line().yellowBold("⚠⚠ ").redBold(message).yellowBold(" ⚠⚠"))
     }
 }
