@@ -5,4 +5,4 @@ import com.comphenix.protocol.events.PacketContainer
 /**
  * @author sky_lock
  */
-open class AbstractPacket constructor(val packet: PacketContainer)
+open class AbstractPacket(val packet: PacketContainer)

@@ -6,7 +6,4 @@ import java.util.*
  * @author sky_lock
  */
 
-class ParkingViolation(val date: Date, val ownerUuid: UUID, val modelId: String, val fuel: Float) {
-
-
-}
+class ParkingViolation(val date: Date, val ownerUuid: UUID, val modelId: String, val fuel: Float)

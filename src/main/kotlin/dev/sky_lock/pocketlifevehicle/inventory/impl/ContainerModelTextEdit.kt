@@ -29,7 +29,7 @@ import org.bukkit.inventory.ItemStack
  * @author sky_lock
  */
 
-class ContainerModelTextEdit constructor(
+class ContainerModelTextEdit(
     title: String,
     default: String,
     private val modifyType: ModifyType,

@@ -43,7 +43,7 @@ class SpawnCommand : ICommand, IAdminCommand {
             VehicleManager.remove(player.uniqueId)
             val success = VehicleManager.placeVehicle(player.uniqueId, player.location, model, model.spec.maxFuel)
             if (success) {
-                player.sendVehiclePrefixedSuccessMessage( id + " を取得しました")
+                player.sendVehiclePrefixedSuccessMessage("$id を取得しました")
             } else {
                 player.sendVehiclePrefixedErrorMessage( "乗り物を設置できませんでした")
             }
@@ -70,7 +70,7 @@ class SpawnCommand : ICommand, IAdminCommand {
         }
         val success = VehicleManager.placeVehicle(target.uniqueId, target.location, model, model.spec.maxFuel)
         if (success) {
-            player.sendVehiclePrefixedSuccessMessage( name + " に " + id + " を渡しました")
+            player.sendVehiclePrefixedSuccessMessage("$name に $id を渡しました")
             target.sendVehiclePrefixedSuccessMessage( "乗り物を受け取りました")
         } else {
             player.sendVehiclePrefixedErrorMessage( "乗り物を設置できませんでした")

@@ -32,9 +32,9 @@ class PopCommand : ICommand {
         }
         if (VehicleManager.hasVehicle(targetUUID)) {
             VehicleManager.pop(targetUUID)
-            player.sendVehiclePrefixedSuccessMessage( name + " の乗り物をアイテム化しました")
+            player.sendVehiclePrefixedSuccessMessage("$name の乗り物をアイテム化しました")
         } else {
-            player.sendVehiclePrefixedErrorMessage( name + " の乗り物をアイテム化できませんでした")
+            player.sendVehiclePrefixedErrorMessage("$name の乗り物をアイテム化できませんでした")
         }
     }
 }

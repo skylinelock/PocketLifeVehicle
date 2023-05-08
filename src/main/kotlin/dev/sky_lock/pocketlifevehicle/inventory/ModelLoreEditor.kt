@@ -13,7 +13,6 @@ import dev.sky_lock.pocketlifevehicle.packet.OpenSignEditorPacket
 import dev.sky_lock.pocketlifevehicle.packet.UpdateSignPacket
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import java.util.*

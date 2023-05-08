@@ -8,7 +8,7 @@ import java.util.*
 /**
  * @author sky_lock
  */
-class PlayerHeadBuilder constructor(amount: Int): ItemStackBuilder(Material.PLAYER_HEAD, amount) {
+class PlayerHeadBuilder(amount: Int): ItemStackBuilder(Material.PLAYER_HEAD, amount) {
 
     fun owingPlayer(uuid: UUID?): PlayerHeadBuilder {
         if (uuid != null) {

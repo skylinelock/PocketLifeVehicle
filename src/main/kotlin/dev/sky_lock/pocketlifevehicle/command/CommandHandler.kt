@@ -78,7 +78,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
         return tabCompletes
     }
 
-    fun listPlayerNamesStartsWith(input: String): List<String> {
+    private fun listPlayerNamesStartsWith(input: String): List<String> {
         return Bukkit.getOnlinePlayers().filter { player -> player.name.startsWith(input) }.map { player -> player.name }
     }
 }

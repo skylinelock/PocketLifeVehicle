@@ -28,12 +28,12 @@ class VehicleEntityType<T : Entity>(
     companion object {
         val MODEL = VehicleEntityType(
             "vehicle_model",
-            EntityType.ARMOR_STAND,
-            EntityType.EntityFactory<ModelArmorStand> { type, world -> ModelArmorStand(type, world) })
+            EntityType.ARMOR_STAND
+        ) { type, world -> ModelArmorStand(type, world) }
         val SEAT = VehicleEntityType(
             "vehicle_seat",
-            EntityType.ARMOR_STAND,
-            EntityType.EntityFactory<SeatArmorStand> { type, world -> SeatArmorStand(type, world) })
+            EntityType.ARMOR_STAND
+        ) { type, world -> SeatArmorStand(type, world) }
 
         fun registerTypes() {
             MODEL.register()

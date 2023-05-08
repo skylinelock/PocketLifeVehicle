@@ -1,7 +1,6 @@
 package dev.sky_lock.pocketlifevehicle
 
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler
-import dev.sky_lock.pocketlifevehicle.command.new.PluginCommandExecutor
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
 import dev.sky_lock.pocketlifevehicle.inventory.CustomInventoryListener
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolationList
@@ -26,8 +25,6 @@ class VehiclePlugin : JavaPlugin() {
     lateinit var pluginConfiguration: PluginConfiguration
         private set
     lateinit var parkingViolationList: ParkingViolationList
-        private set
-    lateinit var commandExecutor: PluginCommandExecutor
         private set
 
     override fun onLoad() {
