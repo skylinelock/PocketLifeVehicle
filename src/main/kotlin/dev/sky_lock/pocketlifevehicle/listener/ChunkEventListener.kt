@@ -1,7 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
-import org.bukkit.entity.ArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.EntityVehicleAdapter
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.world.ChunkLoadEvent
@@ -16,11 +15,8 @@ class ChunkEventListener : Listener {
     fun onChunkUnload(event: ChunkUnloadEvent) {
         event.chunk.entities
                 .forEach { entity ->
-                    if (entity !is ArmorStand) return@forEach
-                    val vehicle = VehicleManager.findVehicle(entity) ?: return@forEach
-                    if (!vehicle.status.isLoaded) return
-                    vehicle.remove()
-                    vehicle.status.isLoaded = false
+                    val adapter = EntityVehicleAdapter.fromBukkit(entity) ?: return@forEach
+                    adapter.unload()
                 }
     }
 
@@ -28,11 +24,8 @@ class ChunkEventListener : Listener {
     fun onChunkLoad(event: ChunkLoadEvent) {
         event.chunk.entities
             .forEach { entity ->
-                if (entity !is ArmorStand) return@forEach
-                val vehicle = VehicleManager.findVehicle(entity) ?: return@forEach
-                if (vehicle.status.isLoaded) return@forEach
-                vehicle.spawn()
-                vehicle.status.isLoaded = true
+                val adapter = EntityVehicleAdapter.fromBukkit(entity) ?: return@forEach
+                adapter.load()
             }
     }
 }

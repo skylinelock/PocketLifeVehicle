@@ -6,12 +6,9 @@ import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendActionBar
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendMessage
-import dev.sky_lock.pocketlifevehicle.inventory.openEventVehicleUtility
-import dev.sky_lock.pocketlifevehicle.inventory.openVehicleUtility
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
-import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.EntityVehicleAdapter
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
-import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import net.kyori.adventure.text.Component
@@ -19,8 +16,6 @@ import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.block.BlockFace
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftArmorStand
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity
-import org.bukkit.entity.ArmorStand
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
@@ -48,12 +43,11 @@ class PlayerEventListener : Listener {
 
     @EventHandler
     fun onPlayerDismount(event: EntityDismountEvent) {
-        val dismounted = event.dismounted as CraftEntity
         val entity = event.entity
-        if (dismounted.handle !is SeatArmorStand || entity !is Player) {
-            return
+        val adapter = EntityVehicleAdapter.fromBukkit(event.dismounted) ?: return
+        if (adapter.isSeat() && entity is Player) {
+            entity.sendActionBar(Component.empty())
         }
-        entity.sendActionBar(Component.empty())
     }
 
     @EventHandler
@@ -70,9 +64,7 @@ class PlayerEventListener : Listener {
         val player = event.player
         VehicleManager.registerIllegalParking(player.uniqueId)
         val riding = player.vehicle ?: return
-        if (riding.type != EntityType.ARMOR_STAND) return
-        val vehicle = VehicleManager.findVehicle(riding as ArmorStand) ?: return
-        vehicle.ejectPassenger(player)
+        EntityVehicleAdapter.fromBukkit(riding)?.dismount(player)
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -80,12 +72,12 @@ class PlayerEventListener : Listener {
         if (event.action != Action.RIGHT_CLICK_BLOCK &&
             event.action != Action.RIGHT_CLICK_AIR) return
         val mount = event.player.vehicle ?: return
-        val handle = (mount as CraftEntity).handle
-        if (handle !is SeatArmorStand) return
-        if (!handle.isDriverSheet) return
+        val adapter = EntityVehicleAdapter.fromBukkit(mount) ?: return
+        if (!adapter.isSeat()) return
+        if (!adapter.isDriverSeat()) return
         val player = event.player
         val loc = player.location
-        loc.yaw = handle.bukkitYaw
+        loc.yaw = adapter.getYaw()
         player.teleport(loc)
         mount.addPassenger(player)
     }
@@ -179,40 +171,40 @@ class PlayerEventListener : Listener {
         val armorStand = event.rightClicked as CraftArmorStand
         val player = event.player
 
-        val handle = armorStand.handle
-        val vehicle = VehicleManager.findVehicle(armorStand) ?: return
+        val adapter = EntityVehicleAdapter.fromBukkit(armorStand) ?: return
+
         event.isCancelled = true
-        val owner = vehicle.status.owner
+        val owner = adapter.getOwner()
         if (owner == null) {
             if (Permission.OPEN_EVENT_VEHICLE_GUI.obtained(player) && player.isSneaking) {
-                player.openEventVehicleUtility(vehicle)
+                adapter.showEventVehicleUtility(player)
                 return
             }
-            if (handle is SeatArmorStand) {
-                if (handle.isVehicle) return
-                if (vehicle.status.isLocked) {
+            if (adapter.isSeat()) {
+                if (adapter.isOccupied()) return
+                if (adapter.isLocked()) {
                     sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                     return
                 }
                 armorStand.addPassenger(player)
                 return
             }
-            if (handle !is ModelArmorStand) {
+            if (!adapter.isModel()) {
                 return
             }
-            if (vehicle.passengers.size >= vehicle.status.model.seatOption.capacity.value()) {
+            if (adapter.hasReachedCapacity()) {
                 sendRefusedReason(player, "この乗り物は満員です")
                 return
             }
-            if (vehicle.status.isLocked) {
+            if (adapter.isLocked()) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }
-            vehicle.addPassenger(player)
+            adapter.mount(player)
             return
         }
 
-        val ownerName = vehicle.status.ownerName
+        val ownerName = adapter.getOwnerName()
         val clicked = player.uniqueId
 
         if (player.isSneaking) {
@@ -220,35 +212,35 @@ class PlayerEventListener : Listener {
                 sendRefusedReason(player, "この乗り物は $ownerName が所有しています")
                 return
             }
-            player.openVehicleUtility(vehicle)
+            adapter.showVehicleUtility(player)
             return
         }
 
-        if (handle is SeatArmorStand) {
+        if (adapter.isSeat()) {
             if (armorStand.passengers.isNotEmpty()) return
             if (clicked == owner) {
                 armorStand.addPassenger(player)
                 return
             }
-            if (vehicle.status.isLocked) {
+            if (adapter.isLocked()) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }
             armorStand.addPassenger(player)
-        } else if (handle is ModelArmorStand) {
-            if (vehicle.passengers.size >= vehicle.status.model.seatOption.capacity.value()) {
+        } else if (adapter.isModel()) {
+            if (adapter.hasReachedCapacity()) {
                 sendRefusedReason(player, "この乗り物は満員です")
                 return
             }
             if (clicked == owner) {
-                vehicle.addPassenger(player)
+                adapter.mount(player)
                 return
             }
-            if (vehicle.status.isLocked) {
+            if (adapter.isLocked()) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
                 return
             }
-            vehicle.addPassenger(player)
+            adapter.mount(player)
         }
     }
 

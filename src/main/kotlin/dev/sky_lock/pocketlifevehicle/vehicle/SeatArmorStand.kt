@@ -47,7 +47,7 @@ class SeatArmorStand : ArmorStand {
             return if (passenger is Player) passenger else null
         }
 
-    val isDriverSheet: Boolean
+    val isDriverSeat: Boolean
         get() = position === SeatPosition.ONE_DRIVER ||
             position === SeatPosition.TWO_DRIVER ||
             position === SeatPosition.FOUR_DRIVER
@@ -68,7 +68,7 @@ class SeatArmorStand : ArmorStand {
     override fun isSilent() = true
 
     override fun aiStep() {
-        if (!isDriverSheet) {
+        if (!isDriverSeat) {
             synchronize()
             return
         }

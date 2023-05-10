@@ -3,7 +3,6 @@ package dev.sky_lock.pocketlifevehicle.vehicle
 import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.craftbukkit.v1_19_R3.CraftWorld
@@ -32,7 +31,7 @@ class EntityVehicle(owner: UUID?, private val location: Location, private val mo
         get() = seats.filter { seat -> seat.isVehicle }.mapNotNull { seat -> seat.passenger }
 
     val driverSeat
-        get() = seats.find { seat -> seat.isDriverSheet }
+        get() = seats.find { seat -> seat.isDriverSeat }
 
     val driver
         get() = driverSeat?.passenger
@@ -96,7 +95,6 @@ class EntityVehicle(owner: UUID?, private val location: Location, private val mo
             passengerSeat.bukkitEntity.addPassenger(player)
             return
         }
-        Bukkit.getLogger().info("3")
         driverSeat!!.bukkitEntity.addPassenger(player)
     }
 
