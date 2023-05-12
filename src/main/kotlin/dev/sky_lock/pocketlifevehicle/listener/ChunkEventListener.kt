@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
-import dev.sky_lock.pocketlifevehicle.vehicle.EntityVehicleAdapter
+import dev.sky_lock.pocketlifevehicle.vehicle.EntityVehicleFacade
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.world.ChunkLoadEvent
@@ -15,8 +15,8 @@ class ChunkEventListener : Listener {
     fun onChunkUnload(event: ChunkUnloadEvent) {
         event.chunk.entities
                 .forEach { entity ->
-                    val adapter = EntityVehicleAdapter.fromBukkit(entity) ?: return@forEach
-                    adapter.unload()
+                    val vehicle = EntityVehicleFacade.fromBukkit(entity) ?: return@forEach
+                    vehicle.unload()
                 }
     }
 
@@ -24,8 +24,8 @@ class ChunkEventListener : Listener {
     fun onChunkLoad(event: ChunkLoadEvent) {
         event.chunk.entities
             .forEach { entity ->
-                val adapter = EntityVehicleAdapter.fromBukkit(entity) ?: return@forEach
-                adapter.load()
+                val vehicle = EntityVehicleFacade.fromBukkit(entity) ?: return@forEach
+                vehicle.load()
             }
     }
 }

@@ -30,10 +30,10 @@ class EntityVehicle(owner: UUID?, private val location: Location, private val mo
     val passengers
         get() = seats.filter { seat -> seat.isVehicle }.mapNotNull { seat -> seat.passenger }
 
-    val driverSeat
+    private val driverSeat
         get() = seats.find { seat -> seat.isDriverSeat }
 
-    val driver
+    private val driver
         get() = driverSeat?.passenger
 
     private fun spawn(armorStand: NMSArmorStand) {
@@ -48,6 +48,8 @@ class EntityVehicle(owner: UUID?, private val location: Location, private val mo
     }
 
     fun spawn() {
+        center.assemble(status)
+        spawn(center)
         when (model.seatOption.capacity) {
             Capacity.SINGLE -> {
                 spawnSeat(SeatPosition.ONE_DRIVER)
@@ -64,8 +66,7 @@ class EntityVehicle(owner: UUID?, private val location: Location, private val mo
             }
         }
         if (driverSeat == null) throw IllegalStateException("Driver seat must not be null")
-        center.assemble(status, driverSeat!!)
-        spawn(center)
+        center.setDriverSeat(driverSeat!!)
     }
 
     fun remove() {
@@ -90,7 +91,7 @@ class EntityVehicle(owner: UUID?, private val location: Location, private val mo
     }
 
     fun addPassenger(player: Player) {
-        if (driverSeat == null || driverSeat?.isVehicle!!) {
+        if (driver == null) {
             val passengerSeat = seats.find { seat -> !seat.isVehicle } ?: return
             passengerSeat.bukkitEntity.addPassenger(player)
             return

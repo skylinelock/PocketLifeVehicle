@@ -7,7 +7,7 @@ import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import java.util.*
 
-class EntityVehicleAdapter(private val bukkitEntity: CraftArmorStand, private val vehicle: EntityVehicle) {
+class EntityVehicleFacade(private val bukkitEntity: CraftArmorStand, private val vehicle: EntityVehicle) {
     private val nmsEntity = bukkitEntity.handle
 
     fun getOwner(): UUID? {
@@ -76,10 +76,10 @@ class EntityVehicleAdapter(private val bukkitEntity: CraftArmorStand, private va
     }
 
     companion object {
-        fun fromBukkit(bukkitEntity: Entity): EntityVehicleAdapter? {
+        fun fromBukkit(bukkitEntity: Entity): EntityVehicleFacade? {
             if (bukkitEntity !is CraftArmorStand) return null
             val vehicle = VehicleManager.findVehicle(bukkitEntity)
-            return if (vehicle == null) null else EntityVehicleAdapter(bukkitEntity, vehicle)
+            return if (vehicle == null) null else EntityVehicleFacade(bukkitEntity, vehicle)
         }
 
     }

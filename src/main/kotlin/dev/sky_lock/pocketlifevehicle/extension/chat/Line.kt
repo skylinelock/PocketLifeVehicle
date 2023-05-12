@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 
 class Line {
@@ -147,6 +148,10 @@ class Line {
     fun yellowBold(text: String): Line {
         component.append(Component.text(text, Style.style(NamedTextColor.YELLOW, TextDecoration.BOLD)))
         return this
+    }
+
+    fun broadcast() {
+        Bukkit.broadcast(toComponent())
     }
 
     fun toComponent(): Component {

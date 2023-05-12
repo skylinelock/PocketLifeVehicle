@@ -67,7 +67,9 @@ class SeatArmorStand : ArmorStand {
     //足音がなるかどうか
     override fun isSilent() = true
 
+    // 毎tick呼び出される
     override fun aiStep() {
+
         if (!isDriverSeat) {
             synchronize()
             return
@@ -86,15 +88,15 @@ class SeatArmorStand : ArmorStand {
     }
 
     private fun synchronize() {
-        val vehicle = status!!
-        val loc = calcSeatPosition(vehicle.location, vehicle.model.seatOption, position!!)
+        val status = status!!
+        val loc = calcSeatPosition(status.location, status.model.seatOption, position!!)
         xo = loc.x
-        yo = vehicle.location.y - 1.675 + vehicle.model.height
+        yo = status.location.y - 1.675 + status.model.height
         zo = loc.z
         setPos(xo, yo, zo)
-        yRot = vehicle.location.yaw
+        yRot = status.location.yaw
         yRotO = yRot
-        xRot = vehicle.location.pitch
+        xRot = status.location.pitch
         setRot(yRot, xRot)
     }
 
@@ -151,28 +153,26 @@ class SeatArmorStand : ArmorStand {
     }
 
     private fun displayMeterPanel(player: Player) {
-        val vehicle = status!!
-        val model = vehicle.model
-        val tank = vehicle.tank
-        val speed = vehicle.engine.speed
-        val engine = vehicle.engine
+        val status = status!!
+        val model = status.model
+        val tank = status.tank
+        val speed = status.engine.speed
+        val engine = status.engine
 
-        val line = Line()
-        if (!vehicle.model.flag.eventOnly) {
-            line.redBold("E ")
-            val fuelRate = tank.fuel / model.spec.maxFuel
-            val filled = (70 * fuelRate).roundToInt()
-            IntStream.range(0, filled).forEach { line.green("ǀ") }
-            IntStream.range(0, 70 - filled).forEach { line.red("ǀ") }
-            line.greenBold(" F   ")
-            if (speed.isApproximateZero) {
-                line.darkPurpleBold("P   ")
-            } else {
-                if (speed.isPositive) {
-                    line.darkPurpleBold("D   ")
-                } else if (speed.isNegative) {
-                    line.darkPurpleBold("R   ")
-                }
+        if (!status.model.flag.eventOnly) return
+        val line = Line().redBold("E ")
+        val fuelRate = tank.fuel / model.spec.maxFuel
+        val filled = (70 * fuelRate).roundToInt()
+        IntStream.range(0, filled).forEach { line.green("ǀ") }
+        IntStream.range(0, 70 - filled).forEach { line.red("ǀ") }
+        line.greenBold(" F   ")
+        if (speed.isApproximateZero) {
+            line.darkPurpleBold("P   ")
+        } else {
+            if (speed.isPositive) {
+                line.darkPurpleBold("D   ")
+            } else if (speed.isNegative) {
+                line.darkPurpleBold("R   ")
             }
         }
         val blockPerSecond = abs(engine.speedPerSecond()).truncateToOneDecimalPlace()

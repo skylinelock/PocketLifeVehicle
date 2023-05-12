@@ -1,6 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import java.math.BigDecimal
+import java.math.RoundingMode
 
 /**
  * @author sky_lock
@@ -31,7 +32,7 @@ class Speed {
     }
 
     fun approximate(): Float {
-        return exactSpeed.setScale(3, BigDecimal.ROUND_HALF_UP).toFloat()
+        return exactSpeed.setScale(3, RoundingMode.HALF_UP).toFloat()
     }
 
     val isApproximateZero: Boolean

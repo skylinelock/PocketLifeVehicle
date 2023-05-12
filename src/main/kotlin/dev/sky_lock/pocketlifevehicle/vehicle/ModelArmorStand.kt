@@ -40,8 +40,7 @@ class ModelArmorStand : ArmorStand {
         super.setPos(x, y, z)
         super.setRot(yaw, 0.0F)
         this.readAdditionalSaveData(EntityVehicleHelper.modelNBT())
-        // Entity#K = maxUpStep
-        setMaxUpStep(1.0f)
+        setMaxUpStep(1.126F)
         this.craftAttributes.registerAttribute(Attribute.GENERIC_MAX_HEALTH)
         this.craftAttributes.registerAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)
         this.craftAttributes.registerAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
@@ -49,9 +48,8 @@ class ModelArmorStand : ArmorStand {
         this.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)
     }
 
-    fun assemble(status: VehicleStatus, driverSeat: SeatArmorStand) {
+    fun assemble(status: VehicleStatus) {
         this.status = status
-        this.driverSeat = driverSeat
         val armorStand = bukkitEntity as CraftArmorStand
         armorStand.rightArmPose = EulerAngle.ZERO
         val model = status.model
@@ -59,6 +57,10 @@ class ModelArmorStand : ArmorStand {
         armorStand.setItem(modelOption.position.slot, model.itemStack)
         armorStand.isSmall = !modelOption.isBig
         this.refreshDimensions()
+    }
+
+    fun setDriverSeat(driverSeat: SeatArmorStand) {
+        this.driverSeat = driverSeat
     }
 
     val location: Location
@@ -108,20 +110,36 @@ class ModelArmorStand : ArmorStand {
         return this.type.dimensions.scale(widthScale, heightScale)
     }
 
-    // Playerがマウントしてる間呼び続けられる
+    // 毎tick呼び出される
     override fun travel(vec3: Vec3) {
         if (status == null) {
             super.travel(vec3)
             return
         }
         val status = status!!
+        status.updateLocation(location)
+
         val driverSeat = driverSeat!!
-        if (status.isUndrivable || driverSeat.passengers.isEmpty() || isInWater || isInLava
-        ) {
+        if (status.isUndrivable) {
             status.engine.stop()
             super.travel(vec3)
             return
         }
+        // TODO: 水出たときに音を鳴らす
+        if (isInWater || isInLava) {
+            status.engine.stop()
+            super.travel(vec3)
+            return
+        }
+        if (tickCount % 2 == 0) {
+            playEngineSound(status)
+        }
+        if (driverSeat.passengers.isEmpty()) {
+            status.engine.stop()
+            super.travel(vec3)
+            return
+        }
+
         val driver = driverSeat.passengers[0].bukkitEntity as CraftPlayer
         val player = driver.handle
         val sideIn = player.xxa
@@ -133,14 +151,12 @@ class ModelArmorStand : ArmorStand {
         }
         status.engine.update(sideIn, forIn)
 
-        // yawとpitchを設定
         yRot = status.yaw
         yRotO = this.yRot
         xRot = 0.0f
         this.setRot(yRot, xRot)
         this.yBodyRot = this.yRot
         this.yHeadRot = this.yBodyRot
-
         this.speed = status.engine.currentSpeed
         // InputのZ方向に進ませる。後に単位ベクトルに置き換えられるのでZは1.0で良い。
         super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
@@ -148,10 +164,8 @@ class ModelArmorStand : ArmorStand {
 
     override fun tick() {
         super.tick()
-        status?.updateLocation(location)
-        if (tickCount % 2 == 0) {
-            playEngineSound(status!!)
-        }
+        val status = status!!
+        status.updateLocation(location)
     }
 
 }
