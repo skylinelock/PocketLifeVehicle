@@ -158,21 +158,24 @@ class SeatArmorStand : ArmorStand {
         val tank = status.tank
         val speed = status.engine.speed
         val engine = status.engine
+        val line = Line()
 
-        if (!status.model.flag.eventOnly) return
-        val line = Line().redBold("E ")
-        val fuelRate = tank.fuel / model.spec.maxFuel
-        val filled = (70 * fuelRate).roundToInt()
-        IntStream.range(0, filled).forEach { line.green("ǀ") }
-        IntStream.range(0, 70 - filled).forEach { line.red("ǀ") }
-        line.greenBold(" F   ")
-        if (speed.isApproximateZero) {
-            line.darkPurpleBold("P   ")
-        } else {
-            if (speed.isPositive) {
-                line.darkPurpleBold("D   ")
-            } else if (speed.isNegative) {
-                line.darkPurpleBold("R   ")
+        if (!status.model.flag.eventOnly) {
+            val fuelRate = tank.fuel / model.spec.maxFuel
+            val filled = (70 * fuelRate).roundToInt()
+
+            line.redBold("E ")
+            IntStream.range(0, filled).forEach { line.green("ǀ") }
+            IntStream.range(0, 70 - filled).forEach { line.red("ǀ") }
+            line.greenBold(" F   ")
+            if (speed.isApproximateZero) {
+                line.darkPurpleBold("P   ")
+            } else {
+                if (speed.isPositive) {
+                    line.darkPurpleBold("D   ")
+                } else if (speed.isNegative) {
+                    line.darkPurpleBold("R   ")
+                }
             }
         }
         val blockPerSecond = abs(engine.speedPerSecond()).truncateToOneDecimalPlace()
