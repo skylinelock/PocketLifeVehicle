@@ -2,6 +2,7 @@ package dev.sky_lock.pocketlifevehicle.item
 
 import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -25,7 +26,7 @@ open class ItemStackBuilder(itemStack: ItemStack) {
     }
 
     private fun setLore(vararg components: Component): ItemStackBuilder {
-        itemMeta.lore(mutableListOf(*components).map { component -> resetDefaultItalic(component) })
+        itemMeta.lore(mutableListOf(*components).map { component -> resetDefault(component) })
         return this
     }
 
@@ -51,8 +52,8 @@ open class ItemStackBuilder(itemStack: ItemStack) {
         return this
     }
 
-    private fun resetDefaultItalic(component: Component): Component {
-        return Component.text().decoration(TextDecoration.ITALIC, false).append(component).build()
+    private fun resetDefault(component: Component): Component {
+        return Component.text().decoration(TextDecoration.ITALIC, false).color(NamedTextColor.WHITE).append(component).build()
     }
 
     fun setName(name: String): ItemStackBuilder {
@@ -61,7 +62,7 @@ open class ItemStackBuilder(itemStack: ItemStack) {
     }
 
     fun setName(line: Line): ItemStackBuilder {
-        itemMeta.displayName(resetDefaultItalic(line.toComponent()))
+        itemMeta.displayName(resetDefault(line.toComponent()))
         return this
     }
 

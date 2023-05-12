@@ -41,7 +41,7 @@ class InventoryEventVehicle(private val player: Player, private val vehicle: Ent
 
     private fun vehicleInfoLore(): List<Line> {
         val info: MutableList<Line> = ArrayList()
-        info.add(Line().green("名前     : ").raw(vehicle.status.model.name))
+        info.add(Line().green("名前     : ").colorCoded(vehicle.status.model.name))
         info.add(Line().green("最高速度 : ").raw(vehicle.status.model.spec.maxSpeed.label))
         info.add(Line().green("状態 : ").yellow("イベント専用"))
         return info
