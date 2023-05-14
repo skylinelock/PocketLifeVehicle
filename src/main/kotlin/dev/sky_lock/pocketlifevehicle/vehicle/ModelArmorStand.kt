@@ -5,10 +5,7 @@ import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.cancelEngineSound
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.playEngineSound
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.damagesource.DamageTypes
-import net.minecraft.world.entity.EntityDimensions
-import net.minecraft.world.entity.EntityType
-import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.entity.Pose
+import net.minecraft.world.entity.*
 import net.minecraft.world.entity.ai.attributes.AttributeMap
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
@@ -111,6 +108,7 @@ class ModelArmorStand : ArmorStand {
     }
 
     // 毎tick呼び出される
+    // 引数vec3のxyzは絶対座標で、相対的な動きはしない
     override fun travel(vec3: Vec3) {
         if (status == null) {
             super.travel(vec3)
@@ -142,24 +140,52 @@ class ModelArmorStand : ArmorStand {
 
         val driver = driverSeat.passengers[0].bukkitEntity as CraftPlayer
         val player = driver.handle
-        val sideIn = player.xxa
-        val forIn = player.zza
-        if (sideIn < 0.0f) {
-            status.steering.right(driver)
-        } else if (sideIn > 0.0f) {
-            status.steering.left(driver)
-        }
-        status.engine.update(sideIn, forIn)
 
-        yRot = status.yaw
-        yRotO = this.yRot
-        xRot = 0.0f
-        this.setRot(yRot, xRot)
-        this.yBodyRot = this.yRot
-        this.yHeadRot = this.yBodyRot
+        val sidewaysSpeed = player.xxa
+        val forwardSpeed = player.zza
+        val spaced = player.jumping
+
+        status.steering.update(driver, sidewaysSpeed)
+        status.engine.update(sidewaysSpeed, forwardSpeed)
         this.speed = status.engine.currentSpeed
-        // InputのZ方向に進ませる。後に単位ベクトルに置き換えられるのでZは1.0で良い。
-        super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
+
+        if (spaced) {
+            yRot = status.yaw
+            yRotO = this.yRot
+            xRot = 0.0f
+            this.setRot(yRot, xRot)
+            this.yBodyRot = this.yRot
+            this.yHeadRot = this.yBodyRot
+            super.travel(vec3.add(Vec3(sidewaysSpeed.toDouble(), 0.0, forwardSpeed.toDouble())))
+        } else {
+            yRot = status.yaw
+            yRotO = this.yRot
+            xRot = 0.0f
+            this.setRot(yRot, xRot)
+            this.yBodyRot = this.yRot
+            this.yHeadRot = this.yBodyRot
+            // Z方向（yawの進行方向）に進ませる。
+            // vec3は
+            super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
+        }
+    }
+
+    override fun handleRelativeFrictionAndCalculateMovement(movementInput: Vec3, slipperiness: Float): Vec3 {
+        val driverSeat = driverSeat!!
+        if (driverSeat.passengers.isEmpty()) {
+            return deltaMovement
+        }
+        val driver = driverSeat.passengers[0].bukkitEntity as CraftPlayer
+        val player = driver.handle
+
+        if (player.jumping) {
+            val iceFriction = 0.98F
+            val frictionalSpeed = this.speed * (0.21600002F / iceFriction * iceFriction * iceFriction)
+            moveRelative(frictionalSpeed, movementInput)
+            move(MoverType.SELF, movementInput)
+            return deltaMovement
+        }
+        return super.handleRelativeFrictionAndCalculateMovement(movementInput, slipperiness)
     }
 
     override fun tick() {

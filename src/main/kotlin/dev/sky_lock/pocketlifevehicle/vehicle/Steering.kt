@@ -11,37 +11,31 @@ import kotlin.math.roundToInt
 class Steering(private val status: VehicleStatus) {
     private val spec = status.model.spec
 
-    fun right(driver: Player) {
+    fun update(driver: Player, sidewaysSpeed: Float) {
         val speed = status.engine.speed
         val tank = status.tank
         if (tank.fuel.roundToInt() == 0 || speed.isApproximateZero) {
             return
         }
         val steeringYaw = spec.steeringLevel.value
-        if (speed.isPositive) {
-            status.yaw += steeringYaw
-        } else {
-            status.yaw -= steeringYaw
-        }
-        if (status.shouldAnimate && status.model.flag.animation) {
-            raiseLeftArm(driver)
-        }
-    }
-
-    fun left(driver: Player) {
-        val speed = status.engine.speed
-        val tank = status.tank
-        if (tank.fuel.roundToInt() == 0 || speed.isApproximateZero) {
-            return
-        }
-        val steeringYaw = spec.steeringLevel.value
-        if (speed.isPositive) {
-            status.yaw -= steeringYaw
-        } else {
-            status.yaw += steeringYaw
-        }
-        if (status.shouldAnimate && status.model.flag.animation) {
-            raiseRightArm(driver)
+        if (sidewaysSpeed > 0.0f) {
+            if (speed.isPositive) {
+                status.yaw -= steeringYaw
+            } else {
+                status.yaw += steeringYaw
+            }
+            if (status.shouldAnimate && status.model.flag.animation) {
+                raiseRightArm(driver)
+            }
+        } else if (sidewaysSpeed < 0.0f) {
+            if (speed.isPositive) {
+                status.yaw += steeringYaw
+            } else {
+                status.yaw -= steeringYaw
+            }
+            if (status.shouldAnimate && status.model.flag.animation) {
+                raiseLeftArm(driver)
+            }
         }
     }
 
