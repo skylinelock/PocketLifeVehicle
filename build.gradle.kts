@@ -29,7 +29,7 @@ repositories {
 dependencies {
     paperweight.paperDevBundle("1.19.4-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
-    implementation("me.lucko:commodore:1.5")
+    implementation("me.lucko:commodore:2.2")
     // compileOnly(files("lib/PocketLifeCore-1.0-SNAPSHOT.jar"))
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0")
