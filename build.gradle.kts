@@ -22,15 +22,11 @@ repositories {
     mavenCentral()
     // For protocol-lib
     maven(url = "https://repo.dmulloy2.net/nexus/repository/public/")
-    // For commodore
-    maven(url = "https://libraries.minecraft.net/")
 }
 
 dependencies {
     paperweight.paperDevBundle("1.19.4-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
-    implementation("me.lucko:commodore:2.2")
-    // compileOnly(files("lib/PocketLifeCore-1.0-SNAPSHOT.jar"))
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0")
 }

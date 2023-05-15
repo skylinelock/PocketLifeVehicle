@@ -4,34 +4,11 @@ import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.Style
 import net.kyori.adventure.text.format.TextDecoration
+import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer
 import org.bukkit.Bukkit
-import org.bukkit.ChatColor
 
 class Line {
     private val component = Component.text()
-
-    private val namedTextColors = mapOf(
-            ChatColor.BLACK to NamedTextColor.BLACK,
-            ChatColor.DARK_BLUE to NamedTextColor.DARK_BLUE,
-            ChatColor.DARK_GREEN to NamedTextColor.DARK_GREEN,
-            ChatColor.DARK_AQUA to NamedTextColor.DARK_AQUA,
-            ChatColor.DARK_RED to NamedTextColor.DARK_RED,
-            ChatColor.DARK_PURPLE to NamedTextColor.DARK_PURPLE,
-            ChatColor.GOLD to NamedTextColor.GOLD,
-            ChatColor.GRAY to NamedTextColor.GRAY,
-            ChatColor.DARK_GRAY to NamedTextColor.DARK_GRAY,
-            ChatColor.BLUE to NamedTextColor.BLUE,
-            ChatColor.GREEN to NamedTextColor.GREEN,
-            ChatColor.AQUA to NamedTextColor.AQUA,
-            ChatColor.RED to NamedTextColor.RED,
-            ChatColor.LIGHT_PURPLE to NamedTextColor.LIGHT_PURPLE,
-            ChatColor.YELLOW to NamedTextColor.YELLOW,
-            ChatColor.WHITE to NamedTextColor.WHITE
-    )
-
-    private fun toNamedTextColor(color: ChatColor): NamedTextColor? {
-        return namedTextColors[color]
-    }
 
     fun yellow(text: String): Line {
         component.append(Component.text(text, NamedTextColor.YELLOW))
@@ -54,30 +31,8 @@ class Line {
     }
 
     fun colorCoded(text: String): Line {
-        val bars = text.split("&")
-        var firstChecked = false
-        for (bar in bars) {
-            if (bar.length < 2) {
-                raw(bar)
-                continue
-            }
-            if (firstChecked) {
-                component.append(Component.text(bar.substring(1), parseColor(bar[0])))
-                continue
-            }
-            if (text.startsWith("&")) {
-                component.append(Component.text(bar.substring(1), parseColor(bar[0])))
-            } else {
-                raw(bar)
-            }
-            firstChecked = true
-        }
+        component.append(LegacyComponentSerializer.legacyAmpersand().deserialize(text))
         return this
-    }
-
-    private fun parseColor(char: Char): NamedTextColor {
-        val result = ChatColor.getByChar(char) ?: return NamedTextColor.WHITE
-        return toNamedTextColor(result) ?: NamedTextColor.WHITE
     }
 
     fun white(text: String): Line {
