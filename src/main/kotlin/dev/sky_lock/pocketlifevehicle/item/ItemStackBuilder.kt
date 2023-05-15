@@ -71,9 +71,8 @@ open class ItemStackBuilder(itemStack: ItemStack) {
         return this
     }
 
-    fun <T, Z> setPersistentData(key: NamespacedKey, type: PersistentDataType<T, Z>, obj: Z): ItemStackBuilder {
-        val container = itemMeta.persistentDataContainer
-        container.set(key, type, obj)
+    fun <T, Z : Any> setPersistentData(key: NamespacedKey, type: PersistentDataType<T, Z>, obj: Z): ItemStackBuilder {
+        itemMeta.persistentDataContainer.set(key, type, obj)
         return this
     }
 

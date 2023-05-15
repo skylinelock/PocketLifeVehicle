@@ -55,7 +55,7 @@ class VehicleEntityType<T : Entity>(
 
         val entity: EntityType.Builder<Entity> = EntityType.Builder.of(this.builder, MobCategory.MISC)
 
-        val registry = BuiltInRegistries.ENTITY_TYPE as DefaultedMappedRegistry<Entity>
+        val registry = BuiltInRegistries.ENTITY_TYPE as DefaultedMappedRegistry<*>
         val mappedRegistryClass = registry::class.java.superclass
         val unregisteredIntrusiveHolders = mappedRegistryClass.getDeclaredField("m")
         unregisteredIntrusiveHolders.isAccessible = true
@@ -78,6 +78,7 @@ class VehicleEntityType<T : Entity>(
         dataTypes.remove(minecraftKey.toString())
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun getRegisteredEntityTypesMap(): MutableMap<String, Type<*>?> {
         return DataFixers.getDataFixer()
             .getSchema(DataFixUtils.makeKey(SharedConstants.getCurrentVersion().dataVersion.version))
@@ -85,6 +86,7 @@ class VehicleEntityType<T : Entity>(
             .types() as MutableMap<String, Type<*>?>
     }
 
+    @Suppress("UNCHECKED_CAST")
     fun <T : Entity> type(): EntityType<T> {
         return BuiltInRegistries.ENTITY_TYPE.get(ResourceLocation.tryParse(id)) as EntityType<T>
     }
