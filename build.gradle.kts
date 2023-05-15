@@ -32,7 +32,7 @@ dependencies {
     implementation("me.lucko:commodore:2.2")
     // compileOnly(files("lib/PocketLifeCore-1.0-SNAPSHOT.jar"))
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
-    compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0")
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0")
 }
 
 tasks {
