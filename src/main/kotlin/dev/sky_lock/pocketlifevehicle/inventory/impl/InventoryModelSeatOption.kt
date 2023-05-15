@@ -16,7 +16,7 @@ import org.bukkit.entity.Player
 class InventoryModelSeatOption(private val player: Player, private val model: Model): InventoryCustom(27, "座席設定") {
 
     init {
-        val singlePlanksBuilder = ItemStackBuilder(Material.OAK_PLANKS, 1).setName("1")
+        val singlePlanksBuilder = ItemStackBuilder(Material.OAK_PLANKS, 1).setName(Line().raw("1"))
         if (model.seatOption.capacity == Capacity.SINGLE) {
             singlePlanksBuilder.addGlowEffect()
         }
@@ -25,7 +25,7 @@ class InventoryModelSeatOption(private val player: Player, private val model: Mo
             addSelectGrowEffectToSingleItem(event)
         }
 
-        val doublePlanksBuilder = ItemStackBuilder(Material.SPRUCE_PLANKS, 1).setName("2")
+        val doublePlanksBuilder = ItemStackBuilder(Material.SPRUCE_PLANKS, 1).setName(Line().raw("2"))
         if (model.seatOption.capacity == Capacity.DOUBLE) {
             doublePlanksBuilder.addGlowEffect()
         }
@@ -34,7 +34,7 @@ class InventoryModelSeatOption(private val player: Player, private val model: Mo
             addSelectGrowEffectToSingleItem(event)
         }
 
-        val quadPlanksBuilder = ItemStackBuilder(Material.BIRCH_PLANKS, 1).setName("4")
+        val quadPlanksBuilder = ItemStackBuilder(Material.BIRCH_PLANKS, 1).setName(Line().raw("4"))
         if (model.seatOption.capacity == Capacity.QUAD) {
             quadPlanksBuilder.addGlowEffect()
         }
@@ -43,17 +43,17 @@ class InventoryModelSeatOption(private val player: Player, private val model: Mo
             addSelectGrowEffectToSingleItem(event)
         }
 
-        val offsetGlass = ItemStackBuilder(Material.WHITE_STAINED_GLASS, 1).setName("オフセット").build()
+        val offsetGlass = ItemStackBuilder(Material.WHITE_STAINED_GLASS, 1).setName(Line().raw("オフセット")).build()
         setSlot(11, offsetGlass) {
             player.openModelTextEditor("オフセット", model.seatOption.offset.toString(), ContainerModelTextEdit.ModifyType.OFFSET, model)
         }
 
-        val depthGlass = ItemStackBuilder(Material.LIGHT_BLUE_STAINED_GLASS, 1).setName("奥行き").build()
+        val depthGlass = ItemStackBuilder(Material.LIGHT_BLUE_STAINED_GLASS, 1).setName(Line().raw("奥行き")).build()
         setSlot(13, depthGlass) {
             player.openModelTextEditor("奥行き", model.seatOption.depth.toString(), ContainerModelTextEdit.ModifyType.DEPTH, model)
         }
 
-        val widthGlass = ItemStackBuilder(Material.PINK_STAINED_GLASS, 1).setName("幅").build()
+        val widthGlass = ItemStackBuilder(Material.PINK_STAINED_GLASS, 1).setName(Line().raw("幅")).build()
         setSlot(15, widthGlass) {
             player.openModelTextEditor("幅", model.seatOption.width.toString(), ContainerModelTextEdit.ModifyType.WIDTH, model)
         }

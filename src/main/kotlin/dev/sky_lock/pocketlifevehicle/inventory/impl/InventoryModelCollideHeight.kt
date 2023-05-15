@@ -16,7 +16,7 @@ class InventoryModelCollideHeight(private val player: Player, private val model:
     init {
         for (i in 0..8) {
             val height = (0.5 * (i + 1)).toFloat()
-            val builder = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).setName(height.toString())
+            val builder = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).setName(Line().raw(height.toString()))
             if (model.size.height == height) {
                 builder.addGlowEffect()
             }

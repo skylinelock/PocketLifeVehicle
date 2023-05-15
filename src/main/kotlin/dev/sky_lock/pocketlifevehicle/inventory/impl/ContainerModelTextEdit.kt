@@ -46,7 +46,7 @@ class ContainerModelTextEdit(
         setTitle(Component.literal(title))
 
         val paper = ItemStackBuilder(Material.PAPER, 1)
-            .setName(default.ifBlank { "name" })
+            .setName(Line().raw(default))
             .build()
 
         bukkitView.topInventory.setItem(0, paper)

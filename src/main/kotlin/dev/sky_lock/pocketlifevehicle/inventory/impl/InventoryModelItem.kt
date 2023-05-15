@@ -52,7 +52,7 @@ class InventoryModelItem(private val player: Player, private val model: Model) :
                 break
             }
             val id = 1001 + i
-            val builder = ItemStackBuilder(Material.IRON_NUGGET, 1).setCustomModelData(id).setName(id.toString())
+            val builder = ItemStackBuilder(Material.IRON_NUGGET, 1).setCustomModelData(id).setName(Line().raw(id.toString()))
             if (model.modelOption.id == id) {
                 builder.addGlowEffect()
             }

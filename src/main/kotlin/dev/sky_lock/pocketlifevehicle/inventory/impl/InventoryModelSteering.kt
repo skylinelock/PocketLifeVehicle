@@ -32,7 +32,7 @@ class InventoryModelSteering(private val player: Player, private val model: Mode
 
     private fun steeringItem(steering: SteeringLevel, glow: Boolean): ItemStack {
         val builder = ItemStackBuilder(Material.BEDROCK, 1)
-            .setName(steering.label)
+            .setName(Line().raw(steering.label))
         if (glow) builder.addGlowEffect()
         return builder.build()
     }

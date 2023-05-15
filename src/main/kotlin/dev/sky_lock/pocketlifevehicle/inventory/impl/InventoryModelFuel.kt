@@ -20,7 +20,7 @@ class InventoryModelFuel(private val player: Player, private val model: Model): 
                 if (j % 2 == 0) {
                     val slot = 9 * i + j
                     val fuel = index * 25
-                    val builder = ItemStackBuilder(Material.IRON_BLOCK, 1).setName(fuel.toString())
+                    val builder = ItemStackBuilder(Material.IRON_BLOCK, 1).setName(Line().raw(fuel.toString()))
                     if (model.spec.maxFuel == fuel.toFloat()) {
                         builder.addGlowEffect()
                     }

@@ -16,7 +16,7 @@ class InventoryModelCollideBaseSide(private val player: Player, private val mode
     init {
         for (i in 0..8) {
             val baseSide = (0.5 * (i + 1)).toFloat()
-            val builder = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName(baseSide.toString())
+            val builder = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName(Line().raw(baseSide.toString()))
             if (model.size.baseSide == baseSide) {
                 builder.addGlowEffect()
             }

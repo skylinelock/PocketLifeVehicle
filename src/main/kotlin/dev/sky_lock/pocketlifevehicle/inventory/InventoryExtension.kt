@@ -8,7 +8,7 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 
-fun Player.openModelLoreEditor(default: String, model: Model) {
+fun Player.openModelLoreEditor(model: Model) {
     ModelLoreEditor(this, model)
 }
 

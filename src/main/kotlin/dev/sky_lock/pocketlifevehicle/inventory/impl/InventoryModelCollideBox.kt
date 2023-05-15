@@ -13,8 +13,8 @@ import org.bukkit.entity.Player
 
 class InventoryModelCollideBox(private val player: Player, private val model: Model): InventoryCustom(18, "当たり判定") {
 
-    private val baseSideItem = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName("底辺").build()
-    private val heightItem = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).setName("高さ").build()
+    private val baseSideItem = ItemStackBuilder(Material.LIGHT_BLUE_CONCRETE, 1).setName(Line().raw("底辺")).build()
+    private val heightItem = ItemStackBuilder(Material.YELLOW_CONCRETE, 1).setName(Line().raw("高さ")).build()
 
     init {
         setSlot(3, baseSideItem) {

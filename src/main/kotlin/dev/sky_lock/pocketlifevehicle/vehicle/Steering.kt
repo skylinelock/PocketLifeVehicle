@@ -56,16 +56,17 @@ class Steering(private val status: VehicleStatus) {
     }
 
     private fun raiseMainHand(entityID: Int) {
-        val packet = AnimationPacket()
-        packet.setEntityID(entityID)
-        packet.setAnimationType(AnimationPacket.AnimationType.SWING_MAIN_ARM)
-        packet.broadCast()
+        broadcastAnimationPacket(entityID, AnimationPacket.AnimationType.SWING_MAIN_ARM)
     }
 
     private fun raiseOffhand(entityID: Int) {
+        broadcastAnimationPacket(entityID, AnimationPacket.AnimationType.SWING_OFFHAND)
+    }
+
+    private fun broadcastAnimationPacket(entityID: Int, type: AnimationPacket.AnimationType) {
         val packet = AnimationPacket()
         packet.setEntityID(entityID)
-        packet.setAnimationType(AnimationPacket.AnimationType.SWING_OFFHAND)
+        packet.setAnimationType(type)
         packet.broadCast()
     }
 

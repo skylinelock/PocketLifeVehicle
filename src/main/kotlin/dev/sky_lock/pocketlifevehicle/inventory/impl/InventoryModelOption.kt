@@ -43,12 +43,12 @@ class InventoryModelOption(private val player: Player, private val model: Model)
 
         val nameTag = optionItem(Material.NAME_TAG, Line().green("名前"), Line().colorCoded(model.name))
         setSlot(11, nameTag) {
-            player.openModelTextEditor("名前設定", "", ContainerModelTextEdit.ModifyType.NAME, model)
+            player.openModelTextEditor("名前設定", "name", ContainerModelTextEdit.ModifyType.NAME, model)
         }
 
         val loreSign = optionItem(Material.OAK_SIGN, Line().green("説明"), *model.lore.map { lore -> Line().colorCoded(lore)}.toTypedArray() )
         setSlot(13, loreSign) {
-            player.openModelLoreEditor("", model)
+            player.openModelLoreEditor(model)
         }
 
         val heightArmor = optionItem(Material.IRON_HORSE_ARMOR, Line().green("座高"), Line().yellow(model.height.toString()))

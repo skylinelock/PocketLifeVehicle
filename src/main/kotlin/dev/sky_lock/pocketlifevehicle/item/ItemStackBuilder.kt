@@ -56,11 +56,6 @@ open class ItemStackBuilder(itemStack: ItemStack) {
         return Component.text().decoration(TextDecoration.ITALIC, false).color(NamedTextColor.WHITE).append(component).build()
     }
 
-    fun setName(name: String): ItemStackBuilder {
-        itemMeta.setDisplayName(name)
-        return this
-    }
-
     fun setName(line: Line): ItemStackBuilder {
         itemMeta.displayName(resetDefault(line.toComponent()))
         return this
