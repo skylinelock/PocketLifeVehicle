@@ -53,8 +53,8 @@ class PlayerEventListener : Listener {
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val player = event.player
-        if (plugin.parkingViolationList.findEntry(player) != null) {
-            event.player.sendMessage(Line().redBold("駐車違反登録されています。乗り物を利用するにはスマホから駐車違反料を払う必要があります。"))
+        if (plugin.parkingViolationList.findEntry(player.uniqueId) != null) {
+            player.sendMessage(Line().redBold("駐車違反登録されています。乗り物を利用するにはスマホから駐車違反料を払う必要があります。"))
         }
     }
 
@@ -125,7 +125,7 @@ class PlayerEventListener : Listener {
             player.sendActionBar(Line().red("このワールドでは乗り物は使用できません"))
             return
         }
-        if (this.plugin.parkingViolationList.findEntry(player) != null) {
+        if (this.plugin.parkingViolationList.findEntry(player.uniqueId) != null) {
             player.sendActionBar(Line().red("乗り物を利用するにはスマホから駐車違反料を支払う必要があります"))
             return
         }

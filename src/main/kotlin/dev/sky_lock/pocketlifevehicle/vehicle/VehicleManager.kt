@@ -126,10 +126,11 @@ object VehicleManager {
 
     fun restore(player: Player): Boolean {
         val plugin = VehiclePlugin.instance
-        val entry = plugin.parkingViolationList.findEntry(player) ?: return false
+        val owner = player.uniqueId
+        val entry = plugin.parkingViolationList.findEntry(owner) ?: return false
         val model = ModelRegistry.findById(entry.modelId)
         if (model == null) {
-            plugin.parkingViolationList.removeEntry(player)
+            plugin.parkingViolationList.removeEntry(owner)
             return false
         }
         val world = player.location.world ?: return false
@@ -137,7 +138,7 @@ object VehicleManager {
             return false
         }
         placeVehicle(entry.ownerUuid, player.location, model, entry.fuel)
-        plugin.parkingViolationList.removeEntry(player)
+        plugin.parkingViolationList.removeEntry(owner)
         return true
     }
 
@@ -146,6 +147,10 @@ object VehicleManager {
         val entry = ParkingViolation(Date(), owner, vehicle.status.model.id, vehicle.status.tank.fuel)
         VehiclePlugin.instance.parkingViolationList.registerNewEntry(entry)
         remove(owner)
+    }
+
+    fun unregisterIllegalParking(owner: UUID): Boolean {
+        return VehiclePlugin.instance.parkingViolationList.removeEntry(owner)
     }
 
     fun registerAllIllegalParkings() {

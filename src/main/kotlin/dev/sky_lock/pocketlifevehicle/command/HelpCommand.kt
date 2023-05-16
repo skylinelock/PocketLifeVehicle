@@ -17,6 +17,7 @@ class HelpCommand : ICommand {
             sender.sendVehiclePrefixedRawMessage("/vehicle give [modelId] [target] - モデルアイテムをプレイヤーにインベントリーに追加します")
             sender.sendVehiclePrefixedRawMessage("/vehicle spawn [modelId] [target] - モデルをプレイヤーの位置にスポーンさせます")
             sender.sendVehiclePrefixedRawMessage("/vehicle search [target] - 乗り物の現在地を表示します")
+            sender.sendVehiclePrefixedRawMessage("/vehicle forgive [target] - プレイヤーの駐車違反登録を解除します")
             sender.sendVehiclePrefixedRawMessage("/vehicle pop [target] - プレイヤーの乗り物をアイテム化します")
             sender.sendVehiclePrefixedRawMessage("/vehicle model - モデルエディタを開きます")
             sender.sendVehiclePrefixedRawMessage("/vehicle event (clear|unlock|lock) - イベント車両用コマンドです")

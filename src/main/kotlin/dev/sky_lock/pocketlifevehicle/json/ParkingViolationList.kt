@@ -2,8 +2,8 @@ package dev.sky_lock.pocketlifevehicle.json
 
 import com.google.gson.reflect.TypeToken
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import org.bukkit.entity.Player
 import java.io.IOException
+import java.util.*
 
 /**
  * @author sky_lock
@@ -37,14 +37,15 @@ class ParkingViolationList {
         parkingList.add(entry)
     }
 
-    fun findEntry(player: Player): ParkingViolation? {
-        return parkingList.find {entry -> entry.ownerUuid == player.uniqueId}
+    fun findEntry(owner: UUID): ParkingViolation? {
+        return parkingList.find {entry -> entry.ownerUuid == owner}
     }
 
-    fun removeEntry(player: Player) {
-        val entry = this.findEntry(player)
-        if (entry != null) {
+    fun removeEntry(owner: UUID): Boolean {
+        val entry = this.findEntry(owner)
+        if (entry == null) return false else {
             parkingList.remove(entry)
+            return true
         }
     }
 

@@ -24,6 +24,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
                 "model" -> cmd = ModelCommand()
                 "debug" -> cmd = DebugCommand()
                 "search" -> cmd = SearchCommand()
+                "forgive" -> cmd = ForgiveCommand()
                 "world" -> cmd = WorldCommand()
                 "event" -> cmd = EventCommand()
                 "reload" -> cmd = ReloadCommand()
@@ -50,7 +51,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
         if (args.size < 2) {
             val input = args[0]
             if (Permission.ADMIN_COMMAND.obtained(sender)) {
-                tabCompletes.addAll(listOf("give", "spawn", "model", "event", "debug", "reload", "world").filter { str -> str.startsWith(input) })
+                tabCompletes.addAll(listOf("give", "forgive", "spawn", "model", "event", "debug", "reload", "world").filter { str -> str.startsWith(input) })
             }
             tabCompletes.addAll(listOf("pop", "search").filter { str -> str.startsWith(input) })
         } else if (args.size == 2 && Permission.ADMIN_COMMAND.obtained(sender)) {
@@ -63,7 +64,7 @@ class CommandHandler : CommandExecutor, TabExecutor {
                     }
                 }
                 "reload" -> tabCompletes.addAll(listOf("from", "to").filter { str -> str.startsWith(input) })
-                "search", "pop" -> if (Permission.ADMIN_COMMAND.obtained(sender)) {
+                "search", "pop", "forgive" -> if (Permission.ADMIN_COMMAND.obtained(sender)) {
                     tabCompletes.addAll(listPlayerNamesStartsWith(input))
                 }
                 "event" -> tabCompletes.addAll(listOf("clear", "unlock", "lock").filter { str -> str.startsWith(input) })
