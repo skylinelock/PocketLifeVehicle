@@ -20,7 +20,7 @@ class InventoryModelSpec(private val player: Player, private val model: Model): 
             player.openInventory(InventoryModelSpeed(player, model))
         }
 
-        val steeringClock = ItemStackBuilder(Material.CLOCK, 1).setName(Line().green("ステアリング性能")).build()
+        val steeringClock = ItemStackBuilder(Material.CLOCK, 1).setName(Line().green("ステアリング性能")).setLore(Line().yellow(spec.steeringLevel.label)).build()
         setSlot(5, steeringClock) {
             player.openInventory(InventoryModelSteering(player, model))
         }

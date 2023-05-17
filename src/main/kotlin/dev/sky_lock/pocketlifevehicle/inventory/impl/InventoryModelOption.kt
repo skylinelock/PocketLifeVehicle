@@ -62,27 +62,54 @@ class InventoryModelOption(private val player: Player, private val model: Model)
             player.openInventory(InventoryModelFuel(player, model))
         }
 
-        val specBottle = optionItem(Material.EXPERIENCE_BOTTLE, Line().green("スペック"))
+        val specBottle = optionItem(
+            Material.EXPERIENCE_BOTTLE,
+            Line().green("スペック"),
+            Line().gold("最高速度: ").yellow(model.spec.maxSpeed.label),
+            Line().gold("ステアリング性能: ").yellow(model.spec.steeringLevel.label)
+        )
         setSlot(22, specBottle) {
             player.openInventory(InventoryModelSpec(player, model))
         }
 
-        val capacitySaddle = optionItem(Material.SADDLE, Line().green("座席"), Line().yellow(model.seatOption.capacity.value().toString()))
+        val capacitySaddle = optionItem(Material.SADDLE,
+            Line().green("座席"),
+            Line().gold("乗車人数: ").yellow(model.seatOption.capacity.value().toString()),
+            Line().gold("オフセット: ").yellow(model.seatOption.offset.toString()),
+            Line().gold("奥行き: ").yellow(model.seatOption.depth.toString()),
+            Line().gold("幅: ").yellow(model.seatOption.width.toString()),
+        )
         setSlot(24, capacitySaddle) {
             player.openInventory(InventoryModelSeatOption(player, model))
         }
 
-        val collideBeacon = optionItem(Material.BEACON, Line().green("当たり判定"))
+        val collideBeacon = optionItem(Material.BEACON,
+            Line().green("当たり判定"),
+            Line().gold("底辺: ").yellow(model.size.baseSide.toString()),
+            Line().gold("高さ: ").yellow(model.size.height.toString())
+        )
         setSlot(29, collideBeacon) {
             player.openInventory(InventoryModelCollideBox(player, model))
         }
 
-        val armorStand = optionItem(Material.ARMOR_STAND, Line().green("3Dモデル"))
+        val armorStand = optionItem(Material.ARMOR_STAND,
+            Line().green("3Dモデル"),
+            Line().gold("大きさ: ").yellow(model.modelOption.bigText()),
+            Line().gold("アイテム位置: ").yellow(model.modelOption.position.label),
+            Line().gold("アイテム: ").yellow(model.modelOption.id.toString()),
+        )
         setSlot(31, armorStand) {
             player.openInventory(InventoryModelArmorStand(player, model))
         }
 
-        val flagRepeater = optionItem(Material.REPEATER, Line().green("フラグ"))
+        val flagRepeater = optionItem(
+            Material.REPEATER,
+            Line().green("フラグ"),
+            Line().gold("エンジン音: ").yellow(model.flag.engineSoundText()),
+            Line().gold("ハンドリングのアニメーション: ").yellow(model.flag.animationText()),
+            Line().gold("燃料消費: ").yellow(model.flag.consumeFuelText()),
+            Line().gold("イベント仕様: ").yellow(model.flag.eventOnlyText())
+        )
         setSlot(33, flagRepeater) {
             player.openInventory(InventoryModelFlag(player, model))
         }

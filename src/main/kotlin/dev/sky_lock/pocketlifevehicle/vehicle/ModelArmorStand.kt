@@ -5,7 +5,10 @@ import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.cancelEngineSound
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.playEngineSound
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.damagesource.DamageTypes
-import net.minecraft.world.entity.*
+import net.minecraft.world.entity.EntityDimensions
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.Pose
 import net.minecraft.world.entity.ai.attributes.AttributeMap
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
@@ -149,7 +152,7 @@ class ModelArmorStand : ArmorStand {
         status.engine.update(sidewaysSpeed, forwardSpeed)
         this.speed = status.engine.currentSpeed
 
-/*        if (spaced) {
+        if (spaced) {
             yRot = status.yaw
             yRotO = this.yRot
             xRot = 0.0f
@@ -157,7 +160,7 @@ class ModelArmorStand : ArmorStand {
             this.yBodyRot = this.yRot
             this.yHeadRot = this.yBodyRot
             super.travel(vec3.add(Vec3(sidewaysSpeed.toDouble(), 0.0, forwardSpeed.toDouble())))
-        } else {*/
+        } else {
             yRot = status.yaw
             yRotO = this.yRot
             xRot = 0.0f
@@ -167,10 +170,10 @@ class ModelArmorStand : ArmorStand {
             // Z方向（yawの進行方向）に進ませる。
             // vec3は
             super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
- //       }
+         }
     }
 
-    override fun handleRelativeFrictionAndCalculateMovement(movementInput: Vec3, slipperiness: Float): Vec3 {
+/*    override fun handleRelativeFrictionAndCalculateMovement(movementInput: Vec3, slipperiness: Float): Vec3 {
         val driverSeat = driverSeat!!
         if (driverSeat.passengers.isEmpty()) {
             return deltaMovement
@@ -186,7 +189,7 @@ class ModelArmorStand : ArmorStand {
             return deltaMovement
         }
         return super.handleRelativeFrictionAndCalculateMovement(movementInput, slipperiness)
-    }
+    }*/
 
     override fun tick() {
         super.tick()

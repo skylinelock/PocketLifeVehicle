@@ -11,6 +11,10 @@ import org.bukkit.configuration.serialization.SerializableAs
 @SerializableAs("ModelOption")
 class ModelOption(var type: Material, var id: Int, var position: ItemPosition, var isBig: Boolean): ConfigurationSerializable {
 
+    fun bigText(): String {
+        return if (isBig) "大きい" else "小さい"
+    }
+
     override fun serialize(): Map<String, Any> {
         val map: MutableMap<String, Any> = HashMap()
         map["type"] = type.name

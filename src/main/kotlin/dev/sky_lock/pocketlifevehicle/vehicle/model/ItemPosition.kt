@@ -9,6 +9,6 @@ enum class ItemPosition(val label: String, val slot: EquipmentSlot) {
     HEAD("頭", EquipmentSlot.HEAD),
     HAND("手", EquipmentSlot.HAND),
     CHEST("胸", EquipmentSlot.CHEST),
-    FEET("膝", EquipmentSlot.FEET),
-    LEGS("足", EquipmentSlot.OFF_HAND);
+    FEET("足", EquipmentSlot.FEET),
+    LEGS("膝", EquipmentSlot.LEGS);
 }
