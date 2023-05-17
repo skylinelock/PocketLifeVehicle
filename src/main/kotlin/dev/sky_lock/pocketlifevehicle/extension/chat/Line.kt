@@ -105,6 +105,10 @@ class Line {
         return this
     }
 
+    fun toColorCodedText(): String {
+        return LegacyComponentSerializer.legacyAmpersand().serialize(toComponent())
+    }
+
     fun broadcast() {
         Bukkit.broadcast(toComponent())
     }
