@@ -149,7 +149,7 @@ class ModelArmorStand : ArmorStand {
         status.engine.update(sidewaysSpeed, forwardSpeed)
         this.speed = status.engine.currentSpeed
 
-        if (spaced) {
+/*        if (spaced) {
             yRot = status.yaw
             yRotO = this.yRot
             xRot = 0.0f
@@ -157,7 +157,7 @@ class ModelArmorStand : ArmorStand {
             this.yBodyRot = this.yRot
             this.yHeadRot = this.yBodyRot
             super.travel(vec3.add(Vec3(sidewaysSpeed.toDouble(), 0.0, forwardSpeed.toDouble())))
-        } else {
+        } else {*/
             yRot = status.yaw
             yRotO = this.yRot
             xRot = 0.0f
@@ -167,7 +167,7 @@ class ModelArmorStand : ArmorStand {
             // Z方向（yawの進行方向）に進ませる。
             // vec3は
             super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
-        }
+ //       }
     }
 
     override fun handleRelativeFrictionAndCalculateMovement(movementInput: Vec3, slipperiness: Float): Vec3 {

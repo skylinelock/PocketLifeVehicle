@@ -62,7 +62,7 @@ class GlowEnchantment : Enchantment(NamespacedKey.minecraft("just_glow")) {
     }
 
     override fun getItemTarget(): EnchantmentTarget {
-        return EnchantmentTarget.ALL
+        return EnchantmentTarget.VANISHABLE
     }
 
     override fun isTreasure(): Boolean {
