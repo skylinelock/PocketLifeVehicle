@@ -43,9 +43,9 @@ class ParkingViolationList {
 
     fun removeEntry(owner: UUID): Boolean {
         val entry = this.findEntry(owner)
-        if (entry == null) return false else {
+        return if (entry == null) false else {
             parkingList.remove(entry)
-            return true
+            true
         }
     }
 

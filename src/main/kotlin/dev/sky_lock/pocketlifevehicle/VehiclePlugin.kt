@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle
 
+// import games.pocketlife.play.VehicleAPI
 import dev.sky_lock.pocketlifevehicle.command.CommandHandler
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
 import dev.sky_lock.pocketlifevehicle.inventory.CustomInventoryListener
@@ -8,8 +9,6 @@ import dev.sky_lock.pocketlifevehicle.listener.ChunkEventListener
 import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
-// import games.pocketlife.play.VehicleAPI
-import org.bukkit.NamespacedKey
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
@@ -61,7 +60,4 @@ class VehiclePlugin : JavaPlugin() {
         pluginManager.registerEvents(PlayerEventListener(), this)
     }
 
-    fun createKey(key: String): NamespacedKey {
-        return NamespacedKey(this, key)
-    }
 }

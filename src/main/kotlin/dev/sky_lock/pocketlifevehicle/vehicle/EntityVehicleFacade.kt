@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryEventVehicle
-import dev.sky_lock.pocketlifevehicle.status.inventory.impl.InventoryVehicle
+import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryVehicle
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftArmorStand
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player

@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.status.inventory.impl
+package dev.sky_lock.pocketlifevehicle.inventory.impl
 
 import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace

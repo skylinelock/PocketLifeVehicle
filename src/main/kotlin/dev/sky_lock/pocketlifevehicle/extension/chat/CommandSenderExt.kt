@@ -29,9 +29,3 @@ fun CommandSender.sendVehiclePrefixedSuccessMessage(text: String) {
 fun CommandSender.sendVehiclePrefixedErrorMessage(text: String) {
     sendVehicleTextComponent(Component.text(text, NamedTextColor.RED))
 }
-
-fun CommandSender.sendRacePrefixedRawMessage(text: String) {
-    this.sendMessage(
-            Line().darkGray("[").gray("Race").darkGray("] ").toComponent().append(Component.text(text))
-    )
-}
