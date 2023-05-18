@@ -1,9 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
 import dev.sky_lock.pocketlifevehicle.VehicleEntityType
-import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.extension.chat.sendActionBar
 import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
+import dev.sky_lock.pocketlifevehicle.text.Line
 import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.LivingEntity

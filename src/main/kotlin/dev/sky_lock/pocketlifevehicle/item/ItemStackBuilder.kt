@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.item
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.Line
+import dev.sky_lock.pocketlifevehicle.text.Line
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration

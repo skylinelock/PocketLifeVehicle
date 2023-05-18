@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.text.Line
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import net.minecraft.core.BlockPos

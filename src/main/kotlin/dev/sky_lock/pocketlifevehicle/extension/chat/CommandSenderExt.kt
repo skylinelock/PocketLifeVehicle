@@ -1,31 +1,30 @@
 package dev.sky_lock.pocketlifevehicle.extension.chat
 
 import dev.sky_lock.pocketlifevehicle.Permission
-import net.kyori.adventure.text.Component
-import net.kyori.adventure.text.format.NamedTextColor
+import dev.sky_lock.pocketlifevehicle.text.Line
 import org.bukkit.command.CommandSender
 
 /**
  * @author sky_lock
  */
 
-fun CommandSender.sendVehicleTextComponent(component: Component) {
+fun CommandSender.sendVehicleText(line: Line) {
     val prefix = Line().darkGray("[").gray("Vehicle").darkGray("] ")
     if (Permission.ADMIN_COMMAND.obtained(this)) {
-        this.sendMessage(prefix.toComponent().append(component))
+        this.sendMessage(prefix.connect(line).toComponent())
     } else {
-        this.sendMessage(component)
+        this.sendMessage(line.toComponent())
     }
 }
 
 fun CommandSender.sendVehiclePrefixedRawMessage(text: String) {
-    sendVehicleTextComponent(Component.text(text))
+    sendVehicleText(Line().raw(text))
 }
 
 fun CommandSender.sendVehiclePrefixedSuccessMessage(text: String) {
-    sendVehicleTextComponent(Component.text(text, NamedTextColor.GREEN))
+    sendVehicleText(Line().green(text))
 }
 
 fun CommandSender.sendVehiclePrefixedErrorMessage(text: String) {
-    sendVehicleTextComponent(Component.text(text, NamedTextColor.RED))
+    sendVehicleText(Line().red(text))
 }

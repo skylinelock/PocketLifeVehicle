@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.text.Line
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import dev.sky_lock.pocketlifevehicle.vehicle.model.SteeringLevel
 import org.bukkit.Material

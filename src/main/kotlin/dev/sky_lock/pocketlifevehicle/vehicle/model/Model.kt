@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.model
 
 import dev.sky_lock.pocketlifevehicle.PluginKey
-import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.text.Line
 import org.bukkit.configuration.serialization.ConfigurationSerializable
 import org.bukkit.configuration.serialization.SerializableAs
 import org.bukkit.inventory.ItemFlag

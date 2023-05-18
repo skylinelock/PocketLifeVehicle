@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.Line
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
+import dev.sky_lock.pocketlifevehicle.text.Line
 import org.bukkit.Material
 import org.bukkit.event.inventory.InventoryClickEvent
 
