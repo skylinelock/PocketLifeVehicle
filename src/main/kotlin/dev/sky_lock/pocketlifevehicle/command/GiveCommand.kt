@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.command
 
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedErrorMessage
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedSuccessMessage
+import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedErrorMessage
+import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedSuccessMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import org.bukkit.Bukkit
 import org.bukkit.command.Command

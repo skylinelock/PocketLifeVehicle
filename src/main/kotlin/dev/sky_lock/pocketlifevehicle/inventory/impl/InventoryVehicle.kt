@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.inventory.impl
 
-import dev.sky_lock.pocketlifevehicle.extension.kotlin.truncateToOneDecimalPlace
+import dev.sky_lock.pocketlifevehicle.ext.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder

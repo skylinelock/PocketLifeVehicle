@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.Permission
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedErrorMessage
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedSuccessMessage
+import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedErrorMessage
+import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedSuccessMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import org.bukkit.Bukkit
 import org.bukkit.Location

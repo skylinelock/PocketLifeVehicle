@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.extension.chat
+package dev.sky_lock.pocketlifevehicle.text.ext
 
 import dev.sky_lock.pocketlifevehicle.text.Line
 import org.bukkit.entity.Player

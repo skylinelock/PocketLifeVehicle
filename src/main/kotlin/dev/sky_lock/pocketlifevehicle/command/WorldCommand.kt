@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedRawMessage
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedSuccessMessage
+import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedRawMessage
+import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedSuccessMessage
 import org.bukkit.Bukkit
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender

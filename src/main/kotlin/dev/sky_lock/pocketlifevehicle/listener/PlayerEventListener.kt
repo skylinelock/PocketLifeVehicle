@@ -3,10 +3,10 @@ package dev.sky_lock.pocketlifevehicle.listener
 import dev.sky_lock.pocketlifevehicle.Permission
 import dev.sky_lock.pocketlifevehicle.PluginKey
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendActionBar
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendMessage
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
 import dev.sky_lock.pocketlifevehicle.text.Line
+import dev.sky_lock.pocketlifevehicle.text.ext.sendActionBar
+import dev.sky_lock.pocketlifevehicle.text.ext.sendMessage
 import dev.sky_lock.pocketlifevehicle.vehicle.EntityVehicleFacade
 import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager

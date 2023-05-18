@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.command
 
 import dev.sky_lock.pocketlifevehicle.Permission
-import dev.sky_lock.pocketlifevehicle.extension.chat.sendVehiclePrefixedRawMessage
+import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedRawMessage
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
 

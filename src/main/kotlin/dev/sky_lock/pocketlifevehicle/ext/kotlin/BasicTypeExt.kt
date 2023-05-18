@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.extension.kotlin
+package dev.sky_lock.pocketlifevehicle.ext.kotlin
 
 /**
  * @author sky_lock

@@ -1,5 +1,6 @@
-package dev.sky_lock.pocketlifevehicle.inventory
+package dev.sky_lock.pocketlifevehicle.inventory.ext
 
+import dev.sky_lock.pocketlifevehicle.inventory.ModelLoreEditor
 import dev.sky_lock.pocketlifevehicle.inventory.impl.ContainerModelTextEdit
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.entity.Player
