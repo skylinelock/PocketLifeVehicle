@@ -24,19 +24,16 @@ import net.minecraft.world.entity.decoration.ArmorStand as NMSArmorStand
 
 class EntityVehicle(owner: UUID?, private val location: Location, private val model: Model, fuel: Float) {
     private val world = location.world as CraftWorld
-    private val seats = mutableListOf<SeatArmorStand>()
-    private var center = ModelArmorStand(
-        world.handle, location.x, location.y, location.z, location.yaw
-    )
     val status = VehicleStatus(owner, location, model, fuel)
-    val passengers
-        get() = seats.filter { seat -> seat.isVehicle }.mapNotNull { seat -> seat.passenger }
 
+    private var center = ModelArmorStand(world.handle, location.x, location.y, location.z, location.yaw)
+    private val seats = mutableListOf<SeatArmorStand>()
     private val driverSeat
         get() = seats.find { seat -> seat.isDriverSeat }
-
     private val driver
         get() = driverSeat?.passenger
+    val passengers
+        get() = seats.filter { seat -> seat.isVehicle }.mapNotNull { seat -> seat.passenger }
 
     private fun spawn(armorStand: NMSArmorStand) {
         world.addEntity<ArmorStand>(armorStand, CreatureSpawnEvent.SpawnReason.CUSTOM)

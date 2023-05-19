@@ -1,8 +1,8 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 import dev.sky_lock.pocketlifevehicle.packet.AnimationPacket
-import org.bukkit.entity.Player
-import org.bukkit.inventory.MainHand
+import net.minecraft.world.entity.HumanoidArm
+import net.minecraft.world.entity.player.Player
 import kotlin.math.roundToInt
 
 /**
@@ -40,18 +40,18 @@ class Steering(private val status: VehicleStatus) {
     }
 
     private fun raiseLeftArm(player: Player) {
-        if (player.mainHand == MainHand.RIGHT) {
-            raiseOffhand(player.entityId)
+        if (player.mainArm == HumanoidArm.RIGHT) {
+            raiseOffhand(player.id)
         } else {
-            raiseMainHand(player.entityId)
+            raiseMainHand(player.id)
         }
     }
 
     private fun raiseRightArm(player: Player) {
-        if (player.mainHand == MainHand.RIGHT) {
-            raiseMainHand(player.entityId)
+        if (player.mainArm == HumanoidArm.RIGHT) {
+            raiseMainHand(player.id)
         } else {
-            raiseOffhand(player.entityId)
+            raiseOffhand(player.id)
         }
     }
 

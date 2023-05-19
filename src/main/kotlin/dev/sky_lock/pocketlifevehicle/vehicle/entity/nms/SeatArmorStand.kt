@@ -47,7 +47,7 @@ class SeatArmorStand : BaseArmorStand<SeatArmorStand> {
         this.position = position
         val center = status.location
         val loc = calcSeatPosition(center, status.model.seatOption, position)
-        this.absMoveTo(loc.x, center.y - 1.675 + status.model.height, loc.z, center.yaw, center.pitch)
+        super.absMoveTo(loc.x, center.y - 1.675 + status.model.height, loc.z, center.yaw, center.pitch)
     }
 
     // 毎tick呼び出される

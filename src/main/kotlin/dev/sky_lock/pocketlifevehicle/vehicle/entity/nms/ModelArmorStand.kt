@@ -4,6 +4,7 @@ import dev.sky_lock.pocketlifevehicle.VehicleEntityType
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.cancelEngineSound
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.playEngineSound
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleStatus
+import net.minecraft.core.Rotations
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.damagesource.DamageTypes
 import net.minecraft.world.entity.EntityDimensions
@@ -12,10 +13,8 @@ import net.minecraft.world.entity.Pose
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
-import org.bukkit.Location
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftArmorStand
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
-import org.bukkit.util.EulerAngle
+import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack
 
 /**
  * @author sky_lock
@@ -42,21 +41,19 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
 
     fun assemble(status: VehicleStatus) {
         this.status = status
-        val armorStand = bukkitEntity as CraftArmorStand
-        armorStand.rightArmPose = EulerAngle.ZERO
+
         val model = status.model
         val modelOption = model.modelOption
-        armorStand.setItem(modelOption.position.slot, model.itemStack)
-        armorStand.isSmall = !modelOption.isBig
-        this.refreshDimensions()
+
+        super.setItemSlot(modelOption.position.slot, CraftItemStack.asNMSCopy(model.itemStack))
+        super.setRightArmPose(Rotations(0F, 0F, 0F))
+        super.setSmall(!modelOption.isBig)
+        super.refreshDimensions()
     }
 
     fun setDriverSeat(driverSeat: SeatArmorStand) {
         this.driverSeat = driverSeat
     }
-
-    val location: Location
-        get() = bukkitEntity.location
 
     override fun kill() {
         if (status != null) {
@@ -104,7 +101,6 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
             return
         }
         val status = status!!
-        status.updateLocation(location)
 
         val driverSeat = driverSeat!!
         if (status.isUndrivable) {
@@ -121,20 +117,21 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
         if (tickCount % 2 == 0) {
             playEngineSound(status)
         }
-        if (driverSeat.passengers.isEmpty()) {
+        val driver = driverSeat.passenger
+
+        if (driver == null) {
             status.engine.stop()
             super.travel(vec3)
             return
         }
 
-        val driver = driverSeat.passengers[0].bukkitEntity as CraftPlayer
-        val player = driver.handle
+        val nmsDriver = (driver as CraftPlayer).handle
 
-        val sidewaysSpeed = player.xxa
-        val forwardSpeed = player.zza
-        val spaced = player.jumping
+        val sidewaysSpeed = nmsDriver.xxa
+        val forwardSpeed = nmsDriver.zza
+        val spaced = nmsDriver.jumping
 
-        status.steering.update(driver, sidewaysSpeed)
+        status.steering.update(nmsDriver, sidewaysSpeed)
         status.engine.update(sidewaysSpeed, forwardSpeed)
         this.speed = status.engine.currentSpeed
 
@@ -154,7 +151,6 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
             this.yBodyRot = this.yRot
             this.yHeadRot = this.yBodyRot
             // Z方向（yawの進行方向）に進ませる。
-            // vec3は
             super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
          }
     }
@@ -180,7 +176,7 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
     override fun tick() {
         super.tick()
         val status = status!!
-        status.updateLocation(location)
+        status.updateLocation(bukkitEntity.location)
     }
 
 }
