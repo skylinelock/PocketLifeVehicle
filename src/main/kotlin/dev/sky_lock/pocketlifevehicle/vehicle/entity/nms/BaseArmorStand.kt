@@ -12,11 +12,11 @@ import org.bukkit.attribute.Attribute
 
 open class BaseArmorStand<T: ArmorStand> : ArmorStand {
 
-    constructor(type: EntityType<ArmorStand>, world: Level) : super(type, world) {
+    constructor(type: EntityType<ArmorStand>, level: Level) : super(type, level) {
         super.kill()
     }
 
-    constructor(type: EntityType<T>, world: Level, x: Double, y: Double, z: Double) : super(type, world) {
+    constructor(type: EntityType<T>, level: Level, x: Double, y: Double, z: Double) : super(type, level) {
         super.setPos(x, y, z)
 
         super.setNoGravity(false)

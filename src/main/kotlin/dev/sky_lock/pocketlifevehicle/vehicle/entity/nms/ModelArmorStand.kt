@@ -34,7 +34,9 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
         z: Double,
         yaw: Float
     ) : super(VehicleEntityType.MODEL.type(), level, x, y, z) {
-        super.setRot(yaw, 0.0F)
+        super.setYRot(yaw)
+        super.setYBodyRot(yaw)
+
         super.setSmall(true)
         super.setMaxUpStep(1.126F)
     }

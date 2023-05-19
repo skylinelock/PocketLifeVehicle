@@ -140,7 +140,7 @@ class PlayerEventListener : Listener {
             player.sendActionBar(Line().red("ブロックがあるので乗り物を設置できません"))
             return
         }
-        where.yaw = player.location.yaw
+        where.yaw = player.eyeLocation.yaw
 
         val container = item.itemMeta.persistentDataContainer
         val owner = container.get(PluginKey.OWNER, UUIDTagType.INSTANCE)
