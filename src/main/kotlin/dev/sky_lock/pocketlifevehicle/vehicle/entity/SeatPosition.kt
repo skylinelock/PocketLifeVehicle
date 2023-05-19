@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.vehicle
+package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 /**
  * @author sky_lock

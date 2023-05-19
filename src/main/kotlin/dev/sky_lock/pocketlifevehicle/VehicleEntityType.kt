@@ -2,8 +2,8 @@ package dev.sky_lock.pocketlifevehicle
 
 import com.mojang.datafixers.DataFixUtils
 import com.mojang.datafixers.types.Type
-import dev.sky_lock.pocketlifevehicle.vehicle.ModelArmorStand
-import dev.sky_lock.pocketlifevehicle.vehicle.SeatArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.nms.ModelArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.nms.SeatArmorStand
 import net.minecraft.SharedConstants
 import net.minecraft.core.DefaultedMappedRegistry
 import net.minecraft.core.Holder

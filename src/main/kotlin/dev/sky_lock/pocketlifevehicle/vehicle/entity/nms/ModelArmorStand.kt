@@ -1,20 +1,18 @@
-package dev.sky_lock.pocketlifevehicle.vehicle
+package dev.sky_lock.pocketlifevehicle.vehicle.entity.nms
 
 import dev.sky_lock.pocketlifevehicle.VehicleEntityType
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.cancelEngineSound
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.playEngineSound
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleStatus
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.damagesource.DamageTypes
 import net.minecraft.world.entity.EntityDimensions
 import net.minecraft.world.entity.EntityType
-import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.Pose
-import net.minecraft.world.entity.ai.attributes.AttributeMap
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
 import org.bukkit.Location
-import org.bukkit.attribute.Attribute
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftArmorStand
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
 import org.bukkit.util.EulerAngle
@@ -22,30 +20,24 @@ import org.bukkit.util.EulerAngle
 /**
  * @author sky_lock
  */
-class ModelArmorStand : ArmorStand {
+class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
     private var status: VehicleStatus? = null
     private var driverSeat: SeatArmorStand? = null
 
-    constructor(entityTypes: EntityType<out ArmorStand>, world: Level) : super(entityTypes, world) {
+    constructor(entityTypes: EntityType<ArmorStand>, world: Level) : super(entityTypes, world) {
         this.kill()
     }
 
     constructor(
-        world: Level,
+        level: Level,
         x: Double,
         y: Double,
         z: Double,
         yaw: Float
-    ) : super(VehicleEntityType.MODEL.type(), world) {
-        super.setPos(x, y, z)
+    ) : super(VehicleEntityType.MODEL.type(), level, x, y, z) {
         super.setRot(yaw, 0.0F)
-        this.readAdditionalSaveData(EntityVehicleHelper.modelNBT())
-        setMaxUpStep(1.126F)
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_MAX_HEALTH)
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR)
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)
+        super.setSmall(true)
+        super.setMaxUpStep(1.126F)
     }
 
     fun assemble(status: VehicleStatus) {
@@ -66,10 +58,6 @@ class ModelArmorStand : ArmorStand {
     val location: Location
         get() = bukkitEntity.location
 
-    override fun getAttributes(): AttributeMap {
-        return AttributeMap(LivingEntity.createLivingAttributes().build())
-    }
-
     override fun kill() {
         if (status != null) {
             cancelEngineSound(status!!)
@@ -78,8 +66,6 @@ class ModelArmorStand : ArmorStand {
     }
 
     override fun onClimbable() = false
-
-    override fun isSilent() = true
 
     override fun hurt(source: DamageSource, amount: Float): Boolean {
         super.hurt(source, amount)

@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.vehicle
+package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 import java.math.BigDecimal
 import java.math.RoundingMode

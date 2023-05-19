@@ -1,6 +1,8 @@
-package dev.sky_lock.pocketlifevehicle.vehicle
+package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.nms.ModelArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.nms.SeatArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Capacity
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.Location

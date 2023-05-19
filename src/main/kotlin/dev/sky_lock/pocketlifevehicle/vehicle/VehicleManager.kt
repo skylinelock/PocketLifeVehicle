@@ -7,6 +7,7 @@ import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolation
 import dev.sky_lock.pocketlifevehicle.text.Line
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import org.bukkit.Location
 import org.bukkit.Material

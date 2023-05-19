@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
-import dev.sky_lock.pocketlifevehicle.vehicle.EntityVehicleFacade
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicleFacade
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.world.ChunkLoadEvent

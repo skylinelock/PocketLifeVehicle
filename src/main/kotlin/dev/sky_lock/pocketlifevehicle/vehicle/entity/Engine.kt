@@ -1,10 +1,7 @@
-package dev.sky_lock.pocketlifevehicle.vehicle
+package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 
-/**
- * @author sky_lock
- */
 private const val ZERO = 0.0F
 
 class Engine(private val tank: FuelTank, private val model: Model) {

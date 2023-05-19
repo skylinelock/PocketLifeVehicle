@@ -73,24 +73,24 @@ object ModelRegistry {
     }
 
     fun findById(id: String): Model? {
-        return models.find { model -> this.checkIdEquality(model, id) }
+        return models.find { model -> checkIdEquality(model, id) }
     }
 
     fun hasRegistered(id: String): Boolean {
-        return models.any { model -> this.checkIdEquality(model, id) }
+        return models.any { model -> checkIdEquality(model, id) }
     }
 
     fun register(model: Model) {
-        if (this.hasRegistered(model.id)) {
+        if (hasRegistered(model.id)) {
             return
         }
         models.add(model)
-        this.config.writeModels(this.models)
+        config.writeModels(models)
     }
 
     fun unregister(id: String) {
-        models.removeIf { model -> this.checkIdEquality(model, id) }
-        this.config.writeModels(this.models)
+        models.removeIf { model -> checkIdEquality(model, id) }
+        config.writeModels(models)
     }
 
     fun set(): Set<Model> {

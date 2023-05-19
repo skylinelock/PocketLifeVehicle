@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.vehicle
+package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 import dev.sky_lock.pocketlifevehicle.ext.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.text.Line

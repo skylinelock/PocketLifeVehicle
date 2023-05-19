@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle
 
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleStatus
 import org.bukkit.Sound
 
 /**

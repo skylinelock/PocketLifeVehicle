@@ -2,8 +2,8 @@ package dev.sky_lock.pocketlifevehicle.task
 
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedErrorMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.EntityVehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
 import org.bukkit.entity.Player

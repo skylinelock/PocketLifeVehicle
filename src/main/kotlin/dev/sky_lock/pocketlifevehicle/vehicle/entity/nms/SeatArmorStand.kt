@@ -1,15 +1,15 @@
-package dev.sky_lock.pocketlifevehicle.vehicle
+package dev.sky_lock.pocketlifevehicle.vehicle.entity.nms
 
 import dev.sky_lock.pocketlifevehicle.VehicleEntityType
 import dev.sky_lock.pocketlifevehicle.text.ext.sendActionBar
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.SeatPosition
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleStatus
 import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.LivingEntity
-import net.minecraft.world.entity.ai.attributes.AttributeMap
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
 import org.bukkit.Location
-import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 import kotlin.math.atan
 import kotlin.math.pow
@@ -18,26 +18,17 @@ import kotlin.math.sqrt
 /**
  * @author sky_lock
  */
-class SeatArmorStand : ArmorStand {
+class SeatArmorStand : BaseArmorStand<SeatArmorStand> {
     private var status: VehicleStatus? = null
     private var position: SeatPosition? = null
 
-    constructor(entityTypes: EntityType<out ArmorStand>, world: Level) : super(entityTypes, world) {
+    constructor(entityTypes: EntityType<ArmorStand>, world: Level) : super(entityTypes, world) {
         this.kill()
     }
 
-    constructor(world: Level, x: Double, y: Double, z: Double) : super(
-        VehicleEntityType.SEAT.type(), world
-    ) {
-        super.setPos(x, y, z)
-        this.readAdditionalSaveData(EntityVehicleHelper.seatNBT())
-
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_MAX_HEALTH)
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR)
-        this.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)
-    }
+    constructor(level: Level, x: Double, y: Double, z: Double) : super(
+        VehicleEntityType.SEAT.type(), level, x, y, z
+    )
 
     val passenger: Player?
         get() {
@@ -59,16 +50,8 @@ class SeatArmorStand : ArmorStand {
         this.absMoveTo(loc.x, center.y - 1.675 + status.model.height, loc.z, center.yaw, center.pitch)
     }
 
-    override fun getAttributes() : AttributeMap {
-        return AttributeMap(LivingEntity.createLivingAttributes().build())
-    }
-
-    //足音がなるかどうか
-    override fun isSilent() = true
-
     // 毎tick呼び出される
     override fun aiStep() {
-
         if (!isDriverSeat) {
             synchronize()
             return
@@ -112,15 +95,12 @@ class SeatArmorStand : ArmorStand {
 
         when (seatPos) {
             SeatPosition.ONE_DRIVER -> return origin
-            SeatPosition.TWO_DRIVER -> {
-                return origin
-            }
+            SeatPosition.TWO_DRIVER -> return origin
             SeatPosition.TWO_PASSENGER -> {
                 val vec2 = unit.clone().rotateAroundY(Math.PI).multiply(depth)
                 return origin.add(vec2)
             }
-            else -> {
-            }
+            else -> {}
         }
 
         val distance = sqrt((depth.pow(2) + width.pow(2)).toDouble())
@@ -150,4 +130,5 @@ class SeatArmorStand : ArmorStand {
             }
         }
     }
+
 }
