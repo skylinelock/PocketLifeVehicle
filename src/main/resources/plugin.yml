@@ -3,10 +3,4 @@ main: dev.sky_lock.pocketlifevehicle.VehiclePlugin
 version: 2.0.0
 author: sky_lock
 depend: [ProtocolLib]
-loadbefore: [PocketLifeCore]
 api-version: 1.19
-
-commands:
-  vehicle:
-    description: vehicle command.
-    aliases: [car]

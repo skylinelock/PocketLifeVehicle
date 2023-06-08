@@ -44,7 +44,10 @@ class PluginConfiguration {
 
     fun setWorldVehicleCanPlaced(uuid: UUID, canBePlaced: Boolean) {
         val allowedWorlds = this.allowedWorlds().toMutableList()
-        if (canBePlaced) allowedWorlds.add(uuid) else allowedWorlds.remove(uuid)
+        if (canBePlaced) {
+            if (allowedWorlds.contains(uuid)) return
+            allowedWorlds.add(uuid)
+        } else allowedWorlds.remove(uuid)
         config.set(WORLDS_KEY, allowedWorlds.map { uid -> uid.toString() })
     }
 

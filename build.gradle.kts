@@ -22,11 +22,15 @@ repositories {
     mavenCentral()
     // For protocol-lib
     maven(url = "https://repo.dmulloy2.net/nexus/repository/public/")
+    // For CommandAPI
+    maven(url = "https://repo.codemc.org/repository/maven-public/")
 }
 
 dependencies {
     paperweight.paperDevBundle("1.19.4-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
+    implementation("dev.jorel:commandapi-bukkit-shade:9.0.1")
+    implementation("dev.jorel:commandapi-bukkit-kotlin:9.0.1")
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0")
 }
@@ -42,8 +46,6 @@ tasks {
     }
 
     shadowJar {
-        fun reloc(pkg: String) = relocate(pkg, "dev.sky_lock.dependency.$pkg")
-
-        relocate("me.lucko.commodore", "dev.sky_lock.pocketlifevehicle.commodore")
+        relocate("dev.jorel.commandapi", "dev.sky_lock.pocketlife.commandapi")
     }
 }

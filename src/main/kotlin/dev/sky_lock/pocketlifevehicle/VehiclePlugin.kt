@@ -1,7 +1,8 @@
 package dev.sky_lock.pocketlifevehicle
 
 // import games.pocketlife.play.VehicleAPI
-import dev.sky_lock.pocketlifevehicle.command.CommandHandler
+import dev.jorel.commandapi.CommandAPI
+import dev.jorel.commandapi.CommandAPIBukkitConfig
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
 import dev.sky_lock.pocketlifevehicle.inventory.CustomInventoryListener
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolationList
@@ -27,16 +28,22 @@ class VehiclePlugin : JavaPlugin() {
         private set
 
     override fun onLoad() {
+        CommandAPI.onLoad(CommandAPIBukkitConfig(this).verboseOutput(true))
+
         VehicleEntityType.registerTypes()
     }
 
     override fun onEnable() {
         instance = this
+
+        CommandAPI.onEnable()
+        CommandManager().initialize()
+
         this.pluginConfiguration = PluginConfiguration()
         this.parkingViolationList = ParkingViolationList()
         this.parkingViolationList.load()
 
-        getCommand("vehicle")?.setExecutor(CommandHandler())
+        // getCommand("vehicle")?.setExecutor(CommandHandler())
         // this.commandExecutor = PluginCommandExecutor()
         // this.commandExecutor.register(TestCommand())
 
@@ -45,6 +52,7 @@ class VehiclePlugin : JavaPlugin() {
     }
 
     override fun onDisable() {
+        CommandAPI.onDisable()
         ModelRegistry.saveToFile()
         pluginConfiguration.save()
         VehicleManager.registerAllIllegalParkings()
