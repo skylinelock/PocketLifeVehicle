@@ -28,7 +28,7 @@ class VehiclePlugin : JavaPlugin() {
         private set
 
     override fun onLoad() {
-        CommandAPI.onLoad(CommandAPIBukkitConfig(this).verboseOutput(true))
+        CommandAPI.onLoad(CommandAPIBukkitConfig(this))
 
         VehicleEntityType.registerTypes()
     }
@@ -42,10 +42,6 @@ class VehiclePlugin : JavaPlugin() {
         this.pluginConfiguration = PluginConfiguration()
         this.parkingViolationList = ParkingViolationList()
         this.parkingViolationList.load()
-
-        // getCommand("vehicle")?.setExecutor(CommandHandler())
-        // this.commandExecutor = PluginCommandExecutor()
-        // this.commandExecutor.register(TestCommand())
 
         this.registerEventListeners()
         // VehicleAPI.registerImpl(VehicleAPIImpl())
