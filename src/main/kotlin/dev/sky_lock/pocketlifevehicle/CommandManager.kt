@@ -28,10 +28,8 @@ class CommandManager {
         commandTree("vehicle") {
             withAliases("car")
             withShortDescription("Vehicle Plugin Commands")
-            literalArgument("debug") {
-                withPermission(Permission.ADMIN_COMMAND.name)
-            }
-            literalArgument("give") {
+            withUsage("")
+            literalArgument("give", "give") {
                 withPermission(Permission.ADMIN_COMMAND.name)
                 vehicleModelArgument {
                     playerArgument("player") {
@@ -50,7 +48,7 @@ class CommandManager {
                     }
                 }
             }
-            literalArgument("search") {
+            literalArgument("search", "search") {
                 playerArgument("player") {
                     withPermission(Permission.ADMIN_COMMAND.name)
                     playerExecutor { player, args ->
@@ -79,7 +77,7 @@ class CommandManager {
                     player.sendVehiclePrefixedErrorMessage("別ワールドにある乗り物の現在地は取得できません")
                 }
             }
-            literalArgument("spawn") {
+            literalArgument("spawn", "spawn") {
                 withPermission(Permission.ADMIN_COMMAND.name)
                 vehicleModelArgument {
                     playerArgument("player") {
@@ -138,7 +136,7 @@ class CommandManager {
                     player.sendVehiclePrefixedSuccessMessage("$model.id を取得しました")
                 }
             }
-            literalArgument("pop") {
+            literalArgument("pop", "pop") {
                 playerArgument("player") {
                     withPermission(Permission.ADMIN_COMMAND.name)
                     playerExecutor { player, args ->
@@ -162,7 +160,7 @@ class CommandManager {
                     }
                 }
             }
-            literalArgument("forgive") {
+            literalArgument("forgive", "forgive") {
                 withPermission(Permission.ADMIN_COMMAND.name)
                 playerArgument("player") {
                     playerExecutor { player, args ->
@@ -184,36 +182,36 @@ class CommandManager {
                     }
                 }
             }
-            literalArgument("event") {
+            literalArgument("event", "event") {
                 withPermission(Permission.ADMIN_COMMAND.name)
-                literalArgument("clear") {
+                literalArgument("clear", "clear") {
                     playerExecutor { player, _ ->
                         VehicleManager.removeEventVehicles()
                         player.sendVehiclePrefixedSuccessMessage("全てのイベント車両を削除しました")
                     }
                 }
-                literalArgument("unlock") {
+                literalArgument("unlock", "unlock") {
                     playerExecutor { player, _ ->
                         VehicleManager.setLockForEventVehicles(false)
                         player.sendVehiclePrefixedSuccessMessage("全てのイベント車両をアンロックしました")
                     }
                 }
-                literalArgument("lock") {
+                literalArgument("lock", "lock") {
                     playerExecutor { player, _ ->
                         VehicleManager.setLockForEventVehicles(true)
                         player.sendVehiclePrefixedSuccessMessage("全てのイベント車両をロックしました")
                     }
                 }
             }
-            literalArgument("model") {
+            literalArgument("model", "model") {
                 withPermission(Permission.ADMIN_COMMAND.name)
                 playerExecutor { player, _ ->
                     player.openInventory(InventoryModelList(player))
                 }
             }
-            literalArgument("world") {
+            literalArgument("world", "world") {
                 withPermission(Permission.ADMIN_COMMAND.name)
-                literalArgument("list") {
+                literalArgument("list", "list") {
                     playerExecutor { player, _ ->
                         val config = VehiclePlugin.instance.pluginConfiguration
                         Bukkit.getWorlds().forEach { world ->
@@ -225,7 +223,7 @@ class CommandManager {
                         }
                     }
                 }
-                literalArgument("add") {
+                literalArgument("add", "add") {
                     playerExecutor { player, _ ->
                         val config = VehiclePlugin.instance.pluginConfiguration
                         val uid = player.world.uid
@@ -233,7 +231,7 @@ class CommandManager {
                         player.sendVehiclePrefixedSuccessMessage("このワールドでの乗り物の使用を許可しました")
                     }
                 }
-                literalArgument("remove") {
+                literalArgument("remove", "remove") {
                     playerExecutor { player, _ ->
                         val config = VehiclePlugin.instance.pluginConfiguration
                         val uid = player.world.uid
@@ -245,9 +243,9 @@ class CommandManager {
                     player.sendVehiclePrefixedErrorMessage("/vehicle world [add|remove|list]")
                 }
             }
-            literalArgument("reload") {
+            literalArgument("reload", "reload") {
                 withPermission(Permission.ADMIN_COMMAND.name)
-                literalArgument("from") {
+                literalArgument("from", "from") {
                     anyExecutor { player, _ ->
                         ModelRegistry.reloadConfig()
                         VehiclePlugin.instance.pluginConfiguration.load()
@@ -255,7 +253,7 @@ class CommandManager {
                         player.sendVehiclePrefixedSuccessMessage("ディスクからデータを読み込みました")
                     }
                 }
-                literalArgument("to") {
+                literalArgument("to", "to") {
                     anyExecutor { player, _ ->
                         VehiclePlugin.instance.pluginConfiguration.save()
                         VehiclePlugin.instance.parkingViolationList.save()
