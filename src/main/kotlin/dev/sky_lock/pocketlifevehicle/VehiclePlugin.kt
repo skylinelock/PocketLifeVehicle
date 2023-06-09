@@ -37,7 +37,7 @@ class VehiclePlugin : JavaPlugin() {
         instance = this
 
         CommandAPI.onEnable()
-        CommandManager().initialize()
+        Command.register()
 
         this.pluginConfiguration = PluginConfiguration()
         this.parkingViolationList = ParkingViolationList()
@@ -51,9 +51,11 @@ class VehiclePlugin : JavaPlugin() {
         CommandAPI.onDisable()
         ModelRegistry.saveToFile()
         pluginConfiguration.save()
+
         VehicleManager.registerAllIllegalParkings()
         VehicleManager.removeEventVehicles()
         parkingViolationList.save()
+
         VehicleEntityType.unregisterTypes()
     }
 

@@ -23,8 +23,8 @@ import org.bukkit.entity.Player
  * @author sky_lock
  */
 
-class CommandManager {
-    fun initialize() {
+object Command {
+    fun register() {
         commandTree("vehicle") {
             withAliases("car")
             withShortDescription("Vehicle Plugin Commands")
