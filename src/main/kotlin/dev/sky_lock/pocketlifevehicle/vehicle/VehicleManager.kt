@@ -187,8 +187,8 @@ object VehicleManager {
             }
             val seat = vehicle.seats.mapNotNull {
                     seatId -> nearByEntities.firstOrNull { it.uniqueId == seatId }
-            }.filter { it.passengers.isEmpty() }.random()
-            seat.addPassenger(player)
+            }.filter { it.passengers.isEmpty() }.randomOrNull()
+            seat?.addPassenger(player)
             return
         }
         if (entity.uniqueId == driverSeatId) {
