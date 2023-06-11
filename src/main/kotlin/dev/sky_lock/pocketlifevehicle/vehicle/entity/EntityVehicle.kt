@@ -167,7 +167,11 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         val line = Line()
 
         if (!model.flag.eventOnly) {
-            val fuelRate = fuel / model.spec.maxFuel
+            var fuelRate = fuel / model.spec.maxFuel
+            if (fuelRate > 1.0F) {
+                fuelRate = 1.0F
+                fuel = model.spec.maxFuel
+            }
             val filled = (70 * fuelRate).roundToInt()
 
             line.redBold("E ")
