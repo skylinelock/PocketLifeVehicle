@@ -10,21 +10,10 @@ import org.bukkit.attribute.Attribute
  * @author sky_lock
  */
 
-open class BaseArmorStand<T: ArmorStand> : ArmorStand {
+open class BaseArmorStand<T: ArmorStand>(type: EntityType<ArmorStand>, level: Level) : ArmorStand(type, level) {
 
-    constructor(type: EntityType<ArmorStand>, level: Level) : super(type, level) {
-        super.kill()
-    }
-
-    constructor(type: EntityType<T>, level: Level, x: Double, y: Double, z: Double) : super(type, level) {
-        super.setPos(x, y, z)
-
-        super.setNoGravity(false)
-        super.setMarker(false)
-
-        super.setNoBasePlate(true)
-        super.setInvulnerable(true)
-        super.setInvisible(true)
+    init {
+        setDefaultValues()
 
         super.craftAttributes.registerAttribute(Attribute.GENERIC_MAX_HEALTH)
         super.craftAttributes.registerAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE)
@@ -38,6 +27,17 @@ open class BaseArmorStand<T: ArmorStand> : ArmorStand {
 
     override fun getAttributes(): AttributeMap {
         return AttributeMap(createLivingAttributes().build())
+    }
+
+    fun setDependingValue() {
+        super.setNoBasePlate(true)
+    }
+
+    private fun setDefaultValues() {
+        super.setNoGravity(false)
+        super.setMarker(false)
+        super.setInvulnerable(true)
+        super.setInvisible(true)
     }
 
 }

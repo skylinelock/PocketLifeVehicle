@@ -1,10 +1,11 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.entity.nms
 
-import dev.sky_lock.pocketlifevehicle.VehicleEntityType
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.cancelEngineSound
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.playEngineSound
-import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleStatus
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
 import net.minecraft.core.Rotations
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.damagesource.DamageSource
 import net.minecraft.world.damagesource.DamageTypes
 import net.minecraft.world.entity.EntityDimensions
@@ -13,55 +14,23 @@ import net.minecraft.world.entity.Pose
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
+import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
 import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack
 
 /**
  * @author sky_lock
  */
-class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
-    private var status: VehicleStatus? = null
-    private var driverSeat: SeatArmorStand? = null
+class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
+    BaseArmorStand<ModelArmorStand>(entityType, world) {
+    lateinit var entityVehicle: EntityVehicle
 
-    constructor(entityTypes: EntityType<ArmorStand>, world: Level) : super(entityTypes, world) {
-        this.kill()
-    }
-
-    constructor(
-        level: Level,
-        x: Double,
-        y: Double,
-        z: Double,
-        yaw: Float
-    ) : super(VehicleEntityType.MODEL.type(), level, x, y, z) {
-        super.setYRot(yaw)
-        super.setYBodyRot(yaw)
-
-        super.setSmall(true)
-        super.setMaxUpStep(1.126F)
-    }
-
-    fun assemble(status: VehicleStatus) {
-        this.status = status
-
-        val model = status.model
-        val modelOption = model.modelOption
-
-        super.setItemSlot(modelOption.position.slot, CraftItemStack.asNMSCopy(model.itemStack))
-        super.setRightArmPose(Rotations(0F, 0F, 0F))
-        super.setSmall(!modelOption.isBig)
-        super.refreshDimensions()
-    }
-
-    fun setDriverSeat(driverSeat: SeatArmorStand) {
-        this.driverSeat = driverSeat
-    }
-
-    override fun kill() {
-        if (status != null) {
-            cancelEngineSound(status!!)
-        }
-        super.kill()
+    override fun load(nbt: CompoundTag) {
+        super.load(nbt)
+        val v = VehicleManager.findOrNull(uuid)
+        if (v == null) {
+            kill()
+        } else this.entityVehicle = v
     }
 
     override fun onClimbable() = false
@@ -81,15 +50,13 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
     override fun doWaterSplashEffect() {
         super.doWaterSplashEffect()
         // SubmergedMessageTask().run(status)
-        cancelEngineSound(status!!)
+        cancelEngineSound(entityVehicle)
     }
 
     override fun getDimensions(entityPose: Pose): EntityDimensions {
-        if (status == null) {
-            return super.getDimensions(entityPose)
-        }
+        if (!::entityVehicle.isInitialized) return super.getDimensions(entityPose)
         val size = this.type.dimensions
-        val boxSize = status!!.model.size
+        val boxSize = entityVehicle.model.size
         val widthScale = boxSize.baseSide / size.width
         val heightScale = boxSize.height / size.height
         return this.type.dimensions.scale(widthScale, heightScale)
@@ -98,47 +65,38 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
     // 毎tick呼び出される
     // 引数vec3のxyzは絶対座標で、相対的な動きはしない
     override fun travel(vec3: Vec3) {
-        if (status == null) {
-            super.travel(vec3)
-            return
-        }
-        val status = status!!
-
-        val driverSeat = driverSeat!!
-        if (status.isUndrivable) {
-            status.engine.stop()
+        if (!::entityVehicle.isInitialized) return
+        if (entityVehicle.isScrapped) {
+            entityVehicle.speedController.zero()
             super.travel(vec3)
             return
         }
         // TODO: 水出たときに音を鳴らす
         if (isInWater || isInLava) {
-            status.engine.stop()
+            entityVehicle.speedController.zero()
             super.travel(vec3)
             return
         }
         if (tickCount % 2 == 0) {
-            playEngineSound(status)
+            playEngineSound(entityVehicle)
         }
-        val driver = driverSeat.passenger
-
+        val driver = entityVehicle.driver
         if (driver == null) {
-            status.engine.stop()
+            entityVehicle.speedController.zero()
             super.travel(vec3)
             return
         }
-
-        val nmsDriver = (driver as CraftPlayer).handle
+        val nmsDriver = (Bukkit.getPlayer(driver) as CraftPlayer).handle
 
         val sidewaysSpeed = nmsDriver.xxa
         val forwardSpeed = nmsDriver.zza
         val spaced = nmsDriver.jumping
 
-        status.steering.update(nmsDriver, sidewaysSpeed)
-        status.engine.update(sidewaysSpeed, forwardSpeed)
-        this.speed = status.engine.currentSpeed
+        this.speed = entityVehicle.calculateSpeed(sidewaysSpeed, forwardSpeed)
+        entityVehicle.updateYaw(nmsDriver, sidewaysSpeed)
 
         if (spaced) {
-            yRot = status.yaw
+            yRot = entityVehicle.location.yaw
             yRotO = this.yRot
             xRot = 0.0f
             this.setRot(yRot, xRot)
@@ -146,7 +104,7 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
             this.yHeadRot = this.yBodyRot
             super.travel(vec3.add(Vec3(sidewaysSpeed.toDouble(), 0.0, forwardSpeed.toDouble())))
         } else {
-            yRot = status.yaw
+            yRot = entityVehicle.location.yaw
             yRotO = this.yRot
             xRot = 0.0f
             this.setRot(yRot, xRot)
@@ -157,28 +115,23 @@ class ModelArmorStand : BaseArmorStand<ModelArmorStand> {
          }
     }
 
-/*    override fun handleRelativeFrictionAndCalculateMovement(movementInput: Vec3, slipperiness: Float): Vec3 {
-        val driverSeat = driverSeat!!
-        if (driverSeat.passengers.isEmpty()) {
-            return deltaMovement
-        }
-        val driver = driverSeat.passengers[0].bukkitEntity as CraftPlayer
-        val player = driver.handle
-
-        if (player.jumping) {
-            val iceFriction = 0.98F
-            val frictionalSpeed = this.speed * (0.21600002F / iceFriction * iceFriction * iceFriction)
-            moveRelative(frictionalSpeed, movementInput)
-            move(MoverType.SELF, movementInput)
-            return deltaMovement
-        }
-        return super.handleRelativeFrictionAndCalculateMovement(movementInput, slipperiness)
-    }*/
-
     override fun tick() {
         super.tick()
-        val status = status!!
-        status.updateLocation(bukkitEntity.location)
+        if (!::entityVehicle.isInitialized) return
+        setDependingValue()
+
+        entityVehicle.location = bukkitEntity.location
+
+        val model = entityVehicle.model
+        val modelOption = entityVehicle.model.modelOption
+
+        super.setYRot(entityVehicle.location.yaw)
+        super.setYBodyRot(entityVehicle.location.yaw)
+        super.setSmall(true)
+        super.setMaxUpStep(1.126F)
+        super.setItemSlot(modelOption.position.slot, CraftItemStack.asNMSCopy(model.itemStack))
+        super.setRightArmPose(Rotations(0F, 0F, 0F))
+        super.setSmall(!modelOption.isBig)
     }
 
 }

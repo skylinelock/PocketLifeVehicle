@@ -99,7 +99,7 @@ object Command {
                                 return@playerExecutor
                             }
                             VehicleManager.placeVehicle(target.uniqueId, target.location, model, model.spec.maxFuel)
-                            player.sendVehiclePrefixedSuccessMessage("$name に $model.id を渡しました")
+                            player.sendVehiclePrefixedSuccessMessage("$name に ${model.id} を渡しました")
                             target.sendVehiclePrefixedSuccessMessage("乗り物を受け取りました")
                         }
                     }
@@ -143,7 +143,7 @@ object Command {
                         val target = args[0] as Player
                         val uuid = target.uniqueId
                         val name = target.name
-                        if (VehicleManager.hasVehicle(uuid)) {
+                        if (VehicleManager.isOwner(uuid)) {
                             VehicleManager.pop(uuid)
                             player.sendVehiclePrefixedSuccessMessage("$name の乗り物をアイテム化しました")
                         } else {
@@ -152,7 +152,7 @@ object Command {
                     }
                 }
                 playerExecutor { player, _ ->
-                    if (VehicleManager.hasVehicle(player.uniqueId)) {
+                    if (VehicleManager.isOwner(player.uniqueId)) {
                         VehicleManager.pop(player.uniqueId)
                         player.sendVehiclePrefixedSuccessMessage("乗り物をアイテム化しました")
                     } else {
@@ -192,13 +192,13 @@ object Command {
                 }
                 literalArgument("unlock", "unlock") {
                     playerExecutor { player, _ ->
-                        VehicleManager.setLockForEventVehicles(false)
+                        VehicleManager.turnEventVehicleLockStatus(false)
                         player.sendVehiclePrefixedSuccessMessage("全てのイベント車両をアンロックしました")
                     }
                 }
                 literalArgument("lock", "lock") {
                     playerExecutor { player, _ ->
-                        VehicleManager.setLockForEventVehicles(true)
+                        VehicleManager.turnEventVehicleLockStatus(true)
                         player.sendVehiclePrefixedSuccessMessage("全てのイベント車両をロックしました")
                     }
                 }

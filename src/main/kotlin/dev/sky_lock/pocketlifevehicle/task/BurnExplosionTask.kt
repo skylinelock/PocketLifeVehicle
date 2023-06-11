@@ -1,17 +1,10 @@
 package dev.sky_lock.pocketlifevehicle.task
 
-import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedErrorMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
-import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
-import org.bukkit.Bukkit
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
-import org.bukkit.entity.Player
-import org.bukkit.scheduler.BukkitRunnable
-
 /**
  * @author sky_lock
  */
+
+/*
 class BurnExplosionTask {
     fun run(vehicle: EntityVehicle) {
         object : BukkitRunnable() {
@@ -29,7 +22,7 @@ class BurnExplosionTask {
                 }
                 if (count == 0) {
                     vehicle.playExplosionEffect()
-                    vehicle.status.owner?.let { ownerUuid ->
+                    vehicle.owner?.let { ownerUuid ->
                         val owner = Bukkit.getPlayer(ownerUuid) ?: return@let
                         if (vehicle.passengers.any { player: Player -> player.uniqueId == ownerUuid }) {
                             return@let
@@ -50,4 +43,4 @@ class BurnExplosionTask {
             }
         }.runTaskTimer(VehiclePlugin.instance, 5L, 20L)
     }
-}
+}*/

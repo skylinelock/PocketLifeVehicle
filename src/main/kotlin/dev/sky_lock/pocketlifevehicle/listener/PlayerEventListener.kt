@@ -1,9 +1,9 @@
 package dev.sky_lock.pocketlifevehicle.listener
 
+import dev.sky_lock.pocketlifevehicle.Keys
 import dev.sky_lock.pocketlifevehicle.Permission
-import dev.sky_lock.pocketlifevehicle.PluginKey
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
-import dev.sky_lock.pocketlifevehicle.item.UUIDTagType
+import dev.sky_lock.pocketlifevehicle.nbt.CustomDataType
 import dev.sky_lock.pocketlifevehicle.text.Line
 import dev.sky_lock.pocketlifevehicle.text.ext.sendActionBar
 import dev.sky_lock.pocketlifevehicle.text.ext.sendMessage
@@ -47,6 +47,7 @@ class PlayerEventListener : Listener {
         val vehicle = EntityVehicleFacade.fromBukkit(event.dismounted) ?: return
         if (vehicle.isSeat() && entity is Player) {
             entity.sendActionBar(Component.empty())
+            vehicle.dismount()
         }
     }
 
@@ -64,7 +65,8 @@ class PlayerEventListener : Listener {
         val player = event.player
         VehicleManager.registerIllegalParking(player.uniqueId)
         val riding = player.vehicle ?: return
-        EntityVehicleFacade.fromBukkit(riding)?.dismount(player)
+        riding.eject()
+        VehicleManager.unregisterDriver(player.uniqueId)
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -74,7 +76,6 @@ class PlayerEventListener : Listener {
         val mount = event.player.vehicle ?: return
         val vehicle = EntityVehicleFacade.fromBukkit(mount) ?: return
         if (!vehicle.isSeat()) return
-        if (!vehicle.isDriverSeat()) return
         val player = event.player
         val loc = player.location
         loc.yaw = vehicle.getYaw()
@@ -143,8 +144,8 @@ class PlayerEventListener : Listener {
         where.yaw = player.eyeLocation.yaw
 
         val container = item.itemMeta.persistentDataContainer
-        val owner = container.get(PluginKey.OWNER, UUIDTagType.INSTANCE)
-        var fuel = container.get(PluginKey.FUEL, PersistentDataType.FLOAT)
+        val owner = container.get(Keys.OWNER.namespace(), CustomDataType.UUID)
+        var fuel = container.get(Keys.FUEL.namespace(), PersistentDataType.FLOAT)
         if (owner == null || fuel == null) {
             placeVehicleEntity(item, player.uniqueId, model, where, model.spec.maxFuel)
             return
@@ -180,24 +181,13 @@ class PlayerEventListener : Listener {
                 vehicle.showEventVehicleUtility(player)
                 return
             }
-            if (vehicle.isSeat()) {
-                if (vehicle.isOccupied()) return
-                if (vehicle.isLocked()) {
-                    sendRefusedReason(player, "この乗り物には鍵が掛かっています")
-                    return
-                }
-                armorStand.addPassenger(player)
-                return
-            }
-            if (!vehicle.isModel()) {
-                return
-            }
-            if (vehicle.hasReachedCapacity()) {
-                sendRefusedReason(player, "この乗り物は満員です")
-                return
-            }
+            if (vehicle.isOccupied()) return
             if (vehicle.isLocked()) {
                 sendRefusedReason(player, "この乗り物には鍵が掛かっています")
+                return
+            }
+            if (vehicle.hasReachedCapacity(player)) {
+                sendRefusedReason(player, "この乗り物は満員です")
                 return
             }
             vehicle.mount(player)
@@ -216,33 +206,19 @@ class PlayerEventListener : Listener {
             return
         }
 
-        if (vehicle.isSeat()) {
-            if (armorStand.passengers.isNotEmpty()) return
-            if (clicked == owner) {
-                armorStand.addPassenger(player)
-                return
-            }
-            if (vehicle.isLocked()) {
-                sendRefusedReason(player, "この乗り物には鍵が掛かっています")
-                return
-            }
-            armorStand.addPassenger(player)
-        } else if (vehicle.isModel()) {
-            if (vehicle.hasReachedCapacity()) {
-                sendRefusedReason(player, "この乗り物は満員です")
-                return
-            }
-            if (clicked == owner) {
-                vehicle.mount(player)
-                return
-            }
-            if (vehicle.isLocked()) {
-                sendRefusedReason(player, "この乗り物には鍵が掛かっています")
-                return
-            }
+        if (vehicle.isOccupied()) return
+        if (clicked == owner) {
             vehicle.mount(player)
+            return
         }
+        if (vehicle.isLocked()) {
+            sendRefusedReason(player, "この乗り物には鍵が掛かっています")
+            return
+        }
+        vehicle.mount(player)
     }
+
+
 
     private fun placeVehicleEntity(
         vehicleStack: ItemStack,
@@ -251,8 +227,11 @@ class PlayerEventListener : Listener {
         location: Location,
         fuel: Float
     ) {
-        // VehicleManager.pop(owner)
-        VehicleManager.placeVehicle(owner, location, model, fuel)
+        if (model.flag.eventOnly) {
+            VehicleManager.placeEventVehicle(location, model)
+        } else {
+            VehicleManager.placeVehicle(owner, location, model, fuel)
+        }
         location.world.playSound(location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.0f)
         vehicleStack.subtract()
     }

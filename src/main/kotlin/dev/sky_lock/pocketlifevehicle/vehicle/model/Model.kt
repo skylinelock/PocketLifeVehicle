@@ -1,6 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.model
 
-import dev.sky_lock.pocketlifevehicle.PluginKey
+import dev.sky_lock.pocketlifevehicle.Keys
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.text.Line
 import org.bukkit.configuration.serialization.ConfigurationSerializable
@@ -26,7 +26,7 @@ class Model(
                 .setName(Line().colorCoded(name))
                 .setLore(lore.map { text ->  Line().colorCoded(text) })
                 .setCustomModelData(modelOption.id)
-                .setPersistentData(PluginKey.ID, PersistentDataType.STRING, id)
+                .setPersistentData(Keys.MODEL_ID.namespace(), PersistentDataType.STRING, id)
                 .setUnbreakable(true)
                 .addItemFlags(*ItemFlag.values())
                 .build()

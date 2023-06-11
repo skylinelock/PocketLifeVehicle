@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.item
+package dev.sky_lock.pocketlifevehicle.nbt
 
 import org.bukkit.persistence.PersistentDataAdapterContext
 import org.bukkit.persistence.PersistentDataType
@@ -33,7 +33,4 @@ class UUIDTagType: PersistentDataType<ByteArray, UUID> {
         return UUID::class.java
     }
 
-    companion object {
-        val INSTANCE = UUIDTagType()
-    }
 }

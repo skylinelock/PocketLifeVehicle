@@ -1,89 +1,77 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.entity.nms
 
-import dev.sky_lock.pocketlifevehicle.VehicleEntityType
 import dev.sky_lock.pocketlifevehicle.text.ext.sendActionBar
-import dev.sky_lock.pocketlifevehicle.vehicle.entity.SeatPosition
-import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleStatus
-import dev.sky_lock.pocketlifevehicle.vehicle.model.SeatOption
+import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
+import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import java.util.*
 import kotlin.math.atan
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
+ *
+ *
+ *
+ *
  * @author sky_lock
  */
-class SeatArmorStand : BaseArmorStand<SeatArmorStand> {
-    private var status: VehicleStatus? = null
-    private var position: SeatPosition? = null
+class SeatArmorStand(entityTypes: EntityType<ArmorStand>, world: Level) :
+    BaseArmorStand<SeatArmorStand>(entityTypes, world) {
+    lateinit var vehicleId: UUID
+    lateinit var entityVehicle: EntityVehicle
 
-    constructor(entityTypes: EntityType<ArmorStand>, world: Level) : super(entityTypes, world) {
-        this.kill()
+    override fun saveWithoutId(nbt: CompoundTag): CompoundTag {
+        val parent = super.saveWithoutId(nbt)
+        parent.putUUID("Vehicle.Id", vehicleId)
+        return parent
     }
 
-    constructor(level: Level, x: Double, y: Double, z: Double) : super(
-        VehicleEntityType.SEAT.type(), level, x, y, z
-    )
-
-    val passenger: Player?
-        get() {
-            if (!isVehicle) return null
-            val passenger = bukkitEntity.passenger
-            return if (passenger is Player) passenger else null
+    override fun load(nbt: CompoundTag) {
+        super.load(nbt)
+        if (!nbt.hasUUID("Vehicle.Id")) return
+        this.vehicleId = nbt.getUUID("Vehicle.Id")
+        val v = VehicleManager.findOrNull(vehicleId)
+        if (v == null) {
+            discard()
+            return
         }
-
-    val isDriverSeat: Boolean
-        get() = position === SeatPosition.ONE_DRIVER ||
-            position === SeatPosition.TWO_DRIVER ||
-            position === SeatPosition.FOUR_DRIVER
-
-    fun assemble(status: VehicleStatus, position: SeatPosition) {
-        this.status = status
-        this.position = position
-        val center = status.location
-        val loc = calcSeatPosition(center, status.model.seatOption, position)
-        super.absMoveTo(loc.x, center.y - 1.675 + status.model.height, loc.z, center.yaw, center.pitch)
+        this.entityVehicle = v
     }
 
     // 毎tick呼び出される
     override fun aiStep() {
-        if (!isDriverSeat) {
-            synchronize()
+        // setDependingValue()
+        if (!::entityVehicle.isInitialized) {
+            super.aiStep()
             return
         }
+        val position = VehicleManager.getSeatId(bukkitEntity as org.bukkit.entity.ArmorStand)
         if (passengers.isEmpty()) {
-            synchronize()
+            updatePosition(position)
             return
         }
         val passenger = passengers[0] as LivingEntity
         if (passenger !is net.minecraft.world.entity.player.Player) {
-            synchronize()
+            updatePosition(position)
             return
         }
-        (passenger.bukkitEntity as Player).sendActionBar(status!!.meterPanelLine())
-        synchronize()
+        if (position == 0) {
+            (passenger.bukkitEntity as Player).sendActionBar(entityVehicle.meterPanelLine())
+        }
+        updatePosition(position)
     }
 
-    private fun synchronize() {
-        val status = status!!
-        val loc = calcSeatPosition(status.location, status.model.seatOption, position!!)
-        xo = loc.x
-        yo = status.location.y - 1.675 + status.model.height
-        zo = loc.z
-        setPos(xo, yo, zo)
-        yRot = status.location.yaw
-        yRotO = yRot
-        xRot = status.location.pitch
-        setRot(yRot, xRot)
-    }
-
-    private fun calcSeatPosition(location: Location, seatOption: SeatOption, seatPos: SeatPosition): Location {
-        val loc = location.clone()
+    private fun updatePosition(position: Int) {
+        val loc = entityVehicle.location.clone()
+        val seatOption = entityVehicle.model.seatOption
+        val capacity = entityVehicle.seats.size
 
         val offset = seatOption.offset
         val depth = seatOption.depth
@@ -93,14 +81,17 @@ class SeatArmorStand : BaseArmorStand<SeatArmorStand> {
         val vec = unit.clone().multiply(offset)
         val origin = loc.add(vec)
 
-        when (seatPos) {
-            SeatPosition.ONE_DRIVER -> return origin
-            SeatPosition.TWO_DRIVER -> return origin
-            SeatPosition.TWO_PASSENGER -> {
+        if (capacity == 1) {
+            setPosRot(origin)
+            return
+        }
+        if (capacity == 2) {
+            if (position != 0) {
                 val vec2 = unit.clone().rotateAroundY(Math.PI).multiply(depth)
-                return origin.add(vec2)
+                origin.add(vec2)
             }
-            else -> {}
+            setPosRot(origin)
+            return
         }
 
         val distance = sqrt((depth.pow(2) + width.pow(2)).toDouble())
@@ -108,27 +99,34 @@ class SeatArmorStand : BaseArmorStand<SeatArmorStand> {
         val vertical = Math.PI / 2
         val theta = if (rad.isNaN()) vertical else rad.toDouble()
 
-        when (seatPos) {
-            SeatPosition.FOUR_DRIVER -> {
-                val vec2 = unit.multiply(width / 2).rotateAroundY(-vertical)
-                return origin.add(vec2)
-            }
-            SeatPosition.FOUR_PASSENGER -> {
-                val vec2 = unit.multiply(width / 2).rotateAroundY(vertical)
-                return origin.add(vec2)
-            }
-            SeatPosition.FOUR_REAR_LEFT -> {
-                val vec2 = unit.multiply(distance).rotateAroundY(vertical + theta)
-                return origin.add(vec2)
-            }
-            SeatPosition.FOUR_REAR_RIGHT -> {
-                val vec2 = unit.multiply(distance).rotateAroundY(-(vertical + theta))
-                return origin.add(vec2)
-            }
-            else -> {
-                throw IllegalStateException()
-            }
+        if (capacity != 4) {
+            throw java.lang.IllegalStateException("Unknown capacity?")
         }
+        var vec2 = unit
+        if (position == 0) {
+            vec2 = vec2.multiply(width / 2).rotateAroundY(-vertical)
+        }
+        if (position == 1) {
+            vec2 = vec2.multiply(width / 2).rotateAroundY(vertical)
+        }
+        if (position == 2) {
+            vec2 = vec2.multiply(distance).rotateAroundY(vertical + theta)
+        }
+        if (position == 3) {
+            vec2 = vec2.multiply(distance).rotateAroundY(-(vertical + theta))
+        }
+        setPosRot(origin.add(vec2))
+    }
+
+    private fun setPosRot(loc: Location) {
+        xo = loc.x
+        yo = entityVehicle.location.y - 1.675 + entityVehicle.model.height
+        zo = loc.z
+        setPos(xo, yo, zo)
+        yRot = entityVehicle.location.yaw
+        yRotO = yRot
+        xRot = entityVehicle.location.pitch
+        setRot(yRot, xRot)
     }
 
 }

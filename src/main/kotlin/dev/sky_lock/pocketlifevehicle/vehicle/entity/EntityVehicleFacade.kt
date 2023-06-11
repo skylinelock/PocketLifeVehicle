@@ -3,7 +3,6 @@ package dev.sky_lock.pocketlifevehicle.vehicle.entity
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryEventVehicle
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryVehicle
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
-import dev.sky_lock.pocketlifevehicle.vehicle.entity.nms.ModelArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.nms.SeatArmorStand
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftArmorStand
 import org.bukkit.entity.Entity
@@ -14,11 +13,11 @@ class EntityVehicleFacade(private val bukkitEntity: CraftArmorStand, private val
     private val nmsEntity = bukkitEntity.handle
 
     fun getOwner(): UUID? {
-        return vehicle.status.owner
+        return vehicle.owner
     }
 
     fun getOwnerName(): String {
-        return vehicle.status.ownerName
+        return vehicle.ownerName
     }
 
     fun getYaw(): Float {
@@ -26,48 +25,27 @@ class EntityVehicleFacade(private val bukkitEntity: CraftArmorStand, private val
     }
 
     fun mount(player: Player) {
-        vehicle.addPassenger(player)
+        VehicleManager.mountPlayer(bukkitEntity, player)
     }
 
-    fun dismount(player: Player) {
-        vehicle.ejectPassenger(player)
+    fun dismount() {
+        VehicleManager.dismount(bukkitEntity)
     }
 
     fun isSeat(): Boolean {
         return nmsEntity is SeatArmorStand
     }
 
-    fun isDriverSeat(): Boolean {
-        if (!isSeat()) return false
-        return (nmsEntity as SeatArmorStand).isDriverSeat
-    }
-
-    fun isModel(): Boolean {
-        return nmsEntity is ModelArmorStand
-    }
-
     fun isLocked(): Boolean {
-        return vehicle.status.isLocked
+        return vehicle.isLocked
     }
 
     fun isOccupied(): Boolean {
         return nmsEntity.isVehicle
     }
 
-    fun load() {
-        if (vehicle.status.isLoaded) return
-        vehicle.spawn()
-        vehicle.status.isLoaded = true
-    }
-
-    fun unload() {
-        if (!vehicle.status.isLoaded) return
-        vehicle.remove()
-        vehicle.status.isLoaded = false
-    }
-
-    fun hasReachedCapacity(): Boolean {
-        return vehicle.passengers.size >= vehicle.status.model.seatOption.capacity.value()
+    fun hasReachedCapacity(player: Player): Boolean {
+        return VehicleManager.isFull(player, vehicle)
     }
 
     fun showVehicleUtility(player: Player) {

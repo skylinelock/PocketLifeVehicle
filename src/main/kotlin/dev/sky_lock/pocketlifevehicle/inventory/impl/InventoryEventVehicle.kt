@@ -25,13 +25,13 @@ class InventoryEventVehicle(private val player: Player, private val vehicle: Ent
 
         val lockBarrier = lockBarrier()
         setSlot(4, lockBarrier) { event ->
-            val isLocked = vehicle.status.isLocked
+            val isLocked = vehicle.isLocked
             if (isLocked) {
                 player.playSound(player.location, Sound.BLOCK_IRON_DOOR_OPEN, 1.0f, 1.4f)
             } else {
                 player.playSound(player.location, Sound.BLOCK_IRON_DOOR_CLOSE, 1.0f, 1.4f)
             }
-            vehicle.status.isLocked = !isLocked
+            vehicle.isLocked = !isLocked
             event.currentItem = lockBarrier()
         }
 
@@ -41,15 +41,15 @@ class InventoryEventVehicle(private val player: Player, private val vehicle: Ent
 
     private fun vehicleInfoLore(): List<Line> {
         val info: MutableList<Line> = ArrayList()
-        info.add(Line().green("名前     : ").colorCoded(vehicle.status.model.name))
-        info.add(Line().green("最高速度 : ").raw(vehicle.status.model.spec.maxSpeed.label))
+        info.add(Line().green("名前     : ").colorCoded(vehicle.model.name))
+        info.add(Line().green("最高速度 : ").raw(vehicle.model.spec.maxSpeed.label))
         info.add(Line().green("状態 : ").yellow("イベント専用"))
         return info
     }
 
     private fun lockBarrier(): ItemStack {
         val lockDesc = listOf(Line().gray("他プレイヤーが乗り物に乗れるかどうか"), Line().gray("を設定することができます"))
-        return if (vehicle.status.isLocked) {
+        return if (vehicle.isLocked) {
             ItemStackBuilder(Material.BARRIER, 1).setName(Line().aquaBold("鍵を開ける"))
                 .setLore(lockDesc).build()
         } else {

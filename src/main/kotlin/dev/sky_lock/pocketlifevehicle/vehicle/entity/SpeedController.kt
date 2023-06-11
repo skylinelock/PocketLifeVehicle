@@ -6,7 +6,7 @@ import java.math.RoundingMode
 /**
  * @author sky_lock
  */
-class Speed {
+class SpeedController {
     private var exactSpeed = BigDecimal.ZERO
 
     val isPositive: Boolean
@@ -42,7 +42,7 @@ class Speed {
         return exactSpeed.toFloat()
     }
 
-    fun zeroize() {
+    fun zero() {
         exactSpeed = BigDecimal.ZERO
     }
 
