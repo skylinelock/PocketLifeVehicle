@@ -25,12 +25,30 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
     BaseArmorStand<ModelArmorStand>(entityType, world) {
     lateinit var entityVehicle: EntityVehicle
 
+    // チャンクロード時に呼ばれる
     override fun load(nbt: CompoundTag) {
         super.load(nbt)
         val v = VehicleManager.findOrNull(uuid)
         if (v == null) {
             kill()
-        } else this.entityVehicle = v
+            return
+        }
+        this.entityVehicle = v
+
+        setDependingValue()
+        applyModelSettings()
+    }
+
+    fun applyModelSettings() {
+        val model = entityVehicle.model
+        val modelOption = entityVehicle.model.modelOption
+        super.setYRot(entityVehicle.location.yaw)
+        super.setYBodyRot(entityVehicle.location.yaw)
+        super.setSmall(true)
+        super.setMaxUpStep(1.126F)
+        super.setItemSlot(modelOption.position.slot, CraftItemStack.asNMSCopy(model.itemStack))
+        super.setRightArmPose(Rotations(0F, 0F, 0F))
+        super.setSmall(!modelOption.isBig)
     }
 
     override fun onClimbable() = false
@@ -118,20 +136,7 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
     override fun tick() {
         super.tick()
         if (!::entityVehicle.isInitialized) return
-        setDependingValue()
-
         entityVehicle.location = bukkitEntity.location
-
-        val model = entityVehicle.model
-        val modelOption = entityVehicle.model.modelOption
-
-        super.setYRot(entityVehicle.location.yaw)
-        super.setYBodyRot(entityVehicle.location.yaw)
-        super.setSmall(true)
-        super.setMaxUpStep(1.126F)
-        super.setItemSlot(modelOption.position.slot, CraftItemStack.asNMSCopy(model.itemStack))
-        super.setRightArmPose(Rotations(0F, 0F, 0F))
-        super.setSmall(!modelOption.isBig)
     }
 
 }

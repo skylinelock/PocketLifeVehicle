@@ -75,6 +75,7 @@ object VehicleManager {
         world.addEntity<ArmorStand>(modelEntity, CreatureSpawnEvent.SpawnReason.CUSTOM)
 
         modelEntity.entityVehicle = vehicle
+        modelEntity.applyModelSettings()
 
         for (i in 0 until model.seatOption.capacity.value()) {
             val seatEntity = SeatArmorStand(VehicleEntityType.SEAT.type(), level)
