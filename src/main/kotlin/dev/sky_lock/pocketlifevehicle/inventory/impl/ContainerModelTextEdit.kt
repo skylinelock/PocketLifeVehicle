@@ -111,12 +111,20 @@ class ContainerModelTextEdit(
                         }
                         ModelRegistry.register(model)
                     }
-                    ModifyType.ID -> {
+                    ModifyType.ID_RECREATE -> {
                         if (ModelRegistry.hasRegistered(text)) {
                             displayError(current, Line().red("そのIDは既に登録されています"))
                             return
                         }
                         ModelRegistry.unregister(model.id)
+                        model = ModelRegistry.recreate(text, model)
+                        ModelRegistry.register(model)
+                    }
+                    ModifyType.ID_COPY -> {
+                        if (ModelRegistry.hasRegistered(text)) {
+                            displayError(current, Line().red("そのIDは既に登録されています"))
+                            return
+                        }
                         model = ModelRegistry.recreate(text, model)
                         ModelRegistry.register(model)
                     }
@@ -190,7 +198,7 @@ class ContainerModelTextEdit(
     }
 
     enum class ModifyType {
-        ID_CREATE, ID, NAME, HEIGHT, OFFSET, WIDTH, DEPTH
+        ID_CREATE, ID_RECREATE, ID_COPY, NAME, HEIGHT, OFFSET, WIDTH, DEPTH
     }
 
 }

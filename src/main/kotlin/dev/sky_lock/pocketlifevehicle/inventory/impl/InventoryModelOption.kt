@@ -17,11 +17,11 @@ import org.bukkit.inventory.ItemStack
  * @author sky_lock
  */
 
-class InventoryModelOption(private val player: Player, private val model: Model): InventoryCustom(45, "モデル設定") {
+class InventoryModelOption(private val player: Player, private val model: Model): InventoryCustom(54, "モデル設定") {
 
     init {
         val deleteRedStone = ItemStackBuilder(Material.REDSTONE, 1).setName(Line().red("削除する")).build()
-        setSlot(3, deleteRedStone) {
+        setSlot(8, deleteRedStone) {
             player.openInventory(InventoryConfirmDelete(
                 {
                     player.openInventory(InventoryModelOption(player, model))
@@ -37,8 +37,13 @@ class InventoryModelOption(private val player: Player, private val model: Model)
         }
 
         val recreateEmerald = optionItem(Material.EMERALD, Line().green("ID(").yellow(model.id).green(")を変更する"), Line().red("※モデルは同じ設定で再作成されます"))
-        setSlot(5, recreateEmerald) {
-            player.openModelTextEditor("ID", "id", ContainerModelTextEdit.ModifyType.ID, model)
+        setSlot(17, recreateEmerald) {
+            player.openModelTextEditor("ID", "id", ContainerModelTextEdit.ModifyType.ID_RECREATE, model)
+        }
+
+        val paper = optionItem(Material.PAPER, Line().green("モデルを複製する"))
+        setSlot(26, paper) {
+            player.openModelTextEditor("ID", "id", ContainerModelTextEdit.ModifyType.ID_COPY, model)
         }
 
         val name = Line().colorCoded(model.name)
@@ -115,7 +120,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
         }
 
         val backBarrier = optionItem(Material.BARRIER, Line().red("戻る"))
-        setSlot(40, backBarrier) {
+        setSlot(49, backBarrier) {
             player.openInventory(InventoryModelList(player))
         }
     }
