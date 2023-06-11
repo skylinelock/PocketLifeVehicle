@@ -106,14 +106,14 @@ class ContainerModelTextEdit(
                 when (modifyType) {
                     ModifyType.ID_CREATE -> {
                         if (ModelRegistry.hasRegistered(text)) {
-                            displayError(current, Line().red("そのIDは既に登録されています。"))
+                            displayError(current, Line().red("そのIDは既に登録されています"))
                             return
                         }
                         ModelRegistry.register(model)
                     }
                     ModifyType.ID -> {
                         if (ModelRegistry.hasRegistered(text)) {
-                            displayError(current, Line().red("そのIDは既に登録されています。"))
+                            displayError(current, Line().red("そのIDは既に登録されています"))
                             return
                         }
                         ModelRegistry.unregister(model.id)

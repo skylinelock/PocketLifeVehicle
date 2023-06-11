@@ -6,7 +6,7 @@ import dev.jorel.commandapi.arguments.CustomArgument
 import dev.jorel.commandapi.arguments.CustomArgument.CustomArgumentException
 import dev.jorel.commandapi.arguments.CustomArgument.MessageBuilder
 import dev.jorel.commandapi.arguments.LocationType
-import dev.jorel.commandapi.arguments.StringArgument
+import dev.jorel.commandapi.arguments.TextArgument
 import dev.jorel.commandapi.kotlindsl.*
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryModelList
 import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedErrorMessage
@@ -31,20 +31,15 @@ object Command {
             withUsage("")
             literalArgument("give", "give") {
                 withPermission(Permission.ADMIN_COMMAND.name)
-                vehicleModelArgument {
-                    playerArgument("player") {
+                playerArgument("player") {
+                    vehicleModelArgument {
                         playerExecutor { player, args ->
-                            val model = args[0] as Model
-                            val target = args[1] as Player
+                            val target = args[0] as Player
+                            val model = args[1] as Model
                             target.inventory.addItem(model.itemStack)
                             target.sendVehiclePrefixedSuccessMessage("乗り物を受け取りました")
                             player.sendVehiclePrefixedSuccessMessage(target.name + "に" + model.id + "を与えました")
                         }
-                    }
-                    playerExecutor { player, args ->
-                        val model = args[0] as Model
-                        player.inventory.addItem(model.itemStack)
-                        player.sendVehiclePrefixedSuccessMessage(model.id + "を取得しました")
                     }
                 }
             }
@@ -58,9 +53,9 @@ object Command {
                             return@playerExecutor
                         }
                         player.sendVehiclePrefixedSuccessMessage(
-                                "(world=" + location.world.name + ", " + getLocationString(
-                                        location
-                                ) + ")"
+                            "(world=" + location.world.name + ", " + getLocationString(
+                                location
+                            ) + ")"
                         )
                     }
                 }
@@ -268,14 +263,24 @@ object Command {
         }
     }
 
-    private inline fun Argument<*>.vehicleModelArgument(optional: Boolean = false, block: Argument<*>.() -> Unit = {}): Argument<*> = then(
-        CustomArgument(StringArgument("model")) { info ->
-            ModelRegistry.findById(info.input())
+    private inline fun Argument<*>.vehicleModelArgument(
+        optional: Boolean = false,
+        block: Argument<*>.() -> Unit = {}
+    ): Argument<*> = then(
+        CustomArgument(TextArgument("model")) { info ->
+            ModelRegistry.findById(removeQuotes(info.input()))
                 ?: throw CustomArgumentException.fromMessageBuilder(MessageBuilder("Unknown model"))
         }.apply(block).setOptional(optional).replaceSuggestions(strings {
-            ModelRegistry.set().map { it.id }.toTypedArray()
+            ModelRegistry.set().map { "\"${it.id}\"" }.toTypedArray()
         })
     )
+
+    private fun removeQuotes(str: String): String {
+        if (str.length < 2 || str.first() != '"' || str.last() != '"') {
+            return str
+        }
+        return str.substring(1, str.length - 1)
+    }
 
     private fun getLocationString(loc: Location): String {
         return "x=" + loc.blockX.toString() + ", y=" + loc.blockY.toString() + ", z=" + loc.blockZ.toString()
