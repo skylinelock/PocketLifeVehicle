@@ -23,6 +23,14 @@ class SpeedController {
         exactSpeed -= acceleration
     }
 
+    fun sideBreakDecelerate() {
+        exactSpeed -= sideBreakDeceleration
+    }
+
+    fun sideBreakAccelerate() {
+        exactSpeed += sideBreakDeceleration
+    }
+
     fun decelerate() {
         exactSpeed -= acceleration + frictionalDeceleration
     }
@@ -49,6 +57,7 @@ class SpeedController {
     companion object {
         private val acceleration = BigDecimal("0.0085")
         private val frictionalDeceleration = BigDecimal("0.010")
+        private val sideBreakDeceleration = BigDecimal("0.0075")
         private val magnification = BigDecimal("0.85")
     }
 }

@@ -69,12 +69,19 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         return true
     }
 
-    fun calculateSpeed(sidewaysSpeed: Float, forwardSpeed: Float): Float {
+    fun calculateSpeed(sidewaysSpeed: Float, forwardSpeed: Float, spaced: Boolean): Float {
         if (fuel <= ZERO) {
             speedController.zero()
             return speedController.exact()
         }
         if (speedController.exact() > model.spec.maxSpeed.value) {
+            if (spaced) {
+                if (speedController.isPositive) {
+                    speedController.sideBreakDecelerate()
+                } else {
+                    speedController.sideBreakAccelerate()
+                }
+            }
             if (forwardSpeed < ZERO) {
                 speedController.decelerate()
             } else if (forwardSpeed == ZERO) {
@@ -84,6 +91,13 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
                 consumeFuel()
             }
             return speedController.exact()
+        }
+        if (spaced) {
+            if (speedController.isPositive) {
+                speedController.sideBreakDecelerate()
+            } else {
+                speedController.sideBreakAccelerate()
+            }
         }
         if (forwardSpeed == ZERO) {
             if (speedController.isPositive) {

@@ -108,27 +108,24 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
         val forwardSpeed = nmsDriver.zza
         val spaced = nmsDriver.jumping
 
-        this.speed = entityVehicle.calculateSpeed(sidewaysSpeed, forwardSpeed)
+        this.speed = entityVehicle.calculateSpeed(sidewaysSpeed, forwardSpeed, spaced)
         entityVehicle.updateYaw(nmsDriver, sidewaysSpeed)
 
         if (spaced) {
-            yRot = entityVehicle.location.yaw
-            yRotO = this.yRot
-            xRot = 0.0f
-            this.setRot(yRot, xRot)
-            this.yBodyRot = this.yRot
-            this.yHeadRot = this.yBodyRot
-            super.travel(vec3.add(Vec3(sidewaysSpeed.toDouble(), 0.0, forwardSpeed.toDouble())))
+            turn(entityVehicle.location.yaw)
+            super.travel(vec3.add(Vec3(-sidewaysSpeed.toDouble(), 0.0, 1.0)))
         } else {
-            yRot = entityVehicle.location.yaw
-            yRotO = this.yRot
-            xRot = 0.0f
-            this.setRot(yRot, xRot)
-            this.yBodyRot = this.yRot
-            this.yHeadRot = this.yBodyRot
+            turn(entityVehicle.location.yaw)
             // Z方向（yawの進行方向）に進ませる。
             super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
          }
+    }
+
+    private fun turn(yaw: Float) {
+        super.yRotO = yaw
+        super.setRot(yaw, 0.0F)
+        super.setYBodyRot(yaw)
+        super.setYHeadRot(yaw)
     }
 
     override fun tick() {
