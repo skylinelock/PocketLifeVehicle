@@ -31,11 +31,11 @@ object Command {
             withUsage("")
             literalArgument("give", "give") {
                 withPermission(Permission.ADMIN_COMMAND.name)
-                playerArgument("player") {
-                    vehicleModelArgument {
+                vehicleModelArgument {
+                    playerArgument("player", optional = true) {
                         playerExecutor { player, args ->
-                            val target = args[0] as Player
-                            val model = args[1] as Model
+                            val model = args[0] as Model
+                            val target = if (args[1] == null) player else args[1] as Player
                             target.inventory.addItem(model.itemStack)
                             target.sendVehiclePrefixedSuccessMessage("乗り物を受け取りました")
                             player.sendVehiclePrefixedSuccessMessage("${target.name}に${model.id}を与えました")
@@ -52,7 +52,14 @@ object Command {
                             player.sendVehiclePrefixedErrorMessage("プレイヤーの乗り物の現在地を取得できませんでした")
                             return@playerExecutor
                         }
-                        player.sendVehiclePrefixedSuccessMessage("(world=${location.world.name}, ${getLocationString(location)})") }
+                        player.sendVehiclePrefixedSuccessMessage(
+                            "(world=${location.world.name}, ${
+                                getLocationString(
+                                    location
+                                )
+                            })"
+                        )
+                    }
                 }
                 playerExecutor { player, _ ->
                     val location = VehicleManager.getLocation(player.uniqueId)
@@ -70,10 +77,10 @@ object Command {
             literalArgument("spawn", "spawn") {
                 withPermission(Permission.ADMIN_COMMAND.name)
                 vehicleModelArgument {
-                    playerArgument("player") {
+                    playerArgument("player", true) {
                         playerExecutor { player, args ->
                             val model = args[0] as Model
-                            val target = args[1] as Player
+                            val target = if (args[1] == null) player else args[1] as Player
                             if (!VehiclePlugin.instance.pluginConfiguration.isWorldVehicleCanPlaced(target.world)) {
                                 player.sendVehiclePrefixedErrorMessage("対象のプレイヤーがいるワールドは乗り物の使用が許可されていません")
                                 return@playerExecutor
