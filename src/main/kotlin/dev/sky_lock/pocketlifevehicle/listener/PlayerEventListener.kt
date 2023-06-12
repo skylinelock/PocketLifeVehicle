@@ -80,7 +80,7 @@ class PlayerEventListener : Listener {
         val loc = player.location
         loc.yaw = vehicle.getYaw()
         player.teleport(loc)
-        mount.addPassenger(player)
+        vehicle.mount(player)
     }
 
     // メインハンド、オフハンドごとに２回呼ばれる
