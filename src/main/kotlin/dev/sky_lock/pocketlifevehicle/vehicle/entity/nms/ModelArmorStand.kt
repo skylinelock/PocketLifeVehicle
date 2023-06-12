@@ -110,12 +110,11 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
 
         this.speed = entityVehicle.calculateSpeed(sidewaysSpeed, forwardSpeed, spaced)
         entityVehicle.updateYaw(nmsDriver, sidewaysSpeed)
+        turn(entityVehicle.location.yaw)
 
         if (spaced) {
-            turn(entityVehicle.location.yaw)
             super.travel(vec3.add(Vec3(-sidewaysSpeed.toDouble(), 0.0, 1.0)))
         } else {
-            turn(entityVehicle.location.yaw)
             // Z方向（yawの進行方向）に進ませる。
             super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
          }
