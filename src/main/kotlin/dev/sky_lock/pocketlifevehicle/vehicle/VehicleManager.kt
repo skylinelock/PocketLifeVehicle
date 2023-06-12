@@ -202,7 +202,7 @@ object VehicleManager {
         val nearByEntities = player.getNearbyEntities(2.0, 2.0, 2.0)
         return vehicle.seats.mapNotNull { seatId ->
             nearByEntities.firstOrNull { it.uniqueId == seatId }
-        }.firstOrNull { it.passengers.isEmpty() } == null
+        }.none { it.passengers.isEmpty() }
     }
 
     fun respawn(player: Player): Boolean {
