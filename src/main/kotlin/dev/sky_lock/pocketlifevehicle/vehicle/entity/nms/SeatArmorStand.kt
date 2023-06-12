@@ -1,5 +1,6 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.entity.nms
 
+import dev.sky_lock.pocketlifevehicle.Keys
 import dev.sky_lock.pocketlifevehicle.text.ext.sendActionBar
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
@@ -29,14 +30,14 @@ class SeatArmorStand(entityTypes: EntityType<ArmorStand>, world: Level) :
 
     override fun saveWithoutId(nbt: CompoundTag): CompoundTag {
         val parent = super.saveWithoutId(nbt)
-        parent.putUUID("Vehicle.Id", vehicleId)
+        parent.putUUID(Keys.ID.label, vehicleId)
         return parent
     }
 
     override fun load(nbt: CompoundTag) {
         super.load(nbt)
-        if (!nbt.hasUUID("Vehicle.Id")) return
-        this.vehicleId = nbt.getUUID("Vehicle.Id")
+        if (!nbt.hasUUID(Keys.ID.label)) return
+        this.vehicleId = nbt.getUUID(Keys.ID.label)
         val v = VehicleManager.findOrNull(vehicleId)
         if (v == null) {
             discard()
@@ -63,7 +64,7 @@ class SeatArmorStand(entityTypes: EntityType<ArmorStand>, world: Level) :
             return
         }
         if (position == 0) {
-            (passenger.bukkitEntity as Player).sendActionBar(entityVehicle.meterPanelLine())
+            (passenger.bukkitEntity as Player).sendActionBar(entityVehicle.createMeterPanelLine())
         }
         updatePosition(position)
     }

@@ -118,7 +118,11 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
                 location.yaw = location.yaw + steeringYaw
             }
             if (shouldAnimate && model.flag.animation) {
-                raiseRightArm(driver)
+                if (driver.mainArm == HumanoidArm.RIGHT) {
+                    raiseMainHand(driver.id)
+                } else {
+                    raiseOffHand(driver.id)
+                }
             }
         } else if (sidewaysSpeed < 0.0f) {
             if (speedController.isPositive) {
@@ -127,24 +131,12 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
                 location.yaw = location.yaw - steeringYaw
             }
             if (shouldAnimate && model.flag.animation) {
-                raiseLeftArm(driver)
+                if (driver.mainArm == HumanoidArm.RIGHT) {
+                    raiseOffHand(driver.id)
+                } else {
+                    raiseMainHand(driver.id)
+                }
             }
-        }
-    }
-
-    private fun raiseLeftArm(player: Player) {
-        if (player.mainArm == HumanoidArm.RIGHT) {
-            raiseOffhand(player.id)
-        } else {
-            raiseMainHand(player.id)
-        }
-    }
-
-    private fun raiseRightArm(player: Player) {
-        if (player.mainArm == HumanoidArm.RIGHT) {
-            raiseMainHand(player.id)
-        } else {
-            raiseOffhand(player.id)
         }
     }
 
@@ -152,7 +144,7 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         broadcastAnimationPacket(entityID, AnimationPacket.AnimationType.SWING_MAIN_ARM)
     }
 
-    private fun raiseOffhand(entityID: Int) {
+    private fun raiseOffHand(entityID: Int) {
         broadcastAnimationPacket(entityID, AnimationPacket.AnimationType.SWING_OFFHAND)
     }
 
@@ -163,29 +155,32 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         packet.broadCast()
     }
 
-    fun meterPanelLine(): Line {
+    fun createMeterPanelLine(): Line {
         val line = Line()
 
-        if (!model.flag.eventOnly) {
-            var fuelRate = fuel / model.spec.maxFuel
-            if (fuelRate > 1.0F) {
-                fuelRate = 1.0F
-                fuel = model.spec.maxFuel
-            }
-            val filled = (70 * fuelRate).roundToInt()
+        if (model.flag.eventOnly) {
+            val blockPerSecond = abs(speedController.exact() * 20).truncateToOneDecimalPlace()
+            line.darkGreenBold(blockPerSecond).grayBold(" blocks/s")
+            return line
+        }
+        var fuelRate = fuel / model.spec.maxFuel
+        if (fuelRate > 1.0F) {
+            fuelRate = 1.0F
+            fuel = model.spec.maxFuel
+        }
+        val filled = (70 * fuelRate).roundToInt()
 
-            line.redBold("E ")
-            IntStream.range(0, filled).forEach { line.green("ǀ") }
-            IntStream.range(0, 70 - filled).forEach { line.red("ǀ") }
-            line.greenBold(" F   ")
-            if (speedController.isApproximateZero) {
-                line.darkPurpleBold("P   ")
-            } else {
-                if (speedController.isPositive) {
-                    line.darkPurpleBold("D   ")
-                } else if (speedController.isNegative) {
-                    line.darkPurpleBold("R   ")
-                }
+        line.redBold("E ")
+        IntStream.range(0, filled).forEach { line.green("ǀ") }
+        IntStream.range(0, 70 - filled).forEach { line.red("ǀ") }
+        line.greenBold(" F   ")
+        if (speedController.isApproximateZero) {
+            line.darkPurpleBold("P   ")
+        } else {
+            if (speedController.isPositive) {
+                line.darkPurpleBold("D   ")
+            } else if (speedController.isNegative) {
+                line.darkPurpleBold("R   ")
             }
         }
         val blockPerSecond = abs(speedController.exact() * 20).truncateToOneDecimalPlace()
@@ -193,7 +188,7 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         return line
     }
 
-    fun playExplosionEffect() {
+    fun explode() {
         val explosion = FakeExplosionPacket()
         explosion.setX(location.x)
         explosion.setY(location.y)
@@ -201,5 +196,28 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         explosion.setRadius(5f)
         explosion.broadCast()
         location.world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f)
+    }
+
+    fun cancelEngineSound() {
+        location.getNearbyPlayers(50.0).forEach { player ->
+            player.stopSound(Sound.ENTITY_PIG_HURT)
+            player.stopSound(Sound.ENTITY_MINECART_RIDING)
+            player.stopSound(Sound.ENTITY_PLAYER_BURP)
+            player.stopSound(Sound.ENTITY_ENDERMAN_DEATH)
+        }
+        shouldPlaySound = false
+    }
+
+    fun playEngineSound() {
+        if (!shouldPlaySound) return
+        val speed = speedController.approximate()
+        val maxSpeed = model.spec.maxSpeed.value
+        val location = location
+        val world = location.world
+        val pitch = speed / maxSpeed
+        world.playSound(location, Sound.ENTITY_PIG_HURT, 0.03f, 0.7f)
+        world.playSound(location, Sound.ENTITY_MINECART_RIDING, 0.03f, 0.8f)
+        world.playSound(location, Sound.ENTITY_PLAYER_BURP, 0.03f, 0.8f)
+        world.playSound(location, Sound.ENTITY_ENDERMAN_DEATH, 0.03f, pitch)
     }
 }

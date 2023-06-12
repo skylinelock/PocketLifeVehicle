@@ -8,6 +8,6 @@ import org.bukkit.entity.Player
  */
 class BurnExplosionWarning : AbstractWarning() {
     fun send(player: Player) {
-        super.send(player, Line().gold("乗り物は" + count + "秒後に爆発します"))
+        super.send(player, Line().gold("乗り物は${count}秒後に爆発します"))
     }
 }

@@ -1,7 +1,5 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.entity.nms
 
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.cancelEngineSound
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.playEngineSound
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
 import net.minecraft.core.Rotations
@@ -68,7 +66,7 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
     override fun doWaterSplashEffect() {
         super.doWaterSplashEffect()
         // SubmergedMessageTask().run(status)
-        cancelEngineSound(entityVehicle)
+        entityVehicle.cancelEngineSound()
     }
 
     override fun getDimensions(entityPose: Pose): EntityDimensions {
@@ -96,7 +94,7 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
             return
         }
         if (tickCount % 2 == 0) {
-            playEngineSound(entityVehicle)
+            entityVehicle.playEngineSound()
         }
         val driver = entityVehicle.driver
         if (driver == null) {

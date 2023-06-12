@@ -38,7 +38,7 @@ object Command {
                             val model = args[1] as Model
                             target.inventory.addItem(model.itemStack)
                             target.sendVehiclePrefixedSuccessMessage("乗り物を受け取りました")
-                            player.sendVehiclePrefixedSuccessMessage(target.name + "に" + model.id + "を与えました")
+                            player.sendVehiclePrefixedSuccessMessage("${target.name}に${model.id}を与えました")
                         }
                     }
                 }
@@ -52,12 +52,7 @@ object Command {
                             player.sendVehiclePrefixedErrorMessage("プレイヤーの乗り物の現在地を取得できませんでした")
                             return@playerExecutor
                         }
-                        player.sendVehiclePrefixedSuccessMessage(
-                            "(world=" + location.world.name + ", " + getLocationString(
-                                location
-                            ) + ")"
-                        )
-                    }
+                        player.sendVehiclePrefixedSuccessMessage("(world=${location.world.name}, ${getLocationString(location)})") }
                 }
                 playerExecutor { player, _ ->
                     val location = VehicleManager.getLocation(player.uniqueId)
@@ -66,7 +61,7 @@ object Command {
                         return@playerExecutor
                     }
                     if (location.world == player.location.world) {
-                        player.sendVehiclePrefixedSuccessMessage("乗り物は現在(" + getLocationString(location) + ")にあります")
+                        player.sendVehiclePrefixedSuccessMessage("乗り物は現在(${getLocationString(location)})にあります")
                         return@playerExecutor
                     }
                     player.sendVehiclePrefixedErrorMessage("別ワールドにある乗り物の現在地は取得できません")
@@ -86,7 +81,7 @@ object Command {
                             val name = target.name
                             if (model.flag.eventOnly) {
                                 VehicleManager.placeEventVehicle(target.location, model)
-                                player.sendVehiclePrefixedSuccessMessage(name + "の位置にイベント専用車両を設置しました")
+                                player.sendVehiclePrefixedSuccessMessage("${name}の位置にイベント専用車両を設置しました")
                                 return@playerExecutor
                             }
                             if (!VehicleManager.verifyPlaceableLocation(target.location)) {
@@ -94,7 +89,7 @@ object Command {
                                 return@playerExecutor
                             }
                             VehicleManager.placeVehicle(target.uniqueId, target.location, model, model.spec.maxFuel)
-                            player.sendVehiclePrefixedSuccessMessage("$name に ${model.id} を渡しました")
+                            player.sendVehiclePrefixedSuccessMessage("${name}に${model.id}を渡しました")
                             target.sendVehiclePrefixedSuccessMessage("乗り物を受け取りました")
                         }
                     }
@@ -128,7 +123,7 @@ object Command {
                     }
                     VehicleManager.remove(player.uniqueId)
                     VehicleManager.placeVehicle(player.uniqueId, player.location, model, model.spec.maxFuel)
-                    player.sendVehiclePrefixedSuccessMessage("$model.id を取得しました")
+                    player.sendVehiclePrefixedSuccessMessage("$model.idを取得しました")
                 }
             }
             literalArgument("pop", "pop") {
@@ -140,9 +135,9 @@ object Command {
                         val name = target.name
                         if (VehicleManager.isOwner(uuid)) {
                             VehicleManager.pop(uuid)
-                            player.sendVehiclePrefixedSuccessMessage("$name の乗り物をアイテム化しました")
+                            player.sendVehiclePrefixedSuccessMessage("${name}の乗り物をアイテム化しました")
                         } else {
-                            player.sendVehiclePrefixedErrorMessage("$name の乗り物をアイテム化できませんでした")
+                            player.sendVehiclePrefixedErrorMessage("${name}の乗り物をアイテム化できませんでした")
                         }
                     }
                 }
@@ -162,18 +157,18 @@ object Command {
                         val target = args[0] as Player
                         val name = target.name
                         if (VehicleManager.unregisterIllegalParking(target.uniqueId)) {
-                            player.sendVehiclePrefixedSuccessMessage("$name の駐車違反登録を解除しました")
+                            player.sendVehiclePrefixedSuccessMessage("{$name}の駐車違反登録を解除しました")
                         } else {
-                            player.sendVehiclePrefixedErrorMessage("$name は駐車違反登録されていません")
+                            player.sendVehiclePrefixedErrorMessage("{$name}は駐車違反登録されていません")
                         }
                     }
                 }
                 playerExecutor { player, _ ->
                     val name = player.name
                     if (VehicleManager.unregisterIllegalParking(player.uniqueId)) {
-                        player.sendVehiclePrefixedSuccessMessage("$name の駐車違反登録を解除しました")
+                        player.sendVehiclePrefixedSuccessMessage("{$name}の駐車違反登録を解除しました")
                     } else {
-                        player.sendVehiclePrefixedErrorMessage("$name は駐車違反登録されていません")
+                        player.sendVehiclePrefixedErrorMessage("{$name}は駐車違反登録されていません")
                     }
                 }
             }
@@ -211,9 +206,9 @@ object Command {
                         val config = VehiclePlugin.instance.pluginConfiguration
                         Bukkit.getWorlds().forEach { world ->
                             if (config.isWorldVehicleCanPlaced(world)) {
-                                player.sendVehiclePrefixedSuccessMessage("- " + world.name)
+                                player.sendVehiclePrefixedSuccessMessage("- ${world.name}")
                             } else {
-                                player.sendVehiclePrefixedRawMessage("- " + world.name)
+                                player.sendVehiclePrefixedRawMessage("- ${world.name}")
                             }
                         }
                     }
@@ -283,6 +278,6 @@ object Command {
     }
 
     private fun getLocationString(loc: Location): String {
-        return "x=" + loc.blockX.toString() + ", y=" + loc.blockY.toString() + ", z=" + loc.blockZ.toString()
+        return "x=${loc.blockX}, y=${loc.blockY}, z=${loc.blockZ}"
     }
 }

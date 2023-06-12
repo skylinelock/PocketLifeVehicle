@@ -50,8 +50,8 @@ object VehicleManager {
     }
 
     fun scrapAll(modelId: String) {
-        vehicles.filter { it -> it.model.id == modelId }
-            .forEach { it -> it.isScrapped = true }
+        vehicles.filter { it.model.id == modelId }
+            .forEach { it.isScrapped = true }
     }
 
     fun getLocation(owner: UUID): Location? {
@@ -67,7 +67,7 @@ object VehicleManager {
         vehicles.add(vehicle)
 
         val modelEntity = ModelArmorStand(VehicleEntityType.MODEL.type(), level)
-        modelEntity.teleportTo(level, location.x, location.y, location.z, null, location.yaw, location.pitch)
+        modelEntity.teleportTo(level, location.x, location.y, location.z, mutableSetOf(), location.yaw, location.pitch)
 
         vehicle.uuid = modelEntity.uuid
         vehicle.fuel = fuel

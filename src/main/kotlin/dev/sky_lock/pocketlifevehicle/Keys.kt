@@ -9,7 +9,8 @@ import org.bukkit.NamespacedKey
 enum class Keys(val label: String) {
     MODEL_ID("Vehicle.ModelID"),
     OWNER("Vehicle.Owner"),
-    FUEL("Vehicle.Fuel");
+    FUEL("Vehicle.Fuel"),
+    ID("Vehicle.Id");
 
     fun namespace(): NamespacedKey {
         return NamespacedKey(VehiclePlugin.instance, label)

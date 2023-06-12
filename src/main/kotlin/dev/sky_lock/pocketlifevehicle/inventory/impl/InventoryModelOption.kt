@@ -30,7 +30,7 @@ class InventoryModelOption(private val player: Player, private val model: Model)
                     val id = model.id
                     ModelRegistry.unregister(id)
                     VehicleManager.scrapAll(id)
-                    player.sendVehiclePrefixedSuccessMessage(id + "を削除しました")
+                    player.sendVehiclePrefixedSuccessMessage("${id}を削除しました")
                     player.openInventory(InventoryModelList(player))
                 }
             ))

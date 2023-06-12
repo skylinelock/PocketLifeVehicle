@@ -5,7 +5,6 @@ import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder
 import dev.sky_lock.pocketlifevehicle.text.Line
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleEffects.cancelEngineSound
 import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
 import org.bukkit.Material
@@ -49,7 +48,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: EntityVe
             setSlot(8, soundNote) { event ->
                 val shouldPlaySound = vehicle.shouldPlaySound
                 vehicle.shouldPlaySound = !shouldPlaySound
-                if (!vehicle.shouldPlaySound) cancelEngineSound(vehicle)
+                if (!vehicle.shouldPlaySound) vehicle.cancelEngineSound()
                 event.currentItem = soundNoteBlock()
             }
         }

@@ -34,7 +34,7 @@ class InventoryModelSpeed(private val player: Player, private val model: Model):
     private fun speedItem(speed: MaxSpeed, glow: Boolean): ItemStack {
         val builder = ItemStackBuilder(Material.SEA_LANTERN, 1)
             .setName(Line().raw(speed.label))
-            .setLore(Line().gray("- 約" + speed.forTick(20).toString() + "blocks/s"))
+            .setLore(Line().gray("- 約${speed.forTick(20)}blocks/s"))
         if (glow) builder.addGlowEffect()
         return builder.build()
     }
