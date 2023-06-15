@@ -30,15 +30,8 @@ import java.util.*
 object VehicleManager {
     private val vehicles = mutableListOf<EntityVehicle>()
 
-    private fun exist(uuid: UUID): Boolean {
-        return vehicles.any { it.uuid == uuid }
-    }
-
     fun findOrNull(uuid: UUID): EntityVehicle? {
-        if (exist(uuid)) {
-            return vehicles.first { it.uuid == uuid }
-        }
-        return null
+        return vehicles.firstOrNull { it.uuid == uuid }
     }
 
     private fun findByOwner(owner: UUID): EntityVehicle? {
@@ -67,13 +60,13 @@ object VehicleManager {
         vehicles.add(vehicle)
 
         val modelEntity = ModelArmorStand(Components.getModelEntityType(), level)
-        modelEntity.teleportTo(level, location.x, location.y, location.z, mutableSetOf(), location.yaw, location.pitch)
 
         vehicle.uuid = modelEntity.uuid
         vehicle.fuel = fuel
 
         world.addEntity<ArmorStand>(modelEntity, CreatureSpawnEvent.SpawnReason.CUSTOM)
 
+        modelEntity.teleportTo(level, location.x, location.y, location.z, mutableSetOf(), location.yaw, location.pitch)
         modelEntity.entityVehicle = vehicle
         modelEntity.applyModelSettings()
 
@@ -83,6 +76,8 @@ object VehicleManager {
             seatEntity.entityVehicle = vehicle
             vehicle.registerSeat(seatEntity.uuid)
             world.addEntity<ArmorStand>(seatEntity, CreatureSpawnEvent.SpawnReason.CUSTOM)
+
+            seatEntity.teleportTo(level, location.x, location.y, location.z, mutableSetOf(), location.yaw, location.pitch)
         }
     }
 

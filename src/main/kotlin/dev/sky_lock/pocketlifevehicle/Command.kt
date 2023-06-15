@@ -164,9 +164,9 @@ object Command {
                         val target = args[0] as Player
                         val name = target.name
                         if (VehicleManager.unregisterIllegalParking(target.uniqueId)) {
-                            player.sendVehiclePrefixedSuccessMessage("{$name}の駐車違反登録を解除しました")
+                            player.sendVehiclePrefixedSuccessMessage("${name}の駐車違反登録を解除しました")
                         } else {
-                            player.sendVehiclePrefixedErrorMessage("{$name}は駐車違反登録されていません")
+                            player.sendVehiclePrefixedErrorMessage("${name}は駐車違反登録されていません")
                         }
                     }
                 }

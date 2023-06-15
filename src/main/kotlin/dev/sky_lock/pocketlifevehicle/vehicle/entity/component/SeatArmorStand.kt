@@ -17,10 +17,6 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 /**
- *
- *
- *
- *
  * @author sky_lock
  */
 class SeatArmorStand(entityTypes: EntityType<ArmorStand>, world: Level) :

@@ -28,7 +28,7 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
         super.load(nbt)
         val v = VehicleManager.findOrNull(uuid)
         if (v == null) {
-            kill()
+            discard()
             return
         }
         this.entityVehicle = v

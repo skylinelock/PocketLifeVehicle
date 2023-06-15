@@ -130,7 +130,6 @@ class PlayerEventListener : Listener {
             player.sendActionBar(Line().red("乗り物を利用するにはスマホから駐車違反料を支払う必要があります"))
             return
         }
-        // if (VehicleManager.hasVehicle())
         if (event.blockFace != BlockFace.UP) {
             player.sendActionBar(Line().red("乗り物は地面にのみ設置できます"))
             return
