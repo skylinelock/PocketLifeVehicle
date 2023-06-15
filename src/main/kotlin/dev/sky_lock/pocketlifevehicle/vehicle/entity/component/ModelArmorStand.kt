@@ -1,7 +1,7 @@
-package dev.sky_lock.pocketlifevehicle.vehicle.entity.nms
+package dev.sky_lock.pocketlifevehicle.vehicle.entity.component
 
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleManager
 import net.minecraft.core.Rotations
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.damagesource.DamageSource
@@ -20,7 +20,7 @@ import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack
  * @author sky_lock
  */
 class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
-    BaseArmorStand<ModelArmorStand>(entityType, world) {
+    BaseArmorStand(entityType, world) {
     lateinit var entityVehicle: EntityVehicle
 
     // チャンクロード時に呼ばれる

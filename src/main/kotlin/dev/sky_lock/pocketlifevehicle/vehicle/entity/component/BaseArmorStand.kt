@@ -1,4 +1,4 @@
-package dev.sky_lock.pocketlifevehicle.vehicle.entity.nms
+package dev.sky_lock.pocketlifevehicle.vehicle.entity.component
 
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.ai.attributes.AttributeMap
@@ -10,7 +10,7 @@ import org.bukkit.attribute.Attribute
  * @author sky_lock
  */
 
-open class BaseArmorStand<T: ArmorStand>(type: EntityType<ArmorStand>, level: Level) : ArmorStand(type, level) {
+open class BaseArmorStand(type: EntityType<ArmorStand>, level: Level) : ArmorStand(type, level) {
 
     init {
         setDefaultValues()

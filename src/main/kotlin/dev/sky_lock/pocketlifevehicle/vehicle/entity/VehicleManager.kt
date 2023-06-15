@@ -1,17 +1,17 @@
-package dev.sky_lock.pocketlifevehicle.vehicle
+package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 import dev.sky_lock.pocketlifevehicle.Keys
-import dev.sky_lock.pocketlifevehicle.VehicleEntityType
 import dev.sky_lock.pocketlifevehicle.VehiclePlugin
 import dev.sky_lock.pocketlifevehicle.ext.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolation
 import dev.sky_lock.pocketlifevehicle.nbt.CustomDataType
 import dev.sky_lock.pocketlifevehicle.text.Line
-import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
-import dev.sky_lock.pocketlifevehicle.vehicle.entity.nms.ModelArmorStand
-import dev.sky_lock.pocketlifevehicle.vehicle.entity.nms.SeatArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.Components
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.ModelArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.SeatArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelRegistry
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -66,7 +66,7 @@ object VehicleManager {
         val vehicle = EntityVehicle(model, owner, location)
         vehicles.add(vehicle)
 
-        val modelEntity = ModelArmorStand(VehicleEntityType.MODEL.type(), level)
+        val modelEntity = ModelArmorStand(Components.getModelEntityType(), level)
         modelEntity.teleportTo(level, location.x, location.y, location.z, mutableSetOf(), location.yaw, location.pitch)
 
         vehicle.uuid = modelEntity.uuid
@@ -78,7 +78,7 @@ object VehicleManager {
         modelEntity.applyModelSettings()
 
         for (i in 0 until model.seatOption.capacity.value()) {
-            val seatEntity = SeatArmorStand(VehicleEntityType.SEAT.type(), level)
+            val seatEntity = SeatArmorStand(Components.getSeatEntityType(), level)
             seatEntity.vehicleId = modelEntity.uuid
             seatEntity.entityVehicle = vehicle
             vehicle.registerSeat(seatEntity.uuid)

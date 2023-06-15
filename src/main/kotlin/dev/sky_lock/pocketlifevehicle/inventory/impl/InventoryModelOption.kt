@@ -6,9 +6,9 @@ import dev.sky_lock.pocketlifevehicle.inventory.ext.openModelTextEditor
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.text.Line
 import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedSuccessMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelRegistry
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack

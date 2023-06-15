@@ -2,8 +2,7 @@ package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryEventVehicle
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryVehicle
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
-import dev.sky_lock.pocketlifevehicle.vehicle.entity.nms.SeatArmorStand
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.SeatArmorStand
 import org.bukkit.craftbukkit.v1_19_R3.entity.CraftArmorStand
 import org.bukkit.entity.Entity
 import org.bukkit.entity.Player

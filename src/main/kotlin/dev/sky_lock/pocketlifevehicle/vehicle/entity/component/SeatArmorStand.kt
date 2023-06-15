@@ -1,9 +1,9 @@
-package dev.sky_lock.pocketlifevehicle.vehicle.entity.nms
+package dev.sky_lock.pocketlifevehicle.vehicle.entity.component
 
 import dev.sky_lock.pocketlifevehicle.Keys
 import dev.sky_lock.pocketlifevehicle.text.ext.sendActionBar
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleManager
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.entity.LivingEntity
@@ -24,7 +24,7 @@ import kotlin.math.sqrt
  * @author sky_lock
  */
 class SeatArmorStand(entityTypes: EntityType<ArmorStand>, world: Level) :
-    BaseArmorStand<SeatArmorStand>(entityTypes, world) {
+    BaseArmorStand(entityTypes, world) {
     lateinit var vehicleId: UUID
     lateinit var entityVehicle: EntityVehicle
 

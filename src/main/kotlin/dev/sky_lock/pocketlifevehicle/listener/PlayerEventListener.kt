@@ -7,10 +7,10 @@ import dev.sky_lock.pocketlifevehicle.nbt.CustomDataType
 import dev.sky_lock.pocketlifevehicle.text.Line
 import dev.sky_lock.pocketlifevehicle.text.ext.sendActionBar
 import dev.sky_lock.pocketlifevehicle.text.ext.sendMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicleFacade
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelRegistry
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Sound

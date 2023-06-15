@@ -12,9 +12,9 @@ import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryModelList
 import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedErrorMessage
 import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedRawMessage
 import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedSuccessMessage
-import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelRegistry
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.entity.Player

@@ -1,8 +1,7 @@
-package dev.sky_lock.pocketlifevehicle.vehicle
+package dev.sky_lock.pocketlifevehicle.vehicle.model
 
 import dev.sky_lock.pocketlifevehicle.Keys
 import dev.sky_lock.pocketlifevehicle.config.ModelConfiguration
-import dev.sky_lock.pocketlifevehicle.vehicle.model.*
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType

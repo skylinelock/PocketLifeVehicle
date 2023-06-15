@@ -5,8 +5,8 @@ import dev.sky_lock.pocketlifevehicle.inventory.InventoryCustom
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.item.PlayerHeadBuilder
 import dev.sky_lock.pocketlifevehicle.text.Line
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.EntityVehicle
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleManager
 import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player

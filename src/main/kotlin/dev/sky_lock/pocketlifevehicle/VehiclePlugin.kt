@@ -7,8 +7,9 @@ import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
 import dev.sky_lock.pocketlifevehicle.inventory.CustomInventoryListener
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolationList
 import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
-import dev.sky_lock.pocketlifevehicle.vehicle.ModelRegistry
-import dev.sky_lock.pocketlifevehicle.vehicle.VehicleManager
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleManager
+import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.Components
+import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelRegistry
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
@@ -29,7 +30,7 @@ class VehiclePlugin : JavaPlugin() {
     override fun onLoad() {
         CommandAPI.onLoad(CommandAPIBukkitConfig(this))
 
-        VehicleEntityType.registerTypes()
+        Components.registerEntityTypes()
     }
 
     override fun onEnable() {
@@ -54,8 +55,6 @@ class VehiclePlugin : JavaPlugin() {
         VehicleManager.registerAllIllegalParkings()
         VehicleManager.removeEventVehicles()
         parkingViolationList.save()
-
-        VehicleEntityType.unregisterTypes()
     }
 
     private fun registerEventListeners() {
