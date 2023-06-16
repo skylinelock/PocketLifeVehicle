@@ -260,4 +260,8 @@ object VehicleManager {
             return@removeIf true
         }
     }
+
+    fun getList(): List<EntityVehicle> {
+        return vehicles.toList()
+    }
 }

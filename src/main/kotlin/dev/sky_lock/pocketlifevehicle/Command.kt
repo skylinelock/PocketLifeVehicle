@@ -8,6 +8,7 @@ import dev.jorel.commandapi.arguments.CustomArgument.MessageBuilder
 import dev.jorel.commandapi.arguments.LocationType
 import dev.jorel.commandapi.arguments.TextArgument
 import dev.jorel.commandapi.kotlindsl.*
+import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryEntityList
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryModelList
 import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedErrorMessage
 import dev.sky_lock.pocketlifevehicle.text.ext.sendVehiclePrefixedRawMessage
@@ -173,9 +174,9 @@ object Command {
                 playerExecutor { player, _ ->
                     val name = player.name
                     if (VehicleManager.unregisterIllegalParking(player.uniqueId)) {
-                        player.sendVehiclePrefixedSuccessMessage("{$name}の駐車違反登録を解除しました")
+                        player.sendVehiclePrefixedSuccessMessage("${name}の駐車違反登録を解除しました")
                     } else {
-                        player.sendVehiclePrefixedErrorMessage("{$name}は駐車違反登録されていません")
+                        player.sendVehiclePrefixedErrorMessage("${name}は駐車違反登録されていません")
                     }
                 }
             }
@@ -260,6 +261,12 @@ object Command {
                 }
                 anyExecutor { player, _ ->
                     player.sendVehiclePrefixedErrorMessage("/vehicle reload [from/to]")
+                }
+            }
+            literalArgument("entities", "entities") {
+                withPermission(Permission.ADMIN_COMMAND.name)
+                playerExecutor {player, _ ->
+                    player.openInventory(InventoryEntityList(player))
                 }
             }
         }
