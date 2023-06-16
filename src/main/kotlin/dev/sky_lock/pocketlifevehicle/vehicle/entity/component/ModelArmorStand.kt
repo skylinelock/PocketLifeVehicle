@@ -56,10 +56,10 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
         if (!(source.`is`(DamageTypes.IN_FIRE) && source.`is`(DamageTypes.LAVA) && source.`is`(DamageTypes.ON_FIRE))) {
             return false
         }
-/*        if (!status!!.isBeginExplode) {
-            BurnExplosionTask().run()
-            status!!.isBeginExplode = true
-        }*/
+        /*        if (!status!!.isBeginExplode) {
+                    BurnExplosionTask().run()
+                    status!!.isBeginExplode = true
+                }*/
         return false
     }
 
@@ -118,6 +118,10 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
             // Z方向（yawの進行方向）に進ませる。
             super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
         }
+    }
+
+    override fun onGround(): Boolean {
+        return true
     }
 
     private fun turn(yaw: Float) {
