@@ -13,8 +13,8 @@ import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
 import org.bukkit.Bukkit
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
-import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftItemStack
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack
 
 /**
  * @author sky_lock
@@ -117,7 +117,7 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
         } else {
             // Z方向（yawの進行方向）に進ませる。
             super.travel(vec3.add(Vec3(0.0, 0.0, 1.0)))
-         }
+        }
     }
 
     private fun turn(yaw: Float) {
@@ -132,5 +132,4 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
         if (!::entityVehicle.isInitialized) return
         entityVehicle.location = bukkitEntity.location
     }
-
 }

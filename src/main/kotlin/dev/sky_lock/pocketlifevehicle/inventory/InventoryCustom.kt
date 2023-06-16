@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.inventory
 
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
-import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftInventoryCustom
+import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftInventoryCustom
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
 import org.bukkit.inventory.ItemStack

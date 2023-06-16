@@ -11,11 +11,11 @@ import net.minecraft.world.inventory.AnvilMenu
 import net.minecraft.world.inventory.ContainerLevelAccess
 import org.bukkit.Location
 import org.bukkit.Material
-import org.bukkit.craftbukkit.v1_19_R3.CraftWorld
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftPlayer
-import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftInventoryAnvil
-import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftInventoryPlayer
-import org.bukkit.craftbukkit.v1_19_R3.inventory.CraftInventoryView
+import org.bukkit.craftbukkit.v1_20_R1.CraftWorld
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer
+import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftInventoryAnvil
+import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftInventoryPlayer
+import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftInventoryView
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.inventory.InventoryAction
