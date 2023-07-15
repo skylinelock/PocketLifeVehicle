@@ -2,11 +2,11 @@ package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 import dev.sky_lock.pocketlifevehicle.ext.kotlin.truncateToOneDecimalPlace
 import dev.sky_lock.pocketlifevehicle.packet.AnimationPacket
-import dev.sky_lock.pocketlifevehicle.packet.FakeExplosionPacket
 import dev.sky_lock.pocketlifevehicle.text.Line
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import net.minecraft.world.entity.HumanoidArm
 import net.minecraft.world.entity.player.Player
+import net.minecraft.world.phys.Vec3
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Sound
@@ -34,6 +34,8 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
     var shouldPlaySound = false
     var isLocked = false
     val speedController = SpeedController()
+    private var driftedTicks = 0
+    private var driftStartingYaw = 0
 
     val ownerName: String
         get() {
@@ -74,39 +76,36 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
             speedController.zero()
             return speedController.exact()
         }
-        if (speedController.exact() > model.spec.maxSpeed.value) {
-            if (spaced) {
-                if (speedController.isPositive) {
-                    speedController.sideBreakDecelerate()
-                } else {
-                    speedController.sideBreakAccelerate()
-                }
-            }
-            if (forwardSpeed < ZERO) {
-                speedController.decelerate()
-            } else if (forwardSpeed == ZERO) {
-                speedController.frictionalDecelerate()
-            }
-            if (!model.flag.eventOnly && model.flag.consumeFuel) {
-                consumeFuel()
-            }
-            return speedController.exact()
-        }
         if (spaced) {
             if (speedController.isPositive) {
                 speedController.sideBreakDecelerate()
             } else {
                 speedController.sideBreakAccelerate()
             }
+            if (sidewaysSpeed != ZERO) {
+                driftedTicks++
+            }
+        } else {
+            if (driftedTicks / 20 < 4) {
+                speedController.boost(driftedTicks / 20)
+            }
+            driftedTicks = 0
+        }
+        if (forwardSpeed > ZERO) {
+            if (speedController.exact() < model.spec.maxSpeed.value) {
+                speedController.accelerate()
+            }
         }
         if (forwardSpeed == ZERO) {
             if (speedController.isPositive) {
                 speedController.frictionalDecelerate()
             }
-        } else if (forwardSpeed < ZERO) {
+        }
+        if (forwardSpeed < ZERO) {
             speedController.decelerate()
-        } else {
-            speedController.accelerate()
+        }
+        if (speedController.exact() > model.spec.maxSpeed.value) {
+            speedController.frictionalDecelerate()
         }
         if (speedController.isNegative) {
             speedController.decrease()
@@ -120,12 +119,18 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         return speedController.exact()
     }
 
+    fun calculateDeltaMovement(sidewaysSpeed: Float, spaced: Boolean): Vec3 {
+        if (!spaced) return Vec3(0.0, 0.0, 1.0)
+
+        return Vec3(-sidewaysSpeed.toDouble(), 0.0, 1.0)
+    }
+
     fun updateYaw(driver: Player, sidewaysSpeed: Float) {
         if (fuel.roundToInt() == 0 || speedController.isApproximateZero) {
             return
         }
         val steeringYaw = model.spec.steeringLevel.value
-        if (sidewaysSpeed > 0.0f) {
+        if (sidewaysSpeed > ZERO) {
             if (speedController.isPositive) {
                 location.yaw = location.yaw - steeringYaw
             } else {
@@ -138,7 +143,7 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
                     raiseOffHand(driver.id)
                 }
             }
-        } else if (sidewaysSpeed < 0.0f) {
+        } else if (sidewaysSpeed < ZERO) {
             if (speedController.isPositive) {
                 location.yaw = location.yaw + steeringYaw
             } else {
@@ -174,7 +179,24 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
 
         if (model.flag.eventOnly) {
             val blockPerSecond = abs(speedController.exact() * 20).truncateToOneDecimalPlace()
-            line.darkGreenBold(blockPerSecond).grayBold(" blocks/s")
+            line.darkGreenBold(blockPerSecond).grayBold(" blocks/s ")
+            val driftLevel = driftedTicks / 20
+            for (i in 0 until driftLevel) {
+                when (i) {
+                    0 -> {
+                        line.darkGreen("●")
+                    }
+                    1 -> {
+                        line.green("●")
+                    }
+                    2 -> {
+                        line.yellow("●")
+                    }
+                    3 -> {
+                        line.red("●")
+                    }
+                }
+            }
             return line
         }
         var fuelRate = fuel / model.spec.maxFuel
@@ -200,16 +222,6 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         val blockPerSecond = abs(speedController.exact() * 20).truncateToOneDecimalPlace()
         line.darkGreenBold(blockPerSecond).grayBold(" blocks/s")
         return line
-    }
-
-    fun explode() {
-        val explosion = FakeExplosionPacket()
-        explosion.setX(location.x)
-        explosion.setY(location.y)
-        explosion.setZ(location.z)
-        explosion.setRadius(5f)
-        explosion.broadCast()
-        location.world.playSound(location, Sound.ENTITY_GENERIC_EXPLODE, 1.0f, 1.0f)
     }
 
     fun cancelEngineSound() {

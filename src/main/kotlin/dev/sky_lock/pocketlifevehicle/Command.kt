@@ -102,18 +102,22 @@ object Command {
                         }
                     }
                     locationArgument("position", LocationType.PRECISE_POSITION) {
-                        anyExecutor { sender, args ->
-                            val model = args[0] as Model
-                            val location = args[1] as Location
-                            if (!VehiclePlugin.instance.pluginConfiguration.isWorldVehicleCanPlaced(location.world)) {
-                                sender.sendVehiclePrefixedErrorMessage("対象のワールドは乗り物の使用が許可されていません")
-                                return@anyExecutor
+                        angleArgument("angle", true) {
+                            anyExecutor { sender, args ->
+                                val model = args[0] as Model
+                                val location = args[1] as Location
+                                val angle = if (args[2] == null) 0.0F else args[2] as Float
+                                if (!VehiclePlugin.instance.pluginConfiguration.isWorldVehicleCanPlaced(location.world)) {
+                                    sender.sendVehiclePrefixedErrorMessage("対象のワールドは乗り物の使用が許可されていません")
+                                    return@anyExecutor
+                                }
+                                if (!model.flag.eventOnly) {
+                                    sender.sendVehiclePrefixedErrorMessage("位置指定でスポーンできるのはイベント専用車両だけです")
+                                    return@anyExecutor
+                                }
+                                location.yaw = angle
+                                VehicleManager.placeEventVehicle(location, model)
                             }
-                            if (!model.flag.eventOnly) {
-                                sender.sendVehiclePrefixedErrorMessage("位置指定でスポーンできるのはイベント専用車両だけです")
-                                return@anyExecutor
-                            }
-                            VehicleManager.placeEventVehicle(location, model)
                         }
                     }
                 }

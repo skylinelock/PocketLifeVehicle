@@ -36,6 +36,11 @@ class Line {
         return this
     }
 
+    fun darkGreen(text: String): Line {
+        appendStyledComponent(text, NamedTextColor.DARK_GREEN)
+        return this
+    }
+
     fun white(text: String): Line {
         appendStyledComponent(text, NamedTextColor.WHITE)
         return this

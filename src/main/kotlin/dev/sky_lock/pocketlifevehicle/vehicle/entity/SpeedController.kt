@@ -43,8 +43,12 @@ class SpeedController {
         return exactSpeed.setScale(3, RoundingMode.HALF_UP).toFloat()
     }
 
+    fun boost(level: Int) {
+        exactSpeed += boost * BigDecimal(level)
+    }
+
     val isApproximateZero: Boolean
-        get() = approximate() == 0.0f
+        get() = approximate() == 0.0F
 
     fun exact(): Float {
         return exactSpeed.toFloat()
@@ -59,5 +63,6 @@ class SpeedController {
         private val frictionalDeceleration = BigDecimal("0.010")
         private val sideBreakDeceleration = BigDecimal("0.0075")
         private val magnification = BigDecimal("0.85")
+        private val boost = BigDecimal("0.01")
     }
 }
