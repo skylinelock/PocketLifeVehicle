@@ -15,10 +15,10 @@ import org.bukkit.inventory.ItemStack
 
 class InventoryModelSteering(private val player: Player, private val model: Model): InventoryCustom(18, "ステアリング性能") {
     init {
-        for (i in 0..4) {
+        for (i in 0..8) {
             val steering = SteeringLevel.values()[i]
             val speedItem = steeringItem(steering, model.spec.steeringLevel == steering)
-            setSlot(2 * i, speedItem) { event ->
+            setSlot(i, speedItem) { event ->
                 model.spec.steeringLevel = steering
                 addSelectGrowEffectToSingleItem(event)
             }
