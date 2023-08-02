@@ -121,22 +121,6 @@ object Command {
                         }
                     }
                 }
-                playerExecutor { player, args ->
-                    val model = args[1] as Model
-                    val location = player.location
-                    if (model.flag.eventOnly) {
-                        VehicleManager.placeEventVehicle(location, model)
-                        player.sendVehiclePrefixedSuccessMessage("イベント専用車両を設置しました")
-                        return@playerExecutor
-                    }
-                    if (!VehicleManager.verifyPlaceableLocation(location)) {
-                        player.sendVehiclePrefixedErrorMessage("この位置に乗り物は設置できません")
-                        return@playerExecutor
-                    }
-                    VehicleManager.remove(player.uniqueId)
-                    VehicleManager.placeVehicle(player.uniqueId, player.location, model, model.spec.maxFuel)
-                    player.sendVehiclePrefixedSuccessMessage("$model.idを取得しました")
-                }
             }
             literalArgument("pop", "pop") {
                 playerArgument("player") {
