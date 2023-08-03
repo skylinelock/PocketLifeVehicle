@@ -13,6 +13,7 @@ import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.Vec3
 import org.bukkit.Bukkit
+import org.bukkit.Sound
 import org.bukkit.craftbukkit.v1_20_R1.entity.CraftPlayer
 import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftItemStack
 
@@ -102,13 +103,28 @@ class ModelArmorStand(entityType: EntityType<ArmorStand>, world: Level) :
             super.travel(vec3)
             return
         }
-        val nmsDriver = (Bukkit.getPlayer(driver) as CraftPlayer).handle
+        val bukkitDriver = Bukkit.getPlayer(driver)
+        val nmsDriver = (bukkitDriver as CraftPlayer).handle
+        val loc = bukkitDriver.location
 
         val sidewaysSpeed = nmsDriver.xxa
         val forwardSpeed = nmsDriver.zza
         val spaced = nmsDriver.jumping
 
         this.speed = entityVehicle.calculateSpeed(sidewaysSpeed, forwardSpeed, spaced)
+        if (entityVehicle.driftLevelUpdated) {
+            when(entityVehicle.calculateDriftLevel()) {
+                1 -> bukkitDriver.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 0.7F, 0.77F)
+                2 -> bukkitDriver.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 0.7F, 1.0F)
+                3 -> bukkitDriver.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 0.7F, 1.17F)
+                4 -> bukkitDriver.playSound(loc, Sound.BLOCK_NOTE_BLOCK_PLING, 0.7F, 0.58F)
+            }
+            entityVehicle.driftLevelUpdated = false
+        }
+        if (entityVehicle.boostingTick) {
+            bukkitDriver.playSound(loc, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0F, 1.0F)
+            entityVehicle.boostingTick = false
+        }
         entityVehicle.updateYaw(nmsDriver, sidewaysSpeed)
         this.turn(entityVehicle.location.yaw)
 

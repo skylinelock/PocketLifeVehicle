@@ -34,6 +34,8 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
     var shouldPlaySound = false
     var isLocked = false
     val speedController = SpeedController()
+    var boostingTick = false
+    var driftLevelUpdated = false
     private var driftedTicks = 0
     private var driftStartingYaw = 0
 
@@ -84,15 +86,20 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
             }
             if (sidewaysSpeed != ZERO) {
                 driftedTicks++
+                if (driftedTicks == 21 || driftedTicks == 61 || driftedTicks == 81 || driftedTicks == 91) {
+                    driftLevelUpdated = true
+                }
             }
         } else {
-            if (driftedTicks / 20 < 4) {
-                speedController.boost(driftedTicks / 20)
+            val driftLevel = calculateDriftLevel()
+            if (driftLevel != 0 && driftLevel != 4) {
+                speedController.boost(driftLevel)
+                boostingTick = true
             }
             driftedTicks = 0
         }
         if (forwardSpeed > ZERO) {
-            if (speedController.exact() < model.spec.maxSpeed.value) {
+            if (!exceedSpeedMaxValue()) {
                 speedController.accelerate()
             }
         }
@@ -104,7 +111,7 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         if (forwardSpeed < ZERO) {
             speedController.decelerate()
         }
-        if (speedController.exact() > model.spec.maxSpeed.value) {
+        if (exceedSpeedMaxValue()) {
             speedController.frictionalDecelerate()
         }
         if (speedController.isNegative) {
@@ -117,6 +124,20 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
             consumeFuel()
         }
         return speedController.exact()
+    }
+
+    private fun exceedSpeedMaxValue(): Boolean {
+        return speedController.exact() > model.spec.maxSpeed.value
+    }
+
+    fun calculateDriftLevel(): Int {
+        return when (driftedTicks) {
+            in 0..20 -> 0
+            in 21..60 -> 1
+            in 61..80 -> 2
+            in 81..90 -> 3
+            else -> 4
+        }
     }
 
     fun calculateDeltaMovement(sidewaysSpeed: Float, spaced: Boolean): Vec3 {
@@ -180,7 +201,7 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
         if (model.flag.eventOnly) {
             val blockPerSecond = abs(speedController.exact() * 20).truncateToOneDecimalPlace()
             line.darkGreenBold(blockPerSecond).grayBold(" blocks/s ")
-            val driftLevel = driftedTicks / 20
+            val driftLevel = calculateDriftLevel()
             for (i in 0 until driftLevel) {
                 when (i) {
                     0 -> {

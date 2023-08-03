@@ -63,6 +63,6 @@ class SpeedController {
         private val frictionalDeceleration = BigDecimal("0.010")
         private val sideBreakDeceleration = BigDecimal("0.0075")
         private val magnification = BigDecimal("0.85")
-        private val boost = BigDecimal("0.01")
+        private val boost = BigDecimal("0.1")
     }
 }
