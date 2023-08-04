@@ -86,7 +86,7 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
             }
             if (sidewaysSpeed != ZERO) {
                 driftedTicks++
-                if (driftedTicks == 21 || driftedTicks == 61 || driftedTicks == 81 || driftedTicks == 91) {
+                if (driftedTicks == 4 || driftedTicks == 9 || driftedTicks == 13 || driftedTicks == 16) {
                     driftLevelUpdated = true
                 }
             }
@@ -132,10 +132,10 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
 
     fun calculateDriftLevel(): Int {
         return when (driftedTicks) {
-            in 0..20 -> 0
-            in 21..60 -> 1
-            in 61..80 -> 2
-            in 81..90 -> 3
+            in 0..3 -> 0
+            in 4..8 -> 1
+            in 9..12 -> 2
+            in 13..15 -> 3
             else -> 4
         }
     }
