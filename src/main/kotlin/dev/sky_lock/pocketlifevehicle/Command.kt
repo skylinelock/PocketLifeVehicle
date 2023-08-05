@@ -171,21 +171,21 @@ object Command {
             literalArgument("event", "event") {
                 withPermission(Permission.ADMIN_COMMAND.name)
                 literalArgument("clear", "clear") {
-                    playerExecutor { player, _ ->
+                    anyExecutor { sender, _ ->
                         VehicleManager.removeEventVehicles()
-                        player.sendVehiclePrefixedSuccessMessage("全てのイベント車両を削除しました")
+                        sender.sendVehiclePrefixedSuccessMessage("全てのイベント車両を削除しました")
                     }
                 }
                 literalArgument("unlock", "unlock") {
-                    playerExecutor { player, _ ->
+                    anyExecutor { sender, _ ->
                         VehicleManager.turnEventVehicleLockStatus(false)
-                        player.sendVehiclePrefixedSuccessMessage("全てのイベント車両をアンロックしました")
+                        sender.sendVehiclePrefixedSuccessMessage("全てのイベント車両をアンロックしました")
                     }
                 }
                 literalArgument("lock", "lock") {
-                    playerExecutor { player, _ ->
+                    anyExecutor { sender, _ ->
                         VehicleManager.turnEventVehicleLockStatus(true)
-                        player.sendVehiclePrefixedSuccessMessage("全てのイベント車両をロックしました")
+                        sender.sendVehiclePrefixedSuccessMessage("全てのイベント車両をロックしました")
                     }
                 }
             }
@@ -232,23 +232,23 @@ object Command {
             literalArgument("reload", "reload") {
                 withPermission(Permission.ADMIN_COMMAND.name)
                 literalArgument("from", "from") {
-                    anyExecutor { player, _ ->
+                    anyExecutor { sender, _ ->
                         ModelRegistry.reloadConfig()
                         VehiclePlugin.instance.pluginConfiguration.load()
                         VehiclePlugin.instance.parkingViolationList.load()
-                        player.sendVehiclePrefixedSuccessMessage("ディスクからデータを読み込みました")
+                        sender.sendVehiclePrefixedSuccessMessage("ディスクからデータを読み込みました")
                     }
                 }
                 literalArgument("to", "to") {
-                    anyExecutor { player, _ ->
+                    anyExecutor { sender, _ ->
                         VehiclePlugin.instance.pluginConfiguration.save()
                         VehiclePlugin.instance.parkingViolationList.save()
                         ModelRegistry.saveToFile()
-                        player.sendVehiclePrefixedSuccessMessage("ディスクへデータを保存しました")
+                        sender.sendVehiclePrefixedSuccessMessage("ディスクへデータを保存しました")
                     }
                 }
-                anyExecutor { player, _ ->
-                    player.sendVehiclePrefixedErrorMessage("/vehicle reload [from/to]")
+                anyExecutor { sender, _ ->
+                    sender.sendVehiclePrefixedErrorMessage("/vehicle reload [from/to]")
                 }
             }
             literalArgument("entities", "entities") {
