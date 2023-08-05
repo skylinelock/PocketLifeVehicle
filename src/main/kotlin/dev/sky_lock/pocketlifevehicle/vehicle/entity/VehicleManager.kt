@@ -7,6 +7,7 @@ import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolation
 import dev.sky_lock.pocketlifevehicle.nbt.CustomDataType
 import dev.sky_lock.pocketlifevehicle.text.Line
+import dev.sky_lock.pocketlifevehicle.util.Region
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.Components
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.ModelArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.SeatArmorStand
@@ -98,7 +99,13 @@ object VehicleManager {
 
     fun removeEventVehicles() {
         vehicles.filter { it.isEventOnly() }
-            .forEach { vehicle -> remove(vehicle) }
+            .forEach { remove(it) }
+    }
+
+    fun removeEventVehicles(loc1: Location, loc2: Location) {
+        vehicles.filter { it.isEventOnly() }
+            .filter { Region(loc1, loc2).contains(it.location) }
+            .forEach { remove(it) }
     }
 
     fun pop(vehicle: EntityVehicle) {

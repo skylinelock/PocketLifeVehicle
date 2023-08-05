@@ -1,12 +1,9 @@
 package dev.sky_lock.pocketlifevehicle
 
-import dev.jorel.commandapi.arguments.Argument
+import dev.jorel.commandapi.arguments.*
 import dev.jorel.commandapi.arguments.ArgumentSuggestions.strings
-import dev.jorel.commandapi.arguments.CustomArgument
 import dev.jorel.commandapi.arguments.CustomArgument.CustomArgumentException
 import dev.jorel.commandapi.arguments.CustomArgument.MessageBuilder
-import dev.jorel.commandapi.arguments.LocationType
-import dev.jorel.commandapi.arguments.TextArgument
 import dev.jorel.commandapi.kotlindsl.*
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryEntityList
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryModelList
@@ -186,6 +183,18 @@ object Command {
                     anyExecutor { sender, _ ->
                         VehicleManager.turnEventVehicleLockStatus(true)
                         sender.sendVehiclePrefixedSuccessMessage("全てのイベント車両をロックしました")
+                    }
+                }
+                literalArgument("kill", "kill") {
+                    locationArgument("pos1", LocationType.PRECISE_POSITION) {
+                        locationArgument("pos2", LocationType.PRECISE_POSITION) {
+                            anyExecutor { sender, args ->
+                                val loc1 = args[0] as Location
+                                val loc2 = args[1] as Location
+                                VehicleManager.removeEventVehicles(loc1, loc2)
+                                sender.sendVehiclePrefixedSuccessMessage("指定した範囲のイベント車両を削除しました")
+                            }
+                        }
                     }
                 }
             }
