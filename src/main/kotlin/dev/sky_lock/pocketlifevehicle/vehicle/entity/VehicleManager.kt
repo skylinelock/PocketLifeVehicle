@@ -13,7 +13,6 @@ import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.ModelArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.SeatArmorStand
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelRegistry
-import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -78,7 +77,15 @@ object VehicleManager {
             vehicle.registerSeat(seatEntity.uuid)
             world.addEntity<ArmorStand>(seatEntity, CreatureSpawnEvent.SpawnReason.CUSTOM)
 
-            seatEntity.teleportTo(level, location.x, location.y, location.z, mutableSetOf(), location.yaw, location.pitch)
+            seatEntity.teleportTo(
+                level,
+                location.x,
+                location.y,
+                location.z,
+                mutableSetOf(),
+                location.yaw,
+                location.pitch
+            )
         }
     }
 
@@ -138,7 +145,7 @@ object VehicleManager {
         pop(vehicle)
     }
 
-    fun remove(uuid: UUID) {
+    private fun remove(uuid: UUID) {
         val vehicle = findByOwner(uuid) ?: return
         remove(vehicle)
     }
@@ -187,8 +194,8 @@ object VehicleManager {
                 vehicle.driver = player.uniqueId
                 return
             }
-            val seat = vehicle.seats.mapNotNull {
-                    seatId -> nearByEntities.firstOrNull { it.uniqueId == seatId }
+            val seat = vehicle.seats.mapNotNull { seatId ->
+                nearByEntities.firstOrNull { it.uniqueId == seatId }
             }.filter { it.passengers.isEmpty() }.randomOrNull()
             seat?.addPassenger(player)
             return
@@ -248,13 +255,15 @@ object VehicleManager {
     }
 
     fun unregisterDriver(player: UUID) {
-        vehicles.filter { it.driver == player }.forEach { it.driver = null}
+        vehicles.filter { it.driver == player }.forEach { it.driver = null }
     }
 
     private fun kill(vehicle: EntityVehicle) {
-        Bukkit.getWorlds().forEach { world ->
-            world.entities.filter { entity -> entity.uniqueId == vehicle.uuid || vehicle.seats.any { seat -> entity.uniqueId == seat } }
-                .forEach { entity -> entity.remove() }
+        val id = vehicle.uuid ?: return
+        val world = vehicle.location.world
+        world.getEntity(id)?.remove()
+        vehicle.seats.forEach { seatId ->
+            world.getEntity(seatId)?.remove()
         }
     }
 
