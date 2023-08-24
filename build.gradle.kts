@@ -32,7 +32,7 @@ dependencies {
     implementation("dev.jorel:commandapi-bukkit-shade:9.0.3")
     implementation("dev.jorel:commandapi-bukkit-kotlin:9.0.3")
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
-    compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0")
+    compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
 }
 
 tasks {
