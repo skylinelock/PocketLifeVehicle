@@ -30,7 +30,7 @@ dependencies {
     paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
     implementation("dev.jorel:commandapi-bukkit-shade:9.0.3")
-    implementation("dev.jorel:commandapi-bukkit-kotlin:9.0.3")
+    implementation("dev.jorel:commandapi-bukkit-kotlin:9.1.0")
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.0.0")
 }
