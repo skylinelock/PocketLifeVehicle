@@ -15,8 +15,6 @@ import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Sound
 import org.bukkit.block.BlockFace
-import org.bukkit.craftbukkit.v1_20_R1.entity.CraftArmorStand
-import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
@@ -165,13 +163,8 @@ class PlayerEventListener : Listener {
 
     @EventHandler
     fun onPlayerInteractAtEntity(event: PlayerInteractAtEntityEvent) {
-        if (event.rightClicked.type != EntityType.ARMOR_STAND) {
-            return
-        }
-        val armorStand = event.rightClicked as CraftArmorStand
         val player = event.player
-
-        val vehicle = EntityVehicleFacade.fromBukkit(armorStand) ?: return
+        val vehicle = EntityVehicleFacade.fromBukkit(event.rightClicked) ?: return
 
         event.isCancelled = true
         val owner = vehicle.getOwner()
