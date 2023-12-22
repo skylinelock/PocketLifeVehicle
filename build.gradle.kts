@@ -1,7 +1,7 @@
 plugins {
-    kotlin("jvm") version "1.9.10"
-    id("io.papermc.paperweight.userdev") version "1.5.5"
-    id("xyz.jpenilla.run-paper") version "2.1.0"
+    kotlin("jvm") version "1.9.21"
+    id("io.papermc.paperweight.userdev") version "1.5.11"
+    id("xyz.jpenilla.run-paper") version "2.2.2"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -29,8 +29,8 @@ repositories {
 dependencies {
     paperweight.paperDevBundle("1.20.1-R0.1-SNAPSHOT")
     implementation(kotlin("reflect"))
-    implementation("dev.jorel:commandapi-bukkit-shade:9.1.0")
-    implementation("dev.jorel:commandapi-bukkit-kotlin:9.1.0")
+    implementation("dev.jorel:commandapi-bukkit-shade:9.3.0")
+    implementation("dev.jorel:commandapi-bukkit-kotlin:9.3.0")
     // compileOnly("games.pocketlife.play:PocketLifeCore:1.0-SNAPSHOT")
     compileOnly("com.comphenix.protocol:ProtocolLib:5.1.0")
 }
