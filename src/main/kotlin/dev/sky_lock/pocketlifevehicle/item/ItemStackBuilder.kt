@@ -6,6 +6,7 @@ import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextDecoration
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
@@ -77,18 +78,14 @@ open class ItemStackBuilder(itemStack: ItemStack) {
     }
 
     fun addGlowEffect(): ItemStackBuilder {
-        itemMeta.addEnchant(GLOW_ENCHANT, 1, true)
+        itemMeta.addEnchant(Enchantment.OXYGEN, 1, true)
+        addItemFlags(ItemFlag.HIDE_ENCHANTS)
         return this
     }
 
     fun build(): ItemStack {
         itemStack.itemMeta = itemMeta
         return itemStack
-    }
-
-    companion object {
-        // ItemStackBuilderが参照された初回にエンチャントを登録する
-        val GLOW_ENCHANT = GlowEnchantment()
     }
 
 }
