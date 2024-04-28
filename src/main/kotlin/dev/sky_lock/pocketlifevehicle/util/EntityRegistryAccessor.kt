@@ -39,7 +39,7 @@ class EntityRegistryAccessor {
         frozen.isAccessible = true
         frozen.set(registry, false)
 
-        Registry.registerMapping(BuiltInRegistries.ENTITY_TYPE, 2, id, entity.build(id))
+        //Registry.registerMapping(BuiltInRegistries.ENTITY_TYPE, 2, id, entity.build(id))
 
         unregisteredIntrusiveHolders.set(registry, null)
         unregisteredIntrusiveHolders.isAccessible = false

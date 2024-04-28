@@ -1,15 +1,18 @@
 package dev.sky_lock.pocketlifevehicle
 
 // import games.pocketlife.play.VehicleAPI
+import com.github.retrooper.packetevents.PacketEvents
 import dev.jorel.commandapi.CommandAPI
 import dev.jorel.commandapi.CommandAPIBukkitConfig
 import dev.sky_lock.pocketlifevehicle.config.PluginConfiguration
 import dev.sky_lock.pocketlifevehicle.inventory.CustomInventoryListener
+import dev.sky_lock.pocketlifevehicle.inventory.LoreEditorListener
 import dev.sky_lock.pocketlifevehicle.json.ParkingViolationList
 import dev.sky_lock.pocketlifevehicle.listener.PlayerEventListener
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.VehicleManager
 import dev.sky_lock.pocketlifevehicle.vehicle.entity.component.Components
 import dev.sky_lock.pocketlifevehicle.vehicle.model.ModelRegistry
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder
 import org.bukkit.plugin.java.JavaPlugin
 
 /**
@@ -31,6 +34,12 @@ class VehiclePlugin : JavaPlugin() {
         CommandAPI.onLoad(CommandAPIBukkitConfig(this))
 
         Components.registerEntityTypes()
+
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this))
+        PacketEvents.getAPI().getSettings().reEncodeByDefault(false)
+            .checkForUpdates(true)
+            .bStats(true);
+        PacketEvents.getAPI().load();
     }
 
     override fun onEnable() {
@@ -38,6 +47,9 @@ class VehiclePlugin : JavaPlugin() {
 
         CommandAPI.onEnable()
         Command.register()
+
+        PacketEvents.getAPI().eventManager.registerListener(LoreEditorListener())
+        PacketEvents.getAPI().init();
 
         this.pluginConfiguration = PluginConfiguration()
         this.parkingViolationList = ParkingViolationList()
@@ -49,6 +61,8 @@ class VehiclePlugin : JavaPlugin() {
 
     override fun onDisable() {
         CommandAPI.onDisable()
+        PacketEvents.getAPI().terminate();
+
         ModelRegistry.saveToFile()
         pluginConfiguration.save()
 
