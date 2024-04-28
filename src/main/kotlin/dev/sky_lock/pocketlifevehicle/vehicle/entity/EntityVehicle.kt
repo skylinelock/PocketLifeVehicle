@@ -1,7 +1,7 @@
 package dev.sky_lock.pocketlifevehicle.vehicle.entity
 
 import dev.sky_lock.pocketlifevehicle.ext.kotlin.truncateToOneDecimalPlace
-import dev.sky_lock.pocketlifevehicle.packet.AnimationPacket
+import dev.sky_lock.pocketlifevehicle.packet.HandSwingAnimation
 import dev.sky_lock.pocketlifevehicle.text.Line
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
 import net.minecraft.world.entity.HumanoidArm
@@ -181,18 +181,17 @@ class EntityVehicle(var model: Model, var owner: UUID?, var location: Location) 
     }
 
     private fun raiseMainHand(entityID: Int) {
-        broadcastAnimationPacket(entityID, AnimationPacket.AnimationType.SWING_MAIN_ARM)
+        broadcastAnimationPacket(entityID, HandSwingAnimation.HandType.MAIN_HAND)
     }
 
     private fun raiseOffHand(entityID: Int) {
-        broadcastAnimationPacket(entityID, AnimationPacket.AnimationType.SWING_OFFHAND)
+        broadcastAnimationPacket(entityID, HandSwingAnimation.HandType.OFF_HAND)
     }
 
-    private fun broadcastAnimationPacket(entityID: Int, type: AnimationPacket.AnimationType) {
-        val packet = AnimationPacket()
-        packet.setEntityID(entityID)
-        packet.setAnimationType(type)
-        packet.broadCast()
+    private fun broadcastAnimationPacket(entityID: Int, type: HandSwingAnimation.HandType) {
+        val packet = HandSwingAnimation(entityID)
+        packet.setHand(type)
+        packet.broadcast()
     }
 
     fun createMeterPanelLine(): Line {

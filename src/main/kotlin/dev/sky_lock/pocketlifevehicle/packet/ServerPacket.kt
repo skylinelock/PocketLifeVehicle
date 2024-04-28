@@ -1,27 +1,22 @@
 package dev.sky_lock.pocketlifevehicle.packet
 
-import com.comphenix.protocol.PacketType
-import com.comphenix.protocol.ProtocolLibrary
+import com.github.retrooper.packetevents.PacketEvents
+import com.github.retrooper.packetevents.wrapper.PacketWrapper
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
-import java.lang.reflect.InvocationTargetException
-import java.util.logging.Level
 
 /**
  * @author sky_lock
  */
-open class ServerPacket(val type: PacketType)
-    : AbstractPacket(ProtocolLibrary.getProtocolManager().createPacket(type)) {
+
+abstract class ServerPacket<T : PacketWrapper<T>>(private val wrapper: PacketWrapper<T>) {
+    private val playerManager = PacketEvents.getAPI().playerManager
 
     fun send(player: Player) {
-        try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet)
-        } catch (ex: InvocationTargetException) {
-            Bukkit.getLogger().log(Level.WARNING, "Could not send a packet")
-        }
+        playerManager.sendPacket(player, wrapper)
     }
 
-    fun broadCast() {
-        ProtocolLibrary.getProtocolManager().broadcastServerPacket(packet)
+    fun broadcast() {
+        Bukkit.getOnlinePlayers().forEach { player -> send(player) }
     }
 }

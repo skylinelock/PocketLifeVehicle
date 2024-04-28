@@ -1,9 +1,11 @@
 package dev.sky_lock.pocketlifevehicle.inventory
 
 import dev.sky_lock.pocketlifevehicle.item.ItemStackBuilder
-import org.bukkit.craftbukkit.v1_20_R1.inventory.CraftInventoryCustom
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftInventoryCustom
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.event.inventory.*
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 
 /**
@@ -71,8 +73,8 @@ abstract class InventoryCustom(size: Int, title: String) : CraftInventoryCustom(
                 continue
             }
             val meta = item.itemMeta
-            if (meta.hasEnchant(ItemStackBuilder.GLOW_ENCHANT)) {
-                meta.removeEnchant(ItemStackBuilder.GLOW_ENCHANT)
+            if (meta.hasEnchant(Enchantment.OXYGEN) && meta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)) {
+                meta.removeEnchant(Enchantment.OXYGEN)
                 item.itemMeta = meta
             }
         }
