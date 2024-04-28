@@ -15,20 +15,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up JDK 11
+      - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: 11
+          java-version: '17'
+          distribution: 'adopt'
 
-      - name: Cache Gradle packages
-        uses: actions/cache@v4
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
         with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
+          dependency-graph: generate-and-submit
+
+      - name: Gradle Wrapper Validation
+        uses: gradle/actions/wrapper-validation@v3
 
       - name: Fetch release
         uses: dsaltares/fetch-gh-release-asset@master
