@@ -5,12 +5,16 @@ import net.minecraft.world.entity.ai.attributes.AttributeMap
 import net.minecraft.world.entity.decoration.ArmorStand
 import net.minecraft.world.level.Level
 import org.bukkit.attribute.Attribute
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftArmorStand
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity
 
 /**
  * @author sky_lock
  */
 
 open class BaseArmorStand(type: EntityType<ArmorStand>, level: Level) : ArmorStand(type, level) {
+
+    val craftEntity: CraftArmorStand
 
     init {
         setDefaultValues()
@@ -20,6 +24,8 @@ open class BaseArmorStand(type: EntityType<ArmorStand>, level: Level) : ArmorSta
         super.craftAttributes.registerAttribute(Attribute.GENERIC_MOVEMENT_SPEED)
         super.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR)
         super.craftAttributes.registerAttribute(Attribute.GENERIC_ARMOR_TOUGHNESS)
+
+        this.craftEntity = CraftArmorStand(this.level().craftServer, this)
     }
 
     //足音がなるかどうか
@@ -40,4 +46,11 @@ open class BaseArmorStand(type: EntityType<ArmorStand>, level: Level) : ArmorSta
         super.setInvisible(true)
     }
 
+    override fun getBukkitEntity(): CraftEntity {
+        return this.craftEntity
+    }
+
+    override fun getType(): EntityType<*> {
+        return EntityType.ARMOR_STAND
+    }
 }

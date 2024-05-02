@@ -1,9 +1,12 @@
 package dev.sky_lock.pocketlifevehicle
 
-import dev.jorel.commandapi.arguments.*
+import dev.jorel.commandapi.arguments.Argument
 import dev.jorel.commandapi.arguments.ArgumentSuggestions.strings
+import dev.jorel.commandapi.arguments.CustomArgument
 import dev.jorel.commandapi.arguments.CustomArgument.CustomArgumentException
 import dev.jorel.commandapi.arguments.CustomArgument.MessageBuilder
+import dev.jorel.commandapi.arguments.LocationType
+import dev.jorel.commandapi.arguments.TextArgument
 import dev.jorel.commandapi.kotlindsl.*
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryEntityList
 import dev.sky_lock.pocketlifevehicle.inventory.impl.InventoryModelList

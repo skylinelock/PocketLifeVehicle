@@ -3,11 +3,9 @@ package dev.sky_lock.pocketlifevehicle.inventory
 import dev.sky_lock.pocketlifevehicle.packet.BlockChange
 import dev.sky_lock.pocketlifevehicle.packet.OpenSignEditor
 import dev.sky_lock.pocketlifevehicle.vehicle.model.Model
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import java.util.*
-import kotlin.collections.HashMap
 
 /**
  * @author sky_lock

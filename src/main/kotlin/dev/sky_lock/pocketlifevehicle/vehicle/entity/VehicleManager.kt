@@ -64,7 +64,7 @@ object VehicleManager {
         vehicle.uuid = modelEntity.uuid
         vehicle.fuel = fuel
 
-        world.addEntity<ArmorStand>(modelEntity, CreatureSpawnEvent.SpawnReason.CUSTOM)
+        world.handle.addFreshEntity(modelEntity)
 
         modelEntity.teleportTo(level, location.x, location.y, location.z, mutableSetOf(), location.yaw, location.pitch)
         modelEntity.entityVehicle = vehicle

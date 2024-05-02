@@ -37,9 +37,7 @@ class VehiclePlugin : JavaPlugin() {
 
         PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this))
         PacketEvents.getAPI().getSettings().reEncodeByDefault(false)
-            .checkForUpdates(true)
-            .bStats(true);
-        PacketEvents.getAPI().load();
+        PacketEvents.getAPI().load()
     }
 
     override fun onEnable() {
@@ -48,8 +46,9 @@ class VehiclePlugin : JavaPlugin() {
         CommandAPI.onEnable()
         Command.register()
 
-        PacketEvents.getAPI().eventManager.registerListener(LoreEditorListener())
-        PacketEvents.getAPI().init();
+        val packetApi = PacketEvents.getAPI()
+        packetApi.eventManager.registerListener(LoreEditorListener())
+        packetApi.init()
 
         this.pluginConfiguration = PluginConfiguration()
         this.parkingViolationList = ParkingViolationList()
@@ -61,7 +60,7 @@ class VehiclePlugin : JavaPlugin() {
 
     override fun onDisable() {
         CommandAPI.onDisable()
-        PacketEvents.getAPI().terminate();
+        PacketEvents.getAPI().terminate()
 
         ModelRegistry.saveToFile()
         pluginConfiguration.save()

@@ -27,7 +27,7 @@ class InventoryVehicle(private val player: Player, private val vehicle: EntityVe
             ItemStackBuilder(Material.HOPPER, 1).setName(colorizeTitle("給油口")).setLore(refuelInfo(vehicle.fuel))
                 .build()
         setSlot(2, refuelHopper) { event ->
-            val cursor = event.cursor ?: return@setSlot
+            val cursor = event.cursor
             if (cursor.type == Material.COAL_BLOCK) {
                 if (!vehicle.refuel(30F)) return@setSlot
             } else if (cursor.type == Material.COAL) {
